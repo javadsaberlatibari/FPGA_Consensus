@@ -45,6 +45,7 @@ timeprecision 1ps;
 // Local Parameters
 ///////////////////////////////////////////////////////////////////////////////
 // Large enough for interesting traffic.
+localparam integer  LP_DEFAULT_LENGTH_IN_BYTES = 16384;
 localparam integer  LP_NUM_EXAMPLES    = 1;
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -57,6 +58,8 @@ logic                                ap_idle_r                      = 1'b1;
 logic                                ap_start_pulse                ;
 logic [LP_NUM_EXAMPLES-1:0]          ap_done_i                     ;
 logic [LP_NUM_EXAMPLES-1:0]          ap_done_r                      = {LP_NUM_EXAMPLES{1'b0}};
+logic [32-1:0]                       ctrl_xfer_size_in_bytes        = LP_DEFAULT_LENGTH_IN_BYTES;
+logic [32-1:0]                       ctrl_constant                  = 32'd1;
 
 ///////////////////////////////////////////////////////////////////////////////
 // Begin RTL
@@ -112,7 +115,7 @@ reg [31:0] cnt;
 reg ap_done_n;
 
 assign m_axis_tx_data_tvalid = 1'b0;
-assign m_axis_tx_data_tdata  = '0;
+assign m_axis_tx_data_tdata  = '1;
 assign m_axis_tx_data_tkeep  = '0;
 assign m_axis_tx_data_tlast  = '0;
 
@@ -164,11 +167,12 @@ always @(posedge ap_clk) begin
           // send 2^debug[31:29] metas (1-128)
           state                       <= IDLE_STATE;
         end else begin
-          tx_meta_tdata[2:0]     <= 3'b001; // RDMA WRITE
+          tx_meta_tdata[2:0]     <= 1; // RDMA WRITE
           tx_meta_tdata[26:3]    <= debug[23:0]; // lQPN: TODO: currently use debug[23:0] as lQPN
           tx_meta_tdata[74:27]   <= offset;//lAddr[47:0];
           tx_meta_tdata[122:75]  <= offset;//rAddr[47:0];
-          tx_meta_tdata[154:123] <= 1 << debug[28:24]; // len: use 2^debug[28:24] as len (<=2^31)
+          // tx_meta_tdata[154:123] <= 1 << debug[28:24]; // len: use 2^debug[28:24] as len (<=2^31)
+          tx_meta_tdata[154:123] <= 8;
           tx_meta_tvalid         <= 1'b1;
           state                         <= WAIT_READY;
         end
@@ -177,12 +181,12 @@ always @(posedge ap_clk) begin
         if (m_axis_tx_meta_tvalid && m_axis_tx_meta_tready) begin
           tx_meta_tvalid       <= 1'b0;
           state                       <= WRITE_META;
-	  meta_cnt              <= meta_cnt + 1'b1;
-	  if ((offset + (2 << debug[28:24])) > 48'h000000400000 ) begin
-	    // 0x 0040 0000 = 4M Bytes, avoid address overflow??
-	    offset                      <= '0;
-	  end else begin
-	    offset                      <= offset + (1 << debug[28:24]);
+	        meta_cnt              <= meta_cnt + 1'b1;
+	        if ((offset + (2 << debug[28:24])) > 48'h000000400000 ) begin
+	        // 0x 0040 0000 = 4M Bytes, avoid address overflow??
+	          offset                      <= '0;
+	        end else begin
+	          offset                      <= offset + (1 << debug[28:24]);
           end
         end
       end

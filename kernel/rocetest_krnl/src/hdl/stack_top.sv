@@ -831,7 +831,7 @@ ila_stack_top inst_ila_stack_top (
     .probe6(axis_tx_metadata.valid),
     .probe7(axis_tx_metadata.ready),
     .probe8(axis_tx_metadata.data),//160
-    .probe9(run_counter),//32
+    .probe9(roce_data_tx_role_pkg_counter),//32
     .probe10(writeState),//8
     .probe11(m_axis_roce_read_cmd.valid),
     .probe12(m_axis_roce_read_cmd.ready),
@@ -840,8 +840,8 @@ ila_stack_top inst_ila_stack_top (
     .probe15(m_axis_roce_write_cmd.ready),
     .probe16(m_axis_roce_write_cmd.data),//96
     .probe17(net_aresetn),
-    .probe18(cyc_counter),//32
-    .probe19(sec_counter),//32
+    .probe18(rx_pkg_counter),//32
+    .probe19(tx_pkg_counter),//32
     .probe20(s_axis_roce_read_data.valid),
     .probe21(s_axis_roce_read_data.ready),
     .probe22(s_axis_roce_read_data.data),//512

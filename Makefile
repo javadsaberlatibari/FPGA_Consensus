@@ -51,7 +51,8 @@ $(info INFO: USER_KRNL_MODE is [${USER_KRNL_MODE}])
 $(info INFO: EXE_NUM is [${EXE_NUM}])
 
 ifeq ($(NET_KRNL), roce)
-  KRNL_1 := rocetest_krnl
+  KRNL_1 := crdt_krnl
+  #KRNL_1 := rocetest_krnl
 else
   KRNL_1 := network_krnl
 endif

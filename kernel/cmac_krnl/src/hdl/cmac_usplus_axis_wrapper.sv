@@ -27,7 +27,7 @@
 `timescale 1ns/1ps
 `default_nettype none
 
-//`define DEBUG
+`define DEBUG
 `define XILINX_2019
 //`define XILINX_2020
 
@@ -578,7 +578,7 @@ logic[31:0] rx_total_packets_count;
 logic[31:0] rx_good_bytes_count;
 logic[31:0] rx_total_bytes_count;
 
-always @(posedge cmac_drp.gt_txusrclk2) begin
+always @(posedge gt_txusrclk2) begin
     if (usr_rx_reset_w) begin
         rx_good_packets_count <= '0;
         rx_total_packets_count <= '0;
@@ -594,25 +594,31 @@ always @(posedge cmac_drp.gt_txusrclk2) begin
 end
     
 ila_mixed ila_rx (
-    .clk(cmac_drp.gt_txusrclk2), // input wire clk
+    .clk(gt_txusrclk2), // input wire clk
 
 
-    .probe0(ctl_rx_enable), // input wire [0:0]  probe0
-    .probe1(ctl_rx_force_resync), // input wire [0:0]  probe1
-    .probe2(0), // input wire [0:0]  probe2
-    .probe3(cmac_stat.stat_rx_aligned), // input wire [0:0]  probe3
-    .probe4(stat_rx_aligned_1d), // input wire [0:0]  probe4
-    .probe5(rx_reset_done), // input wire [0:0]  probe5
-    .probe6(stat_rx_bad_code[0]), // input wire [0:0]  probe6
-    .probe7(stat_rx_bad_code[1]), // input wire [0:0]  probe7
-    .probe8({fcs_errors[3:0], code_errors[3:0], align_errors[3:0], rx_prestate}), // 16  probe8
-    .probe9(rx_good_packets_count[15:0]), // 16  probe9
-    .probe10(rx_total_packets_count[15:0]), // 16  probe10
-    .probe11(rx_total_bytes_count[15:0]), // 16  probe11
-    .probe12(rx_good_bytes_count[15:0]), // 16  probe12
-    .probe13(stat_rx_synced_err[15:0]), // 16  probe13
-    .probe14({stat_rx_got_signal_os, stat_rx_hi_ber, stat_rx_inrangeerr, stat_rx_internal_local_fault, stat_rx_jabber, stat_rx_local_fault, stat_rx_misaligned}), // 7  probe14
-    .probe15({stat_rx_received_local_fault, stat_rx_remote_fault, stat_rx_status, stat_rx_stomped_fcs}) // 6  probe15 
+    .probe0(rx_good_packets_count[31:0]), // 16  probe0
+    .probe1(rx_total_packets_count[31:0]), // 16  probe1
+    .probe2(rx_total_bytes_count[31:0]), // 16  probe2
+    .probe3(rx_good_bytes_count[31:0]) // 16  probe3
+
+
+    //.probe0(ctl_rx_enable), // input wire [0:0]  probe0
+    //.probe1(ctl_rx_force_resync), // input wire [0:0]  probe1
+    //.probe2(0), // input wire [0:0]  probe2
+    //.probe3(cmac_stat.stat_rx_aligned), // input wire [0:0]  probe3
+    //.probe4(stat_rx_aligned_1d), // input wire [0:0]  probe4
+    //.probe5(rx_reset_done), // input wire [0:0]  probe5
+    //.probe6(stat_rx_bad_code[0]), // input wire [0:0]  probe6
+    //.probe7(stat_rx_bad_code[1]), // input wire [0:0]  probe7
+    //.probe8({fcs_errors[3:0], code_errors[3:0], align_errors[3:0], rx_prestate}), // 16  probe8
+    //.probe9(rx_good_packets_count[15:0]), // 16  probe9
+    //.probe10(rx_total_packets_count[15:0]), // 16  probe10
+    //.probe11(rx_total_bytes_count[15:0]), // 16  probe11
+    //.probe12(rx_good_bytes_count[15:0]), // 16  probe12
+    //.probe13(stat_rx_synced_err[15:0]), // 16  probe13
+    //.probe14({stat_rx_got_signal_os, stat_rx_hi_ber, stat_rx_inrangeerr, stat_rx_internal_local_fault, stat_rx_jabber, stat_rx_local_fault, stat_rx_misaligned}), // 7  probe14
+    //.probe15({stat_rx_received_local_fault, stat_rx_remote_fault, stat_rx_status, stat_rx_stomped_fcs}) // 6  probe15 
 );
     
 //counting errors
@@ -624,7 +630,7 @@ logic[15:0] sfd_errors;
 
 logic[15:0] overflow_count;
 logic[15:0] underflow_count;
-always @(posedge cmac_drp.gt_txusrclk2) begin
+always @(gt_txusrclk2) begin
     if (usr_rx_reset_w) begin
         align_errors <= '0;
         code_errors <= '0;
@@ -651,10 +657,10 @@ always @(posedge cmac_drp.gt_txusrclk2) begin
         if (stat_rx_bad_sfd != 0) begin
             sfd_errors <= sfd_errors + 1;
         end
-        if (cmac_lbus_tx.ovf == 1'b1)  begin
+        if (tx_ovf == 1'b1)  begin
             overflow_count <= overflow_count + 1;
         end
-        if (cmac_lbus_tx.unf == 1'b1) begin
+        if (tx_unf == 1'b1) begin
             underflow_count <= underflow_count + 1;
         end
     end
@@ -666,7 +672,7 @@ logic[31:0] tx_total_packets_count;
 logic[31:0] tx_good_bytes_count;
 logic[31:0] tx_total_bytes_count;
 
-always @(posedge cmac_drp.gt_txusrclk2) begin
+always @(posedge gt_txusrclk2) begin
     if (core_tx_reset_w) begin
         tx_good_packets_count <= '0;
         tx_total_packets_count <= '0;
@@ -682,25 +688,29 @@ always @(posedge cmac_drp.gt_txusrclk2) begin
 end
 
 ila_mixed ila_tx (
-	.clk(cmac_drp.gt_txusrclk2), // input wire clk
+	.clk(gt_txusrclk2), // input wire clk
 
+    .probe0(tx_good_packets_count[31:0]), // input wire [31:0]  probe0
+	.probe1(tx_total_packets_count[31:0]), // input wire [31:0]  probe1
+	.probe2(tx_good_bytes_count[31:0]), // input wire [31:0]  probe2
+	.probe3(tx_total_bytes_count[31:0]) // input wire [31:0]  probe3
 
-	.probe0(ctl_tx_enable), // input wire [0:0]  probe0 
-	.probe1(ctl_tx_send_idle), // input wire [0:0]  probe1
-	.probe2(ctl_tx_send_lfi), // input wire [0:0]  probe2
-	.probe3(ctl_tx_send_rfi), // input wire [0:0]  probe3
-	.probe4(ctl_tx_test_pattern), // input wire [0:0]  probe4
-	.probe5(cmac_lbus_tx.ovf), // input wire [0:0]  probe5
-	.probe6(cmac_lbus_tx.unf), // input wire [0:0]  probe6
-	.probe7(cmac_lbus_tx.rdy), // input wire [0:0]  probe7
-	.probe8(tx_prestate), // input wire [0:0]  probe8
-	.probe9(tx_reset_done), // input wire [0:0]  probe9
-	.probe10(tx_good_packets_count), // input wire [0:0]  probe10
-	.probe11(tx_total_packets_count), // input wire [0:0]  probe11
-	.probe12(tx_good_bytes_count), // input wire [0:0]  probe12
-	.probe13(tx_total_bytes_count), // input wire [0:0]  probe13
-	.probe14(overflow_count), // input wire [0:0]  probe14
-	.probe15(underflow_count) // input wire [0:0]  probe15
+	//.probe0(ctl_tx_enable), // input wire [0:0]  probe0 
+	//.probe1(ctl_tx_send_idle), // input wire [0:0]  probe1
+	//.probe2(ctl_tx_send_lfi), // input wire [0:0]  probe2
+	//.probe3(ctl_tx_send_rfi), // input wire [0:0]  probe3
+	//.probe4(ctl_tx_test_pattern), // input wire [0:0]  probe4
+	//.probe5(cmac_lbus_tx.ovf), // input wire [0:0]  probe5
+	//.probe6(cmac_lbus_tx.unf), // input wire [0:0]  probe6
+	//.probe7(cmac_lbus_tx.rdy), // input wire [0:0]  probe7
+	//.probe8(tx_prestate), // input wire [0:0]  probe8
+	//.probe9(tx_reset_done), // input wire [0:0]  probe9
+	//.probe10(tx_good_packets_count), // input wire [0:0]  probe10
+	//.probe11(tx_total_packets_count), // input wire [0:0]  probe11
+	//.probe12(tx_good_bytes_count), // input wire [0:0]  probe12
+	//.probe13(tx_total_bytes_count), // input wire [0:0]  probe13
+	//.probe14(overflow_count), // input wire [0:0]  probe14
+	//.probe15(underflow_count) // input wire [0:0]  probe15
 );
     
 
