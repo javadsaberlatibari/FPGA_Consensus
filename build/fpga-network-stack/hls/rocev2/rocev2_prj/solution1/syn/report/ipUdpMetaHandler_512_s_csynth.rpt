@@ -1,0 +1,174 @@
+
+
+================================================================
+== Vitis HLS Report for 'ipUdpMetaHandler_512_s'
+================================================================
+* Date:           Tue Jul 11 09:33:01 2023
+
+* Version:        2022.1 (Build 3526262 on Mon Apr 18 15:47:01 MDT 2022)
+* Project:        rocev2_prj
+* Solution:       solution1 (Vivado IP Flow Target)
+* Product family: virtexuplus
+* Target device:  xcu280-fsvh2892-2L-e
+
+
+================================================================
+== Performance Estimates
+================================================================
++ Timing: 
+    * Summary: 
+    +--------+---------+----------+------------+
+    |  Clock |  Target | Estimated| Uncertainty|
+    +--------+---------+----------+------------+
+    |ap_clk  |  3.20 ns|  1.184 ns|     0.86 ns|
+    +--------+---------+----------+------------+
+
++ Latency: 
+    * Summary: 
+    +---------+---------+----------+----------+-----+-----+---------+
+    |  Latency (cycles) |  Latency (absolute) |  Interval | Pipeline|
+    |   min   |   max   |    min   |    max   | min | max |   Type  |
+    +---------+---------+----------+----------+-----+-----+---------+
+    |        1|        1|  3.200 ns|  3.200 ns|    1|    1|      yes|
+    +---------+---------+----------+----------+-----+-----+---------+
+
+    + Detail: 
+        * Instance: 
+        N/A
+
+        * Loop: 
+        N/A
+
+
+
+================================================================
+== Utilization Estimates
+================================================================
+* Summary: 
++---------------------+---------+------+---------+---------+-----+
+|         Name        | BRAM_18K|  DSP |    FF   |   LUT   | URAM|
++---------------------+---------+------+---------+---------+-----+
+|DSP                  |        -|     -|        -|        -|    -|
+|Expression           |        -|     -|        0|       18|    -|
+|FIFO                 |        -|     -|        -|        -|    -|
+|Instance             |        -|     -|        -|        -|    -|
+|Memory               |        -|     -|        -|        -|    -|
+|Multiplexer          |        -|     -|        -|       54|    -|
+|Register             |        -|     -|      536|        -|    -|
++---------------------+---------+------+---------+---------+-----+
+|Total                |        0|     0|      536|       72|    0|
++---------------------+---------+------+---------+---------+-----+
+|Available SLR        |     1344|  3008|   869120|   434560|  320|
++---------------------+---------+------+---------+---------+-----+
+|Utilization SLR (%)  |        0|     0|       ~0|       ~0|    0|
++---------------------+---------+------+---------+---------+-----+
+|Available            |     4032|  9024|  2607360|  1303680|  960|
++---------------------+---------+------+---------+---------+-----+
+|Utilization (%)      |        0|     0|       ~0|       ~0|    0|
++---------------------+---------+------+---------+---------+-----+
+
++ Detail: 
+    * Instance: 
+    N/A
+
+    * DSP: 
+    N/A
+
+    * Memory: 
+    N/A
+
+    * FIFO: 
+    N/A
+
+    * Expression: 
+    +----------------------------------+----------+----+---+----+------------+------------+
+    |           Variable Name          | Operation| DSP| FF| LUT| Bitwidth P0| Bitwidth P1|
+    +----------------------------------+----------+----+---+----+------------+------------+
+    |ap_predicate_op30_read_state1     |       and|   0|  0|   2|           1|           1|
+    |ap_predicate_op40_write_state2    |       and|   0|  0|   2|           1|           1|
+    |tmp_201_i_nbreadreq_fu_66_p3      |       and|   0|  0|   2|           1|           0|
+    |tmp_i_235_nbreadreq_fu_58_p3      |       and|   0|  0|   2|           1|           0|
+    |tmp_i_nbreadreq_fu_50_p3          |       and|   0|  0|   2|           1|           0|
+    |ap_block_pp0_stage0_01001         |        or|   0|  0|   2|           1|           1|
+    |ap_block_state1_pp0_stage0_iter0  |        or|   0|  0|   2|           1|           1|
+    |ap_block_state2_pp0_stage0_iter1  |        or|   0|  0|   2|           1|           1|
+    |ap_enable_pp0                     |       xor|   0|  0|   2|           1|           2|
+    +----------------------------------+----------+----+---+----+------------+------------+
+    |Total                             |          |   0|  0|  18|           9|           7|
+    +----------------------------------+----------+----+---+----+------------+------------+
+
+    * Multiplexer: 
+    +-------------------------------+----+-----------+-----+-----------+
+    |              Name             | LUT| Input Size| Bits| Total Bits|
+    +-------------------------------+----+-----------+-----+-----------+
+    |ap_done                        |   9|          2|    1|          2|
+    |exh_lengthFifo_blk_n           |   9|          2|    1|          2|
+    |rx_drop2exhFsm_MetaFifo_blk_n  |   9|          2|    1|          2|
+    |rx_exh2drop_MetaFifo_blk_n     |   9|          2|    1|          2|
+    |rx_ibhDropMetaFifo_blk_n       |   9|          2|    1|          2|
+    |rx_ipUdpMetaFifo_blk_n         |   9|          2|    1|          2|
+    +-------------------------------+----+-----------+-----+-----------+
+    |Total                          |  54|         12|    6|         12|
+    +-------------------------------+----+-----------+-----+-----------+
+
+    * Register: 
+    +-----------------------------------+-----+----+-----+-----------+
+    |                Name               |  FF | LUT| Bits| Const Bits|
+    +-----------------------------------+-----+----+-----+-----------+
+    |ap_CS_fsm                          |    1|   0|    1|          0|
+    |ap_done_reg                        |    1|   0|    1|          0|
+    |ap_enable_reg_pp0_iter1            |    1|   0|    1|          0|
+    |meta_length_V_2_reg_140            |   16|   0|   16|          0|
+    |policy_ackOnly_reg_154             |    1|   0|    1|          0|
+    |policy_isDrop_reg_150              |    1|   0|    1|          0|
+    |rx_exh2drop_MetaFifo_read_reg_145  |  512|   0|  512|          0|
+    |tmp_201_i_reg_136                  |    1|   0|    1|          0|
+    |tmp_i_235_reg_132                  |    1|   0|    1|          0|
+    |tmp_i_reg_128                      |    1|   0|    1|          0|
+    +-----------------------------------+-----+----+-----+-----------+
+    |Total                              |  536|   0|  536|          0|
+    +-----------------------------------+-----+----+-----+-----------+
+
+
+
+================================================================
+== Interface
+================================================================
+* Summary: 
++----------------------------------------+-----+-----+------------+-------------------------+--------------+
+|                RTL Ports               | Dir | Bits|  Protocol  |      Source Object      |    C Type    |
++----------------------------------------+-----+-----+------------+-------------------------+--------------+
+|ap_clk                                  |   in|    1|  ap_ctrl_hs|    ipUdpMetaHandler<512>|  return value|
+|ap_rst                                  |   in|    1|  ap_ctrl_hs|    ipUdpMetaHandler<512>|  return value|
+|ap_start                                |   in|    1|  ap_ctrl_hs|    ipUdpMetaHandler<512>|  return value|
+|ap_done                                 |  out|    1|  ap_ctrl_hs|    ipUdpMetaHandler<512>|  return value|
+|ap_continue                             |   in|    1|  ap_ctrl_hs|    ipUdpMetaHandler<512>|  return value|
+|ap_idle                                 |  out|    1|  ap_ctrl_hs|    ipUdpMetaHandler<512>|  return value|
+|ap_ready                                |  out|    1|  ap_ctrl_hs|    ipUdpMetaHandler<512>|  return value|
+|rx_ipUdpMetaFifo_dout                   |   in|  256|     ap_fifo|         rx_ipUdpMetaFifo|       pointer|
+|rx_ipUdpMetaFifo_num_data_valid         |   in|    4|     ap_fifo|         rx_ipUdpMetaFifo|       pointer|
+|rx_ipUdpMetaFifo_fifo_cap               |   in|    4|     ap_fifo|         rx_ipUdpMetaFifo|       pointer|
+|rx_ipUdpMetaFifo_empty_n                |   in|    1|     ap_fifo|         rx_ipUdpMetaFifo|       pointer|
+|rx_ipUdpMetaFifo_read                   |  out|    1|     ap_fifo|         rx_ipUdpMetaFifo|       pointer|
+|rx_exh2drop_MetaFifo_dout               |   in|  512|     ap_fifo|     rx_exh2drop_MetaFifo|       pointer|
+|rx_exh2drop_MetaFifo_num_data_valid     |   in|    4|     ap_fifo|     rx_exh2drop_MetaFifo|       pointer|
+|rx_exh2drop_MetaFifo_fifo_cap           |   in|    4|     ap_fifo|     rx_exh2drop_MetaFifo|       pointer|
+|rx_exh2drop_MetaFifo_empty_n            |   in|    1|     ap_fifo|     rx_exh2drop_MetaFifo|       pointer|
+|rx_exh2drop_MetaFifo_read               |  out|    1|     ap_fifo|     rx_exh2drop_MetaFifo|       pointer|
+|rx_ibhDropMetaFifo_dout                 |   in|   16|     ap_fifo|       rx_ibhDropMetaFifo|       pointer|
+|rx_ibhDropMetaFifo_num_data_valid       |   in|    2|     ap_fifo|       rx_ibhDropMetaFifo|       pointer|
+|rx_ibhDropMetaFifo_fifo_cap             |   in|    2|     ap_fifo|       rx_ibhDropMetaFifo|       pointer|
+|rx_ibhDropMetaFifo_empty_n              |   in|    1|     ap_fifo|       rx_ibhDropMetaFifo|       pointer|
+|rx_ibhDropMetaFifo_read                 |  out|    1|     ap_fifo|       rx_ibhDropMetaFifo|       pointer|
+|exh_lengthFifo_din                      |  out|   16|     ap_fifo|           exh_lengthFifo|       pointer|
+|exh_lengthFifo_num_data_valid           |   in|    3|     ap_fifo|           exh_lengthFifo|       pointer|
+|exh_lengthFifo_fifo_cap                 |   in|    3|     ap_fifo|           exh_lengthFifo|       pointer|
+|exh_lengthFifo_full_n                   |   in|    1|     ap_fifo|           exh_lengthFifo|       pointer|
+|exh_lengthFifo_write                    |  out|    1|     ap_fifo|           exh_lengthFifo|       pointer|
+|rx_drop2exhFsm_MetaFifo_din             |  out|  512|     ap_fifo|  rx_drop2exhFsm_MetaFifo|       pointer|
+|rx_drop2exhFsm_MetaFifo_num_data_valid  |   in|    2|     ap_fifo|  rx_drop2exhFsm_MetaFifo|       pointer|
+|rx_drop2exhFsm_MetaFifo_fifo_cap        |   in|    2|     ap_fifo|  rx_drop2exhFsm_MetaFifo|       pointer|
+|rx_drop2exhFsm_MetaFifo_full_n          |   in|    1|     ap_fifo|  rx_drop2exhFsm_MetaFifo|       pointer|
+|rx_drop2exhFsm_MetaFifo_write           |  out|    1|     ap_fifo|  rx_drop2exhFsm_MetaFifo|       pointer|
++----------------------------------------+-----+-----+------------+-------------------------+--------------+
+

@@ -1,0 +1,173 @@
+
+
+================================================================
+== Vitis HLS Report for 'qp_interface'
+================================================================
+* Date:           Tue Jul 11 09:32:56 2023
+
+* Version:        2022.1 (Build 3526262 on Mon Apr 18 15:47:01 MDT 2022)
+* Project:        rocev2_prj
+* Solution:       solution1 (Vivado IP Flow Target)
+* Product family: virtexuplus
+* Target device:  xcu280-fsvh2892-2L-e
+
+
+================================================================
+== Performance Estimates
+================================================================
++ Timing: 
+    * Summary: 
+    +--------+---------+----------+------------+
+    |  Clock |  Target | Estimated| Uncertainty|
+    +--------+---------+----------+------------+
+    |ap_clk  |  3.20 ns|  1.290 ns|     0.86 ns|
+    +--------+---------+----------+------------+
+
++ Latency: 
+    * Summary: 
+    +---------+---------+----------+----------+-----+-----+---------+
+    |  Latency (cycles) |  Latency (absolute) |  Interval | Pipeline|
+    |   min   |   max   |    min   |    max   | min | max |   Type  |
+    +---------+---------+----------+----------+-----+-----+---------+
+    |        1|        1|  3.200 ns|  3.200 ns|    1|    1|      yes|
+    +---------+---------+----------+----------+-----+-----+---------+
+
+    + Detail: 
+        * Instance: 
+        N/A
+
+        * Loop: 
+        N/A
+
+
+
+================================================================
+== Utilization Estimates
+================================================================
+* Summary: 
++---------------------+---------+------+---------+---------+-----+
+|         Name        | BRAM_18K|  DSP |    FF   |   LUT   | URAM|
++---------------------+---------+------+---------+---------+-----+
+|DSP                  |        -|     -|        -|        -|    -|
+|Expression           |        -|     -|        0|       24|    -|
+|FIFO                 |        -|     -|        -|        -|    -|
+|Instance             |        -|     -|        -|        -|    -|
+|Memory               |        -|     -|        -|        -|    -|
+|Multiplexer          |        -|     -|        -|       59|    -|
+|Register             |        -|     -|      135|        -|    -|
++---------------------+---------+------+---------+---------+-----+
+|Total                |        0|     0|      135|       83|    0|
++---------------------+---------+------+---------+---------+-----+
+|Available SLR        |     1344|  3008|   869120|   434560|  320|
++---------------------+---------+------+---------+---------+-----+
+|Utilization SLR (%)  |        0|     0|       ~0|       ~0|    0|
++---------------------+---------+------+---------+---------+-----+
+|Available            |     4032|  9024|  2607360|  1303680|  960|
++---------------------+---------+------+---------+---------+-----+
+|Utilization (%)      |        0|     0|       ~0|       ~0|    0|
++---------------------+---------+------+---------+---------+-----+
+
++ Detail: 
+    * Instance: 
+    N/A
+
+    * DSP: 
+    N/A
+
+    * Memory: 
+    N/A
+
+    * FIFO: 
+    N/A
+
+    * Expression: 
+    +----------------------------------+----------+----+---+----+------------+------------+
+    |           Variable Name          | Operation| DSP| FF| LUT| Bitwidth P0| Bitwidth P1|
+    +----------------------------------+----------+----+---+----+------------+------------+
+    |ap_condition_147                  |       and|   0|  0|   2|           1|           1|
+    |ap_condition_176                  |       and|   0|  0|   2|           1|           1|
+    |ap_predicate_op21_read_state1     |       and|   0|  0|   2|           1|           1|
+    |ap_predicate_op36_read_state1     |       and|   0|  0|   2|           1|           1|
+    |ap_predicate_op40_write_state2    |       and|   0|  0|   2|           1|           1|
+    |ap_predicate_op48_write_state2    |       and|   0|  0|   2|           1|           1|
+    |tmp_i_218_nbreadreq_fu_98_p3      |       and|   0|  0|   2|           1|           0|
+    |tmp_i_nbreadreq_fu_84_p3          |       and|   0|  0|   2|           1|           0|
+    |ap_block_pp0_stage0_01001         |        or|   0|  0|   2|           1|           1|
+    |ap_block_state1_pp0_stage0_iter0  |        or|   0|  0|   2|           1|           1|
+    |ap_block_state2_pp0_stage0_iter1  |        or|   0|  0|   2|           1|           1|
+    |ap_enable_pp0                     |       xor|   0|  0|   2|           1|           2|
+    +----------------------------------+----------+----+---+----+------------+------------+
+    |Total                             |          |   0|  0|  24|          12|          11|
+    +----------------------------------+----------+----+---+----+------------+------------+
+
+    * Multiplexer: 
+    +---------------------------------+----+-----------+-----+-----------+
+    |               Name              | LUT| Input Size| Bits| Total Bits|
+    +---------------------------------+----+-----------+-----+-----------+
+    |ap_done                          |   9|          2|    1|          2|
+    |if2msnTable_init_blk_n           |   9|          2|    1|          2|
+    |qpi2stateTable_upd_req_blk_n     |   9|          2|    1|          2|
+    |qpi2stateTable_upd_req_din       |  14|          3|  160|        480|
+    |s_axis_qp_interface_TDATA_blk_n  |   9|          2|    1|          2|
+    |stateTable2qpi_rsp_blk_n         |   9|          2|    1|          2|
+    +---------------------------------+----+-----------+-----+-----------+
+    |Total                            |  59|         13|  165|        490|
+    +---------------------------------+----+-----------+-----+-----------+
+
+    * Register: 
+    +--------------------------+----+----+-----+-----------+
+    |           Name           | FF | LUT| Bits| Const Bits|
+    +--------------------------+----+----+-----+-----------+
+    |ap_CS_fsm                 |   1|   0|    1|          0|
+    |ap_done_reg               |   1|   0|    1|          0|
+    |ap_enable_reg_pp0_iter1   |   1|   0|    1|          0|
+    |context_local_psn_V       |  24|   0|   24|          0|
+    |context_newState          |  32|   0|   32|          0|
+    |context_qp_num_V          |  16|   0|   16|          0|
+    |context_r_key_V           |  16|   0|   16|          0|
+    |context_remote_psn_V      |  24|   0|   24|          0|
+    |qp_fsmState               |   1|   0|    1|          0|
+    |qp_fsmState_load_reg_278  |   1|   0|    1|          0|
+    |tmp_i_218_reg_291         |   1|   0|    1|          0|
+    |tmp_i_reg_282             |   1|   0|    1|          0|
+    |trunc_ln145_s_reg_286     |  16|   0|   16|          0|
+    +--------------------------+----+----+-----+-----------+
+    |Total                     | 135|   0|  135|          0|
+    +--------------------------+----+----+-----+-----------+
+
+
+
+================================================================
+== Interface
+================================================================
+* Summary: 
++---------------------------------------+-----+-----+------------+------------------------+--------------+
+|               RTL Ports               | Dir | Bits|  Protocol  |      Source Object     |    C Type    |
++---------------------------------------+-----+-----+------------+------------------------+--------------+
+|ap_clk                                 |   in|    1|  ap_ctrl_hs|            qp_interface|  return value|
+|ap_rst                                 |   in|    1|  ap_ctrl_hs|            qp_interface|  return value|
+|ap_start                               |   in|    1|  ap_ctrl_hs|            qp_interface|  return value|
+|ap_done                                |  out|    1|  ap_ctrl_hs|            qp_interface|  return value|
+|ap_continue                            |   in|    1|  ap_ctrl_hs|            qp_interface|  return value|
+|ap_idle                                |  out|    1|  ap_ctrl_hs|            qp_interface|  return value|
+|ap_ready                               |  out|    1|  ap_ctrl_hs|            qp_interface|  return value|
+|s_axis_qp_interface_TVALID             |   in|    1|        axis|     s_axis_qp_interface|       pointer|
+|s_axis_qp_interface_TDATA              |   in|  256|        axis|     s_axis_qp_interface|       pointer|
+|s_axis_qp_interface_TREADY             |  out|    1|        axis|     s_axis_qp_interface|       pointer|
+|stateTable2qpi_rsp_dout                |   in|  192|     ap_fifo|      stateTable2qpi_rsp|       pointer|
+|stateTable2qpi_rsp_num_data_valid      |   in|    2|     ap_fifo|      stateTable2qpi_rsp|       pointer|
+|stateTable2qpi_rsp_fifo_cap            |   in|    2|     ap_fifo|      stateTable2qpi_rsp|       pointer|
+|stateTable2qpi_rsp_empty_n             |   in|    1|     ap_fifo|      stateTable2qpi_rsp|       pointer|
+|stateTable2qpi_rsp_read                |  out|    1|     ap_fifo|      stateTable2qpi_rsp|       pointer|
+|qpi2stateTable_upd_req_din             |  out|  160|     ap_fifo|  qpi2stateTable_upd_req|       pointer|
+|qpi2stateTable_upd_req_num_data_valid  |   in|    2|     ap_fifo|  qpi2stateTable_upd_req|       pointer|
+|qpi2stateTable_upd_req_fifo_cap        |   in|    2|     ap_fifo|  qpi2stateTable_upd_req|       pointer|
+|qpi2stateTable_upd_req_full_n          |   in|    1|     ap_fifo|  qpi2stateTable_upd_req|       pointer|
+|qpi2stateTable_upd_req_write           |  out|    1|     ap_fifo|  qpi2stateTable_upd_req|       pointer|
+|if2msnTable_init_din                   |  out|   64|     ap_fifo|        if2msnTable_init|       pointer|
+|if2msnTable_init_num_data_valid        |   in|    2|     ap_fifo|        if2msnTable_init|       pointer|
+|if2msnTable_init_fifo_cap              |   in|    2|     ap_fifo|        if2msnTable_init|       pointer|
+|if2msnTable_init_full_n                |   in|    1|     ap_fifo|        if2msnTable_init|       pointer|
+|if2msnTable_init_write                 |  out|    1|     ap_fifo|        if2msnTable_init|       pointer|
++---------------------------------------+-----+-----+------------+------------------------+--------------+
+

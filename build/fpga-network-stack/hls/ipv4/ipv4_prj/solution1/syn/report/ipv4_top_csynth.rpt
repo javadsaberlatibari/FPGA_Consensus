@@ -1,0 +1,183 @@
+
+
+================================================================
+== Vitis HLS Report for 'ipv4_top'
+================================================================
+* Date:           Tue Jul 11 09:19:32 2023
+
+* Version:        2022.1 (Build 3526262 on Mon Apr 18 15:47:01 MDT 2022)
+* Project:        ipv4_prj
+* Solution:       solution1 (Vivado IP Flow Target)
+* Product family: virtexuplus
+* Target device:  xcu280-fsvh2892-2L-e
+
+
+================================================================
+== Performance Estimates
+================================================================
++ Timing: 
+    * Summary: 
+    +--------+---------+----------+------------+
+    |  Clock |  Target | Estimated| Uncertainty|
+    +--------+---------+----------+------------+
+    |ap_clk  |  3.20 ns|  3.114 ns|     0.86 ns|
+    +--------+---------+----------+------------+
+
++ Latency: 
+    * Summary: 
+    +---------+---------+-----------+-----------+-----+-----+----------+
+    |  Latency (cycles) |   Latency (absolute)  |  Interval | Pipeline |
+    |   min   |   max   |    min    |    max    | min | max |   Type   |
+    +---------+---------+-----------+-----------+-----+-----+----------+
+    |        4|        4|  12.800 ns|  12.800 ns|    1|    1|  dataflow|
+    +---------+---------+-----------+-----------+-----+-----+----------+
+
+    + Detail: 
+        * Instance: 
+        +-------------------------------------+------------------------------------+---------+---------+----------+----------+-----+-----+---------+
+        |                                     |                                    |  Latency (cycles) |  Latency (absolute) |  Interval | Pipeline|
+        |               Instance              |               Module               |   min   |   max   |    min   |    max   | min | max |   Type  |
+        +-------------------------------------+------------------------------------+---------+---------+----------+----------+-----+-----+---------+
+        |process_ipv4_512_U0                  |process_ipv4_512_s                  |        2|        2|  6.400 ns|  6.400 ns|    1|    1|      yes|
+        |ipv4_lshiftWordByOctet_512_2_U0      |ipv4_lshiftWordByOctet_512_2_s      |        1|        1|  3.200 ns|  3.200 ns|    1|    1|      yes|
+        |ipv4_generate_ipv4_512_U0            |ipv4_generate_ipv4_512_s            |        2|        2|  6.400 ns|  6.400 ns|    1|    1|      yes|
+        |ipv4_drop_optional_ip_header_512_U0  |ipv4_drop_optional_ip_header_512_s  |        2|        2|  6.400 ns|  6.400 ns|    1|    1|      yes|
+        +-------------------------------------+------------------------------------+---------+---------+----------+----------+-----+-----+---------+
+
+        * Loop: 
+        N/A
+
+
+
+================================================================
+== Utilization Estimates
+================================================================
+* Summary: 
++---------------------+---------+------+---------+---------+-----+
+|         Name        | BRAM_18K|  DSP |    FF   |   LUT   | URAM|
++---------------------+---------+------+---------+---------+-----+
+|DSP                  |        -|     -|        -|        -|    -|
+|Expression           |        -|     -|        0|       18|    -|
+|FIFO                 |        0|     -|     6192|     3284|    -|
+|Instance             |        -|     -|     8791|     2494|    -|
+|Memory               |        -|     -|        -|        -|    -|
+|Multiplexer          |        -|     -|        -|       18|    -|
+|Register             |        -|     -|        4|        -|    -|
++---------------------+---------+------+---------+---------+-----+
+|Total                |        0|     0|    14987|     5814|    0|
++---------------------+---------+------+---------+---------+-----+
+|Available SLR        |     1344|  3008|   869120|   434560|  320|
++---------------------+---------+------+---------+---------+-----+
+|Utilization SLR (%)  |        0|     0|        1|        1|    0|
++---------------------+---------+------+---------+---------+-----+
+|Available            |     4032|  9024|  2607360|  1303680|  960|
++---------------------+---------+------+---------+---------+-----+
+|Utilization (%)      |        0|     0|       ~0|       ~0|    0|
++---------------------+---------+------+---------+---------+-----+
+
++ Detail: 
+    * Instance: 
+    +-------------------------------------+------------------------------------+---------+----+------+------+-----+
+    |               Instance              |               Module               | BRAM_18K| DSP|  FF  |  LUT | URAM|
+    +-------------------------------------+------------------------------------+---------+----+------+------+-----+
+    |ipv4_drop_optional_ip_header_512_U0  |ipv4_drop_optional_ip_header_512_s  |        0|   0|  3957|   242|    0|
+    |ipv4_generate_ipv4_512_U0            |ipv4_generate_ipv4_512_s            |        0|   0|  2303|   232|    0|
+    |ipv4_lshiftWordByOctet_512_2_U0      |ipv4_lshiftWordByOctet_512_2_s      |        0|   0|  1161|   593|    0|
+    |process_ipv4_512_U0                  |process_ipv4_512_s                  |        0|   0|  1370|  1427|    0|
+    +-------------------------------------+------------------------------------+---------+----+------+------+-----+
+    |Total                                |                                    |        0|   0|  8791|  2494|    0|
+    +-------------------------------------+------------------------------------+---------+----+------+------+-----+
+
+    * DSP: 
+    N/A
+
+    * Memory: 
+    N/A
+
+    * FIFO: 
+    +-----------------------------+---------+------+----+-----+------+------+---------+
+    |             Name            | BRAM_18K|  FF  | LUT| URAM| Depth| Bits | Size:D*B|
+    +-----------------------------+---------+------+----+-----+------+------+---------+
+    |rx_process2dropFifo_U        |        0|  3090|   0|    -|     8|  1024|     8192|
+    |rx_process2dropLengthFifo_U  |        0|    12|   0|    -|     2|     4|        8|
+    |tx_shift2ipv4Fifo_U          |        0|  3090|   0|    -|     8|  1024|     8192|
+    +-----------------------------+---------+------+----+-----+------+------+---------+
+    |Total                        |        0|  6192|   0|    0|    18|  2052|    16392|
+    +-----------------------------+---------+------+----+-----+------+------+---------+
+
+    * Expression: 
+    +--------------------------------------------------+----------+----+---+----+------------+------------+
+    |                   Variable Name                  | Operation| DSP| FF| LUT| Bitwidth P0| Bitwidth P1|
+    +--------------------------------------------------+----------+----+---+----+------------+------------+
+    |ap_idle                                           |       and|   0|  0|   2|           1|           1|
+    |ap_sync_done                                      |       and|   0|  0|   2|           1|           1|
+    |ap_sync_ready                                     |       and|   0|  0|   2|           1|           1|
+    |ipv4_lshiftWordByOctet_512_2_U0_ap_start          |       and|   0|  0|   2|           1|           1|
+    |process_ipv4_512_U0_ap_start                      |       and|   0|  0|   2|           1|           1|
+    |ap_sync_ipv4_lshiftWordByOctet_512_2_U0_ap_ready  |        or|   0|  0|   2|           1|           1|
+    |ap_sync_process_ipv4_512_U0_ap_ready              |        or|   0|  0|   2|           1|           1|
+    |ipv4_drop_optional_ip_header_512_U0_ap_start      |        or|   0|  0|   2|           1|           1|
+    |ipv4_generate_ipv4_512_U0_ap_start                |        or|   0|  0|   2|           1|           1|
+    +--------------------------------------------------+----------+----+---+----+------------+------------+
+    |Total                                             |          |   0|  0|  18|           9|           9|
+    +--------------------------------------------------+----------+----+---+----+------------+------------+
+
+    * Multiplexer: 
+    +------------------------------------------------------+----+-----------+-----+-----------+
+    |                         Name                         | LUT| Input Size| Bits| Total Bits|
+    +------------------------------------------------------+----+-----------+-----+-----------+
+    |ap_sync_reg_ipv4_lshiftWordByOctet_512_2_U0_ap_ready  |   9|          2|    1|          2|
+    |ap_sync_reg_process_ipv4_512_U0_ap_ready              |   9|          2|    1|          2|
+    +------------------------------------------------------+----+-----------+-----+-----------+
+    |Total                                                 |  18|          4|    2|          4|
+    +------------------------------------------------------+----+-----------+-----+-----------+
+
+    * Register: 
+    +----------------------------------------------------------+---+----+-----+-----------+
+    |                           Name                           | FF| LUT| Bits| Const Bits|
+    +----------------------------------------------------------+---+----+-----+-----------+
+    |ap_sync_reg_ipv4_drop_optional_ip_header_512_U0_ap_start  |  1|   0|    1|          0|
+    |ap_sync_reg_ipv4_generate_ipv4_512_U0_ap_start            |  1|   0|    1|          0|
+    |ap_sync_reg_ipv4_lshiftWordByOctet_512_2_U0_ap_ready      |  1|   0|    1|          0|
+    |ap_sync_reg_process_ipv4_512_U0_ap_ready                  |  1|   0|    1|          0|
+    +----------------------------------------------------------+---+----+-----+-----------+
+    |Total                                                     |  4|   0|    4|          0|
+    +----------------------------------------------------------+---+----+-----+-----------+
+
+
+
+================================================================
+== Interface
+================================================================
+* Summary: 
++-----------------------+-----+------+------------+--------------------+--------------+
+|       RTL Ports       | Dir | Bits |  Protocol  |    Source Object   |    C Type    |
++-----------------------+-----+------+------------+--------------------+--------------+
+|s_axis_rx_data_TDATA   |   in|  1024|        axis|      s_axis_rx_data|       pointer|
+|s_axis_rx_data_TVALID  |   in|     1|        axis|      s_axis_rx_data|       pointer|
+|s_axis_rx_data_TREADY  |  out|     1|        axis|      s_axis_rx_data|       pointer|
+|m_axis_rx_meta_TDATA   |  out|    64|        axis|      m_axis_rx_meta|       pointer|
+|m_axis_rx_meta_TVALID  |  out|     1|        axis|      m_axis_rx_meta|       pointer|
+|m_axis_rx_meta_TREADY  |   in|     1|        axis|      m_axis_rx_meta|       pointer|
+|m_axis_rx_data_TDATA   |  out|  1024|        axis|      m_axis_rx_data|       pointer|
+|m_axis_rx_data_TVALID  |  out|     1|        axis|      m_axis_rx_data|       pointer|
+|m_axis_rx_data_TREADY  |   in|     1|        axis|      m_axis_rx_data|       pointer|
+|s_axis_tx_meta_TDATA   |   in|    64|        axis|      s_axis_tx_meta|       pointer|
+|s_axis_tx_meta_TVALID  |   in|     1|        axis|      s_axis_tx_meta|       pointer|
+|s_axis_tx_meta_TREADY  |  out|     1|        axis|      s_axis_tx_meta|       pointer|
+|s_axis_tx_data_TDATA   |   in|  1024|        axis|      s_axis_tx_data|       pointer|
+|s_axis_tx_data_TVALID  |   in|     1|        axis|      s_axis_tx_data|       pointer|
+|s_axis_tx_data_TREADY  |  out|     1|        axis|      s_axis_tx_data|       pointer|
+|m_axis_tx_data_TDATA   |  out|  1024|        axis|      m_axis_tx_data|       pointer|
+|m_axis_tx_data_TVALID  |  out|     1|        axis|      m_axis_tx_data|       pointer|
+|m_axis_tx_data_TREADY  |   in|     1|        axis|      m_axis_tx_data|       pointer|
+|local_ipv4_address     |   in|    32|   ap_stable|  local_ipv4_address|        scalar|
+|protocol               |   in|     8|   ap_stable|            protocol|        scalar|
+|ap_clk                 |   in|     1|  ap_ctrl_hs|            ipv4_top|  return value|
+|ap_rst_n               |   in|     1|  ap_ctrl_hs|            ipv4_top|  return value|
+|ap_start               |   in|     1|  ap_ctrl_hs|            ipv4_top|  return value|
+|ap_done                |  out|     1|  ap_ctrl_hs|            ipv4_top|  return value|
+|ap_ready               |  out|     1|  ap_ctrl_hs|            ipv4_top|  return value|
+|ap_idle                |  out|     1|  ap_ctrl_hs|            ipv4_top|  return value|
++-----------------------+-----+------+------------+--------------------+--------------+
+

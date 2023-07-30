@@ -1,0 +1,436 @@
+
+
+================================================================
+== Vitis HLS Report for 'toe_top'
+================================================================
+* Date:           Tue Jul 11 09:27:06 2023
+
+* Version:        2022.1 (Build 3526262 on Mon Apr 18 15:47:01 MDT 2022)
+* Project:        toe_prj
+* Solution:       solution1 (Vivado IP Flow Target)
+* Product family: virtexuplus
+* Target device:  xcu280-fsvh2892-2L-e
+
+
+================================================================
+== Performance Estimates
+================================================================
++ Timing: 
+    * Summary: 
+    +--------+---------+----------+------------+
+    |  Clock |  Target | Estimated| Uncertainty|
+    +--------+---------+----------+------------+
+    |ap_clk  |  3.20 ns|  3.897 ns|     0.86 ns|
+    +--------+---------+----------+------------+
+
++ Latency: 
+    * Summary: 
+    +---------+---------+----------+----------+-----+-----+----------+
+    |  Latency (cycles) |  Latency (absolute) |  Interval | Pipeline |
+    |   min   |   max   |    min   |    max   | min | max |   Type   |
+    +---------+---------+----------+----------+-----+-----+----------+
+    |       39|       39|  0.152 us|  0.152 us|    2|    2|  dataflow|
+    +---------+---------+----------+----------+-----+-----+----------+
+
+    + Detail: 
+        * Instance: 
+        +------------------------------------------+-----------------------------------------+---------+---------+-----------+-----------+-----+-----+---------+
+        |                                          |                                         |  Latency (cycles) |   Latency (absolute)  |  Interval | Pipeline|
+        |                 Instance                 |                  Module                 |   min   |   max   |    min    |    max    | min | max |   Type  |
+        +------------------------------------------+-----------------------------------------+---------+---------+-----------+-----------+-----+-----+---------+
+        |sessionIdManager_U0                       |sessionIdManager                         |        1|        1|   3.200 ns|   3.200 ns|    1|    1|      yes|
+        |rx_sar_table_U0                           |rx_sar_table                             |        5|        5|  16.000 ns|  16.000 ns|    1|    1|      yes|
+        |tx_sar_table_U0                           |tx_sar_table                             |        5|        5|  16.000 ns|  16.000 ns|    1|    1|      yes|
+        |listening_port_table_U0                   |listening_port_table                     |        4|        4|  12.800 ns|  12.800 ns|    1|    1|      yes|
+        |stream_merger_event_U0                    |stream_merger_event_s                    |        2|        2|   6.400 ns|   6.400 ns|    1|    1|      yes|
+        |close_timer_U0                            |close_timer                              |        3|        3|   9.600 ns|   9.600 ns|    1|    1|      yes|
+        |toe_process_ipv4_512_U0                   |toe_process_ipv4_512_s                   |        1|        1|   3.200 ns|   3.200 ns|    1|    1|      yes|
+        |lookupReplyHandler_U0                     |lookupReplyHandler                       |        2|        2|   6.400 ns|   6.400 ns|    1|    1|      yes|
+        |retransmit_timer_U0                       |retransmit_timer                         |        2|        2|   7.794 ns|   7.794 ns|    1|    1|      yes|
+        |event_engine_U0                           |event_engine                             |        0|        0|       0 ns|       0 ns|    1|    1|      yes|
+        |drop_optional_ip_header_512_U0            |drop_optional_ip_header_512_s            |        1|        1|   3.200 ns|   3.200 ns|    1|    1|      yes|
+        |constructPseudoHeader_512_U0              |constructPseudoHeader_512_s              |        1|        1|   3.200 ns|   3.200 ns|    1|    1|      yes|
+        |probe_timer_U0                            |probe_timer                              |        5|        5|  16.745 ns|  16.745 ns|    2|    2|      yes|
+        |ack_delay_U0                              |ack_delay                                |        4|        4|  12.800 ns|  12.800 ns|    1|    1|      yes|
+        |txEventMerger_U0                          |txEventMerger                            |        2|        2|   6.400 ns|   6.400 ns|    1|    1|      yes|
+        |updateRequestSender_U0                    |updateRequestSender                      |        3|        3|   9.600 ns|   9.600 ns|    1|    1|      yes|
+        |lshiftWordByOctet_512_2_U0                |lshiftWordByOctet_512_2_s                |        1|        1|   3.200 ns|   3.200 ns|    1|    1|      yes|
+        |prependPseudoHeader_512_U0                |prependPseudoHeader_512_s                |        1|        1|   3.200 ns|   3.200 ns|    1|    1|      yes|
+        |reverseLookupTableInterface_U0            |reverseLookupTableInterface              |        5|        5|  16.000 ns|  16.000 ns|    1|    1|      yes|
+        |two_complement_subchecksums_512_11_U0     |two_complement_subchecksums_512_11_s     |        2|        2|   6.400 ns|   6.400 ns|    1|    1|      yes|
+        |toe_check_ipv4_checksum_32_U0             |toe_check_ipv4_checksum_32_s             |        5|        5|  16.000 ns|  16.000 ns|    1|    1|      yes|
+        |state_table_U0                            |state_table                              |        2|        2|   6.400 ns|   6.400 ns|    1|    1|      yes|
+        |free_port_table_U0                        |free_port_table                          |        4|        4|  12.800 ns|  12.800 ns|    1|    1|      yes|
+        |metaLoader_U0                             |metaLoader                               |        2|        2|   6.400 ns|   6.400 ns|    1|    1|      yes|
+        |txEngMemAccessBreakdown_U0                |txEngMemAccessBreakdown                  |        2|        2|   6.542 ns|   6.542 ns|    1|    1|      yes|
+        |tupleSplitter_U0                          |tupleSplitter                            |        1|        1|   3.200 ns|   3.200 ns|    1|    1|      yes|
+        |check_in_multiplexer_U0                   |check_in_multiplexer                     |        1|        1|   3.200 ns|   3.200 ns|    1|    1|      yes|
+        |read_data_stitching_512_U0                |read_data_stitching_512_s                |        2|        2|   6.400 ns|   6.400 ns|    1|    1|      yes|
+        |check_out_multiplexer_U0                  |check_out_multiplexer                    |        1|        1|   3.200 ns|   3.200 ns|    1|    1|      yes|
+        |processPseudoHeader_512_U0                |processPseudoHeader_512_s                |        3|        3|   9.600 ns|   9.600 ns|    1|    1|      yes|
+        |read_data_arbiter_512_U0                  |read_data_arbiter_512_s                  |        1|        1|   3.200 ns|   3.200 ns|    1|    1|      yes|
+        |rshiftWordByOctet_net_axis_512_512_3_U0   |rshiftWordByOctet_net_axis_512_512_3_s   |        1|        1|   3.200 ns|   3.200 ns|    1|    1|      yes|
+        |lshiftWordByOctet_512_51_U0               |lshiftWordByOctet_512_51_s               |        1|        1|   3.200 ns|   3.200 ns|    1|    1|      yes|
+        |drop_optional_header_fields_512_U0        |drop_optional_header_fields_512_s        |        3|        3|   9.600 ns|   9.600 ns|    2|    2|      yes|
+        |pseudoHeaderConstructionNew_512_U0        |pseudoHeaderConstructionNew_512_s        |        1|        1|   3.200 ns|   3.200 ns|    1|    1|      yes|
+        |two_complement_subchecksums_512_22_U0     |two_complement_subchecksums_512_22_s     |        2|        2|   6.400 ns|   6.400 ns|    1|    1|      yes|
+        |parse_optional_header_fields_U0           |parse_optional_header_fields             |        1|        1|   3.200 ns|   3.200 ns|    1|    1|      yes|
+        |finalize_ipv4_checksum_32_U0              |finalize_ipv4_checksum_32_s              |        4|        4|  12.800 ns|  12.800 ns|    1|    1|      yes|
+        |remove_pseudo_header_512_U0               |remove_pseudo_header_512_s               |        1|        1|   3.200 ns|   3.200 ns|    1|    1|      yes|
+        |merge_header_meta_U0                      |merge_header_meta                        |        1|        1|   3.200 ns|   3.200 ns|    1|    1|      yes|
+        |rxMetadataHandler_U0                      |rxMetadataHandler                        |        1|        1|   3.200 ns|   3.200 ns|    1|    1|      yes|
+        |rshiftWordByOctet_net_axis_512_512_53_U0  |rshiftWordByOctet_net_axis_512_512_53_s  |        1|        1|   3.200 ns|   3.200 ns|    1|    1|      yes|
+        |rxTcpFSM_U0                               |rxTcpFSM                                 |        2|        2|   6.400 ns|   6.400 ns|    1|    1|      yes|
+        |insert_checksum_512_U0                    |insert_checksum_512_s                    |        1|        1|   3.200 ns|   3.200 ns|    1|    1|       no|
+        |tasi_metaLoader_U0                        |tasi_metaLoader                          |        3|        3|   9.600 ns|   9.600 ns|    1|    1|      yes|
+        |rx_app_stream_if_U0                       |rx_app_stream_if                         |        2|        2|   6.400 ns|   6.400 ns|    1|    1|      yes|
+        |lshiftWordByOctet_512_52_U0               |lshiftWordByOctet_512_52_s               |        1|        1|   3.200 ns|   3.200 ns|    1|    1|      yes|
+        |toe_duplicate_stream_net_axis_512_U0      |toe_duplicate_stream_net_axis_512_s      |        1|        1|   3.200 ns|   3.200 ns|    1|    1|      yes|
+        |stream_merger_appNotification_U0          |stream_merger_appNotification_s          |        3|        3|   9.600 ns|   9.600 ns|    1|    1|      yes|
+        |tx_app_if_U0                              |tx_app_if                                |        2|        2|   6.400 ns|   6.400 ns|    1|    1|      yes|
+        |rxPackageDropper_512_U0                   |rxPackageDropper_512_s                   |        2|        2|   6.400 ns|   6.400 ns|    1|    1|      yes|
+        |generate_ipv4_512_U0                      |generate_ipv4_512_s                      |        2|        2|   6.400 ns|   6.400 ns|    1|    1|      yes|
+        |rxAppMemDataRead_512_U0                   |rxAppMemDataRead_512_s                   |        2|        2|   6.400 ns|   6.400 ns|    1|    1|      yes|
+        |rx_app_if_U0                              |rx_app_if                                |        2|        2|   6.400 ns|   6.400 ns|    1|    1|      yes|
+        |tasi_pkg_pusher_512_U0                    |tasi_pkg_pusher_512_s                    |        2|        2|   6.400 ns|   6.400 ns|    1|    1|      yes|
+        |stream_merger_ap_uint_16_U0               |stream_merger_ap_uint_16_s               |        2|        2|   6.400 ns|   6.400 ns|    1|    1|      yes|
+        |rxEventMerger_U0                          |rxEventMerger                            |        2|        2|   6.400 ns|   6.400 ns|    1|    1|      yes|
+        |tx_app_table_U0                           |tx_app_table                             |        2|        2|   6.400 ns|   6.400 ns|    1|    1|      yes|
+        |updateReplyHandler_U0                     |updateReplyHandler                       |        1|        1|   3.200 ns|   3.200 ns|    1|    1|      yes|
+        |txAppStatusHandler_U0                     |txAppStatusHandler                       |        1|        1|   3.200 ns|   3.200 ns|    1|    1|      yes|
+        +------------------------------------------+-----------------------------------------+---------+---------+-----------+-----------+-----+-----+---------+
+
+        * Loop: 
+        N/A
+
+
+
+================================================================
+== Utilization Estimates
+================================================================
+* Summary: 
++---------------------+---------+------+---------+---------+-----+
+|         Name        | BRAM_18K|  DSP |    FF   |   LUT   | URAM|
++---------------------+---------+------+---------+---------+-----+
+|DSP                  |        -|     -|        -|        -|    -|
+|Expression           |        -|     -|        -|        -|    -|
+|FIFO                 |      174|     -|    70729|    38860|    -|
+|Instance             |       53|     -|    70387|   152675|    0|
+|Memory               |        -|     -|        -|        -|    -|
+|Multiplexer          |        -|     -|        -|        -|    -|
+|Register             |        -|     -|        -|        -|    -|
++---------------------+---------+------+---------+---------+-----+
+|Total                |      227|     0|   141116|   191535|    0|
++---------------------+---------+------+---------+---------+-----+
+|Available SLR        |     1344|  3008|   869120|   434560|  320|
++---------------------+---------+------+---------+---------+-----+
+|Utilization SLR (%)  |       16|     0|       16|       44|    0|
++---------------------+---------+------+---------+---------+-----+
+|Available            |     4032|  9024|  2607360|  1303680|  960|
++---------------------+---------+------+---------+---------+-----+
+|Utilization (%)      |        5|     0|        5|       14|    0|
++---------------------+---------+------+---------+---------+-----+
+
++ Detail: 
+    * Instance: 
+    +------------------------------------------+-----------------------------------------+---------+----+------+-------+-----+
+    |                 Instance                 |                  Module                 | BRAM_18K| DSP|  FF  |  LUT  | URAM|
+    +------------------------------------------+-----------------------------------------+---------+----+------+-------+-----+
+    |ack_delay_U0                              |ack_delay                                |        1|   0|   584|    438|    0|
+    |check_in_multiplexer_U0                   |check_in_multiplexer                     |        0|   0|    20|     75|    0|
+    |check_out_multiplexer_U0                  |check_out_multiplexer                    |        0|   0|    11|     97|    0|
+    |close_timer_U0                            |close_timer                              |        3|   0|   426|    399|    0|
+    |constructPseudoHeader_512_U0              |constructPseudoHeader_512_s              |        0|   0|   629|    676|    0|
+    |drop_optional_header_fields_512_U0        |drop_optional_header_fields_512_s        |        0|   0|  7748|  42299|    0|
+    |drop_optional_ip_header_512_U0            |drop_optional_ip_header_512_s            |        0|   0|  3950|    230|    0|
+    |event_engine_U0                           |event_engine                             |        0|   0|    34|    198|    0|
+    |finalize_ipv4_checksum_32_U0              |finalize_ipv4_checksum_32_s              |        0|   0|  1116|   2581|    0|
+    |free_port_table_U0                        |free_port_table                          |        1|   0|   260|    189|    0|
+    |generate_ipv4_512_U0                      |generate_ipv4_512_s                      |        0|   0|  2303|    243|    0|
+    |insert_checksum_512_U0                    |insert_checksum_512_s                    |        0|   0|     9|    100|    0|
+    |listening_port_table_U0                   |listening_port_table                     |        1|   0|   329|    245|    0|
+    |lookupReplyHandler_U0                     |lookupReplyHandler                       |        0|   0|   369|    412|    0|
+    |lshiftWordByOctet_512_2_U0                |lshiftWordByOctet_512_2_s                |        0|   0|  1161|    591|    0|
+    |lshiftWordByOctet_512_51_U0               |lshiftWordByOctet_512_51_s               |        0|   0|  1449|    599|    0|
+    |lshiftWordByOctet_512_52_U0               |lshiftWordByOctet_512_52_s               |        0|   0|  1161|    593|    0|
+    |merge_header_meta_U0                      |merge_header_meta                        |        0|   0|   276|     87|    0|
+    |metaLoader_U0                             |metaLoader                               |        0|   0|  1684|   1760|    0|
+    |parse_optional_header_fields_U0           |parse_optional_header_fields             |        0|   0|   342|   1382|    0|
+    |prependPseudoHeader_512_U0                |prependPseudoHeader_512_s                |        0|   0|  1706|     96|    0|
+    |probe_timer_U0                            |probe_timer                              |        3|   0|   312|    462|    0|
+    |processPseudoHeader_512_U0                |processPseudoHeader_512_s                |        0|   0|  2089|   2402|    0|
+    |pseudoHeaderConstructionNew_512_U0        |pseudoHeaderConstructionNew_512_s        |        0|   0|  2406|   1719|    0|
+    |read_data_arbiter_512_U0                  |read_data_arbiter_512_s                  |        0|   0|  2057|     97|    0|
+    |read_data_stitching_512_U0                |read_data_stitching_512_s                |        0|   0|  7371|  37772|    0|
+    |remove_pseudo_header_512_U0               |remove_pseudo_header_512_s               |        0|   0|  1028|     37|    0|
+    |retransmit_timer_U0                       |retransmit_timer                         |        6|   0|   165|    580|    0|
+    |reverseLookupTableInterface_U0            |reverseLookupTableInterface              |        4|   0|   795|    627|    0|
+    |rshiftWordByOctet_net_axis_512_512_3_U0   |rshiftWordByOctet_net_axis_512_512_3_s   |        0|   0|  1449|    109|    0|
+    |rshiftWordByOctet_net_axis_512_512_53_U0  |rshiftWordByOctet_net_axis_512_512_53_s  |        0|   0|  1269|    113|    0|
+    |rxAppMemDataRead_512_U0                   |rxAppMemDataRead_512_s                   |        0|   0|  1033|     66|    0|
+    |rxEventMerger_U0                          |rxEventMerger                            |        0|   0|   540|     68|    0|
+    |rxMetadataHandler_U0                      |rxMetadataHandler                        |        0|   0|   396|    485|    0|
+    |rxPackageDropper_512_U0                   |rxPackageDropper_512_s                   |        0|   0|  1036|    108|    0|
+    |rxTcpFSM_U0                               |rxTcpFSM                                 |        0|   0|  1409|   2979|    0|
+    |rx_app_if_U0                              |rx_app_if                                |        0|   0|    26|     79|    0|
+    |rx_app_stream_if_U0                       |rx_app_stream_if                         |        0|   0|   155|    142|    0|
+    |rx_sar_table_U0                           |rx_sar_table                             |       10|   0|   991|    532|    0|
+    |sessionIdManager_U0                       |sessionIdManager                         |        0|   0|    39|     83|    0|
+    |state_table_U0                            |state_table                              |        2|   0|   386|    537|    0|
+    |stream_merger_ap_uint_16_U0               |stream_merger_ap_uint_16_s               |        0|   0|    55|     68|    0|
+    |stream_merger_appNotification_U0          |stream_merger_appNotification_s          |        0|   0|   328|    140|    0|
+    |stream_merger_event_U0                    |stream_merger_event_s                    |        0|   0|   391|     68|    0|
+    |tasi_metaLoader_U0                        |tasi_metaLoader                          |        0|   0|   656|    569|    0|
+    |tasi_pkg_pusher_512_U0                    |tasi_pkg_pusher_512_s                    |        0|   0|  4885|  31108|    0|
+    |toe_check_ipv4_checksum_32_U0             |toe_check_ipv4_checksum_32_s             |        0|   0|  1117|   2578|    0|
+    |toe_duplicate_stream_net_axis_512_U0      |toe_duplicate_stream_net_axis_512_s      |        0|   0|  1028|     46|    0|
+    |toe_process_ipv4_512_U0                   |toe_process_ipv4_512_s                   |        0|   0|  1367|   1440|    0|
+    |tupleSplitter_U0                          |tupleSplitter                            |        0|   0|   328|    114|    0|
+    |two_complement_subchecksums_512_11_U0     |two_complement_subchecksums_512_11_s     |        0|   0|  3272|   5664|    0|
+    |two_complement_subchecksums_512_22_U0     |two_complement_subchecksums_512_22_s     |        0|   0|  3272|   5664|    0|
+    |txAppStatusHandler_U0                     |txAppStatusHandler                       |        0|   0|   112|    220|    0|
+    |txEngMemAccessBreakdown_U0                |txEngMemAccessBreakdown                  |        0|   0|   187|    293|    0|
+    |txEventMerger_U0                          |txEventMerger                            |        0|   0|   392|     99|    0|
+    |tx_app_if_U0                              |tx_app_if                                |        0|   0|   294|    391|    0|
+    |tx_app_table_U0                           |tx_app_table                             |        6|   0|    71|    157|    0|
+    |tx_sar_table_U0                           |tx_sar_table                             |       16|   0|  1446|   1481|    0|
+    |updateReplyHandler_U0                     |updateReplyHandler                       |        0|   0|   165|     59|    0|
+    |updateRequestSender_U0                    |updateRequestSender                      |        0|   0|   502|    229|    0|
+    +------------------------------------------+-----------------------------------------+---------+----+------+-------+-----+
+    |Total                                     |                                         |       53|   0| 70387| 152675|    0|
+    +------------------------------------------+-----------------------------------------+---------+----+------+-------+-----+
+
+    * DSP: 
+    N/A
+
+    * Memory: 
+    N/A
+
+    * FIFO: 
+    +--------------------------------------+---------+------+----+-----+-------+------+---------+
+    |                 Name                 | BRAM_18K|  FF  | LUT| URAM| Depth | Bits | Size:D*B|
+    +--------------------------------------+---------+------+----+-----+-------+------+---------+
+    |ackDelayFifoReadCount_U               |        0|     9|   0|    -|     64|     1|       64|
+    |ackDelayFifoWriteCount_U              |        0|     9|   0|    -|     64|     1|       64|
+    |closeTimer2stateTable_releaseState_U  |        0|    36|   0|    -|      2|    16|       32|
+    |conEstablishedFifo_U                  |        0|     5|   0|    -|      4|    32|      128|
+    |eventEng2ackDelay_event_U             |        8|   534|   0|    -|     64|   224|    14336|
+    |eventEng2txEng_event_U                |        8|   534|   0|    -|     64|   224|    14336|
+    |memAccessBreakdown2txPkgStitcher_U    |        0|     8|   0|    -|     32|     1|       32|
+    |portTable2rxApp_listen_rsp_U          |        0|     5|   0|    -|      4|     1|        4|
+    |portTable2rxEng_check_rsp_U           |        0|     5|   0|    -|      4|     1|        4|
+    |portTable2txApp_port_rsp_U            |        0|     5|   0|    -|      4|    16|       64|
+    |probeTimer2eventEng_setEvent_U        |        0|   260|   0|    -|      2|   128|      256|
+    |pt_dstFifo_U                          |        0|     5|   0|    -|      4|     1|        4|
+    |pt_portCheckListening_req_fifo_U      |        0|    36|   0|    -|      2|    15|       30|
+    |pt_portCheckListening_rsp_fifo_U      |        0|     8|   0|    -|      2|     1|        2|
+    |pt_portCheckUsed_req_fifo_U           |        0|    36|   0|    -|      2|    15|       30|
+    |pt_portCheckUsed_rsp_fifo_U           |        0|     8|   0|    -|      2|     1|        2|
+    |reverseLupInsertFifo_U                |        0|     5|   0|    -|      4|    96|      384|
+    |rtTimer2eventEng_setEvent_U           |        0|   260|   0|    -|      2|   128|      256|
+    |rtTimer2stateTable_releaseState_U     |        0|    36|   0|    -|      2|    16|       32|
+    |rxApp2portTable_listen_req_U          |        0|     5|   0|    -|      4|    16|       64|
+    |rxApp2rxSar_upd_req_U                 |        0|   260|   0|    -|      2|    96|      192|
+    |rxBufferReadCmd_U                     |        0|     5|   0|    -|      4|     1|        4|
+    |rxEng2eventEng_setEvent_U             |        8|   543|   0|    -|    512|   224|   114688|
+    |rxEng2portTable_check_req_U           |        0|     5|   0|    -|      4|    16|       64|
+    |rxEng2rxApp_notification_U            |        0|     5|   0|    -|      4|    96|      384|
+    |rxEng2rxSar_upd_req_U                 |        0|   516|   0|    -|      2|   192|      384|
+    |rxEng2sLookup_req_U                   |        0|     5|   0|    -|      4|   128|      512|
+    |rxEng2stateTable_upd_req_U            |        0|   260|   0|    -|      2|    96|      192|
+    |rxEng2timer_clearProbeTimer_U         |        0|    36|   0|    -|      2|    16|       32|
+    |rxEng2timer_clearRetransmitTimer_U    |        0|    68|   0|    -|      2|    32|       64|
+    |rxEng2timer_setCloseTimer_U           |        0|    36|   0|    -|      2|    16|       32|
+    |rxEng2txSar_upd_req_U                 |        0|   784|   0|    -|     16|   192|     3072|
+    |rxEng_checksumValidFifo_U             |        0|     8|   0|    -|      2|     1|        2|
+    |rxEng_dataBuffer0_U                   |        0|  3090|   0|    -|      8|  1024|     8192|
+    |rxEng_dataBuffer1_U                   |        0|  3090|   0|    -|      8|  1024|     8192|
+    |rxEng_dataBuffer2_U                   |       29|  2084|   0|    -|    256|  1024|   262144|
+    |rxEng_dataBuffer3_U                   |       29|  2075|   0|    -|     32|  1024|    32768|
+    |rxEng_dataBuffer3a_U                  |        0|  3090|   0|    -|      8|  1024|     8192|
+    |rxEng_dataBuffer3b_U                  |        0|  3090|   0|    -|      8|  1024|     8192|
+    |rxEng_dataBuffer4_U                   |        0|  3090|   0|    -|      8|  1024|     8192|
+    |rxEng_dataBuffer5_U                   |        0|  3090|   0|    -|      8|  1024|     8192|
+    |rxEng_dataOffsetFifo_U                |        0|    12|   0|    -|      2|     4|        8|
+    |rxEng_fsmDropFifo_U                   |        0|     8|   0|    -|      2|     1|        2|
+    |rxEng_fsmEventFifo_U                  |        0|   260|   0|    -|      2|   128|      256|
+    |rxEng_fsmMetaDataFifo_U               |        0|   516|   0|    -|      2|   256|      512|
+    |rxEng_headerMetaFifo_U                |        0|   784|   0|    -|     16|   160|     2560|
+    |rxEng_ipMetaFifo_U                    |        0|   260|   0|    -|      2|    96|      192|
+    |rxEng_metaDataFifo_U                  |        0|   516|   0|    -|      2|   160|      320|
+    |rxEng_metaHandlerDropFifo_U           |        0|     8|   0|    -|      2|     1|        2|
+    |rxEng_metaHandlerEventFifo_U          |        0|   516|   0|    -|      2|   224|      448|
+    |rxEng_optionalFieldsFifo_U            |        0|  1028|   0|    -|      2|   320|      640|
+    |rxEng_optionalFieldsMetaFifo_U        |        0|     6|   0|    -|      8|    16|      128|
+    |rxEng_pseudoHeaderFifo_U              |        0|  2058|   0|    -|      2|  1024|     2048|
+    |rxEng_tupleBuffer_U                   |        0|   260|   0|    -|      2|    96|      192|
+    |rxEng_winScaleFifo_U                  |        0|    12|   0|    -|      2|     4|        8|
+    |rxSar2rxApp_upd_rsp_U                 |        0|   260|   0|    -|      2|    96|      192|
+    |rxSar2rxEng_upd_rsp_U                 |        0|   516|   0|    -|      2|   192|      384|
+    |rxSar2txEng_rsp_U                     |        0|   260|   0|    -|      2|    96|      192|
+    |rx_process2dropLengthFifo_U           |        0|    12|   0|    -|      2|     4|        8|
+    |sLookup2portTable_releasePort_U       |        0|     5|   0|    -|      4|    16|       64|
+    |sLookup2rxEng_rsp_U                   |        0|     5|   0|    -|      4|    32|      128|
+    |sLookup2txApp_rsp_U                   |        0|     5|   0|    -|      4|    32|      128|
+    |sLookup2txEng_rev_rsp_U               |        0|     5|   0|    -|      4|    96|      384|
+    |sessionDelete_req_U                   |        0|     5|   0|    -|      4|   160|      640|
+    |sessionInsert_req_U                   |        0|     5|   0|    -|      4|   160|      640|
+    |slc_sessionIdFinFifo_U                |        0|    36|   0|    -|      2|    14|       28|
+    |slc_sessionIdFreeList_U               |        1|    63|   0|    -|  16384|    14|   229376|
+    |slc_sessionInsert_rsp_U               |        0|     5|   0|    -|      4|   160|      640|
+    |stateTable2rxEng_upd_rsp_U            |        0|    68|   0|    -|      2|    32|       64|
+    |stateTable2sLookup_releaseSession_U   |        0|    36|   0|    -|      2|    16|       32|
+    |stateTable2txApp_rsp_U                |        0|    68|   0|    -|      2|    32|       64|
+    |stateTable2txApp_upd_rsp_U            |        0|    68|   0|    -|      2|    32|       64|
+    |subSumFifo_U                          |        0|  2058|   0|    -|      2|  1024|     2048|
+    |tasi_dataFifo_U                       |       29|  2084|   0|    -|   1024|  1024|  1048576|
+    |tasi_meta2pkgPushCmd_U                |        4|   281|   0|    -|    128|   128|    16384|
+    |timer2eventEng_setEvent_U             |        0|   406|   0|    -|     64|   128|     8192|
+    |timer2rxApp_notification_U            |        0|     5|   0|    -|      4|    96|      384|
+    |timer2stateTable_releaseState_U       |        0|    36|   0|    -|      2|    16|       32|
+    |timer2txApp_notification_U            |        0|     5|   0|    -|      4|    32|      128|
+    |txApp2eventEng_mergeEvent_U           |        0|   406|   0|    -|     64|   128|     8192|
+    |txApp2eventEng_setEvent_U             |        0|   406|   0|    -|     64|   128|     8192|
+    |txApp2sLookup_req_U                   |        0|     5|   0|    -|      4|    96|      384|
+    |txApp2stateTable_req_U                |        0|    36|   0|    -|      2|    16|       32|
+    |txApp2stateTable_upd_req_U            |        0|   260|   0|    -|      2|    96|      192|
+    |txApp2txEng_data_stream_U             |       29|  2084|   0|    -|   1024|  1024|  1048576|
+    |txApp2txSar_push_U                    |        0|     7|   0|    -|     16|    64|     1024|
+    |txApp2txSar_upd_req_U                 |        0|   406|   0|    -|     64|    96|     6144|
+    |txAppStream2event_mergeEvent_U        |        0|   406|   0|    -|     64|   128|     8192|
+    |txApp_txEventCache_U                  |        0|   406|   0|    -|     64|   128|     8192|
+    |txBufferReadDataStitched_U            |        0|  2058|   0|    -|      2|  1024|     2048|
+    |txEng2rxSar_req_U                     |        0|    36|   0|    -|      2|    16|       32|
+    |txEng2sLookup_rev_req_U               |        0|     5|   0|    -|      4|    16|       64|
+    |txEng2timer_setProbeTimer_U           |        0|    36|   0|    -|      2|    16|       32|
+    |txEng2timer_setRetransmitTimer_U      |        0|   133|   0|    -|      2|    64|      128|
+    |txEng2txSar_upd_req_U                 |        0|   401|   0|    -|     16|   128|     2048|
+    |txEngFifoReadCount_U                  |        0|     9|   0|    -|     64|     1|       64|
+    |txEng_ipMetaFifo_U                    |        0|     8|   0|    -|     32|    16|      512|
+    |txEng_ipTupleFifo_U                   |        0|   211|   0|    -|     32|    64|     2048|
+    |txEng_isDDRbypass_U                   |        0|     8|   0|    -|     32|     1|       32|
+    |txEng_isLookUpFifo_U                  |        0|     5|   0|    -|      4|     1|        4|
+    |txEng_shift2pseudoFifo_U              |        0|  2058|   0|    -|      2|  1024|     2048|
+    |txEng_subChecksumsFifo_U              |        0|  2058|   0|    -|      2|  1024|     2048|
+    |txEng_tcpChecksumFifo_U               |        0|     5|   0|    -|      4|    16|       64|
+    |txEng_tcpMetaFifo_U                   |        0|   787|   0|    -|     32|   160|     5120|
+    |txEng_tcpPkgBuffer0_U                 |        0|  2058|   0|    -|      2|  1024|     2048|
+    |txEng_tcpPkgBuffer1_U                 |        0|  3092|   0|    -|     16|  1024|    16384|
+    |txEng_tcpPkgBuffer2_U                 |       29|  2084|   0|    -|    256|  1024|   262144|
+    |txEng_tcpPkgBuffer3_U                 |        0|  2058|   0|    -|      2|  1024|     2048|
+    |txEng_tcpPkgBuffer4_U                 |        0|  2058|   0|    -|      2|  1024|     2048|
+    |txEng_tcpPkgBuffer5_U                 |        0|  2058|   0|    -|      2|  1024|     2048|
+    |txEng_tcpPkgBuffer6_U                 |        0|  2058|   0|    -|      2|  1024|     2048|
+    |txEng_tcpTupleFifo_U                  |        0|   404|   0|    -|     32|    96|     3072|
+    |txEng_tupleShortCutFifo_U             |        0|   260|   0|    -|      2|    96|      192|
+    |txMetaloader2memAccessBreakdown_U     |        0|   404|   0|    -|     32|   128|     4096|
+    |txSar2rxEng_upd_rsp_U                 |        0|   784|   0|    -|     16|   160|     2560|
+    |txSar2txApp_ack_push_U                |        0|   401|   0|    -|     16|   128|     2048|
+    |txSar2txApp_upd_rsp_U                 |        0|   406|   0|    -|     64|   128|     8192|
+    |txSar2txEng_upd_rsp_U                 |        0|   784|   0|    -|     16|   192|     3072|
+    +--------------------------------------+---------+------+----+-----+-------+------+---------+
+    |Total                                 |      174| 70729|   0|    0|  20992| 29925|  3227310|
+    +--------------------------------------+---------+------+----+-----+-------+------+---------+
+
+    * Expression: 
+    N/A
+
+    * Multiplexer: 
+    N/A
+
+    * Register: 
+    N/A
+
+
+
+================================================================
+== Interface
+================================================================
+* Summary: 
++------------------------------------+-----+------+--------------+-----------------------------+--------------+
+|              RTL Ports             | Dir | Bits |   Protocol   |        Source Object        |    C Type    |
++------------------------------------+-----+------+--------------+-----------------------------+--------------+
+|s_axis_tcp_data_TDATA               |   in|  1024|          axis|              s_axis_tcp_data|       pointer|
+|s_axis_tcp_data_TVALID              |   in|     1|          axis|              s_axis_tcp_data|       pointer|
+|s_axis_tcp_data_TREADY              |  out|     1|          axis|              s_axis_tcp_data|       pointer|
+|s_axis_txwrite_sts_TDATA            |   in|    40|          axis|           s_axis_txwrite_sts|       pointer|
+|s_axis_txwrite_sts_TVALID           |   in|     1|          axis|           s_axis_txwrite_sts|       pointer|
+|s_axis_txwrite_sts_TREADY           |  out|     1|          axis|           s_axis_txwrite_sts|       pointer|
+|s_axis_rxread_data_TDATA            |   in|  1024|          axis|           s_axis_rxread_data|       pointer|
+|s_axis_rxread_data_TVALID           |   in|     1|          axis|           s_axis_rxread_data|       pointer|
+|s_axis_rxread_data_TREADY           |  out|     1|          axis|           s_axis_rxread_data|       pointer|
+|s_axis_txread_data_TDATA            |   in|  1024|          axis|           s_axis_txread_data|       pointer|
+|s_axis_txread_data_TVALID           |   in|     1|          axis|           s_axis_txread_data|       pointer|
+|s_axis_txread_data_TREADY           |  out|     1|          axis|           s_axis_txread_data|       pointer|
+|m_axis_tcp_data_TDATA               |  out|  1024|          axis|              m_axis_tcp_data|       pointer|
+|m_axis_tcp_data_TVALID              |  out|     1|          axis|              m_axis_tcp_data|       pointer|
+|m_axis_tcp_data_TREADY              |   in|     1|          axis|              m_axis_tcp_data|       pointer|
+|m_axis_txwrite_cmd_TDATA            |  out|   128|          axis|           m_axis_txwrite_cmd|       pointer|
+|m_axis_txwrite_cmd_TVALID           |  out|     1|          axis|           m_axis_txwrite_cmd|       pointer|
+|m_axis_txwrite_cmd_TREADY           |   in|     1|          axis|           m_axis_txwrite_cmd|       pointer|
+|m_axis_txread_cmd_TDATA             |  out|   128|          axis|            m_axis_txread_cmd|       pointer|
+|m_axis_txread_cmd_TVALID            |  out|     1|          axis|            m_axis_txread_cmd|       pointer|
+|m_axis_txread_cmd_TREADY            |   in|     1|          axis|            m_axis_txread_cmd|       pointer|
+|m_axis_rxwrite_data_TDATA           |  out|  1024|          axis|          m_axis_rxwrite_data|       pointer|
+|m_axis_rxwrite_data_TVALID          |  out|     1|          axis|          m_axis_rxwrite_data|       pointer|
+|m_axis_rxwrite_data_TREADY          |   in|     1|          axis|          m_axis_rxwrite_data|       pointer|
+|m_axis_txwrite_data_TDATA           |  out|  1024|          axis|          m_axis_txwrite_data|       pointer|
+|m_axis_txwrite_data_TVALID          |  out|     1|          axis|          m_axis_txwrite_data|       pointer|
+|m_axis_txwrite_data_TREADY          |   in|     1|          axis|          m_axis_txwrite_data|       pointer|
+|s_axis_session_lup_rsp_TDATA        |   in|   128|          axis|       s_axis_session_lup_rsp|       pointer|
+|s_axis_session_lup_rsp_TVALID       |   in|     1|          axis|       s_axis_session_lup_rsp|       pointer|
+|s_axis_session_lup_rsp_TREADY       |  out|     1|          axis|       s_axis_session_lup_rsp|       pointer|
+|s_axis_session_upd_rsp_TDATA        |   in|   160|          axis|       s_axis_session_upd_rsp|       pointer|
+|s_axis_session_upd_rsp_TVALID       |   in|     1|          axis|       s_axis_session_upd_rsp|       pointer|
+|s_axis_session_upd_rsp_TREADY       |  out|     1|          axis|       s_axis_session_upd_rsp|       pointer|
+|m_axis_session_lup_req_TDATA        |  out|    96|          axis|       m_axis_session_lup_req|       pointer|
+|m_axis_session_lup_req_TVALID       |  out|     1|          axis|       m_axis_session_lup_req|       pointer|
+|m_axis_session_lup_req_TREADY       |   in|     1|          axis|       m_axis_session_lup_req|       pointer|
+|m_axis_session_upd_req_TDATA        |  out|   160|          axis|       m_axis_session_upd_req|       pointer|
+|m_axis_session_upd_req_TVALID       |  out|     1|          axis|       m_axis_session_upd_req|       pointer|
+|m_axis_session_upd_req_TREADY       |   in|     1|          axis|       m_axis_session_upd_req|       pointer|
+|s_axis_listen_port_req_TDATA        |   in|    16|          axis|       s_axis_listen_port_req|       pointer|
+|s_axis_listen_port_req_TVALID       |   in|     1|          axis|       s_axis_listen_port_req|       pointer|
+|s_axis_listen_port_req_TREADY       |  out|     1|          axis|       s_axis_listen_port_req|       pointer|
+|s_axis_rx_data_req_TDATA            |   in|    32|          axis|           s_axis_rx_data_req|       pointer|
+|s_axis_rx_data_req_TVALID           |   in|     1|          axis|           s_axis_rx_data_req|       pointer|
+|s_axis_rx_data_req_TREADY           |  out|     1|          axis|           s_axis_rx_data_req|       pointer|
+|s_axis_open_conn_req_TDATA          |   in|    64|          axis|         s_axis_open_conn_req|       pointer|
+|s_axis_open_conn_req_TVALID         |   in|     1|          axis|         s_axis_open_conn_req|       pointer|
+|s_axis_open_conn_req_TREADY         |  out|     1|          axis|         s_axis_open_conn_req|       pointer|
+|s_axis_close_conn_req_TDATA         |   in|    16|          axis|        s_axis_close_conn_req|       pointer|
+|s_axis_close_conn_req_TVALID        |   in|     1|          axis|        s_axis_close_conn_req|       pointer|
+|s_axis_close_conn_req_TREADY        |  out|     1|          axis|        s_axis_close_conn_req|       pointer|
+|s_axis_tx_data_req_metadata_TDATA   |   in|    32|          axis|  s_axis_tx_data_req_metadata|       pointer|
+|s_axis_tx_data_req_metadata_TVALID  |   in|     1|          axis|  s_axis_tx_data_req_metadata|       pointer|
+|s_axis_tx_data_req_metadata_TREADY  |  out|     1|          axis|  s_axis_tx_data_req_metadata|       pointer|
+|s_axis_tx_data_req_TDATA            |   in|  1024|          axis|           s_axis_tx_data_req|       pointer|
+|s_axis_tx_data_req_TVALID           |   in|     1|          axis|           s_axis_tx_data_req|       pointer|
+|s_axis_tx_data_req_TREADY           |  out|     1|          axis|           s_axis_tx_data_req|       pointer|
+|m_axis_listen_port_rsp_TDATA        |  out|     8|          axis|       m_axis_listen_port_rsp|       pointer|
+|m_axis_listen_port_rsp_TVALID       |  out|     1|          axis|       m_axis_listen_port_rsp|       pointer|
+|m_axis_listen_port_rsp_TREADY       |   in|     1|          axis|       m_axis_listen_port_rsp|       pointer|
+|m_axis_notification_TDATA           |  out|    96|          axis|          m_axis_notification|       pointer|
+|m_axis_notification_TVALID          |  out|     1|          axis|          m_axis_notification|       pointer|
+|m_axis_notification_TREADY          |   in|     1|          axis|          m_axis_notification|       pointer|
+|m_axis_rx_data_rsp_metadata_TDATA   |  out|    16|          axis|  m_axis_rx_data_rsp_metadata|       pointer|
+|m_axis_rx_data_rsp_metadata_TVALID  |  out|     1|          axis|  m_axis_rx_data_rsp_metadata|       pointer|
+|m_axis_rx_data_rsp_metadata_TREADY  |   in|     1|          axis|  m_axis_rx_data_rsp_metadata|       pointer|
+|m_axis_rx_data_rsp_TDATA            |  out|  1024|          axis|           m_axis_rx_data_rsp|       pointer|
+|m_axis_rx_data_rsp_TVALID           |  out|     1|          axis|           m_axis_rx_data_rsp|       pointer|
+|m_axis_rx_data_rsp_TREADY           |   in|     1|          axis|           m_axis_rx_data_rsp|       pointer|
+|m_axis_open_conn_rsp_TDATA          |  out|    32|          axis|         m_axis_open_conn_rsp|       pointer|
+|m_axis_open_conn_rsp_TVALID         |  out|     1|          axis|         m_axis_open_conn_rsp|       pointer|
+|m_axis_open_conn_rsp_TREADY         |   in|     1|          axis|         m_axis_open_conn_rsp|       pointer|
+|m_axis_tx_data_rsp_TDATA            |  out|    96|          axis|           m_axis_tx_data_rsp|       pointer|
+|m_axis_tx_data_rsp_TVALID           |  out|     1|          axis|           m_axis_tx_data_rsp|       pointer|
+|m_axis_tx_data_rsp_TREADY           |   in|     1|          axis|           m_axis_tx_data_rsp|       pointer|
+|axis_data_count                     |   in|    16|     ap_stable|              axis_data_count|        scalar|
+|axis_max_data_count                 |   in|    16|     ap_stable|          axis_max_data_count|        scalar|
+|myIpAddress                         |   in|    32|     ap_stable|                  myIpAddress|        scalar|
+|regSessionCount                     |  out|    16|        ap_vld|              regSessionCount|       pointer|
+|regSessionCount_ap_vld              |  out|     1|        ap_vld|              regSessionCount|       pointer|
+|ap_clk                              |   in|     1|  ap_ctrl_none|                      toe_top|  return value|
+|ap_rst_n                            |   in|     1|  ap_ctrl_none|                      toe_top|  return value|
++------------------------------------+-----+------+--------------+-----------------------------+--------------+
+

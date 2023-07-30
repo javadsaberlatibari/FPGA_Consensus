@@ -1,0 +1,61 @@
+
+****** Vitis HLS - High-Level Synthesis from C, C++ and OpenCL v2022.1 (64-bit)
+  **** SW Build 3526262 on Mon Apr 18 15:47:01 MDT 2022
+  **** IP Build 3524634 on Mon Apr 18 20:55:01 MDT 2022
+    ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+
+source /tools/Xilinx/Vitis_HLS/2022.1/scripts/vitis_hls/hls.tcl -notrace
+INFO: [HLS 200-10] Running '/tools/Xilinx/Vitis_HLS/2022.1/bin/unwrapped/lnx64.o/vitis_hls'
+INFO: [HLS 200-10] For user 'pyuvaraj' on host 'hacc-build-01.inf.ethz.ch' (Linux_x86_64 version 5.4.0-153-generic) on Tue Jul 11 09:34:31 CEST 2023
+INFO: [HLS 200-10] On os Ubuntu 20.04.6 LTS
+INFO: [HLS 200-10] In directory '/pub/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/build/fpga-network-stack/hls/rocev2'
+Sourcing Tcl script 'make.tcl'
+INFO: [HLS 200-1510] Running: open_project rocev2_prj 
+INFO: [HLS 200-10] Opening project '/pub/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/build/fpga-network-stack/hls/rocev2/rocev2_prj'.
+INFO: [HLS 200-1510] Running: open_solution solution1 
+INFO: [HLS 200-10] Opening solution '/pub/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/build/fpga-network-stack/hls/rocev2/rocev2_prj/solution1'.
+INFO: [SYN 201-201] Setting up clock 'default' with a period of 3.2ns.
+INFO: [HLS 200-1611] Setting target device to 'xcu280-fsvh2892-2L-e'
+INFO: [HLS 200-1505] Using flow_target 'vivado'
+Resolution: For help on HLS 200-1505 see www.xilinx.com/cgi-bin/docs/rdoc?v=2022.1;t=hls+guidance;d=200-1505.html
+INFO: [HLS 200-1464] Running solution command: config_interface -m_axi_latency=0
+INFO: [HLS 200-1464] Running solution command: config_export -description {-display_name=RoCEv2 Endpoint}
+INFO: [HLS 200-1464] Running solution command: config_export -format=ip_catalog
+INFO: [HLS 200-1464] Running solution command: config_export -ipname=rocev2
+INFO: [HLS 200-1464] Running solution command: config_export -vendor=ethz.systems.fpga
+INFO: [HLS 200-1464] Running solution command: config_export -version=0.82
+INFO: [HLS 200-1510] Running: set_part xcu280-fsvh2892-2L-e 
+INFO: [HLS 200-1510] Running: create_clock -period 3.2 -name default 
+INFO: [HLS 200-1510] Running: set_top rocev2_top 
+INFO: [HLS 200-1510] Running: add_files /mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/rocev2/../axi_utils.cpp 
+INFO: [HLS 200-10] Adding design file '/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/rocev2/../axi_utils.cpp' to the project
+INFO: [HLS 200-1510] Running: add_files /mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/rocev2/../ipv4/ipv4_utils.cpp -cflags -I/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/build/fpga-network-stack/hls/rocev2 
+INFO: [HLS 200-10] Adding design file '/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/rocev2/../ipv4/ipv4_utils.cpp' to the project
+INFO: [HLS 200-1510] Running: add_files /mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/rocev2/../ipv4/ipv4.cpp -cflags -I/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/build/fpga-network-stack/hls/rocev2 
+INFO: [HLS 200-10] Adding design file '/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/rocev2/../ipv4/ipv4.cpp' to the project
+INFO: [HLS 200-1510] Running: add_files /mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/rocev2/../ipv6/ipv6.cpp -cflags -I/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/build/fpga-network-stack/hls/rocev2 
+INFO: [HLS 200-10] Adding design file '/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/rocev2/../ipv6/ipv6.cpp' to the project
+INFO: [HLS 200-1510] Running: add_files /mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/rocev2/../udp/udp.cpp -cflags -I/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/build/fpga-network-stack/hls/rocev2 
+INFO: [HLS 200-10] Adding design file '/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/rocev2/../udp/udp.cpp' to the project
+INFO: [HLS 200-1510] Running: add_files /mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/rocev2/../ib_transport_protocol/ib_utils.cpp -cflags -I/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/build/fpga-network-stack/hls/rocev2 
+INFO: [HLS 200-10] Adding design file '/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/rocev2/../ib_transport_protocol/ib_utils.cpp' to the project
+INFO: [HLS 200-1510] Running: add_files /mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/rocev2/../ib_transport_protocol/ib_transport_protocol.cpp -cflags -I/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/build/fpga-network-stack/hls/rocev2 
+INFO: [HLS 200-10] Adding design file '/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/rocev2/../ib_transport_protocol/ib_transport_protocol.cpp' to the project
+INFO: [HLS 200-1510] Running: add_files /mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/rocev2/../ib_transport_protocol/read_req_table.cpp -cflags -I/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/build/fpga-network-stack/hls/rocev2 
+INFO: [HLS 200-10] Adding design file '/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/rocev2/../ib_transport_protocol/read_req_table.cpp' to the project
+INFO: [HLS 200-1510] Running: add_files /mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/rocev2/../ib_transport_protocol/transport_timer.cpp -cflags -I/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/build/fpga-network-stack/hls/rocev2 
+INFO: [HLS 200-10] Adding design file '/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/rocev2/../ib_transport_protocol/transport_timer.cpp' to the project
+INFO: [HLS 200-1510] Running: add_files /mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/rocev2/../ib_transport_protocol/retransmitter/retransmitter.cpp -cflags -I/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/build/fpga-network-stack/hls/rocev2 
+INFO: [HLS 200-10] Adding design file '/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/rocev2/../ib_transport_protocol/retransmitter/retransmitter.cpp' to the project
+INFO: [HLS 200-1510] Running: add_files /mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/rocev2/../ib_transport_protocol/state_table.cpp -cflags -I/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/build/fpga-network-stack/hls/rocev2 
+INFO: [HLS 200-10] Adding design file '/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/rocev2/../ib_transport_protocol/state_table.cpp' to the project
+INFO: [HLS 200-1510] Running: add_files /mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/rocev2/../ib_transport_protocol/conn_table.cpp -cflags -I/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/build/fpga-network-stack/hls/rocev2 
+INFO: [HLS 200-10] Adding design file '/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/rocev2/../ib_transport_protocol/conn_table.cpp' to the project
+INFO: [HLS 200-1510] Running: add_files /mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/rocev2/../ib_transport_protocol/msn_table.cpp -cflags -I/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/build/fpga-network-stack/hls/rocev2 
+INFO: [HLS 200-10] Adding design file '/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/rocev2/../ib_transport_protocol/msn_table.cpp' to the project
+INFO: [HLS 200-1510] Running: add_files /mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/rocev2/rocev2.cpp -cflags -I/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/build/fpga-network-stack/hls/rocev2 
+INFO: [HLS 200-10] Adding design file '/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/rocev2/rocev2.cpp' to the project
+INFO: [HLS 200-1510] Running: add_files -tb /mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/rocev2/test_rocev2.cpp -cflags -I/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/build/fpga-network-stack/hls/rocev2 
+INFO: [HLS 200-10] Adding test bench file '/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/rocev2/test_rocev2.cpp' to the project
+INFO: [HLS 200-112] Total CPU user time: 3.77 seconds. Total CPU system time: 1.04 seconds. Total elapsed time: 4.44 seconds; peak allocated memory: 632.164 MB.
+INFO: [Common 17-206] Exiting vitis_hls at Tue Jul 11 09:34:35 2023...

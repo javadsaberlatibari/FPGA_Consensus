@@ -1,0 +1,450 @@
+<profile>
+
+<section name = "Vitis HLS Report for 'hash_table_top'" level="0">
+<item name = "Date">Tue Jul 11 09:35:54 2023
+</item>
+<item name = "Version">2022.1 (Build 3526262 on Mon Apr 18 15:47:01 MDT 2022)</item>
+<item name = "Project">hash_table_prj</item>
+<item name = "Solution">solution1 (Vivado IP Flow Target)</item>
+<item name = "Product family">virtexuplus</item>
+<item name = "Target device">xcu280-fsvh2892-2L-e</item>
+</section>
+
+<section name = "Performance Estimates" level="0">
+<item name = "Timing">
+<section name = "" level="1">
+<item name = "Summary"><table name="" hasTotal="0">
+<keys size="4">Clock, Target, Estimated, Uncertainty</keys>
+<column name="ap_clk">3.20 ns, 2.331 ns, 0.86 ns</column>
+</table>
+</item>
+</section>
+</item>
+<item name = "Latency">
+<section name = "" level="1">
+<item name = "Summary"><table name="" hasTotal="0">
+<keys size="8">, min, max, min, max, min, max, Type</keys>
+<column name="">1, 85, 3.200 ns, 0.272 us, 2, 86, no</column>
+</table>
+</item>
+<item name = "Detail">
+<section name = "" level="1">
+<item name = "Instance"><table name="" hasTotal="0">
+<keys size="9">Instance, Module, min, max, min, max, min, max, Type</keys>
+<column name="grp_hash_table_top_Pipeline_insertLoop_fu_783">hash_table_top_Pipeline_insertLoop, 13, 80, 41.600 ns, 0.256 us, 13, 80, no</column>
+<column name="grp_calculate_hashes_fu_846">calculate_hashes, 0, 0, 0 ns, 0 ns, 1, 1, yes</column>
+</table>
+</item>
+<item name = "Loop"><table name="" hasTotal="0">
+<keys size="8">Loop Name, min, max, Latency, achieved, target, Count, Pipelined</keys>
+</table>
+</item>
+</section>
+</item>
+</section>
+</item>
+</section>
+
+<section name = "Utilization Estimates" level="0">
+<item name = "Summary"><table name="" hasTotal="1">
+<keys size="6">Name, BRAM_18K, DSP, FF, LUT, URAM</keys>
+<column name="DSP">-, -, -, -, -</column>
+<column name="Expression">-, -, 0, 722, -</column>
+<column name="FIFO">-, -, -, -, -</column>
+<column name="Instance">-, -, 5134, 16543, -</column>
+<column name="Memory">36, -, 0, 0, -</column>
+<column name="Multiplexer">-, -, -, 1830, -</column>
+<column name="Register">-, -, 781, -, -</column>
+<specialColumn name="Available SLR">1344, 3008, 869120, 434560, 320</specialColumn>
+<specialColumn name="Utilization SLR (%)">2, 0, ~0, 4, 0</specialColumn>
+<specialColumn name="Available">4032, 9024, 2607360, 1303680, 960</specialColumn>
+<specialColumn name="Utilization (%)">~0, 0, ~0, 1, 0</specialColumn>
+</table>
+</item>
+<item name = "Detail">
+<section name = "" level="1">
+<item name = "Instance"><table name="" hasTotal="1">
+<keys size="7">Instance, Module, BRAM_18K, DSP, FF, LUT, URAM</keys>
+<column name="grp_calculate_hashes_fu_846">calculate_hashes, 0, 0, 0, 6310, 0</column>
+<column name="grp_hash_table_top_Pipeline_insertLoop_fu_783">hash_table_top_Pipeline_insertLoop, 0, 0, 5134, 10184, 0</column>
+<column name="mux_932_16_1_1_U42">mux_932_16_1_1, 0, 0, 0, 49, 0</column>
+</table>
+</item>
+<item name = "DSP"><table name="" hasTotal="0">
+<keys size="3">Instance, Module, Expression</keys>
+</table>
+</item>
+<item name = "Memory"><table name="" hasTotal="1">
+<keys size="10">Memory, Module, BRAM_18K, FF, LUT, URAM, Words, Bits, Banks, W*Bits*Banks</keys>
+<column name="cuckooTables_18_U">cuckooTables_18_RAM_2P_BRAM_1R1W, 1, 0, 0, 0, 64, 1, 1, 64</column>
+<column name="cuckooTables_19_U">cuckooTables_18_RAM_2P_BRAM_1R1W, 1, 0, 0, 0, 64, 1, 1, 64</column>
+<column name="cuckooTables_20_U">cuckooTables_18_RAM_2P_BRAM_1R1W, 1, 0, 0, 0, 64, 1, 1, 64</column>
+<column name="cuckooTables_21_U">cuckooTables_18_RAM_2P_BRAM_1R1W, 1, 0, 0, 0, 64, 1, 1, 64</column>
+<column name="cuckooTables_22_U">cuckooTables_18_RAM_2P_BRAM_1R1W, 1, 0, 0, 0, 64, 1, 1, 64</column>
+<column name="cuckooTables_23_U">cuckooTables_18_RAM_2P_BRAM_1R1W, 1, 0, 0, 0, 64, 1, 1, 64</column>
+<column name="cuckooTables_24_U">cuckooTables_18_RAM_2P_BRAM_1R1W, 1, 0, 0, 0, 64, 1, 1, 64</column>
+<column name="cuckooTables_25_U">cuckooTables_18_RAM_2P_BRAM_1R1W, 1, 0, 0, 0, 64, 1, 1, 64</column>
+<column name="cuckooTables_26_U">cuckooTables_18_RAM_2P_BRAM_1R1W, 1, 0, 0, 0, 64, 1, 1, 64</column>
+<column name="cuckooTables_9_U">cuckooTables_9_RAM_2P_BRAM_1R1W, 1, 0, 0, 0, 64, 16, 1, 1024</column>
+<column name="cuckooTables_10_U">cuckooTables_9_RAM_2P_BRAM_1R1W, 1, 0, 0, 0, 64, 16, 1, 1024</column>
+<column name="cuckooTables_11_U">cuckooTables_9_RAM_2P_BRAM_1R1W, 1, 0, 0, 0, 64, 16, 1, 1024</column>
+<column name="cuckooTables_12_U">cuckooTables_9_RAM_2P_BRAM_1R1W, 1, 0, 0, 0, 64, 16, 1, 1024</column>
+<column name="cuckooTables_13_U">cuckooTables_9_RAM_2P_BRAM_1R1W, 1, 0, 0, 0, 64, 16, 1, 1024</column>
+<column name="cuckooTables_14_U">cuckooTables_9_RAM_2P_BRAM_1R1W, 1, 0, 0, 0, 64, 16, 1, 1024</column>
+<column name="cuckooTables_15_U">cuckooTables_9_RAM_2P_BRAM_1R1W, 1, 0, 0, 0, 64, 16, 1, 1024</column>
+<column name="cuckooTables_16_U">cuckooTables_9_RAM_2P_BRAM_1R1W, 1, 0, 0, 0, 64, 16, 1, 1024</column>
+<column name="cuckooTables_17_U">cuckooTables_9_RAM_2P_BRAM_1R1W, 1, 0, 0, 0, 64, 16, 1, 1024</column>
+<column name="cuckooTables_U">cuckooTables_RAM_2P_BRAM_1R1W, 2, 0, 0, 0, 64, 64, 1, 4096</column>
+<column name="cuckooTables_1_U">cuckooTables_RAM_2P_BRAM_1R1W, 2, 0, 0, 0, 64, 64, 1, 4096</column>
+<column name="cuckooTables_2_U">cuckooTables_RAM_2P_BRAM_1R1W, 2, 0, 0, 0, 64, 64, 1, 4096</column>
+<column name="cuckooTables_3_U">cuckooTables_RAM_2P_BRAM_1R1W, 2, 0, 0, 0, 64, 64, 1, 4096</column>
+<column name="cuckooTables_4_U">cuckooTables_RAM_2P_BRAM_1R1W, 2, 0, 0, 0, 64, 64, 1, 4096</column>
+<column name="cuckooTables_5_U">cuckooTables_RAM_2P_BRAM_1R1W, 2, 0, 0, 0, 64, 64, 1, 4096</column>
+<column name="cuckooTables_6_U">cuckooTables_RAM_2P_BRAM_1R1W, 2, 0, 0, 0, 64, 64, 1, 4096</column>
+<column name="cuckooTables_7_U">cuckooTables_RAM_2P_BRAM_1R1W, 2, 0, 0, 0, 64, 64, 1, 4096</column>
+<column name="cuckooTables_8_U">cuckooTables_RAM_2P_BRAM_1R1W, 2, 0, 0, 0, 64, 64, 1, 4096</column>
+</table>
+</item>
+<item name = "FIFO"><table name="" hasTotal="1">
+<keys size="8">Name, BRAM_18K, FF, LUT, URAM, Depth, Bits, Size:D*B</keys>
+</table>
+</item>
+<item name = "Expression"><table name="" hasTotal="1">
+<keys size="7">Variable Name, Operation, DSP, FF, LUT, Bitwidth P0, Bitwidth P1</keys>
+<column name="add_ln162_fu_1319_p2">+, 0, 0, 23, 16, 1</column>
+<column name="and_ln187_10_fu_1172_p2">and, 0, 0, 2, 1, 1</column>
+<column name="and_ln187_11_fu_1178_p2">and, 0, 0, 2, 1, 1</column>
+<column name="and_ln187_12_fu_1187_p2">and, 0, 0, 2, 1, 1</column>
+<column name="and_ln187_13_fu_1193_p2">and, 0, 0, 2, 1, 1</column>
+<column name="and_ln187_14_fu_1202_p2">and, 0, 0, 2, 1, 1</column>
+<column name="and_ln187_15_fu_1208_p2">and, 0, 0, 2, 1, 1</column>
+<column name="and_ln187_16_fu_1217_p2">and, 0, 0, 2, 1, 1</column>
+<column name="and_ln187_17_fu_1223_p2">and, 0, 0, 2, 1, 1</column>
+<column name="and_ln187_2_fu_1112_p2">and, 0, 0, 2, 1, 1</column>
+<column name="and_ln187_3_fu_1118_p2">and, 0, 0, 2, 1, 1</column>
+<column name="and_ln187_4_fu_1127_p2">and, 0, 0, 2, 1, 1</column>
+<column name="and_ln187_5_fu_1133_p2">and, 0, 0, 2, 1, 1</column>
+<column name="and_ln187_6_fu_1142_p2">and, 0, 0, 2, 1, 1</column>
+<column name="and_ln187_7_fu_1148_p2">and, 0, 0, 2, 1, 1</column>
+<column name="and_ln187_8_fu_1157_p2">and, 0, 0, 2, 1, 1</column>
+<column name="and_ln187_9_fu_1163_p2">and, 0, 0, 2, 1, 1</column>
+<column name="and_ln187_fu_1097_p2">and, 0, 0, 2, 1, 1</column>
+<column name="ap_predicate_op212_write_state6">and, 0, 0, 2, 1, 1</column>
+<column name="ap_predicate_op60_read_state1">and, 0, 0, 2, 1, 1</column>
+<column name="response_success_fu_1103_p2">and, 0, 0, 2, 1, 1</column>
+<column name="tmp_3_nbreadreq_fu_198_p3">and, 0, 0, 2, 1, 0</column>
+<column name="tmp_nbreadreq_fu_190_p3">and, 0, 0, 2, 1, 0</column>
+<column name="icmp_ln1065_10_fu_1057_p2">icmp, 0, 0, 29, 64, 64</column>
+<column name="icmp_ln1065_11_fu_1062_p2">icmp, 0, 0, 29, 64, 64</column>
+<column name="icmp_ln1065_12_fu_1067_p2">icmp, 0, 0, 29, 64, 64</column>
+<column name="icmp_ln1065_13_fu_1072_p2">icmp, 0, 0, 29, 64, 64</column>
+<column name="icmp_ln1065_14_fu_1077_p2">icmp, 0, 0, 29, 64, 64</column>
+<column name="icmp_ln1065_15_fu_1082_p2">icmp, 0, 0, 29, 64, 64</column>
+<column name="icmp_ln1065_16_fu_1087_p2">icmp, 0, 0, 29, 64, 64</column>
+<column name="icmp_ln1065_1_fu_1387_p2">icmp, 0, 0, 29, 64, 64</column>
+<column name="icmp_ln1065_2_fu_1392_p2">icmp, 0, 0, 29, 64, 64</column>
+<column name="icmp_ln1065_3_fu_1496_p2">icmp, 0, 0, 29, 64, 64</column>
+<column name="icmp_ln1065_4_fu_1501_p2">icmp, 0, 0, 29, 64, 64</column>
+<column name="icmp_ln1065_5_fu_1506_p2">icmp, 0, 0, 29, 64, 64</column>
+<column name="icmp_ln1065_6_fu_1511_p2">icmp, 0, 0, 29, 64, 64</column>
+<column name="icmp_ln1065_7_fu_1516_p2">icmp, 0, 0, 29, 64, 64</column>
+<column name="icmp_ln1065_8_fu_1047_p2">icmp, 0, 0, 29, 64, 64</column>
+<column name="icmp_ln1065_9_fu_1052_p2">icmp, 0, 0, 29, 64, 64</column>
+<column name="icmp_ln1065_fu_1382_p2">icmp, 0, 0, 29, 64, 64</column>
+<column name="icmp_ln223_fu_969_p2">icmp, 0, 0, 20, 32, 1</column>
+<column name="icmp_ln76_fu_1377_p2">icmp, 0, 0, 29, 64, 64</column>
+<column name="response_hit_fu_1617_p2">icmp, 0, 0, 9, 5, 2</column>
+<column name="ap_block_state1">or, 0, 0, 2, 1, 1</column>
+<column name="ap_block_state6">or, 0, 0, 2, 1, 1</column>
+<column name="ap_block_state6_io">or, 0, 0, 2, 1, 1</column>
+<column name="or_ln187_1_fu_1233_p2">or, 0, 0, 2, 1, 1</column>
+<column name="or_ln187_2_fu_1239_p2">or, 0, 0, 2, 1, 1</column>
+<column name="or_ln187_3_fu_1245_p2">or, 0, 0, 2, 1, 1</column>
+<column name="or_ln187_4_fu_1251_p2">or, 0, 0, 2, 1, 1</column>
+<column name="or_ln187_5_fu_1257_p2">or, 0, 0, 2, 1, 1</column>
+<column name="or_ln187_6_fu_1263_p2">or, 0, 0, 2, 1, 1</column>
+<column name="or_ln187_fu_1227_p2">or, 0, 0, 2, 1, 1</column>
+<column name="response_success_1_fu_1269_p2">or, 0, 0, 2, 1, 1</column>
+<column name="slot_fu_1437_p2">or, 0, 0, 2, 1, 1</column>
+<column name="select_ln71_fu_1442_p3">select, 0, 0, 2, 1, 2</column>
+<column name="select_ln76_10_fu_1552_p3">select, 0, 0, 4, 1, 3</column>
+<column name="select_ln76_12_fu_1566_p3">select, 0, 0, 4, 1, 3</column>
+<column name="select_ln76_14_fu_1584_p3">select, 0, 0, 5, 1, 4</column>
+<column name="select_ln76_2_fu_1468_p3">select, 0, 0, 3, 1, 2</column>
+<column name="select_ln76_4_fu_1482_p3">select, 0, 0, 3, 1, 2</column>
+<column name="select_ln76_6_fu_1524_p3">select, 0, 0, 4, 1, 3</column>
+<column name="select_ln76_8_fu_1538_p3">select, 0, 0, 4, 1, 3</column>
+<column name="select_ln76_fu_1450_p3">select, 0, 0, 2, 1, 1</column>
+<column name="slot_10_fu_1475_p3">select, 0, 0, 3, 1, 3</column>
+<column name="slot_11_fu_1489_p3">select, 0, 0, 3, 1, 3</column>
+<column name="slot_12_fu_1531_p3">select, 0, 0, 4, 1, 4</column>
+<column name="slot_13_fu_1545_p3">select, 0, 0, 4, 1, 4</column>
+<column name="slot_14_fu_1559_p3">select, 0, 0, 4, 1, 4</column>
+<column name="slot_15_fu_1573_p3">select, 0, 0, 4, 1, 4</column>
+<column name="slot_16_fu_1591_p3">select, 0, 0, 5, 1, 5</column>
+<column name="slot_9_fu_1457_p3">select, 0, 0, 2, 1, 2</column>
+<column name="xor_ln188_1_fu_1107_p2">xor, 0, 0, 2, 1, 2</column>
+<column name="xor_ln188_2_fu_1122_p2">xor, 0, 0, 2, 1, 2</column>
+<column name="xor_ln188_3_fu_1137_p2">xor, 0, 0, 2, 1, 2</column>
+<column name="xor_ln188_4_fu_1152_p2">xor, 0, 0, 2, 1, 2</column>
+<column name="xor_ln188_5_fu_1167_p2">xor, 0, 0, 2, 1, 2</column>
+<column name="xor_ln188_6_fu_1182_p2">xor, 0, 0, 2, 1, 2</column>
+<column name="xor_ln188_7_fu_1197_p2">xor, 0, 0, 2, 1, 2</column>
+<column name="xor_ln188_8_fu_1212_p2">xor, 0, 0, 2, 1, 2</column>
+<column name="xor_ln188_fu_1092_p2">xor, 0, 0, 2, 1, 2</column>
+<column name="xor_ln76_fu_1432_p2">xor, 0, 0, 2, 1, 2</column>
+</table>
+</item>
+<item name = "Multiplexer"><table name="" hasTotal="1">
+<keys size="5">Name, LUT, Input Size, Bits, Total Bits</keys>
+<column name="ap_NS_fsm">65, 15, 1, 15</column>
+<column name="cuckooTables_10_address0">14, 3, 6, 18</column>
+<column name="cuckooTables_10_ce0">14, 3, 1, 3</column>
+<column name="cuckooTables_10_ce1">9, 2, 1, 2</column>
+<column name="cuckooTables_10_we1">9, 2, 1, 2</column>
+<column name="cuckooTables_11_address0">14, 3, 6, 18</column>
+<column name="cuckooTables_11_ce0">14, 3, 1, 3</column>
+<column name="cuckooTables_11_ce1">9, 2, 1, 2</column>
+<column name="cuckooTables_11_we1">9, 2, 1, 2</column>
+<column name="cuckooTables_12_address0">14, 3, 6, 18</column>
+<column name="cuckooTables_12_ce0">14, 3, 1, 3</column>
+<column name="cuckooTables_12_ce1">9, 2, 1, 2</column>
+<column name="cuckooTables_12_we1">9, 2, 1, 2</column>
+<column name="cuckooTables_13_address0">14, 3, 6, 18</column>
+<column name="cuckooTables_13_ce0">14, 3, 1, 3</column>
+<column name="cuckooTables_13_ce1">9, 2, 1, 2</column>
+<column name="cuckooTables_13_we1">9, 2, 1, 2</column>
+<column name="cuckooTables_14_address0">14, 3, 6, 18</column>
+<column name="cuckooTables_14_ce0">14, 3, 1, 3</column>
+<column name="cuckooTables_14_ce1">9, 2, 1, 2</column>
+<column name="cuckooTables_14_we1">9, 2, 1, 2</column>
+<column name="cuckooTables_15_address0">14, 3, 6, 18</column>
+<column name="cuckooTables_15_ce0">14, 3, 1, 3</column>
+<column name="cuckooTables_15_ce1">9, 2, 1, 2</column>
+<column name="cuckooTables_15_we1">9, 2, 1, 2</column>
+<column name="cuckooTables_16_address0">14, 3, 6, 18</column>
+<column name="cuckooTables_16_ce0">14, 3, 1, 3</column>
+<column name="cuckooTables_16_ce1">9, 2, 1, 2</column>
+<column name="cuckooTables_16_we1">9, 2, 1, 2</column>
+<column name="cuckooTables_17_address0">14, 3, 6, 18</column>
+<column name="cuckooTables_17_ce0">14, 3, 1, 3</column>
+<column name="cuckooTables_17_ce1">9, 2, 1, 2</column>
+<column name="cuckooTables_17_we1">9, 2, 1, 2</column>
+<column name="cuckooTables_18_address0">20, 4, 6, 24</column>
+<column name="cuckooTables_18_address1">14, 3, 6, 18</column>
+<column name="cuckooTables_18_ce0">14, 3, 1, 3</column>
+<column name="cuckooTables_18_ce1">14, 3, 1, 3</column>
+<column name="cuckooTables_18_d1">14, 3, 1, 3</column>
+<column name="cuckooTables_18_we1">14, 3, 1, 3</column>
+<column name="cuckooTables_19_address0">20, 4, 6, 24</column>
+<column name="cuckooTables_19_address1">14, 3, 6, 18</column>
+<column name="cuckooTables_19_ce0">14, 3, 1, 3</column>
+<column name="cuckooTables_19_ce1">14, 3, 1, 3</column>
+<column name="cuckooTables_19_d1">14, 3, 1, 3</column>
+<column name="cuckooTables_19_we1">14, 3, 1, 3</column>
+<column name="cuckooTables_1_address0">20, 4, 6, 24</column>
+<column name="cuckooTables_1_ce0">14, 3, 1, 3</column>
+<column name="cuckooTables_1_ce1">9, 2, 1, 2</column>
+<column name="cuckooTables_1_we1">9, 2, 1, 2</column>
+<column name="cuckooTables_20_address0">20, 4, 6, 24</column>
+<column name="cuckooTables_20_address1">14, 3, 6, 18</column>
+<column name="cuckooTables_20_ce0">14, 3, 1, 3</column>
+<column name="cuckooTables_20_ce1">14, 3, 1, 3</column>
+<column name="cuckooTables_20_d1">14, 3, 1, 3</column>
+<column name="cuckooTables_20_we1">14, 3, 1, 3</column>
+<column name="cuckooTables_21_address0">20, 4, 6, 24</column>
+<column name="cuckooTables_21_address1">14, 3, 6, 18</column>
+<column name="cuckooTables_21_ce0">14, 3, 1, 3</column>
+<column name="cuckooTables_21_ce1">14, 3, 1, 3</column>
+<column name="cuckooTables_21_d1">14, 3, 1, 3</column>
+<column name="cuckooTables_21_we1">14, 3, 1, 3</column>
+<column name="cuckooTables_22_address0">20, 4, 6, 24</column>
+<column name="cuckooTables_22_address1">14, 3, 6, 18</column>
+<column name="cuckooTables_22_ce0">14, 3, 1, 3</column>
+<column name="cuckooTables_22_ce1">14, 3, 1, 3</column>
+<column name="cuckooTables_22_d1">14, 3, 1, 3</column>
+<column name="cuckooTables_22_we1">14, 3, 1, 3</column>
+<column name="cuckooTables_23_address0">20, 4, 6, 24</column>
+<column name="cuckooTables_23_address1">14, 3, 6, 18</column>
+<column name="cuckooTables_23_ce0">14, 3, 1, 3</column>
+<column name="cuckooTables_23_ce1">14, 3, 1, 3</column>
+<column name="cuckooTables_23_d1">14, 3, 1, 3</column>
+<column name="cuckooTables_23_we1">14, 3, 1, 3</column>
+<column name="cuckooTables_24_address0">20, 4, 6, 24</column>
+<column name="cuckooTables_24_address1">14, 3, 6, 18</column>
+<column name="cuckooTables_24_ce0">14, 3, 1, 3</column>
+<column name="cuckooTables_24_ce1">14, 3, 1, 3</column>
+<column name="cuckooTables_24_d1">14, 3, 1, 3</column>
+<column name="cuckooTables_24_we1">14, 3, 1, 3</column>
+<column name="cuckooTables_25_address0">20, 4, 6, 24</column>
+<column name="cuckooTables_25_address1">14, 3, 6, 18</column>
+<column name="cuckooTables_25_ce0">14, 3, 1, 3</column>
+<column name="cuckooTables_25_ce1">14, 3, 1, 3</column>
+<column name="cuckooTables_25_d1">14, 3, 1, 3</column>
+<column name="cuckooTables_25_we1">14, 3, 1, 3</column>
+<column name="cuckooTables_26_address0">20, 4, 6, 24</column>
+<column name="cuckooTables_26_address1">14, 3, 6, 18</column>
+<column name="cuckooTables_26_ce0">14, 3, 1, 3</column>
+<column name="cuckooTables_26_ce1">14, 3, 1, 3</column>
+<column name="cuckooTables_26_d1">14, 3, 1, 3</column>
+<column name="cuckooTables_26_we1">14, 3, 1, 3</column>
+<column name="cuckooTables_2_address0">20, 4, 6, 24</column>
+<column name="cuckooTables_2_ce0">14, 3, 1, 3</column>
+<column name="cuckooTables_2_ce1">9, 2, 1, 2</column>
+<column name="cuckooTables_2_we1">9, 2, 1, 2</column>
+<column name="cuckooTables_3_address0">20, 4, 6, 24</column>
+<column name="cuckooTables_3_ce0">14, 3, 1, 3</column>
+<column name="cuckooTables_3_ce1">9, 2, 1, 2</column>
+<column name="cuckooTables_3_we1">9, 2, 1, 2</column>
+<column name="cuckooTables_4_address0">20, 4, 6, 24</column>
+<column name="cuckooTables_4_ce0">14, 3, 1, 3</column>
+<column name="cuckooTables_4_ce1">9, 2, 1, 2</column>
+<column name="cuckooTables_4_we1">9, 2, 1, 2</column>
+<column name="cuckooTables_5_address0">20, 4, 6, 24</column>
+<column name="cuckooTables_5_ce0">14, 3, 1, 3</column>
+<column name="cuckooTables_5_ce1">9, 2, 1, 2</column>
+<column name="cuckooTables_5_we1">9, 2, 1, 2</column>
+<column name="cuckooTables_6_address0">20, 4, 6, 24</column>
+<column name="cuckooTables_6_ce0">14, 3, 1, 3</column>
+<column name="cuckooTables_6_ce1">9, 2, 1, 2</column>
+<column name="cuckooTables_6_we1">9, 2, 1, 2</column>
+<column name="cuckooTables_7_address0">20, 4, 6, 24</column>
+<column name="cuckooTables_7_ce0">14, 3, 1, 3</column>
+<column name="cuckooTables_7_ce1">9, 2, 1, 2</column>
+<column name="cuckooTables_7_we1">9, 2, 1, 2</column>
+<column name="cuckooTables_8_address0">20, 4, 6, 24</column>
+<column name="cuckooTables_8_ce0">14, 3, 1, 3</column>
+<column name="cuckooTables_8_ce1">9, 2, 1, 2</column>
+<column name="cuckooTables_8_we1">9, 2, 1, 2</column>
+<column name="cuckooTables_9_address0">14, 3, 6, 18</column>
+<column name="cuckooTables_9_ce0">14, 3, 1, 3</column>
+<column name="cuckooTables_9_ce1">9, 2, 1, 2</column>
+<column name="cuckooTables_9_we1">9, 2, 1, 2</column>
+<column name="cuckooTables_address0">20, 4, 6, 24</column>
+<column name="cuckooTables_ce0">14, 3, 1, 3</column>
+<column name="cuckooTables_ce1">9, 2, 1, 2</column>
+<column name="cuckooTables_we1">9, 2, 1, 2</column>
+<column name="grp_calculate_hashes_fu_846_key">14, 3, 64, 192</column>
+<column name="m_axis_lup_rsp_TDATA_blk_n">9, 2, 1, 2</column>
+<column name="m_axis_upd_rsp_TDATA_blk_n">9, 2, 1, 2</column>
+<column name="m_axis_upd_rsp_TDATA_int_regslice">14, 3, 192, 576</column>
+<column name="s_axis_lup_req_TDATA_blk_n">9, 2, 1, 2</column>
+<column name="s_axis_upd_req_TDATA_blk_n">9, 2, 1, 2</column>
+<column name="victimBit_V">9, 2, 1, 2</column>
+</table>
+</item>
+<item name = "Register"><table name="" hasTotal="1">
+<keys size="5">Name, FF, LUT, Bits, Const Bits</keys>
+<column name="ap_CS_fsm">14, 0, 14, 0</column>
+<column name="cuckooTables_18_addr_1_reg_1724">6, 0, 6, 0</column>
+<column name="cuckooTables_18_load_1_reg_1823">1, 0, 1, 0</column>
+<column name="cuckooTables_18_load_reg_2015">1, 0, 1, 0</column>
+<column name="cuckooTables_19_addr_1_reg_1735">6, 0, 6, 0</column>
+<column name="cuckooTables_19_load_1_reg_1835">1, 0, 1, 0</column>
+<column name="cuckooTables_19_load_reg_2030">1, 0, 1, 0</column>
+<column name="cuckooTables_20_addr_1_reg_1746">6, 0, 6, 0</column>
+<column name="cuckooTables_20_load_1_reg_1847">1, 0, 1, 0</column>
+<column name="cuckooTables_20_load_reg_2045">1, 0, 1, 0</column>
+<column name="cuckooTables_21_addr_1_reg_1757">6, 0, 6, 0</column>
+<column name="cuckooTables_21_load_1_reg_1859">1, 0, 1, 0</column>
+<column name="cuckooTables_21_load_reg_2060">1, 0, 1, 0</column>
+<column name="cuckooTables_22_addr_1_reg_1768">6, 0, 6, 0</column>
+<column name="cuckooTables_22_load_1_reg_1871">1, 0, 1, 0</column>
+<column name="cuckooTables_22_load_reg_2155">1, 0, 1, 0</column>
+<column name="cuckooTables_23_addr_1_reg_1779">6, 0, 6, 0</column>
+<column name="cuckooTables_23_load_1_reg_1883">1, 0, 1, 0</column>
+<column name="cuckooTables_23_load_reg_2170">1, 0, 1, 0</column>
+<column name="cuckooTables_24_addr_1_reg_1790">6, 0, 6, 0</column>
+<column name="cuckooTables_24_load_1_reg_1895">1, 0, 1, 0</column>
+<column name="cuckooTables_24_load_reg_2185">1, 0, 1, 0</column>
+<column name="cuckooTables_25_addr_1_reg_1801">6, 0, 6, 0</column>
+<column name="cuckooTables_25_load_1_reg_1907">1, 0, 1, 0</column>
+<column name="cuckooTables_25_load_reg_2200">1, 0, 1, 0</column>
+<column name="cuckooTables_26_addr_1_reg_1812">6, 0, 6, 0</column>
+<column name="cuckooTables_26_load_1_reg_1919">1, 0, 1, 0</column>
+<column name="cuckooTables_26_load_reg_2215">1, 0, 1, 0</column>
+<column name="currentEntries_value_V_29_reg_2025">16, 0, 16, 0</column>
+<column name="currentEntries_value_V_30_reg_2040">16, 0, 16, 0</column>
+<column name="currentEntries_value_V_31_reg_2055">16, 0, 16, 0</column>
+<column name="currentEntries_value_V_32_reg_2150">16, 0, 16, 0</column>
+<column name="currentEntries_value_V_33_reg_2165">16, 0, 16, 0</column>
+<column name="currentEntries_value_V_34_reg_2180">16, 0, 16, 0</column>
+<column name="currentEntries_value_V_35_reg_2195">16, 0, 16, 0</column>
+<column name="currentEntries_value_V_36_reg_2210">16, 0, 16, 0</column>
+<column name="currentEntries_value_V_reg_2010">16, 0, 16, 0</column>
+<column name="grp_hash_table_top_Pipeline_insertLoop_fu_783_ap_start_reg">1, 0, 1, 0</column>
+<column name="icmp_ln1065_10_reg_1853">1, 0, 1, 0</column>
+<column name="icmp_ln1065_11_reg_1865">1, 0, 1, 0</column>
+<column name="icmp_ln1065_12_reg_1877">1, 0, 1, 0</column>
+<column name="icmp_ln1065_13_reg_1889">1, 0, 1, 0</column>
+<column name="icmp_ln1065_14_reg_1901">1, 0, 1, 0</column>
+<column name="icmp_ln1065_15_reg_1913">1, 0, 1, 0</column>
+<column name="icmp_ln1065_16_reg_1925">1, 0, 1, 0</column>
+<column name="icmp_ln1065_1_reg_2050">1, 0, 1, 0</column>
+<column name="icmp_ln1065_2_reg_2065">1, 0, 1, 0</column>
+<column name="icmp_ln1065_3_reg_2160">1, 0, 1, 0</column>
+<column name="icmp_ln1065_4_reg_2175">1, 0, 1, 0</column>
+<column name="icmp_ln1065_5_reg_2190">1, 0, 1, 0</column>
+<column name="icmp_ln1065_6_reg_2205">1, 0, 1, 0</column>
+<column name="icmp_ln1065_7_reg_2220">1, 0, 1, 0</column>
+<column name="icmp_ln1065_8_reg_1829">1, 0, 1, 0</column>
+<column name="icmp_ln1065_9_reg_1841">1, 0, 1, 0</column>
+<column name="icmp_ln1065_reg_2035">1, 0, 1, 0</column>
+<column name="icmp_ln223_reg_1693">1, 0, 1, 0</column>
+<column name="icmp_ln76_reg_2020">1, 0, 1, 0</column>
+<column name="insertFailureCounter">16, 0, 16, 0</column>
+<column name="reg_903">6, 0, 6, 0</column>
+<column name="reg_907">6, 0, 6, 0</column>
+<column name="reg_911">6, 0, 6, 0</column>
+<column name="reg_915">6, 0, 6, 0</column>
+<column name="reg_919">6, 0, 6, 0</column>
+<column name="reg_923">6, 0, 6, 0</column>
+<column name="reg_927">6, 0, 6, 0</column>
+<column name="reg_931">6, 0, 6, 0</column>
+<column name="reg_935">6, 0, 6, 0</column>
+<column name="reg_939">80, 0, 80, 0</column>
+<column name="request_key_V_1_reg_1673">64, 0, 64, 0</column>
+<column name="request_key_V_reg_1700">64, 0, 64, 0</column>
+<column name="request_value_V_reg_1688">16, 0, 16, 0</column>
+<column name="response5_i_success_1753761_reg_770">1, 0, 1, 0</column>
+<column name="rhs_loc_fu_186">1, 0, 1, 0</column>
+<column name="s_axis_upd_req_read_reg_1662">192, 0, 192, 0</column>
+<column name="slot_11_reg_2145">3, 0, 3, 0</column>
+<column name="targetBlock_reg_1936">1, 0, 1, 0</column>
+<column name="tmp_2_reg_1714">1, 0, 1, 0</column>
+<column name="tmp_3_reg_1658">1, 0, 1, 0</column>
+<column name="tmp_4_reg_1818">1, 0, 1, 0</column>
+<column name="tmp_5_reg_1940">1, 0, 1, 0</column>
+<column name="tmp_op_reg_1668">32, 0, 32, 0</column>
+<column name="tmp_reg_1654">1, 0, 1, 0</column>
+<column name="victimBit_V">1, 0, 1, 0</column>
+<column name="xor_ln886_loc_fu_182">1, 0, 1, 0</column>
+</table>
+</item>
+</section>
+</item>
+</section>
+
+<section name = "Interface" level="0">
+<item name = "Summary"><table name="" hasTotal="0">
+<keys size="6">RTL Ports, Dir, Bits, Protocol, Source Object, C Type</keys>
+<column name="ap_clk">in, 1, ap_ctrl_none, hash_table_top, return value</column>
+<column name="ap_rst_n">in, 1, ap_ctrl_none, hash_table_top, return value</column>
+<column name="s_axis_lup_req_TDATA">in, 128, axis, s_axis_lup_req, pointer</column>
+<column name="s_axis_lup_req_TVALID">in, 1, axis, s_axis_lup_req, pointer</column>
+<column name="s_axis_lup_req_TREADY">out, 1, axis, s_axis_lup_req, pointer</column>
+<column name="s_axis_upd_req_TDATA">in, 192, axis, s_axis_upd_req, pointer</column>
+<column name="s_axis_upd_req_TVALID">in, 1, axis, s_axis_upd_req, pointer</column>
+<column name="s_axis_upd_req_TREADY">out, 1, axis, s_axis_upd_req, pointer</column>
+<column name="m_axis_lup_rsp_TDATA">out, 128, axis, m_axis_lup_rsp, pointer</column>
+<column name="m_axis_lup_rsp_TVALID">out, 1, axis, m_axis_lup_rsp, pointer</column>
+<column name="m_axis_lup_rsp_TREADY">in, 1, axis, m_axis_lup_rsp, pointer</column>
+<column name="m_axis_upd_rsp_TDATA">out, 192, axis, m_axis_upd_rsp, pointer</column>
+<column name="m_axis_upd_rsp_TVALID">out, 1, axis, m_axis_upd_rsp, pointer</column>
+<column name="m_axis_upd_rsp_TREADY">in, 1, axis, m_axis_upd_rsp, pointer</column>
+<column name="regInsertFailureCount">out, 16, ap_vld, regInsertFailureCount, pointer</column>
+<column name="regInsertFailureCount_ap_vld">out, 1, ap_vld, regInsertFailureCount, pointer</column>
+</table>
+</item>
+</section>
+</profile>

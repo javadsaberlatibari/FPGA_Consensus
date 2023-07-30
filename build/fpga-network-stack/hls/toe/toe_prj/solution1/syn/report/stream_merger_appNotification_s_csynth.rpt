@@ -1,0 +1,167 @@
+
+
+================================================================
+== Vitis HLS Report for 'stream_merger_appNotification_s'
+================================================================
+* Date:           Tue Jul 11 09:26:53 2023
+
+* Version:        2022.1 (Build 3526262 on Mon Apr 18 15:47:01 MDT 2022)
+* Project:        toe_prj
+* Solution:       solution1 (Vivado IP Flow Target)
+* Product family: virtexuplus
+* Target device:  xcu280-fsvh2892-2L-e
+
+
+================================================================
+== Performance Estimates
+================================================================
++ Timing: 
+    * Summary: 
+    +--------+---------+----------+------------+
+    |  Clock |  Target | Estimated| Uncertainty|
+    +--------+---------+----------+------------+
+    |ap_clk  |  3.20 ns|  1.168 ns|     0.86 ns|
+    +--------+---------+----------+------------+
+
++ Latency: 
+    * Summary: 
+    +---------+---------+----------+----------+-----+-----+---------+
+    |  Latency (cycles) |  Latency (absolute) |  Interval | Pipeline|
+    |   min   |   max   |    min   |    max   | min | max |   Type  |
+    +---------+---------+----------+----------+-----+-----+---------+
+    |        3|        3|  9.600 ns|  9.600 ns|    1|    1|      yes|
+    +---------+---------+----------+----------+-----+-----+---------+
+
+    + Detail: 
+        * Instance: 
+        N/A
+
+        * Loop: 
+        N/A
+
+
+
+================================================================
+== Utilization Estimates
+================================================================
+* Summary: 
++---------------------+---------+------+---------+---------+-----+
+|         Name        | BRAM_18K|  DSP |    FF   |   LUT   | URAM|
++---------------------+---------+------+---------+---------+-----+
+|DSP                  |        -|     -|        -|        -|    -|
+|Expression           |        -|     -|        0|       26|    -|
+|FIFO                 |        -|     -|        -|        -|    -|
+|Instance             |        -|     -|        -|        -|    -|
+|Memory               |        -|     -|        -|        -|    -|
+|Multiplexer          |        -|     -|        -|       50|    -|
+|Register             |        -|     -|      328|       64|    -|
++---------------------+---------+------+---------+---------+-----+
+|Total                |        0|     0|      328|      140|    0|
++---------------------+---------+------+---------+---------+-----+
+|Available SLR        |     1344|  3008|   869120|   434560|  320|
++---------------------+---------+------+---------+---------+-----+
+|Utilization SLR (%)  |        0|     0|       ~0|       ~0|    0|
++---------------------+---------+------+---------+---------+-----+
+|Available            |     4032|  9024|  2607360|  1303680|  960|
++---------------------+---------+------+---------+---------+-----+
+|Utilization (%)      |        0|     0|       ~0|       ~0|    0|
++---------------------+---------+------+---------+---------+-----+
+
++ Detail: 
+    * Instance: 
+    N/A
+
+    * DSP: 
+    N/A
+
+    * Memory: 
+    N/A
+
+    * FIFO: 
+    N/A
+
+    * Expression: 
+    +----------------------------------+----------+----+---+----+------------+------------+
+    |           Variable Name          | Operation| DSP| FF| LUT| Bitwidth P0| Bitwidth P1|
+    +----------------------------------+----------+----+---+----+------------+------------+
+    |ap_block_state2_pp0_stage0_iter1  |       and|   0|  0|   2|           1|           1|
+    |ap_predicate_op21_read_state2     |       and|   0|  0|   2|           1|           1|
+    |ap_predicate_op22_write_state3    |       and|   0|  0|   2|           1|           1|
+    |ap_predicate_op24_write_state4    |       and|   0|  0|   2|           1|           1|
+    |tmp_i_239_nbreadreq_fu_44_p3      |       and|   0|  0|   2|           1|           0|
+    |tmp_i_nbreadreq_fu_30_p3          |       and|   0|  0|   2|           1|           0|
+    |ap_block_pp0_stage0_01001         |        or|   0|  0|   2|           1|           1|
+    |ap_block_pp0_stage0_11001         |        or|   0|  0|   2|           1|           1|
+    |ap_block_state1_pp0_stage0_iter0  |        or|   0|  0|   2|           1|           1|
+    |ap_block_state3_io                |        or|   0|  0|   2|           1|           1|
+    |ap_block_state4_io                |        or|   0|  0|   2|           1|           1|
+    |ap_block_state4_pp0_stage0_iter3  |        or|   0|  0|   2|           1|           1|
+    |ap_enable_pp0                     |       xor|   0|  0|   2|           1|           2|
+    +----------------------------------+----------+----+---+----+------------+------------+
+    |Total                             |          |   0|  0|  26|          13|          12|
+    +----------------------------------+----------+----+---+----+------------+------------+
+
+    * Multiplexer: 
+    +----------------------------------------+----+-----------+-----+-----------+
+    |                  Name                  | LUT| Input Size| Bits| Total Bits|
+    +----------------------------------------+----+-----------+-----+-----------+
+    |ap_done                                 |   9|          2|    1|          2|
+    |m_axis_notification_TDATA_blk_n         |   9|          2|    1|          2|
+    |m_axis_notification_TDATA_int_regslice  |  14|          3|   96|        288|
+    |rxEng2rxApp_notification_blk_n          |   9|          2|    1|          2|
+    |timer2rxApp_notification_blk_n          |   9|          2|    1|          2|
+    +----------------------------------------+----+-----------+-----+-----------+
+    |Total                                   |  50|         11|  100|        296|
+    +----------------------------------------+----+-----------+-----+-----------+
+
+    * Register: 
+    +--------------------------------+----+----+-----+-----------+
+    |              Name              | FF | LUT| Bits| Const Bits|
+    +--------------------------------+----+----+-----+-----------+
+    |ap_CS_fsm                       |   1|   0|    1|          0|
+    |ap_done_reg                     |   1|   0|    1|          0|
+    |ap_enable_reg_pp0_iter1         |   1|   0|    1|          0|
+    |ap_enable_reg_pp0_iter2         |   1|   0|    1|          0|
+    |ap_enable_reg_pp0_iter3         |   1|   0|    1|          0|
+    |tmp_236_reg_78                  |  96|   0|   96|          0|
+    |tmp_i_239_reg_74                |   1|   0|    1|          0|
+    |tmp_i_239_reg_74_pp0_iter2_reg  |   1|   0|    1|          0|
+    |tmp_i_reg_65                    |   1|   0|    1|          0|
+    |tmp_reg_69                      |  96|   0|   96|          0|
+    |tmp_i_reg_65                    |  64|  32|    1|          0|
+    |tmp_reg_69                      |  64|  32|   96|          0|
+    +--------------------------------+----+----+-----+-----------+
+    |Total                           | 328|  64|  297|          0|
+    +--------------------------------+----+----+-----+-----------+
+
+
+
+================================================================
+== Interface
+================================================================
+* Summary: 
++-----------------------------------------+-----+-----+------------+--------------------------------+--------------+
+|                RTL Ports                | Dir | Bits|  Protocol  |          Source Object         |    C Type    |
++-----------------------------------------+-----+-----+------------+--------------------------------+--------------+
+|ap_clk                                   |   in|    1|  ap_ctrl_hs|  stream_merger<appNotification>|  return value|
+|ap_rst                                   |   in|    1|  ap_ctrl_hs|  stream_merger<appNotification>|  return value|
+|ap_start                                 |   in|    1|  ap_ctrl_hs|  stream_merger<appNotification>|  return value|
+|ap_done                                  |  out|    1|  ap_ctrl_hs|  stream_merger<appNotification>|  return value|
+|ap_continue                              |   in|    1|  ap_ctrl_hs|  stream_merger<appNotification>|  return value|
+|ap_idle                                  |  out|    1|  ap_ctrl_hs|  stream_merger<appNotification>|  return value|
+|ap_ready                                 |  out|    1|  ap_ctrl_hs|  stream_merger<appNotification>|  return value|
+|rxEng2rxApp_notification_dout            |   in|   96|     ap_fifo|        rxEng2rxApp_notification|       pointer|
+|rxEng2rxApp_notification_num_data_valid  |   in|    3|     ap_fifo|        rxEng2rxApp_notification|       pointer|
+|rxEng2rxApp_notification_fifo_cap        |   in|    3|     ap_fifo|        rxEng2rxApp_notification|       pointer|
+|rxEng2rxApp_notification_empty_n         |   in|    1|     ap_fifo|        rxEng2rxApp_notification|       pointer|
+|rxEng2rxApp_notification_read            |  out|    1|     ap_fifo|        rxEng2rxApp_notification|       pointer|
+|timer2rxApp_notification_dout            |   in|   96|     ap_fifo|        timer2rxApp_notification|       pointer|
+|timer2rxApp_notification_num_data_valid  |   in|    3|     ap_fifo|        timer2rxApp_notification|       pointer|
+|timer2rxApp_notification_fifo_cap        |   in|    3|     ap_fifo|        timer2rxApp_notification|       pointer|
+|timer2rxApp_notification_empty_n         |   in|    1|     ap_fifo|        timer2rxApp_notification|       pointer|
+|timer2rxApp_notification_read            |  out|    1|     ap_fifo|        timer2rxApp_notification|       pointer|
+|m_axis_notification_TREADY               |   in|    1|        axis|             m_axis_notification|       pointer|
+|m_axis_notification_TDATA                |  out|   96|        axis|             m_axis_notification|       pointer|
+|m_axis_notification_TVALID               |  out|    1|        axis|             m_axis_notification|       pointer|
++-----------------------------------------+-----+-----+------------+--------------------------------+--------------+
+

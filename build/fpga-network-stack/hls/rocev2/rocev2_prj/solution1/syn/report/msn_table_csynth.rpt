@@ -1,0 +1,215 @@
+
+
+================================================================
+== Vitis HLS Report for 'msn_table'
+================================================================
+* Date:           Tue Jul 11 09:33:19 2023
+
+* Version:        2022.1 (Build 3526262 on Mon Apr 18 15:47:01 MDT 2022)
+* Project:        rocev2_prj
+* Solution:       solution1 (Vivado IP Flow Target)
+* Product family: virtexuplus
+* Target device:  xcu280-fsvh2892-2L-e
+
+
+================================================================
+== Performance Estimates
+================================================================
++ Timing: 
+    * Summary: 
+    +--------+---------+----------+------------+
+    |  Clock |  Target | Estimated| Uncertainty|
+    +--------+---------+----------+------------+
+    |ap_clk  |  3.20 ns|  1.200 ns|     0.86 ns|
+    +--------+---------+----------+------------+
+
++ Latency: 
+    * Summary: 
+    +---------+---------+-----------+-----------+-----+-----+---------+
+    |  Latency (cycles) |   Latency (absolute)  |  Interval | Pipeline|
+    |   min   |   max   |    min    |    max    | min | max |   Type  |
+    +---------+---------+-----------+-----------+-----+-----+---------+
+    |        5|        5|  16.000 ns|  16.000 ns|    1|    1|      yes|
+    +---------+---------+-----------+-----------+-----+-----+---------+
+
+    + Detail: 
+        * Instance: 
+        N/A
+
+        * Loop: 
+        N/A
+
+
+
+================================================================
+== Utilization Estimates
+================================================================
+* Summary: 
++---------------------+---------+------+---------+---------+-----+
+|         Name        | BRAM_18K|  DSP |    FF   |   LUT   | URAM|
++---------------------+---------+------+---------+---------+-----+
+|DSP                  |        -|     -|        -|        -|    -|
+|Expression           |        -|     -|        0|       28|    -|
+|FIFO                 |        -|     -|        -|        -|    -|
+|Instance             |        -|     -|        -|        -|    -|
+|Memory               |        5|     -|        0|        0|    -|
+|Multiplexer          |        -|     -|        -|      164|    -|
+|Register             |        -|     -|      813|      224|    -|
++---------------------+---------+------+---------+---------+-----+
+|Total                |        5|     0|      813|      416|    0|
++---------------------+---------+------+---------+---------+-----+
+|Available SLR        |     1344|  3008|   869120|   434560|  320|
++---------------------+---------+------+---------+---------+-----+
+|Utilization SLR (%)  |       ~0|     0|       ~0|       ~0|    0|
++---------------------+---------+------+---------+---------+-----+
+|Available            |     4032|  9024|  2607360|  1303680|  960|
++---------------------+---------+------+---------+---------+-----+
+|Utilization (%)      |       ~0|     0|       ~0|       ~0|    0|
++---------------------+---------+------+---------+---------+-----+
+
++ Detail: 
+    * Instance: 
+    N/A
+
+    * DSP: 
+    N/A
+
+    * Memory: 
+    +--------------------------+----------------------------------------------------------+---------+---+----+-----+------+-----+------+-------------+
+    |          Memory          |                          Module                          | BRAM_18K| FF| LUT| URAM| Words| Bits| Banks| W*Bits*Banks|
+    +--------------------------+----------------------------------------------------------+---------+---+----+-----+------+-----+------+-------------+
+    |msn_table_dma_length_V_U  |msn_table_msn_table_dma_length_V_RAM_2P_BRAM_1R1W         |        1|  0|   0|    0|   500|   32|     1|        16000|
+    |msn_table_r_key_V_U       |msn_table_msn_table_dma_length_V_RAM_2P_BRAM_1R1W         |        1|  0|   0|    0|   500|   32|     1|        16000|
+    |msn_table_vaddr_V_U       |msn_table_msn_table_vaddr_V_RAM_2P_BRAM_1R1W              |        2|  0|   0|    0|   500|   64|     1|        32000|
+    |msn_table_msn_V_U         |state_table_state_table_req_old_unack_V_RAM_2P_BRAM_1R1W  |        1|  0|   0|    0|   500|   24|     1|        12000|
+    +--------------------------+----------------------------------------------------------+---------+---+----+-----+------+-----+------+-------------+
+    |Total                     |                                                          |        5|  0|   0|    0|  2000|  152|     4|        76000|
+    +--------------------------+----------------------------------------------------------+---------+---+----+-----+------+-----+------+-------------+
+
+    * FIFO: 
+    N/A
+
+    * Expression: 
+    +----------------------------------+----------+----+---+----+------------+------------+
+    |           Variable Name          | Operation| DSP| FF| LUT| Bitwidth P0| Bitwidth P1|
+    +----------------------------------+----------+----+---+----+------------+------------+
+    |ap_block_state2_pp0_stage0_iter1  |       and|   0|  0|   2|           1|           1|
+    |ap_block_state3_pp0_stage0_iter2  |       and|   0|  0|   2|           1|           1|
+    |ap_condition_297                  |       and|   0|  0|   2|           1|           1|
+    |ap_predicate_op46_read_state2     |       and|   0|  0|   2|           1|           1|
+    |ap_predicate_op49_read_state3     |       and|   0|  0|   2|           1|           1|
+    |ap_predicate_op87_write_state6    |       and|   0|  0|   2|           1|           1|
+    |ap_predicate_op90_write_state6    |       and|   0|  0|   2|           1|           1|
+    |tmp_129_i_nbreadreq_fu_122_p3     |       and|   0|  0|   2|           1|           0|
+    |tmp_i_221_nbreadreq_fu_108_p3     |       and|   0|  0|   2|           1|           0|
+    |tmp_i_nbreadreq_fu_94_p3          |       and|   0|  0|   2|           1|           0|
+    |ap_block_pp0_stage0_01001         |        or|   0|  0|   2|           1|           1|
+    |ap_block_state1_pp0_stage0_iter0  |        or|   0|  0|   2|           1|           1|
+    |ap_block_state6_pp0_stage0_iter5  |        or|   0|  0|   2|           1|           1|
+    |ap_enable_pp0                     |       xor|   0|  0|   2|           1|           2|
+    +----------------------------------+----------+----+---+----+------------+------------+
+    |Total                             |          |   0|  0|  28|          14|          12|
+    +----------------------------------+----------+----+---+----+------------+------------+
+
+    * Multiplexer: 
+    +---------------------------------+----+-----------+-----+-----------+
+    |               Name              | LUT| Input Size| Bits| Total Bits|
+    +---------------------------------+----+-----------+-----+-----------+
+    |ap_done                          |   9|          2|    1|          2|
+    |if2msnTable_init_blk_n           |   9|          2|    1|          2|
+    |msnTable2rxExh_rsp_blk_n         |   9|          2|    1|          2|
+    |msnTable2txExh_rsp_blk_n         |   9|          2|    1|          2|
+    |msn_table_dma_length_V_address1  |  14|          3|    9|         27|
+    |msn_table_dma_length_V_d1        |  14|          3|   32|         96|
+    |msn_table_msn_V_address1         |  20|          4|    9|         36|
+    |msn_table_msn_V_d1               |  14|          3|   24|         72|
+    |msn_table_r_key_V_address1       |  20|          4|    9|         36|
+    |msn_table_vaddr_V_address1       |  14|          3|    9|         27|
+    |msn_table_vaddr_V_d1             |  14|          3|   64|        192|
+    |rxExh2msnTable_upd_req_blk_n     |   9|          2|    1|          2|
+    |txExh2msnTable_req_blk_n         |   9|          2|    1|          2|
+    +---------------------------------+----+-----------+-----+-----------+
+    |Total                            | 164|         35|  162|        498|
+    +---------------------------------+----+-----------+-----+-----------+
+
+    * Register: 
+    +-------------------------------------+----+----+-----+-----------+
+    |                 Name                | FF | LUT| Bits| Const Bits|
+    +-------------------------------------+----+----+-----+-----------+
+    |ap_CS_fsm                            |   1|   0|    1|          0|
+    |ap_done_reg                          |   1|   0|    1|          0|
+    |ap_enable_reg_pp0_iter1              |   1|   0|    1|          0|
+    |ap_enable_reg_pp0_iter2              |   1|   0|    1|          0|
+    |ap_enable_reg_pp0_iter3              |   1|   0|    1|          0|
+    |ap_enable_reg_pp0_iter4              |   1|   0|    1|          0|
+    |ap_enable_reg_pp0_iter5              |   1|   0|    1|          0|
+    |ifRequest_qpn_V_reg_417              |   9|   0|    9|          0|
+    |ifRequest_r_key_V_reg_422            |  32|   0|   32|          0|
+    |msn_table_dma_length_V_load_reg_462  |  32|   0|   32|          0|
+    |msn_table_vaddr_V_load_reg_457       |  64|   0|   64|          0|
+    |qpn_V_reg_408                        |  16|   0|   16|          0|
+    |qpn_V_reg_408_pp0_iter2_reg          |  16|   0|   16|          0|
+    |reg_269                              |  24|   0|   24|          0|
+    |reg_273                              |  32|   0|   32|          0|
+    |rxRequest_dma_length_V_reg_395       |  32|   0|   32|          0|
+    |rxRequest_msn_V_reg_385              |  24|   0|   24|          0|
+    |rxRequest_qpn_V_reg_380              |   9|   0|    9|          0|
+    |rxRequest_vaddr_V_reg_390            |  64|   0|   64|          0|
+    |rxRequest_write_reg_400              |   1|   0|    1|          0|
+    |tmp_129_i_reg_413                    |   1|   0|    1|          0|
+    |tmp_i_221_reg_404                    |   1|   0|    1|          0|
+    |tmp_i_reg_376                        |   1|   0|    1|          0|
+    |rxRequest_dma_length_V_reg_395       |  64|  32|   32|          0|
+    |rxRequest_msn_V_reg_385              |  64|  32|   24|          0|
+    |rxRequest_qpn_V_reg_380              |  64|  32|    9|          0|
+    |rxRequest_vaddr_V_reg_390            |  64|  32|   64|          0|
+    |rxRequest_write_reg_400              |  64|  32|    1|          0|
+    |tmp_i_221_reg_404                    |  64|  32|    1|          0|
+    |tmp_i_reg_376                        |  64|  32|    1|          0|
+    +-------------------------------------+----+----+-----+-----------+
+    |Total                                | 813| 224|  497|          0|
+    +-------------------------------------+----+----+-----+-----------+
+
+
+
+================================================================
+== Interface
+================================================================
+* Summary: 
++---------------------------------------+-----+-----+------------+------------------------+--------------+
+|               RTL Ports               | Dir | Bits|  Protocol  |      Source Object     |    C Type    |
++---------------------------------------+-----+-----+------------+------------------------+--------------+
+|ap_clk                                 |   in|    1|  ap_ctrl_hs|               msn_table|  return value|
+|ap_rst                                 |   in|    1|  ap_ctrl_hs|               msn_table|  return value|
+|ap_start                               |   in|    1|  ap_ctrl_hs|               msn_table|  return value|
+|ap_done                                |  out|    1|  ap_ctrl_hs|               msn_table|  return value|
+|ap_continue                            |   in|    1|  ap_ctrl_hs|               msn_table|  return value|
+|ap_idle                                |  out|    1|  ap_ctrl_hs|               msn_table|  return value|
+|ap_ready                               |  out|    1|  ap_ctrl_hs|               msn_table|  return value|
+|rxExh2msnTable_upd_req_dout            |   in|  192|     ap_fifo|  rxExh2msnTable_upd_req|       pointer|
+|rxExh2msnTable_upd_req_num_data_valid  |   in|    2|     ap_fifo|  rxExh2msnTable_upd_req|       pointer|
+|rxExh2msnTable_upd_req_fifo_cap        |   in|    2|     ap_fifo|  rxExh2msnTable_upd_req|       pointer|
+|rxExh2msnTable_upd_req_empty_n         |   in|    1|     ap_fifo|  rxExh2msnTable_upd_req|       pointer|
+|rxExh2msnTable_upd_req_read            |  out|    1|     ap_fifo|  rxExh2msnTable_upd_req|       pointer|
+|txExh2msnTable_req_dout                |   in|   16|     ap_fifo|      txExh2msnTable_req|       pointer|
+|txExh2msnTable_req_num_data_valid      |   in|    2|     ap_fifo|      txExh2msnTable_req|       pointer|
+|txExh2msnTable_req_fifo_cap            |   in|    2|     ap_fifo|      txExh2msnTable_req|       pointer|
+|txExh2msnTable_req_empty_n             |   in|    1|     ap_fifo|      txExh2msnTable_req|       pointer|
+|txExh2msnTable_req_read                |  out|    1|     ap_fifo|      txExh2msnTable_req|       pointer|
+|if2msnTable_init_dout                  |   in|   64|     ap_fifo|        if2msnTable_init|       pointer|
+|if2msnTable_init_num_data_valid        |   in|    2|     ap_fifo|        if2msnTable_init|       pointer|
+|if2msnTable_init_fifo_cap              |   in|    2|     ap_fifo|        if2msnTable_init|       pointer|
+|if2msnTable_init_empty_n               |   in|    1|     ap_fifo|        if2msnTable_init|       pointer|
+|if2msnTable_init_read                  |  out|    1|     ap_fifo|        if2msnTable_init|       pointer|
+|msnTable2txExh_rsp_din                 |  out|   64|     ap_fifo|      msnTable2txExh_rsp|       pointer|
+|msnTable2txExh_rsp_num_data_valid      |   in|    2|     ap_fifo|      msnTable2txExh_rsp|       pointer|
+|msnTable2txExh_rsp_fifo_cap            |   in|    2|     ap_fifo|      msnTable2txExh_rsp|       pointer|
+|msnTable2txExh_rsp_full_n              |   in|    1|     ap_fifo|      msnTable2txExh_rsp|       pointer|
+|msnTable2txExh_rsp_write               |  out|    1|     ap_fifo|      msnTable2txExh_rsp|       pointer|
+|msnTable2rxExh_rsp_din                 |  out|  192|     ap_fifo|      msnTable2rxExh_rsp|       pointer|
+|msnTable2rxExh_rsp_num_data_valid      |   in|    2|     ap_fifo|      msnTable2rxExh_rsp|       pointer|
+|msnTable2rxExh_rsp_fifo_cap            |   in|    2|     ap_fifo|      msnTable2rxExh_rsp|       pointer|
+|msnTable2rxExh_rsp_full_n              |   in|    1|     ap_fifo|      msnTable2rxExh_rsp|       pointer|
+|msnTable2rxExh_rsp_write               |  out|    1|     ap_fifo|      msnTable2rxExh_rsp|       pointer|
++---------------------------------------+-----+-----+------------+------------------------+--------------+
+

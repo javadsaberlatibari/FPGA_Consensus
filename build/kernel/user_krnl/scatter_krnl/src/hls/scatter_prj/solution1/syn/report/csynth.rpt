@@ -1,0 +1,319 @@
+
+
+================================================================
+== Synthesis Summary Report of 'scatter'
+================================================================
++ General Information: 
+    * Date:           Tue Jul 11 09:38:32 2023
+    * Version:        2022.1 (Build 3526262 on Mon Apr 18 15:47:01 MDT 2022)
+    * Project:        scatter_prj
+    * Solution:       solution1 (Vivado IP Flow Target)
+    * Product family: virtexuplus
+    * Target device:  xcu280-fsvh2892-2L-e
+    
+
++ Performance & Resource Estimates: 
+    
+    PS: '+' for module; 'o' for loop; '*' for dataflow
+    +----------------------------+--------+-------+---------+--------+----------+---------+------+----------+---------+----+------------+------------+-----+
+    |           Modules          |  Issue |       | Latency | Latency| Iteration|         | Trip |          |         |    |            |            |     |
+    |           & Loops          |  Type  | Slack | (cycles)|  (ns)  |  Latency | Interval| Count| Pipelined|  BRAM   | DSP|     FF     |     LUT    | URAM|
+    +----------------------------+--------+-------+---------+--------+----------+---------+------+----------+---------+----+------------+------------+-----+
+    |+ scatter*                  |  Timing|  -0.74|        6|  19.200|         -|        1|     -|  dataflow|  7 (~0%)|   -|  1701 (~0%)|  3146 (~0%)|    -|
+    | + entry_proc               |       -|   1.17|        0|   0.000|         -|        0|     -|        no|        -|   -|     2 (~0%)|   173 (~0%)|    -|
+    | + openStatus_handler       |       -|   1.17|        1|   3.200|         -|        1|     -|       yes|        -|   -|    36 (~0%)|    37 (~0%)|    -|
+    | + txStatus_handler         |       -|   1.17|        1|   3.200|         -|        1|     -|       yes|        -|   -|   100 (~0%)|    37 (~0%)|    -|
+    | + server_512_s             |       -|   0.22|        2|   6.400|         -|        1|     -|       yes|        -|   -|    95 (~0%)|   277 (~0%)|    -|
+    | + client_512_s             |  Timing|  -0.74|        3|   9.600|         -|        1|     -|       yes|        -|   -|   778 (~0%)|  1730 (~0%)|    -|
+    | + txMetaData_handler       |       -|   1.17|        2|   6.400|         -|        1|     -|       yes|        -|   -|    38 (~0%)|    43 (~0%)|    -|
+    | + closeConnection_handler  |       -|   1.17|        2|   6.400|         -|        1|     -|       yes|        -|   -|    22 (~0%)|    43 (~0%)|    -|
+    +----------------------------+--------+-------+---------+--------+----------+---------+------+----------+---------+----+------------+------------+-----+
+
+
+================================================================
+== HW Interfaces
+================================================================
+* AXIS
++---------------------------+---------------+-------+--------+--------+
+| Interface                 | Register Mode | TDATA | TREADY | TVALID |
++---------------------------+---------------+-------+--------+--------+
+| m_axis_close_connection   | both          | 16    | 1      | 1      |
+| m_axis_listen_port        | both          | 16    | 1      | 1      |
+| m_axis_open_connection    | both          | 64    | 1      | 1      |
+| m_axis_read_package       | both          | 32    | 1      | 1      |
+| m_axis_tx_data            | both          | 1024  | 1      | 1      |
+| m_axis_tx_metadata        | both          | 32    | 1      | 1      |
+| s_axis_listen_port_status | both          | 8     | 1      | 1      |
+| s_axis_notifications      | both          | 96    | 1      | 1      |
+| s_axis_open_status        | both          | 32    | 1      | 1      |
+| s_axis_rx_data            | both          | 1024  | 1      | 1      |
+| s_axis_rx_metadata        | both          | 16    | 1      | 1      |
+| s_axis_tx_status          | both          | 96    | 1      | 1      |
++---------------------------+---------------+-------+--------+--------+
+
+* REGISTER
++------------------+---------+----------+
+| Interface        | Mode    | Bitwidth |
++------------------+---------+----------+
+| clientPkgNum     | ap_none | 32       |
+| expectedRespInKB | ap_none | 16       |
+| finishExperiment | ap_none | 1        |
+| pkgWordCount     | ap_none | 16       |
+| regBasePort      | ap_none | 16       |
+| regIpAddress0    | ap_none | 32       |
+| regIpAddress1    | ap_none | 32       |
+| regIpAddress10   | ap_none | 32       |
+| regIpAddress2    | ap_none | 32       |
+| regIpAddress3    | ap_none | 32       |
+| regIpAddress4    | ap_none | 32       |
+| regIpAddress5    | ap_none | 32       |
+| regIpAddress6    | ap_none | 32       |
+| regIpAddress7    | ap_none | 32       |
+| regIpAddress8    | ap_none | 32       |
+| regIpAddress9    | ap_none | 32       |
+| runExperiment    | ap_none | 1        |
+| useConn          | ap_none | 16       |
+| useIpAddr        | ap_none | 16       |
+| usePort          | ap_none | 16       |
++------------------+---------+----------+
+
+* TOP LEVEL CONTROL
++-----------+--------------+----------+
+| Interface | Type         | Ports    |
++-----------+--------------+----------+
+| ap_clk    | clock        | ap_clk   |
+| ap_rst_n  | reset        | ap_rst_n |
+| ap_ctrl   | ap_ctrl_none |          |
++-----------+--------------+----------+
+
+
+================================================================
+== SW I/O Information
+================================================================
+* Top Function Arguments
++------------------+-----------+-----------------------------+
+| Argument         | Direction | Datatype                    |
++------------------+-----------+-----------------------------+
+| listenPort       | out       | stream<ap_uint<16>, 0>&     |
+| listenPortStatus | in        | stream<bool, 0>&            |
+| notifications    | in        | stream<appNotification, 0>& |
+| readRequest      | out       | stream<appReadRequest, 0>&  |
+| rxMetaData       | in        | stream<ap_uint<16>, 0>&     |
+| rxData           | in        | stream<net_axis<512>, 0>&   |
+| openConnection   | out       | stream<ipTuple, 0>&         |
+| openConStatus    | in        | stream<openStatus, 0>&      |
+| closeConnection  | out       | stream<ap_uint<16>, 0>&     |
+| txMetaData       | out       | stream<appTxMeta, 0>&       |
+| txData           | out       | stream<net_axis<512>, 0>&   |
+| txStatus         | in        | stream<appTxRsp, 0>&        |
+| runExperiment    | in        | ap_uint<1>                  |
+| useConn          | in        | ap_uint<16>                 |
+| useIpAddr        | in        | ap_uint<16>                 |
+| pkgWordCount     | in        | ap_uint<16>                 |
+| regBasePort      | in        | ap_uint<16>                 |
+| usePort          | in        | ap_uint<16>                 |
+| expectedRespInKB | in        | ap_uint<16>                 |
+| finishExperiment | in        | ap_uint<1>                  |
+| clientPkgNum     | in        | ap_uint<32>                 |
+| regIpAddress0    | in        | ap_uint<32>                 |
+| regIpAddress1    | in        | ap_uint<32>                 |
+| regIpAddress2    | in        | ap_uint<32>                 |
+| regIpAddress3    | in        | ap_uint<32>                 |
+| regIpAddress4    | in        | ap_uint<32>                 |
+| regIpAddress5    | in        | ap_uint<32>                 |
+| regIpAddress6    | in        | ap_uint<32>                 |
+| regIpAddress7    | in        | ap_uint<32>                 |
+| regIpAddress8    | in        | ap_uint<32>                 |
+| regIpAddress9    | in        | ap_uint<32>                 |
+| regIpAddress10   | in        | ap_uint<32>                 |
++------------------+-----------+-----------------------------+
+
+* SW-to-HW Mapping
++------------------+---------------------------+-----------+
+| Argument         | HW Interface              | HW Type   |
++------------------+---------------------------+-----------+
+| listenPort       | m_axis_listen_port        | interface |
+| listenPortStatus | s_axis_listen_port_status | interface |
+| notifications    | s_axis_notifications      | interface |
+| readRequest      | m_axis_read_package       | interface |
+| rxMetaData       | s_axis_rx_metadata        | interface |
+| rxData           | s_axis_rx_data            | interface |
+| openConnection   | m_axis_open_connection    | interface |
+| openConStatus    | s_axis_open_status        | interface |
+| closeConnection  | m_axis_close_connection   | interface |
+| txMetaData       | m_axis_tx_metadata        | interface |
+| txData           | m_axis_tx_data            | interface |
+| txStatus         | s_axis_tx_status          | interface |
+| runExperiment    | runExperiment             | port      |
+| useConn          | useConn                   | port      |
+| useIpAddr        | useIpAddr                 | port      |
+| pkgWordCount     | pkgWordCount              | port      |
+| regBasePort      | regBasePort               | port      |
+| usePort          | usePort                   | port      |
+| expectedRespInKB | expectedRespInKB          | port      |
+| finishExperiment | finishExperiment          | port      |
+| clientPkgNum     | clientPkgNum              | port      |
+| regIpAddress0    | regIpAddress0             | port      |
+| regIpAddress1    | regIpAddress1             | port      |
+| regIpAddress2    | regIpAddress2             | port      |
+| regIpAddress3    | regIpAddress3             | port      |
+| regIpAddress4    | regIpAddress4             | port      |
+| regIpAddress5    | regIpAddress5             | port      |
+| regIpAddress6    | regIpAddress6             | port      |
+| regIpAddress7    | regIpAddress7             | port      |
+| regIpAddress8    | regIpAddress8             | port      |
+| regIpAddress9    | regIpAddress9             | port      |
+| regIpAddress10   | regIpAddress10            | port      |
++------------------+---------------------------+-----------+
+
+
+================================================================
+== M_AXI Burst Information
+================================================================
+ Note: All burst requests might be further partitioned into multiple requests during RTL generation based on max_read_burst_length or max_write_burst_length settings.
+
+  No burst in design
+
+================================================================
+== Bind Op Report
+================================================================
++---------------------------+-----+--------+-------------+-----+--------+---------+
+| Name                      | DSP | Pragma | Variable    | Op  | Impl   | Latency |
++---------------------------+-----+--------+-------------+-----+--------+---------+
+| + scatter                 | 0   |        |             |     |        |         |
+|  + server_512_s           | 0   |        |             |     |        |         |
+|    add_ln886_fu_275_p2    | -   |        | add_ln886   | add | fabric | 0       |
+|    add_ln886_1_fu_281_p2  | -   |        | add_ln886_1 | add | fabric | 0       |
+|  + client_512_s           | 0   |        |             |     |        |         |
+|    add_ln886_fu_887_p2    | -   |        | add_ln886   | add | fabric | 0       |
+|    ret_V_fu_903_p2        | -   |        | ret_V       | add | fabric | 0       |
+|    add_ln886_5_fu_930_p2  | -   |        | add_ln886_5 | add | fabric | 0       |
+|    add_ln887_fu_984_p2    | -   |        | add_ln887   | add | fabric | 0       |
+|    add_ln886_3_fu_1020_p2 | -   |        | add_ln886_3 | add | fabric | 0       |
+|    grp_fu_838_p2          | -   |        | add_ln886_4 | add | fabric | 0       |
+|    add_ln886_6_fu_1043_p2 | -   |        | add_ln886_6 | add | fabric | 0       |
+|    add_ln886_7_fu_1055_p2 | -   |        | add_ln886_7 | add | fabric | 0       |
+|    grp_fu_838_p2          | -   |        | add_ln886_8 | add | fabric | 0       |
+|    add_ln886_2_fu_1083_p2 | -   |        | add_ln886_2 | add | fabric | 0       |
++---------------------------+-----+--------+-------------+-----+--------+---------+
+
+
+================================================================
+== Bind Storage Report
+================================================================
++------------------------+------+------+--------+--------------------+---------+------+---------+
+| Name                   | BRAM | URAM | Pragma | Variable           | Storage | Impl | Latency |
++------------------------+------+------+--------+--------------------+---------+------+---------+
+| + scatter              | 7    | 0    |        |                    |         |      |         |
+|   regIpAddress10_c_U   | -    | -    |        | regIpAddress10_c   | fifo    | srl  | 0       |
+|   regIpAddress9_c_U    | -    | -    |        | regIpAddress9_c    | fifo    | srl  | 0       |
+|   regIpAddress8_c_U    | -    | -    |        | regIpAddress8_c    | fifo    | srl  | 0       |
+|   regIpAddress7_c_U    | -    | -    |        | regIpAddress7_c    | fifo    | srl  | 0       |
+|   regIpAddress6_c_U    | -    | -    |        | regIpAddress6_c    | fifo    | srl  | 0       |
+|   regIpAddress5_c_U    | -    | -    |        | regIpAddress5_c    | fifo    | srl  | 0       |
+|   regIpAddress4_c_U    | -    | -    |        | regIpAddress4_c    | fifo    | srl  | 0       |
+|   regIpAddress3_c_U    | -    | -    |        | regIpAddress3_c    | fifo    | srl  | 0       |
+|   regIpAddress2_c_U    | -    | -    |        | regIpAddress2_c    | fifo    | srl  | 0       |
+|   regIpAddress1_c_U    | -    | -    |        | regIpAddress1_c    | fifo    | srl  | 0       |
+|   regIpAddress0_c_U    | -    | -    |        | regIpAddress0_c    | fifo    | srl  | 0       |
+|   clientPkgNum_c_U     | -    | -    |        | clientPkgNum_c     | fifo    | srl  | 0       |
+|   expectedRespInKB_c_U | -    | -    |        | expectedRespInKB_c | fifo    | srl  | 0       |
+|   regBasePort_c_U      | -    | -    |        | regBasePort_c      | fifo    | srl  | 0       |
+|   pkgWordCount_c_U     | -    | -    |        | pkgWordCount_c     | fifo    | srl  | 0       |
+|   useIpAddr_c_U        | -    | -    |        | useIpAddr_c        | fifo    | srl  | 0       |
+|   useConn_c_U          | -    | -    |        | useConn_c          | fifo    | srl  | 0       |
+|   runExperiment_c_U    | -    | -    |        | runExperiment_c    | fifo    | srl  | 0       |
++------------------------+------+------+--------+--------------------+---------+------+---------+
+
+
+================================================================
+== Pragma Report
+================================================================
+* Ignored Pragmas
++-----------+----------+------------------------------------------------------------------------------------------------------------------------------------------------+-------------------------------------------------+
+| Type      | Options  | Location                                                                                                                                       | Messages                                        |
++-----------+----------+------------------------------------------------------------------------------------------------------------------------------------------------+-------------------------------------------------+
+| data_pack | variable | ../../../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/kernel/user_krnl/scatter_krnl/src/hls/scatter.cpp:495 in scatter | the pragma is not supported and will be ignored |
+| data_pack | variable | ../../../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/kernel/user_krnl/scatter_krnl/src/hls/scatter.cpp:496 in scatter | the pragma is not supported and will be ignored |
+| data_pack | variable | ../../../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/kernel/user_krnl/scatter_krnl/src/hls/scatter.cpp:503 in scatter | the pragma is not supported and will be ignored |
+| data_pack | variable | ../../../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/kernel/user_krnl/scatter_krnl/src/hls/scatter.cpp:504 in scatter | the pragma is not supported and will be ignored |
+| data_pack | variable | ../../../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/kernel/user_krnl/scatter_krnl/src/hls/scatter.cpp:511 in scatter | the pragma is not supported and will be ignored |
+| data_pack | variable | ../../../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/kernel/user_krnl/scatter_krnl/src/hls/scatter.cpp:512 in scatter | the pragma is not supported and will be ignored |
++-----------+----------+------------------------------------------------------------------------------------------------------------------------------------------------+-------------------------------------------------+
+
+* Valid Pragma Syntax
++-----------+--------------------------------------------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Type      | Options                                                            | Location                                                                                                                                                              |
++-----------+--------------------------------------------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| unroll    |                                                                    | ../../../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/kernel/common/include/axi_utils.hpp:110 in reverse                                      |
+| unroll    |                                                                    | ../../../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/kernel/common/include/axi_utils.hpp:122 in reverse_bits                                 |
+| pipeline  | II=1                                                               | ../../../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/kernel/common/include/axi_utils.hpp:266 in convertstreamtodoublewidth                   |
+| inline    | off                                                                | ../../../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/kernel/common/include/axi_utils.hpp:267 in convertstreamtodoublewidth                   |
+| pipeline  | II=1                                                               | ../../../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/kernel/common/include/axi_utils.hpp:331 in convertstreamtohalfwidth                     |
+| inline    | off                                                                | ../../../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/kernel/common/include/axi_utils.hpp:332 in convertstreamtohalfwidth                     |
+| inline    | off                                                                | ../../../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/kernel/common/include/axi_utils.hpp:380 in rshiftwordbyoctet                            |
+| pipeline  | II=1                                                               | ../../../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/kernel/common/include/axi_utils.hpp:381 in rshiftwordbyoctet                            |
+| inline    | off                                                                | ../../../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/kernel/common/include/axi_utils.hpp:455 in lshiftwordbyoctet                            |
+| pipeline  | II=1                                                               | ../../../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/kernel/common/include/axi_utils.hpp:456 in lshiftwordbyoctet                            |
+| pipeline  | II=1                                                               | ../../../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/kernel/common/include/axi_utils.hpp:534 in stream_merger                                |
+| inline    | off                                                                | ../../../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/kernel/common/include/axi_utils.hpp:535 in stream_merger                                |
+| pipeline  | II=1                                                               | ../../../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/kernel/common/include/axi_utils.hpp:550 in fair_merger                                  |
+| inline    | off                                                                | ../../../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/kernel/common/include/axi_utils.hpp:551 in fair_merger                                  |
+| pipeline  | II=1                                                               | ../../../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/kernel/common/include/axi_utils.hpp:584 in fair_pkg_merger                              |
+| inline    | off                                                                | ../../../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/kernel/common/include/axi_utils.hpp:585 in fair_pkg_merger                              |
+| pipeline  | II=1                                                               | ../../../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/kernel/common/include/packet.hpp:158 in clear                                           |
+| pipeline  | II=1                                                               | ../../../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/kernel/user_krnl/scatter_krnl/src/hls/scatter.cpp:37 in openstatus_handler              |
+| inline    | off                                                                | ../../../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/kernel/user_krnl/scatter_krnl/src/hls/scatter.cpp:38 in openstatus_handler              |
+| pipeline  | II=1                                                               | ../../../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/kernel/user_krnl/scatter_krnl/src/hls/scatter.cpp:50 in txmetadata_handler              |
+| inline    | off                                                                | ../../../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/kernel/user_krnl/scatter_krnl/src/hls/scatter.cpp:51 in txmetadata_handler              |
+| pipeline  | II=1                                                               | ../../../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/kernel/user_krnl/scatter_krnl/src/hls/scatter.cpp:64 in txstatus_handler                |
+| inline    | off                                                                | ../../../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/kernel/user_krnl/scatter_krnl/src/hls/scatter.cpp:65 in txstatus_handler                |
+| pipeline  | II=1                                                               | ../../../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/kernel/user_krnl/scatter_krnl/src/hls/scatter.cpp:81 in closeconnection_handler         |
+| inline    | off                                                                | ../../../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/kernel/user_krnl/scatter_krnl/src/hls/scatter.cpp:82 in closeconnection_handler         |
+| pipeline  | II=1                                                               | ../../../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/kernel/user_krnl/scatter_krnl/src/hls/scatter.cpp:143 in client                         |
+| inline    | off                                                                | ../../../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/kernel/user_krnl/scatter_krnl/src/hls/scatter.cpp:144 in client                         |
+| unroll    |                                                                    | ../../../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/kernel/user_krnl/scatter_krnl/src/hls/scatter.cpp:299 in client                         |
+| pipeline  | II=1                                                               | ../../../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/kernel/user_krnl/scatter_krnl/src/hls/scatter.cpp:355 in server                         |
+| inline    | off                                                                | ../../../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/kernel/user_krnl/scatter_krnl/src/hls/scatter.cpp:356 in server                         |
+| reset     | variable=listenState                                               | ../../../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/kernel/user_krnl/scatter_krnl/src/hls/scatter.cpp:362 in server, listenState            |
+| dataflow  | disable_start_propagation                                          | ../../../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/kernel/user_krnl/scatter_krnl/src/hls/scatter.cpp:487 in scatter                        |
+| interface | ap_ctrl_none port=return                                           | ../../../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/kernel/user_krnl/scatter_krnl/src/hls/scatter.cpp:488 in scatter, return                |
+| interface | axis register port=listenPort name=m_axis_listen_port              | ../../../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/kernel/user_krnl/scatter_krnl/src/hls/scatter.cpp:490 in scatter, listenPort            |
+| interface | axis register port=listenPortStatus name=s_axis_listen_port_status | ../../../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/kernel/user_krnl/scatter_krnl/src/hls/scatter.cpp:491 in scatter, listenPortStatus      |
+| interface | axis register port=notifications name=s_axis_notifications         | ../../../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/kernel/user_krnl/scatter_krnl/src/hls/scatter.cpp:493 in scatter, notifications         |
+| interface | axis register port=readRequest name=m_axis_read_package            | ../../../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/kernel/user_krnl/scatter_krnl/src/hls/scatter.cpp:494 in scatter, readRequest           |
+| interface | axis register port=rxMetaData name=s_axis_rx_metadata              | ../../../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/kernel/user_krnl/scatter_krnl/src/hls/scatter.cpp:498 in scatter, rxMetaData            |
+| interface | axis register port=rxData name=s_axis_rx_data                      | ../../../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/kernel/user_krnl/scatter_krnl/src/hls/scatter.cpp:499 in scatter, rxData                |
+| interface | axis register port=openConnection name=m_axis_open_connection      | ../../../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/kernel/user_krnl/scatter_krnl/src/hls/scatter.cpp:501 in scatter, openConnection        |
+| interface | axis register port=openConStatus name=s_axis_open_status           | ../../../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/kernel/user_krnl/scatter_krnl/src/hls/scatter.cpp:502 in scatter, openConStatus         |
+| interface | axis register port=closeConnection name=m_axis_close_connection    | ../../../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/kernel/user_krnl/scatter_krnl/src/hls/scatter.cpp:506 in scatter, closeConnection       |
+| interface | axis register port=txMetaData name=m_axis_tx_metadata              | ../../../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/kernel/user_krnl/scatter_krnl/src/hls/scatter.cpp:508 in scatter, txMetaData            |
+| interface | axis register port=txData name=m_axis_tx_data                      | ../../../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/kernel/user_krnl/scatter_krnl/src/hls/scatter.cpp:509 in scatter, txData                |
+| interface | axis register port=txStatus name=s_axis_tx_status                  | ../../../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/kernel/user_krnl/scatter_krnl/src/hls/scatter.cpp:510 in scatter, txStatus              |
+| interface | ap_none register port=runExperiment                                | ../../../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/kernel/user_krnl/scatter_krnl/src/hls/scatter.cpp:516 in scatter, runExperiment         |
+| interface | ap_none register port=useConn                                      | ../../../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/kernel/user_krnl/scatter_krnl/src/hls/scatter.cpp:517 in scatter, useConn               |
+| interface | ap_none register port=pkgWordCount                                 | ../../../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/kernel/user_krnl/scatter_krnl/src/hls/scatter.cpp:518 in scatter, pkgWordCount          |
+| interface | ap_none register port=useIpAddr                                    | ../../../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/kernel/user_krnl/scatter_krnl/src/hls/scatter.cpp:519 in scatter, useIpAddr             |
+| interface | ap_none register port=regBasePort                                  | ../../../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/kernel/user_krnl/scatter_krnl/src/hls/scatter.cpp:520 in scatter, regBasePort           |
+| interface | ap_none register port=usePort                                      | ../../../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/kernel/user_krnl/scatter_krnl/src/hls/scatter.cpp:521 in scatter, usePort               |
+| interface | ap_none register port=expectedRespInKB                             | ../../../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/kernel/user_krnl/scatter_krnl/src/hls/scatter.cpp:522 in scatter, expectedRespInKB      |
+| interface | ap_none register port=finishExperiment                             | ../../../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/kernel/user_krnl/scatter_krnl/src/hls/scatter.cpp:523 in scatter, finishExperiment      |
+| interface | ap_none register port=clientPkgNum                                 | ../../../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/kernel/user_krnl/scatter_krnl/src/hls/scatter.cpp:525 in scatter, clientPkgNum          |
+| interface | ap_none register port=regIpAddress0                                | ../../../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/kernel/user_krnl/scatter_krnl/src/hls/scatter.cpp:526 in scatter, regIpAddress0         |
+| interface | ap_none register port=regIpAddress1                                | ../../../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/kernel/user_krnl/scatter_krnl/src/hls/scatter.cpp:527 in scatter, regIpAddress1         |
+| interface | ap_none register port=regIpAddress2                                | ../../../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/kernel/user_krnl/scatter_krnl/src/hls/scatter.cpp:528 in scatter, regIpAddress2         |
+| interface | ap_none register port=regIpAddress3                                | ../../../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/kernel/user_krnl/scatter_krnl/src/hls/scatter.cpp:529 in scatter, regIpAddress3         |
+| interface | ap_none register port=regIpAddress4                                | ../../../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/kernel/user_krnl/scatter_krnl/src/hls/scatter.cpp:530 in scatter, regIpAddress4         |
+| interface | ap_none register port=regIpAddress5                                | ../../../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/kernel/user_krnl/scatter_krnl/src/hls/scatter.cpp:531 in scatter, regIpAddress5         |
+| interface | ap_none register port=regIpAddress6                                | ../../../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/kernel/user_krnl/scatter_krnl/src/hls/scatter.cpp:532 in scatter, regIpAddress6         |
+| interface | ap_none register port=regIpAddress7                                | ../../../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/kernel/user_krnl/scatter_krnl/src/hls/scatter.cpp:533 in scatter, regIpAddress7         |
+| interface | ap_none register port=regIpAddress8                                | ../../../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/kernel/user_krnl/scatter_krnl/src/hls/scatter.cpp:534 in scatter, regIpAddress8         |
+| interface | ap_none register port=regIpAddress9                                | ../../../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/kernel/user_krnl/scatter_krnl/src/hls/scatter.cpp:535 in scatter, regIpAddress9         |
+| interface | ap_none register port=regIpAddress10                               | ../../../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/kernel/user_krnl/scatter_krnl/src/hls/scatter.cpp:536 in scatter, regIpAddress10        |
+| stream    | variable=openConStatusBuffer depth=512                             | ../../../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/kernel/user_krnl/scatter_krnl/src/hls/scatter.cpp:539 in scatter, openConStatusBuffer   |
+| stream    | variable=txMetaDataBuffer depth=512                                | ../../../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/kernel/user_krnl/scatter_krnl/src/hls/scatter.cpp:542 in scatter, txMetaDataBuffer      |
+| stream    | variable=txStatusBuffer depth=512                                  | ../../../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/kernel/user_krnl/scatter_krnl/src/hls/scatter.cpp:545 in scatter, txStatusBuffer        |
+| stream    | variable=closeConnectionBuffer depth=512                           | ../../../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/kernel/user_krnl/scatter_krnl/src/hls/scatter.cpp:548 in scatter, closeConnectionBuffer |
++-----------+--------------------------------------------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+
+

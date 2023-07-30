@@ -1,0 +1,711 @@
+
+
+================================================================
+== Vitis HLS Report for 'mq_freelist_handler_2048_s'
+================================================================
+* Date:           Tue Jul 11 09:33:20 2023
+
+* Version:        2022.1 (Build 3526262 on Mon Apr 18 15:47:01 MDT 2022)
+* Project:        rocev2_prj
+* Solution:       solution1 (Vivado IP Flow Target)
+* Product family: virtexuplus
+* Target device:  xcu280-fsvh2892-2L-e
+
+
+================================================================
+== Performance Estimates
+================================================================
++ Timing: 
+    * Summary: 
+    +--------+---------+----------+------------+
+    |  Clock |  Target | Estimated| Uncertainty|
+    +--------+---------+----------+------------+
+    |ap_clk  |  3.20 ns|  1.290 ns|     0.86 ns|
+    +--------+---------+----------+------------+
+
++ Latency: 
+    * Summary: 
+    +---------+---------+----------+----------+-----+-----+---------+
+    |  Latency (cycles) |  Latency (absolute) |  Interval | Pipeline|
+    |   min   |   max   |    min   |    max   | min | max |   Type  |
+    +---------+---------+----------+----------+-----+-----+---------+
+    |        1|        1|  3.200 ns|  3.200 ns|    1|    1|      yes|
+    +---------+---------+----------+----------+-----+-----+---------+
+
+    + Detail: 
+        * Instance: 
+        N/A
+
+        * Loop: 
+        N/A
+
+
+
+================================================================
+== Utilization Estimates
+================================================================
+* Summary: 
++---------------------+---------+------+---------+---------+-----+
+|         Name        | BRAM_18K|  DSP |    FF   |   LUT   | URAM|
++---------------------+---------+------+---------+---------+-----+
+|DSP                  |        -|     -|        -|        -|    -|
+|Expression           |        -|     -|        0|       33|    -|
+|FIFO                 |        -|     -|        -|        -|    -|
+|Instance             |        -|     -|        -|        -|    -|
+|Memory               |        -|     -|        -|        -|    -|
+|Multiplexer          |        -|     -|        -|       41|    -|
+|Register             |        -|     -|       32|        -|    -|
++---------------------+---------+------+---------+---------+-----+
+|Total                |        0|     0|       32|       74|    0|
++---------------------+---------+------+---------+---------+-----+
+|Available SLR        |     1344|  3008|   869120|   434560|  320|
++---------------------+---------+------+---------+---------+-----+
+|Utilization SLR (%)  |        0|     0|       ~0|       ~0|    0|
++---------------------+---------+------+---------+---------+-----+
+|Available            |     4032|  9024|  2607360|  1303680|  960|
++---------------------+---------+------+---------+---------+-----+
+|Utilization (%)      |        0|     0|       ~0|       ~0|    0|
++---------------------+---------+------+---------+---------+-----+
+
++ Detail: 
+    * Instance: 
+    N/A
+
+    * DSP: 
+    N/A
+
+    * Memory: 
+    N/A
+
+    * FIFO: 
+    N/A
+
+    * Expression: 
+    +----------------------------------+----------+----+---+----+------------+------------+
+    |           Variable Name          | Operation| DSP| FF| LUT| Bitwidth P0| Bitwidth P1|
+    +----------------------------------+----------+----+---+----+------------+------------+
+    |add_ln886_fu_84_p2                |         +|   0|  0|  19|          12|           1|
+    |ap_condition_117                  |       and|   0|  0|   2|           1|           1|
+    |ap_predicate_op23_write_state2    |       and|   0|  0|   2|           1|           1|
+    |tmp_i_nbreadreq_fu_38_p3          |       and|   0|  0|   2|           1|           0|
+    |ap_block_pp0_stage0_01001         |        or|   0|  0|   2|           1|           1|
+    |ap_block_state1_pp0_stage0_iter0  |        or|   0|  0|   2|           1|           1|
+    |ap_block_state2_pp0_stage0_iter1  |        or|   0|  0|   2|           1|           1|
+    |ap_enable_pp0                     |       xor|   0|  0|   2|           1|           2|
+    +----------------------------------+----------+----+---+----+------------+------------+
+    |Total                             |          |   0|  0|  33|          19|           8|
+    +----------------------------------+----------+----+---+----+------------+------------+
+
+    * Multiplexer: 
+    +-----------------------+----+-----------+-----+-----------+
+    |          Name         | LUT| Input Size| Bits| Total Bits|
+    +-----------------------+----+-----------+-----+-----------+
+    |ap_done                |   9|          2|    1|          2|
+    |mq_freeListFifo_blk_n  |   9|          2|    1|          2|
+    |mq_freeListFifo_din    |  14|          3|   16|         48|
+    |mq_releaseFifo_blk_n   |   9|          2|    1|          2|
+    +-----------------------+----+-----------+-----+-----------+
+    |Total                  |  41|          9|   19|         54|
+    +-----------------------+----+-----------+-----+-----------+
+
+    * Register: 
+    +-------------------------+----+----+-----+-----------+
+    |           Name          | FF | LUT| Bits| Const Bits|
+    +-------------------------+----+----+-----+-----------+
+    |ap_CS_fsm                |   1|   0|    1|          0|
+    |ap_done_reg              |   1|   0|    1|          0|
+    |ap_enable_reg_pp0_iter1  |   1|   0|    1|          0|
+    |freeListCounter_V        |  12|   0|   12|          0|
+    |tmp_i_reg_96             |   1|   0|    1|          0|
+    |tmp_reg_100              |  16|   0|   16|          0|
+    +-------------------------+----+----+-----+-----------+
+    |Total                    |  32|   0|   32|          0|
+    +-------------------------+----+----+-----+-----------+
+
+
+
+================================================================
+== Interface
+================================================================
+* Summary: 
++--------------------------------+-----+-----+------------+---------------------------+--------------+
+|            RTL Ports           | Dir | Bits|  Protocol  |       Source Object       |    C Type    |
++--------------------------------+-----+-----+------------+---------------------------+--------------+
+|ap_clk                          |   in|    1|  ap_ctrl_hs|  mq_freelist_handler<2048>|  return value|
+|ap_rst                          |   in|    1|  ap_ctrl_hs|  mq_freelist_handler<2048>|  return value|
+|ap_start                        |   in|    1|  ap_ctrl_hs|  mq_freelist_handler<2048>|  return value|
+|ap_done                         |  out|    1|  ap_ctrl_hs|  mq_freelist_handler<2048>|  return value|
+|ap_continue                     |   in|    1|  ap_ctrl_hs|  mq_freelist_handler<2048>|  return value|
+|ap_idle                         |  out|    1|  ap_ctrl_hs|  mq_freelist_handler<2048>|  return value|
+|ap_ready                        |  out|    1|  ap_ctrl_hs|  mq_freelist_handler<2048>|  return value|
+|mq_releaseFifo_dout             |   in|   16|     ap_fifo|             mq_releaseFifo|       pointer|
+|mq_releaseFifo_num_data_valid   |   in|    2|     ap_fifo|             mq_releaseFifo|       pointer|
+|mq_releaseFifo_fifo_cap         |   in|    2|     ap_fifo|             mq_releaseFifo|       pointer|
+|mq_releaseFifo_empty_n          |   in|    1|     ap_fifo|             mq_releaseFifo|       pointer|
+|mq_releaseFifo_read             |  out|    1|     ap_fifo|             mq_releaseFifo|       pointer|
+|mq_freeListFifo_din             |  out|   16|     ap_fifo|            mq_freeListFifo|       pointer|
+|mq_freeListFifo_num_data_valid  |   in|   12|     ap_fifo|            mq_freeListFifo|       pointer|
+|mq_freeListFifo_fifo_cap        |   in|   12|     ap_fifo|            mq_freeListFifo|       pointer|
+|mq_freeListFifo_full_n          |   in|    1|     ap_fifo|            mq_freeListFifo|       pointer|
+|mq_freeListFifo_write           |  out|    1|     ap_fifo|            mq_freeListFifo|       pointer|
++--------------------------------+-----+-----+------------+---------------------------+--------------+
+
+============================================================
++ Verbose Summary: Synthesis Manager
+============================================================
+InlineROM: 1
+ExposeGlobal: 0
+============================================================
++ Verbose Summary: CDFG Model
+============================================================
+IsTopModel: 0
+ResetActiveHigh: 1
+IsCombinational: 2
+IsDatapathOnly: 0
+HasWiredReturn: 1
+HasMFsm: 2
+HasVarLatency: 0
+IsPipeline: 1
+IsRtlPipelined: 1
+IsInstanceOverlapped: 0
+IsDontTouch: 0
+HasImplIP: 0
+IsGatedGlobalClock: 0
+
++ Individual pipeline summary: 
+  * Pipeline-0: initiation interval (II) = 1, depth = 2
+
+
+============================================================
++ Verbose Summary: Schedule
+============================================================
+* Number of FSM states : 2
+* Pipeline : 1
+  Pipeline-0 : II = 1, D = 2, States = { 1 2 }
+* Dataflow Pipeline: 0
+
+* FSM state transitions: 
+1 --> 2 
+2 --> 
+
+* FSM state operations: 
+
+State 1 <SV = 0> <Delay = 1.16>
+ST_1 : Operation 3 [1/1] (0.00ns)   --->   "%specinterface_ln0 = specinterface void @_ssdm_op_SpecInterface, i16 %mq_freeListFifo, void @empty_5, i32 0, i32 0, void @empty, i32 0, i32 0, void @empty, void @empty, void @empty, i32 0, i32 0, i32 0, i32 0, void @empty, void @empty, i32 4294967295, i32 0"   --->   Operation 3 'specinterface' 'specinterface_ln0' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 4 [1/1] (0.00ns)   --->   "%specinterface_ln0 = specinterface void @_ssdm_op_SpecInterface, i16 %mq_freeListFifo, void @empty_5, i32 0, i32 0, void @empty, i32 0, i32 0, void @empty, void @empty, void @empty, i32 0, i32 0, i32 0, i32 0, void @empty, void @empty, i32 4294967295, i32 0"   --->   Operation 4 'specinterface' 'specinterface_ln0' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 5 [1/1] (0.00ns)   --->   "%specinterface_ln0 = specinterface void @_ssdm_op_SpecInterface, i16 %mq_freeListFifo, void @empty_5, i32 0, i32 0, void @empty, i32 0, i32 0, void @empty, void @empty, void @empty, i32 0, i32 0, i32 0, i32 0, void @empty, void @empty, i32 4294967295, i32 0"   --->   Operation 5 'specinterface' 'specinterface_ln0' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 6 [1/1] (0.00ns)   --->   "%specinterface_ln0 = specinterface void @_ssdm_op_SpecInterface, i16 %mq_releaseFifo, void @empty_5, i32 0, i32 0, void @empty, i32 0, i32 0, void @empty, void @empty, void @empty, i32 0, i32 0, i32 0, i32 0, void @empty, void @empty, i32 4294967295, i32 0"   --->   Operation 6 'specinterface' 'specinterface_ln0' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 7 [1/1] (0.00ns)   --->   "%specinterface_ln0 = specinterface void @_ssdm_op_SpecInterface, i16 %mq_releaseFifo, void @empty_5, i32 0, i32 0, void @empty, i32 0, i32 0, void @empty, void @empty, void @empty, i32 0, i32 0, i32 0, i32 0, void @empty, void @empty, i32 4294967295, i32 0"   --->   Operation 7 'specinterface' 'specinterface_ln0' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 8 [1/1] (0.00ns)   --->   "%specinterface_ln0 = specinterface void @_ssdm_op_SpecInterface, i16 %mq_releaseFifo, void @empty_5, i32 0, i32 0, void @empty, i32 0, i32 0, void @empty, void @empty, void @empty, i32 0, i32 0, i32 0, i32 0, void @empty, void @empty, i32 4294967295, i32 0"   --->   Operation 8 'specinterface' 'specinterface_ln0' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 9 [1/1] (0.00ns)   --->   "%specinterface_ln0 = specinterface void @_ssdm_op_SpecInterface, i16 %mq_freeListFifo, void @empty_5, i32 0, i32 0, void @empty, i32 0, i32 0, void @empty, void @empty, void @empty, i32 0, i32 0, i32 0, i32 0, void @empty, void @empty, i32 4294967295, i32 0"   --->   Operation 9 'specinterface' 'specinterface_ln0' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 10 [1/1] (0.00ns)   --->   "%specinterface_ln0 = specinterface void @_ssdm_op_SpecInterface, i16 %mq_releaseFifo, void @empty_5, i32 0, i32 0, void @empty, i32 0, i32 0, void @empty, void @empty, void @empty, i32 0, i32 0, i32 0, i32 0, void @empty, void @empty, i32 4294967295, i32 0"   --->   Operation 10 'specinterface' 'specinterface_ln0' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 11 [1/1] (0.00ns)   --->   "%specpipeline_ln176 = specpipeline void @_ssdm_op_SpecPipeline, i32 1, i32 0, i32 0, i32 0, void @empty" [/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/rocev2/../ib_transport_protocol/multi_queue/multi_queue.hpp:176]   --->   Operation 11 'specpipeline' 'specpipeline_ln176' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 12 [1/1] (0.00ns)   --->   "%specreset_ln183 = specreset void @_ssdm_op_SpecReset, i12 %freeListCounter_V, i64 1, void @empty" [/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/rocev2/../ib_transport_protocol/multi_queue/multi_queue.hpp:183]   --->   Operation 12 'specreset' 'specreset_ln183' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 13 [1/1] (0.00ns)   --->   "%tmp_i = nbreadreq i1 @_ssdm_op_NbReadReq.ap_fifo.i16P0A, i16 %mq_releaseFifo, i32 1" [/tools/Xilinx/Vitis_HLS/2022.1/common/technology/autopilot/hls_stream_39.h:136]   --->   Operation 13 'nbreadreq' 'tmp_i' <Predicate = true> <Delay = 0.00> <CoreInst = "FIFO_SRL">   --->   Core 81 'FIFO_SRL' <Latency = 0> <II = 1> <Delay = 1.34> <Storage> <Opcode : 'read' 'write' 'nbread' 'nbwrite'> <Ports = 0> <Width = 16> <Depth = 2> <FIFO>
+ST_1 : Operation 14 [1/1] (0.00ns)   --->   "%br_ln185 = br i1 %tmp_i, void %if.else.i, void %if.then.i" [/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/rocev2/../ib_transport_protocol/multi_queue/multi_queue.hpp:185]   --->   Operation 14 'br' 'br_ln185' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 15 [1/1] (0.00ns)   --->   "%br_ln0 = br void %mq_freelist_handler<2048>.exit"   --->   Operation 15 'br' 'br_ln0' <Predicate = (!tmp_i)> <Delay = 0.00>
+ST_1 : Operation 16 [1/1] (1.16ns)   --->   "%tmp = read i16 @_ssdm_op_Read.ap_fifo.volatile.i16P0A, i16 %mq_releaseFifo" [/tools/Xilinx/Vitis_HLS/2022.1/common/technology/autopilot/hls_stream_39.h:145]   --->   Operation 16 'read' 'tmp' <Predicate = (tmp_i)> <Delay = 1.16> <CoreInst = "FIFO_SRL">   --->   Core 81 'FIFO_SRL' <Latency = 0> <II = 1> <Delay = 1.34> <Storage> <Opcode : 'read' 'write' 'nbread' 'nbwrite'> <Ports = 0> <Width = 16> <Depth = 2> <FIFO>
+
+State 2 <SV = 1> <Delay = 1.29>
+ST_2 : Operation 17 [1/1] (0.00ns)   --->   "%freeListCounter_V_load = load i12 %freeListCounter_V"   --->   Operation 17 'load' 'freeListCounter_V_load' <Predicate = (!tmp_i)> <Delay = 0.00>
+ST_2 : Operation 18 [1/1] (0.00ns)   --->   "%zext_ln1073 = zext i12 %freeListCounter_V_load"   --->   Operation 18 'zext' 'zext_ln1073' <Predicate = (!tmp_i)> <Delay = 0.00>
+ST_2 : Operation 19 [1/1] (0.00ns)   --->   "%tmp_36 = bitselect i1 @_ssdm_op_BitSelect.i1.i12.i32, i12 %freeListCounter_V_load, i32 11"   --->   Operation 19 'bitselect' 'tmp_36' <Predicate = (!tmp_i)> <Delay = 0.00>
+ST_2 : Operation 20 [1/1] (0.00ns)   --->   "%br_ln189 = br i1 %tmp_36, void %land.lhs.true.i, void %if.end.i" [/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/rocev2/../ib_transport_protocol/multi_queue/multi_queue.hpp:189]   --->   Operation 20 'br' 'br_ln189' <Predicate = (!tmp_i)> <Delay = 0.00>
+ST_2 : Operation 21 [1/1] (0.00ns)   --->   "%tmp_i_224 = nbwritereq i1 @_ssdm_op_NbWriteReq.ap_fifo.i16P0A, i16 %mq_freeListFifo, i32 1" [/tools/Xilinx/Vitis_HLS/2022.1/common/technology/autopilot/hls_stream_39.h:140]   --->   Operation 21 'nbwritereq' 'tmp_i_224' <Predicate = (!tmp_i & !tmp_36)> <Delay = 0.00> <CoreInst = "FIFO">   --->   Core 78 'FIFO' <Latency = 0> <II = 1> <Delay = 1.23> <Storage> <Opcode : 'read' 'write' 'nbread' 'nbwrite'> <Ports = 0> <Width = 16> <Depth = 2048> <FIFO>
+ST_2 : Operation 22 [1/1] (0.00ns)   --->   "%br_ln189 = br i1 %tmp_i_224, void %if.end.i, void %if.then3.i" [/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/rocev2/../ib_transport_protocol/multi_queue/multi_queue.hpp:189]   --->   Operation 22 'br' 'br_ln189' <Predicate = (!tmp_i & !tmp_36)> <Delay = 0.00>
+ST_2 : Operation 23 [1/1] (1.16ns)   --->   "%write_ln174 = write void @_ssdm_op_Write.ap_fifo.volatile.i16P0A, i16 %mq_freeListFifo, i16 %zext_ln1073" [/tools/Xilinx/Vitis_HLS/2022.1/common/technology/autopilot/hls_stream_39.h:174]   --->   Operation 23 'write' 'write_ln174' <Predicate = (!tmp_i & !tmp_36 & tmp_i_224)> <Delay = 1.16> <CoreInst = "FIFO">   --->   Core 78 'FIFO' <Latency = 0> <II = 1> <Delay = 1.23> <Storage> <Opcode : 'read' 'write' 'nbread' 'nbwrite'> <Ports = 0> <Width = 16> <Depth = 2048> <FIFO>
+ST_2 : Operation 24 [1/1] (0.74ns)   --->   "%add_ln886 = add i12 %freeListCounter_V_load, i12 1"   --->   Operation 24 'add' 'add_ln886' <Predicate = (!tmp_i & !tmp_36 & tmp_i_224)> <Delay = 0.74> <CoreInst = "Adder">   --->   Core 1 'Adder' <Latency = 0> <II = 1> <Delay = 0.74> <FuncUnit> <Opcode : 'add' 'sub'> <InPorts = 2> <OutPorts = 1>
+ST_2 : Operation 25 [1/1] (0.00ns)   --->   "%store_ln886 = store i12 %add_ln886, i12 %freeListCounter_V"   --->   Operation 25 'store' 'store_ln886' <Predicate = (!tmp_i & !tmp_36 & tmp_i_224)> <Delay = 0.00>
+ST_2 : Operation 26 [1/1] (0.00ns)   --->   "%br_ln193 = br void %if.end.i" [/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/rocev2/../ib_transport_protocol/multi_queue/multi_queue.hpp:193]   --->   Operation 26 'br' 'br_ln193' <Predicate = (!tmp_i & !tmp_36 & tmp_i_224)> <Delay = 0.00>
+ST_2 : Operation 27 [1/1] (1.16ns)   --->   "%write_ln174 = write void @_ssdm_op_Write.ap_fifo.volatile.i16P0A, i16 %mq_freeListFifo, i16 %tmp" [/tools/Xilinx/Vitis_HLS/2022.1/common/technology/autopilot/hls_stream_39.h:174]   --->   Operation 27 'write' 'write_ln174' <Predicate = (tmp_i)> <Delay = 1.16> <CoreInst = "FIFO">   --->   Core 78 'FIFO' <Latency = 0> <II = 1> <Delay = 1.23> <Storage> <Opcode : 'read' 'write' 'nbread' 'nbwrite'> <Ports = 0> <Width = 16> <Depth = 2048> <FIFO>
+ST_2 : Operation 28 [1/1] (0.00ns)   --->   "%br_ln188 = br void %mq_freelist_handler<2048>.exit" [/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/rocev2/../ib_transport_protocol/multi_queue/multi_queue.hpp:188]   --->   Operation 28 'br' 'br_ln188' <Predicate = (tmp_i)> <Delay = 0.00>
+ST_2 : Operation 29 [1/1] (0.00ns)   --->   "%ret_ln0 = ret"   --->   Operation 29 'ret' 'ret_ln0' <Predicate = true> <Delay = 0.00>
+
+
+============================================================
++ Verbose Summary: Binding
+============================================================
+STG Binding: 
+---------------- STG Properties BEGIN ----------------
+- Is combinational: 0
+- Is one-state seq: 0
+- Is datapath-only: 0
+- Is pipelined: 1
+- Is top level: 0
+Port [ Return ] is wired: 1; IO mode=ap_ctrl_hs:ce=0
+Port [ mq_releaseFifo]:  wired=1; compound=1; hidden=0; nouse=0; global=1; static=1; extern=0; dir=0; type=3; pingpong=0; private_global=0; IO mode=ap_fifo:ce=0
+Port [ mq_freeListFifo]:  wired=1; compound=1; hidden=0; nouse=0; global=1; static=1; extern=0; dir=1; type=3; pingpong=0; private_global=0; IO mode=ap_fifo:ce=0
+Port [ freeListCounter_V]:  wired=0; compound=0; hidden=1; nouse=0; global=1; static=1; extern=0; dir=2; type=0; pingpong=0; private_global=1; IO mode=ap_ovld:ce=0
+---------------- STG Properties END ------------------
+
+---------------- Datapath Model BEGIN ----------------
+
+<LifeTime>
+<method=bitvector/>
+specinterface_ln0      (specinterface) [ 000]
+specinterface_ln0      (specinterface) [ 000]
+specinterface_ln0      (specinterface) [ 000]
+specinterface_ln0      (specinterface) [ 000]
+specinterface_ln0      (specinterface) [ 000]
+specinterface_ln0      (specinterface) [ 000]
+specinterface_ln0      (specinterface) [ 000]
+specinterface_ln0      (specinterface) [ 000]
+specpipeline_ln176     (specpipeline ) [ 000]
+specreset_ln183        (specreset    ) [ 000]
+tmp_i                  (nbreadreq    ) [ 011]
+br_ln185               (br           ) [ 000]
+br_ln0                 (br           ) [ 000]
+tmp                    (read         ) [ 011]
+freeListCounter_V_load (load         ) [ 000]
+zext_ln1073            (zext         ) [ 000]
+tmp_36                 (bitselect    ) [ 011]
+br_ln189               (br           ) [ 000]
+tmp_i_224              (nbwritereq   ) [ 011]
+br_ln189               (br           ) [ 000]
+write_ln174            (write        ) [ 000]
+add_ln886              (add          ) [ 000]
+store_ln886            (store        ) [ 000]
+br_ln193               (br           ) [ 000]
+write_ln174            (write        ) [ 000]
+br_ln188               (br           ) [ 000]
+ret_ln0                (ret          ) [ 000]
+</LifeTime>
+
+<model>
+
+<comp_list>
+<comp id="0" class="1000" name="mq_releaseFifo">
+<pin_list>
+<pin id="1" dir="1" index="0" bw="1" slack="0"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="mq_releaseFifo"/></StgValue>
+</bind>
+</comp>
+
+<comp id="2" class="1000" name="mq_freeListFifo">
+<pin_list>
+<pin id="3" dir="1" index="0" bw="1" slack="0"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="mq_freeListFifo"/></StgValue>
+</bind>
+</comp>
+
+<comp id="4" class="1000" name="freeListCounter_V">
+<pin_list>
+<pin id="5" dir="1" index="0" bw="1" slack="0"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="freeListCounter_V"/></StgValue>
+</bind>
+</comp>
+
+<comp id="6" class="1001" name="const_6">
+<pin_list>
+<pin id="7" dir="1" index="0" bw="1" slack="2147483647"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="_ssdm_op_SpecInterface"/></StgValue>
+</bind>
+</comp>
+
+<comp id="8" class="1001" name="const_8">
+<pin_list>
+<pin id="9" dir="1" index="0" bw="1" slack="2147483647"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="empty_5"/></StgValue>
+</bind>
+</comp>
+
+<comp id="10" class="1001" name="const_10">
+<pin_list>
+<pin id="11" dir="1" index="0" bw="1" slack="2147483647"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name=""/></StgValue>
+</bind>
+</comp>
+
+<comp id="12" class="1001" name="const_12">
+<pin_list>
+<pin id="13" dir="1" index="0" bw="1" slack="2147483647"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="empty"/></StgValue>
+</bind>
+</comp>
+
+<comp id="14" class="1001" name="const_14">
+<pin_list>
+<pin id="15" dir="1" index="0" bw="1" slack="2147483647"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name=""/></StgValue>
+</bind>
+</comp>
+
+<comp id="16" class="1001" name="const_16">
+<pin_list>
+<pin id="17" dir="1" index="0" bw="1" slack="2147483647"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="_ssdm_op_SpecPipeline"/></StgValue>
+</bind>
+</comp>
+
+<comp id="18" class="1001" name="const_18">
+<pin_list>
+<pin id="19" dir="1" index="0" bw="1" slack="0"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name=""/></StgValue>
+</bind>
+</comp>
+
+<comp id="20" class="1001" name="const_20">
+<pin_list>
+<pin id="21" dir="1" index="0" bw="1" slack="2147483647"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="_ssdm_op_SpecReset"/></StgValue>
+</bind>
+</comp>
+
+<comp id="22" class="1001" name="const_22">
+<pin_list>
+<pin id="23" dir="1" index="0" bw="1" slack="2147483647"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name=""/></StgValue>
+</bind>
+</comp>
+
+<comp id="24" class="1001" name="const_24">
+<pin_list>
+<pin id="25" dir="1" index="0" bw="1" slack="0"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="_ssdm_op_NbReadReq.ap_fifo.i16P0A"/></StgValue>
+</bind>
+</comp>
+
+<comp id="26" class="1001" name="const_26">
+<pin_list>
+<pin id="27" dir="1" index="0" bw="1" slack="0"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="_ssdm_op_Read.ap_fifo.volatile.i16P0A"/></StgValue>
+</bind>
+</comp>
+
+<comp id="28" class="1001" name="const_28">
+<pin_list>
+<pin id="29" dir="1" index="0" bw="1" slack="0"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="_ssdm_op_BitSelect.i1.i12.i32"/></StgValue>
+</bind>
+</comp>
+
+<comp id="30" class="1001" name="const_30">
+<pin_list>
+<pin id="31" dir="1" index="0" bw="1" slack="0"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name=""/></StgValue>
+</bind>
+</comp>
+
+<comp id="32" class="1001" name="const_32">
+<pin_list>
+<pin id="33" dir="1" index="0" bw="1" slack="0"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="_ssdm_op_NbWriteReq.ap_fifo.i16P0A"/></StgValue>
+</bind>
+</comp>
+
+<comp id="34" class="1001" name="const_34">
+<pin_list>
+<pin id="35" dir="1" index="0" bw="1" slack="0"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="_ssdm_op_Write.ap_fifo.volatile.i16P0A"/></StgValue>
+</bind>
+</comp>
+
+<comp id="36" class="1001" name="const_36">
+<pin_list>
+<pin id="37" dir="1" index="0" bw="1" slack="0"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name=""/></StgValue>
+</bind>
+</comp>
+
+<comp id="38" class="1004" name="tmp_i_nbreadreq_fu_38">
+<pin_list>
+<pin id="39" dir="0" index="0" bw="1" slack="0"/>
+<pin id="40" dir="0" index="1" bw="16" slack="0"/>
+<pin id="41" dir="0" index="2" bw="1" slack="0"/>
+<pin id="42" dir="1" index="3" bw="1" slack="1"/>
+</pin_list>
+<bind>
+<opcode="nbreadreq(1156) " fcode="nbreadreq"/>
+<opset="tmp_i/1 "/>
+</bind>
+</comp>
+
+<comp id="46" class="1004" name="tmp_read_fu_46">
+<pin_list>
+<pin id="47" dir="0" index="0" bw="16" slack="0"/>
+<pin id="48" dir="0" index="1" bw="16" slack="0"/>
+<pin id="49" dir="1" index="2" bw="16" slack="1"/>
+</pin_list>
+<bind>
+<opcode="read(1150) " fcode="read"/>
+<opset="tmp/1 "/>
+</bind>
+</comp>
+
+<comp id="52" class="1004" name="tmp_i_224_nbwritereq_fu_52">
+<pin_list>
+<pin id="53" dir="0" index="0" bw="1" slack="0"/>
+<pin id="54" dir="0" index="1" bw="16" slack="0"/>
+<pin id="55" dir="0" index="2" bw="1" slack="0"/>
+<pin id="56" dir="1" index="3" bw="1" slack="2147483647"/>
+</pin_list>
+<bind>
+<opcode="nbwritereq(1157) " fcode="nbwritereq"/>
+<opset="tmp_i_224/2 "/>
+</bind>
+</comp>
+
+<comp id="60" class="1004" name="grp_write_fu_60">
+<pin_list>
+<pin id="61" dir="0" index="0" bw="0" slack="0"/>
+<pin id="62" dir="0" index="1" bw="16" slack="0"/>
+<pin id="63" dir="0" index="2" bw="16" slack="0"/>
+<pin id="64" dir="1" index="3" bw="0" slack="2147483647"/>
+</pin_list>
+<bind>
+<opcode="write(1151) " fcode="write"/>
+<opset="write_ln174/2 write_ln174/2 "/>
+</bind>
+</comp>
+
+<comp id="67" class="1004" name="freeListCounter_V_load_load_fu_67">
+<pin_list>
+<pin id="68" dir="0" index="0" bw="12" slack="0"/>
+<pin id="69" dir="1" index="1" bw="12" slack="0"/>
+</pin_list>
+<bind>
+<opcode="load(27) " fcode="load"/>
+<opset="freeListCounter_V_load/2 "/>
+</bind>
+</comp>
+
+<comp id="71" class="1004" name="zext_ln1073_fu_71">
+<pin_list>
+<pin id="72" dir="0" index="0" bw="12" slack="0"/>
+<pin id="73" dir="1" index="1" bw="16" slack="0"/>
+</pin_list>
+<bind>
+<opcode="zext(34) " fcode="zext"/>
+<opset="zext_ln1073/2 "/>
+</bind>
+</comp>
+
+<comp id="76" class="1004" name="tmp_36_fu_76">
+<pin_list>
+<pin id="77" dir="0" index="0" bw="1" slack="0"/>
+<pin id="78" dir="0" index="1" bw="12" slack="0"/>
+<pin id="79" dir="0" index="2" bw="5" slack="0"/>
+<pin id="80" dir="1" index="3" bw="1" slack="2147483647"/>
+</pin_list>
+<bind>
+<opcode="bitselect(1000) " fcode="bitselect"/>
+<opset="tmp_36/2 "/>
+</bind>
+</comp>
+
+<comp id="84" class="1004" name="add_ln886_fu_84">
+<pin_list>
+<pin id="85" dir="0" index="0" bw="12" slack="0"/>
+<pin id="86" dir="0" index="1" bw="1" slack="0"/>
+<pin id="87" dir="1" index="2" bw="12" slack="0"/>
+</pin_list>
+<bind>
+<opcode="add(8) " fcode="add"/>
+<opset="add_ln886/2 "/>
+</bind>
+</comp>
+
+<comp id="90" class="1004" name="store_ln886_store_fu_90">
+<pin_list>
+<pin id="91" dir="0" index="0" bw="12" slack="0"/>
+<pin id="92" dir="0" index="1" bw="12" slack="0"/>
+<pin id="93" dir="1" index="2" bw="0" slack="2147483647"/>
+</pin_list>
+<bind>
+<opcode="store(28) " fcode="store"/>
+<opset="store_ln886/2 "/>
+</bind>
+</comp>
+
+<comp id="96" class="1005" name="tmp_i_reg_96">
+<pin_list>
+<pin id="97" dir="0" index="0" bw="1" slack="1"/>
+<pin id="98" dir="1" index="1" bw="1" slack="2147483647"/>
+</pin_list>
+<bind>
+<opset="tmp_i "/>
+</bind>
+</comp>
+
+<comp id="100" class="1005" name="tmp_reg_100">
+<pin_list>
+<pin id="101" dir="0" index="0" bw="16" slack="1"/>
+<pin id="102" dir="1" index="1" bw="16" slack="1"/>
+</pin_list>
+<bind>
+<opset="tmp "/>
+</bind>
+</comp>
+
+</comp_list>
+
+<net_list>
+<net id="43"><net_src comp="24" pin="0"/><net_sink comp="38" pin=0"/></net>
+
+<net id="44"><net_src comp="0" pin="0"/><net_sink comp="38" pin=1"/></net>
+
+<net id="45"><net_src comp="18" pin="0"/><net_sink comp="38" pin=2"/></net>
+
+<net id="50"><net_src comp="26" pin="0"/><net_sink comp="46" pin=0"/></net>
+
+<net id="51"><net_src comp="0" pin="0"/><net_sink comp="46" pin=1"/></net>
+
+<net id="57"><net_src comp="32" pin="0"/><net_sink comp="52" pin=0"/></net>
+
+<net id="58"><net_src comp="2" pin="0"/><net_sink comp="52" pin=1"/></net>
+
+<net id="59"><net_src comp="18" pin="0"/><net_sink comp="52" pin=2"/></net>
+
+<net id="65"><net_src comp="34" pin="0"/><net_sink comp="60" pin=0"/></net>
+
+<net id="66"><net_src comp="2" pin="0"/><net_sink comp="60" pin=1"/></net>
+
+<net id="70"><net_src comp="4" pin="0"/><net_sink comp="67" pin=0"/></net>
+
+<net id="74"><net_src comp="67" pin="1"/><net_sink comp="71" pin=0"/></net>
+
+<net id="75"><net_src comp="71" pin="1"/><net_sink comp="60" pin=2"/></net>
+
+<net id="81"><net_src comp="28" pin="0"/><net_sink comp="76" pin=0"/></net>
+
+<net id="82"><net_src comp="67" pin="1"/><net_sink comp="76" pin=1"/></net>
+
+<net id="83"><net_src comp="30" pin="0"/><net_sink comp="76" pin=2"/></net>
+
+<net id="88"><net_src comp="67" pin="1"/><net_sink comp="84" pin=0"/></net>
+
+<net id="89"><net_src comp="36" pin="0"/><net_sink comp="84" pin=1"/></net>
+
+<net id="94"><net_src comp="84" pin="2"/><net_sink comp="90" pin=0"/></net>
+
+<net id="95"><net_src comp="4" pin="0"/><net_sink comp="90" pin=1"/></net>
+
+<net id="99"><net_src comp="38" pin="3"/><net_sink comp="96" pin=0"/></net>
+
+<net id="103"><net_src comp="46" pin="2"/><net_sink comp="100" pin=0"/></net>
+
+<net id="104"><net_src comp="100" pin="1"/><net_sink comp="60" pin=2"/></net>
+
+</net_list>
+
+</model> 
+---------------- Datapath Model END ------------------
+
+* FSMD analyzer results:
+  - Output states:
+	Port: mq_releaseFifo | {}
+	Port: mq_freeListFifo | {2 }
+	Port: freeListCounter_V | {2 }
+ - Input state : 
+	Port: mq_freelist_handler<2048> : mq_releaseFifo | {1 }
+	Port: mq_freelist_handler<2048> : mq_freeListFifo | {}
+	Port: mq_freelist_handler<2048> : freeListCounter_V | {2 }
+  - Chain level:
+	State 1
+	State 2
+		zext_ln1073 : 1
+		tmp_36 : 1
+		br_ln189 : 2
+		write_ln174 : 2
+		add_ln886 : 1
+		store_ln886 : 2
+
+
+============================================================
++ Verbose Summary: Datapath Resource usage 
+============================================================
+
+* Functional unit list:
+|----------|----------------------------|---------|---------|
+| Operation|       Functional Unit      |    FF   |   LUT   |
+|----------|----------------------------|---------|---------|
+|    add   |       add_ln886_fu_84      |    0    |    19   |
+|----------|----------------------------|---------|---------|
+| nbreadreq|    tmp_i_nbreadreq_fu_38   |    0    |    0    |
+|----------|----------------------------|---------|---------|
+|   read   |       tmp_read_fu_46       |    0    |    0    |
+|----------|----------------------------|---------|---------|
+|nbwritereq| tmp_i_224_nbwritereq_fu_52 |    0    |    0    |
+|----------|----------------------------|---------|---------|
+|   write  |       grp_write_fu_60      |    0    |    0    |
+|----------|----------------------------|---------|---------|
+|   zext   |      zext_ln1073_fu_71     |    0    |    0    |
+|----------|----------------------------|---------|---------|
+| bitselect|        tmp_36_fu_76        |    0    |    0    |
+|----------|----------------------------|---------|---------|
+|   Total  |                            |    0    |    19   |
+|----------|----------------------------|---------|---------|
+
+Memories:
+N/A
+
+* Register list:
++------------+--------+
+|            |   FF   |
++------------+--------+
+|tmp_i_reg_96|    1   |
+| tmp_reg_100|   16   |
++------------+--------+
+|    Total   |   17   |
++------------+--------+
+
+* Multiplexer (MUX) list: 
+|-----------------|------|------|------|--------||---------||---------|
+|       Comp      |  Pin | Size |  BW  | S x BW ||  Delay  ||   LUT   |
+|-----------------|------|------|------|--------||---------||---------|
+| grp_write_fu_60 |  p2  |   2  |  16  |   32   ||    9    |
+|-----------------|------|------|------|--------||---------||---------|
+|      Total      |      |      |      |   32   ||  0.387  ||    9    |
+|-----------------|------|------|------|--------||---------||---------|
+
+
+
+* Summary:
++-----------+--------+--------+--------+
+|           |  Delay |   FF   |   LUT  |
++-----------+--------+--------+--------+
+|  Function |    -   |    0   |   19   |
+|   Memory  |    -   |    -   |    -   |
+|Multiplexer|    0   |    -   |    9   |
+|  Register |    -   |   17   |    -   |
++-----------+--------+--------+--------+
+|   Total   |    0   |   17   |   28   |
++-----------+--------+--------+--------+

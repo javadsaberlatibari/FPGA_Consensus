@@ -1,0 +1,928 @@
+
+
+================================================================
+== Vitis HLS Report for 'ipUdpMetaHandler_512_s'
+================================================================
+* Date:           Tue Jul 11 09:33:01 2023
+
+* Version:        2022.1 (Build 3526262 on Mon Apr 18 15:47:01 MDT 2022)
+* Project:        rocev2_prj
+* Solution:       solution1 (Vivado IP Flow Target)
+* Product family: virtexuplus
+* Target device:  xcu280-fsvh2892-2L-e
+
+
+================================================================
+== Performance Estimates
+================================================================
++ Timing: 
+    * Summary: 
+    +--------+---------+----------+------------+
+    |  Clock |  Target | Estimated| Uncertainty|
+    +--------+---------+----------+------------+
+    |ap_clk  |  3.20 ns|  1.184 ns|     0.86 ns|
+    +--------+---------+----------+------------+
+
++ Latency: 
+    * Summary: 
+    +---------+---------+----------+----------+-----+-----+---------+
+    |  Latency (cycles) |  Latency (absolute) |  Interval | Pipeline|
+    |   min   |   max   |    min   |    max   | min | max |   Type  |
+    +---------+---------+----------+----------+-----+-----+---------+
+    |        1|        1|  3.200 ns|  3.200 ns|    1|    1|      yes|
+    +---------+---------+----------+----------+-----+-----+---------+
+
+    + Detail: 
+        * Instance: 
+        N/A
+
+        * Loop: 
+        N/A
+
+
+
+================================================================
+== Utilization Estimates
+================================================================
+* Summary: 
++---------------------+---------+------+---------+---------+-----+
+|         Name        | BRAM_18K|  DSP |    FF   |   LUT   | URAM|
++---------------------+---------+------+---------+---------+-----+
+|DSP                  |        -|     -|        -|        -|    -|
+|Expression           |        -|     -|        0|       18|    -|
+|FIFO                 |        -|     -|        -|        -|    -|
+|Instance             |        -|     -|        -|        -|    -|
+|Memory               |        -|     -|        -|        -|    -|
+|Multiplexer          |        -|     -|        -|       54|    -|
+|Register             |        -|     -|      536|        -|    -|
++---------------------+---------+------+---------+---------+-----+
+|Total                |        0|     0|      536|       72|    0|
++---------------------+---------+------+---------+---------+-----+
+|Available SLR        |     1344|  3008|   869120|   434560|  320|
++---------------------+---------+------+---------+---------+-----+
+|Utilization SLR (%)  |        0|     0|       ~0|       ~0|    0|
++---------------------+---------+------+---------+---------+-----+
+|Available            |     4032|  9024|  2607360|  1303680|  960|
++---------------------+---------+------+---------+---------+-----+
+|Utilization (%)      |        0|     0|       ~0|       ~0|    0|
++---------------------+---------+------+---------+---------+-----+
+
++ Detail: 
+    * Instance: 
+    N/A
+
+    * DSP: 
+    N/A
+
+    * Memory: 
+    N/A
+
+    * FIFO: 
+    N/A
+
+    * Expression: 
+    +----------------------------------+----------+----+---+----+------------+------------+
+    |           Variable Name          | Operation| DSP| FF| LUT| Bitwidth P0| Bitwidth P1|
+    +----------------------------------+----------+----+---+----+------------+------------+
+    |ap_predicate_op30_read_state1     |       and|   0|  0|   2|           1|           1|
+    |ap_predicate_op40_write_state2    |       and|   0|  0|   2|           1|           1|
+    |tmp_201_i_nbreadreq_fu_66_p3      |       and|   0|  0|   2|           1|           0|
+    |tmp_i_235_nbreadreq_fu_58_p3      |       and|   0|  0|   2|           1|           0|
+    |tmp_i_nbreadreq_fu_50_p3          |       and|   0|  0|   2|           1|           0|
+    |ap_block_pp0_stage0_01001         |        or|   0|  0|   2|           1|           1|
+    |ap_block_state1_pp0_stage0_iter0  |        or|   0|  0|   2|           1|           1|
+    |ap_block_state2_pp0_stage0_iter1  |        or|   0|  0|   2|           1|           1|
+    |ap_enable_pp0                     |       xor|   0|  0|   2|           1|           2|
+    +----------------------------------+----------+----+---+----+------------+------------+
+    |Total                             |          |   0|  0|  18|           9|           7|
+    +----------------------------------+----------+----+---+----+------------+------------+
+
+    * Multiplexer: 
+    +-------------------------------+----+-----------+-----+-----------+
+    |              Name             | LUT| Input Size| Bits| Total Bits|
+    +-------------------------------+----+-----------+-----+-----------+
+    |ap_done                        |   9|          2|    1|          2|
+    |exh_lengthFifo_blk_n           |   9|          2|    1|          2|
+    |rx_drop2exhFsm_MetaFifo_blk_n  |   9|          2|    1|          2|
+    |rx_exh2drop_MetaFifo_blk_n     |   9|          2|    1|          2|
+    |rx_ibhDropMetaFifo_blk_n       |   9|          2|    1|          2|
+    |rx_ipUdpMetaFifo_blk_n         |   9|          2|    1|          2|
+    +-------------------------------+----+-----------+-----+-----------+
+    |Total                          |  54|         12|    6|         12|
+    +-------------------------------+----+-----------+-----+-----------+
+
+    * Register: 
+    +-----------------------------------+-----+----+-----+-----------+
+    |                Name               |  FF | LUT| Bits| Const Bits|
+    +-----------------------------------+-----+----+-----+-----------+
+    |ap_CS_fsm                          |    1|   0|    1|          0|
+    |ap_done_reg                        |    1|   0|    1|          0|
+    |ap_enable_reg_pp0_iter1            |    1|   0|    1|          0|
+    |meta_length_V_2_reg_140            |   16|   0|   16|          0|
+    |policy_ackOnly_reg_154             |    1|   0|    1|          0|
+    |policy_isDrop_reg_150              |    1|   0|    1|          0|
+    |rx_exh2drop_MetaFifo_read_reg_145  |  512|   0|  512|          0|
+    |tmp_201_i_reg_136                  |    1|   0|    1|          0|
+    |tmp_i_235_reg_132                  |    1|   0|    1|          0|
+    |tmp_i_reg_128                      |    1|   0|    1|          0|
+    +-----------------------------------+-----+----+-----+-----------+
+    |Total                              |  536|   0|  536|          0|
+    +-----------------------------------+-----+----+-----+-----------+
+
+
+
+================================================================
+== Interface
+================================================================
+* Summary: 
++----------------------------------------+-----+-----+------------+-------------------------+--------------+
+|                RTL Ports               | Dir | Bits|  Protocol  |      Source Object      |    C Type    |
++----------------------------------------+-----+-----+------------+-------------------------+--------------+
+|ap_clk                                  |   in|    1|  ap_ctrl_hs|    ipUdpMetaHandler<512>|  return value|
+|ap_rst                                  |   in|    1|  ap_ctrl_hs|    ipUdpMetaHandler<512>|  return value|
+|ap_start                                |   in|    1|  ap_ctrl_hs|    ipUdpMetaHandler<512>|  return value|
+|ap_done                                 |  out|    1|  ap_ctrl_hs|    ipUdpMetaHandler<512>|  return value|
+|ap_continue                             |   in|    1|  ap_ctrl_hs|    ipUdpMetaHandler<512>|  return value|
+|ap_idle                                 |  out|    1|  ap_ctrl_hs|    ipUdpMetaHandler<512>|  return value|
+|ap_ready                                |  out|    1|  ap_ctrl_hs|    ipUdpMetaHandler<512>|  return value|
+|rx_ipUdpMetaFifo_dout                   |   in|  256|     ap_fifo|         rx_ipUdpMetaFifo|       pointer|
+|rx_ipUdpMetaFifo_num_data_valid         |   in|    4|     ap_fifo|         rx_ipUdpMetaFifo|       pointer|
+|rx_ipUdpMetaFifo_fifo_cap               |   in|    4|     ap_fifo|         rx_ipUdpMetaFifo|       pointer|
+|rx_ipUdpMetaFifo_empty_n                |   in|    1|     ap_fifo|         rx_ipUdpMetaFifo|       pointer|
+|rx_ipUdpMetaFifo_read                   |  out|    1|     ap_fifo|         rx_ipUdpMetaFifo|       pointer|
+|rx_exh2drop_MetaFifo_dout               |   in|  512|     ap_fifo|     rx_exh2drop_MetaFifo|       pointer|
+|rx_exh2drop_MetaFifo_num_data_valid     |   in|    4|     ap_fifo|     rx_exh2drop_MetaFifo|       pointer|
+|rx_exh2drop_MetaFifo_fifo_cap           |   in|    4|     ap_fifo|     rx_exh2drop_MetaFifo|       pointer|
+|rx_exh2drop_MetaFifo_empty_n            |   in|    1|     ap_fifo|     rx_exh2drop_MetaFifo|       pointer|
+|rx_exh2drop_MetaFifo_read               |  out|    1|     ap_fifo|     rx_exh2drop_MetaFifo|       pointer|
+|rx_ibhDropMetaFifo_dout                 |   in|   16|     ap_fifo|       rx_ibhDropMetaFifo|       pointer|
+|rx_ibhDropMetaFifo_num_data_valid       |   in|    2|     ap_fifo|       rx_ibhDropMetaFifo|       pointer|
+|rx_ibhDropMetaFifo_fifo_cap             |   in|    2|     ap_fifo|       rx_ibhDropMetaFifo|       pointer|
+|rx_ibhDropMetaFifo_empty_n              |   in|    1|     ap_fifo|       rx_ibhDropMetaFifo|       pointer|
+|rx_ibhDropMetaFifo_read                 |  out|    1|     ap_fifo|       rx_ibhDropMetaFifo|       pointer|
+|exh_lengthFifo_din                      |  out|   16|     ap_fifo|           exh_lengthFifo|       pointer|
+|exh_lengthFifo_num_data_valid           |   in|    3|     ap_fifo|           exh_lengthFifo|       pointer|
+|exh_lengthFifo_fifo_cap                 |   in|    3|     ap_fifo|           exh_lengthFifo|       pointer|
+|exh_lengthFifo_full_n                   |   in|    1|     ap_fifo|           exh_lengthFifo|       pointer|
+|exh_lengthFifo_write                    |  out|    1|     ap_fifo|           exh_lengthFifo|       pointer|
+|rx_drop2exhFsm_MetaFifo_din             |  out|  512|     ap_fifo|  rx_drop2exhFsm_MetaFifo|       pointer|
+|rx_drop2exhFsm_MetaFifo_num_data_valid  |   in|    2|     ap_fifo|  rx_drop2exhFsm_MetaFifo|       pointer|
+|rx_drop2exhFsm_MetaFifo_fifo_cap        |   in|    2|     ap_fifo|  rx_drop2exhFsm_MetaFifo|       pointer|
+|rx_drop2exhFsm_MetaFifo_full_n          |   in|    1|     ap_fifo|  rx_drop2exhFsm_MetaFifo|       pointer|
+|rx_drop2exhFsm_MetaFifo_write           |  out|    1|     ap_fifo|  rx_drop2exhFsm_MetaFifo|       pointer|
++----------------------------------------+-----+-----+------------+-------------------------+--------------+
+
+============================================================
++ Verbose Summary: Synthesis Manager
+============================================================
+InlineROM: 1
+ExposeGlobal: 0
+============================================================
++ Verbose Summary: CDFG Model
+============================================================
+IsTopModel: 0
+ResetActiveHigh: 1
+IsCombinational: 2
+IsDatapathOnly: 0
+HasWiredReturn: 1
+HasMFsm: 2
+HasVarLatency: 0
+IsPipeline: 1
+IsRtlPipelined: 1
+IsInstanceOverlapped: 0
+IsDontTouch: 0
+HasImplIP: 0
+IsGatedGlobalClock: 0
+
++ Individual pipeline summary: 
+  * Pipeline-0: initiation interval (II) = 1, depth = 2
+
+
+============================================================
++ Verbose Summary: Schedule
+============================================================
+* Number of FSM states : 2
+* Pipeline : 1
+  Pipeline-0 : II = 1, D = 2, States = { 1 2 }
+* Dataflow Pipeline: 0
+
+* FSM state transitions: 
+1 --> 2 
+2 --> 
+
+* FSM state operations: 
+
+State 1 <SV = 0> <Delay = 1.18>
+ST_1 : Operation 3 [1/1] (0.00ns)   --->   "%specinterface_ln0 = specinterface void @_ssdm_op_SpecInterface, i16 %exh_lengthFifo, void @empty_5, i32 0, i32 0, void @empty, i32 0, i32 0, void @empty, void @empty, void @empty, i32 0, i32 0, i32 0, i32 0, void @empty, void @empty, i32 4294967295, i32 0"   --->   Operation 3 'specinterface' 'specinterface_ln0' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 4 [1/1] (0.00ns)   --->   "%specinterface_ln0 = specinterface void @_ssdm_op_SpecInterface, i16 %exh_lengthFifo, void @empty_5, i32 0, i32 0, void @empty, i32 0, i32 0, void @empty, void @empty, void @empty, i32 0, i32 0, i32 0, i32 0, void @empty, void @empty, i32 4294967295, i32 0"   --->   Operation 4 'specinterface' 'specinterface_ln0' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 5 [1/1] (0.00ns)   --->   "%specinterface_ln0 = specinterface void @_ssdm_op_SpecInterface, i16 %exh_lengthFifo, void @empty_5, i32 0, i32 0, void @empty, i32 0, i32 0, void @empty, void @empty, void @empty, i32 0, i32 0, i32 0, i32 0, void @empty, void @empty, i32 4294967295, i32 0"   --->   Operation 5 'specinterface' 'specinterface_ln0' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 6 [1/1] (0.00ns)   --->   "%specinterface_ln0 = specinterface void @_ssdm_op_SpecInterface, i512 %rx_drop2exhFsm_MetaFifo, void @empty_5, i32 0, i32 0, void @empty, i32 0, i32 0, void @empty, void @empty, void @empty, i32 0, i32 0, i32 0, i32 0, void @empty, void @empty, i32 4294967295, i32 0"   --->   Operation 6 'specinterface' 'specinterface_ln0' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 7 [1/1] (0.00ns)   --->   "%specinterface_ln0 = specinterface void @_ssdm_op_SpecInterface, i512 %rx_drop2exhFsm_MetaFifo, void @empty_5, i32 0, i32 0, void @empty, i32 0, i32 0, void @empty, void @empty, void @empty, i32 0, i32 0, i32 0, i32 0, void @empty, void @empty, i32 4294967295, i32 0"   --->   Operation 7 'specinterface' 'specinterface_ln0' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 8 [1/1] (0.00ns)   --->   "%specinterface_ln0 = specinterface void @_ssdm_op_SpecInterface, i512 %rx_drop2exhFsm_MetaFifo, void @empty_5, i32 0, i32 0, void @empty, i32 0, i32 0, void @empty, void @empty, void @empty, i32 0, i32 0, i32 0, i32 0, void @empty, void @empty, i32 4294967295, i32 0"   --->   Operation 8 'specinterface' 'specinterface_ln0' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 9 [1/1] (0.00ns)   --->   "%specinterface_ln0 = specinterface void @_ssdm_op_SpecInterface, i512 %rx_exh2drop_MetaFifo, void @empty_5, i32 0, i32 0, void @empty, i32 0, i32 0, void @empty, void @empty, void @empty, i32 0, i32 0, i32 0, i32 0, void @empty, void @empty, i32 4294967295, i32 0"   --->   Operation 9 'specinterface' 'specinterface_ln0' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 10 [1/1] (0.00ns)   --->   "%specinterface_ln0 = specinterface void @_ssdm_op_SpecInterface, i512 %rx_exh2drop_MetaFifo, void @empty_5, i32 0, i32 0, void @empty, i32 0, i32 0, void @empty, void @empty, void @empty, i32 0, i32 0, i32 0, i32 0, void @empty, void @empty, i32 4294967295, i32 0"   --->   Operation 10 'specinterface' 'specinterface_ln0' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 11 [1/1] (0.00ns)   --->   "%specinterface_ln0 = specinterface void @_ssdm_op_SpecInterface, i512 %rx_exh2drop_MetaFifo, void @empty_5, i32 0, i32 0, void @empty, i32 0, i32 0, void @empty, void @empty, void @empty, i32 0, i32 0, i32 0, i32 0, void @empty, void @empty, i32 4294967295, i32 0"   --->   Operation 11 'specinterface' 'specinterface_ln0' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 12 [1/1] (0.00ns)   --->   "%specinterface_ln0 = specinterface void @_ssdm_op_SpecInterface, i16 %rx_ibhDropMetaFifo, void @empty_5, i32 0, i32 0, void @empty, i32 0, i32 0, void @empty, void @empty, void @empty, i32 0, i32 0, i32 0, i32 0, void @empty, void @empty, i32 4294967295, i32 0"   --->   Operation 12 'specinterface' 'specinterface_ln0' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 13 [1/1] (0.00ns)   --->   "%specinterface_ln0 = specinterface void @_ssdm_op_SpecInterface, i16 %rx_ibhDropMetaFifo, void @empty_5, i32 0, i32 0, void @empty, i32 0, i32 0, void @empty, void @empty, void @empty, i32 0, i32 0, i32 0, i32 0, void @empty, void @empty, i32 4294967295, i32 0"   --->   Operation 13 'specinterface' 'specinterface_ln0' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 14 [1/1] (0.00ns)   --->   "%specinterface_ln0 = specinterface void @_ssdm_op_SpecInterface, i16 %rx_ibhDropMetaFifo, void @empty_5, i32 0, i32 0, void @empty, i32 0, i32 0, void @empty, void @empty, void @empty, i32 0, i32 0, i32 0, i32 0, void @empty, void @empty, i32 4294967295, i32 0"   --->   Operation 14 'specinterface' 'specinterface_ln0' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 15 [1/1] (0.00ns)   --->   "%specinterface_ln0 = specinterface void @_ssdm_op_SpecInterface, i256 %rx_ipUdpMetaFifo, void @empty_5, i32 0, i32 0, void @empty, i32 0, i32 0, void @empty, void @empty, void @empty, i32 0, i32 0, i32 0, i32 0, void @empty, void @empty, i32 4294967295, i32 0"   --->   Operation 15 'specinterface' 'specinterface_ln0' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 16 [1/1] (0.00ns)   --->   "%specinterface_ln0 = specinterface void @_ssdm_op_SpecInterface, i256 %rx_ipUdpMetaFifo, void @empty_5, i32 0, i32 0, void @empty, i32 0, i32 0, void @empty, void @empty, void @empty, i32 0, i32 0, i32 0, i32 0, void @empty, void @empty, i32 4294967295, i32 0"   --->   Operation 16 'specinterface' 'specinterface_ln0' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 17 [1/1] (0.00ns)   --->   "%specinterface_ln0 = specinterface void @_ssdm_op_SpecInterface, i256 %rx_ipUdpMetaFifo, void @empty_5, i32 0, i32 0, void @empty, i32 0, i32 0, void @empty, void @empty, void @empty, i32 0, i32 0, i32 0, i32 0, void @empty, void @empty, i32 4294967295, i32 0"   --->   Operation 17 'specinterface' 'specinterface_ln0' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 18 [1/1] (0.00ns)   --->   "%specinterface_ln0 = specinterface void @_ssdm_op_SpecInterface, i512 %rx_drop2exhFsm_MetaFifo, void @empty_5, i32 0, i32 0, void @empty, i32 0, i32 0, void @empty, void @empty, void @empty, i32 0, i32 0, i32 0, i32 0, void @empty, void @empty, i32 4294967295, i32 0"   --->   Operation 18 'specinterface' 'specinterface_ln0' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 19 [1/1] (0.00ns)   --->   "%specinterface_ln0 = specinterface void @_ssdm_op_SpecInterface, i16 %exh_lengthFifo, void @empty_5, i32 0, i32 0, void @empty, i32 0, i32 0, void @empty, void @empty, void @empty, i32 0, i32 0, i32 0, i32 0, void @empty, void @empty, i32 4294967295, i32 0"   --->   Operation 19 'specinterface' 'specinterface_ln0' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 20 [1/1] (0.00ns)   --->   "%specinterface_ln0 = specinterface void @_ssdm_op_SpecInterface, i16 %rx_ibhDropMetaFifo, void @empty_5, i32 0, i32 0, void @empty, i32 0, i32 0, void @empty, void @empty, void @empty, i32 0, i32 0, i32 0, i32 0, void @empty, void @empty, i32 4294967295, i32 0"   --->   Operation 20 'specinterface' 'specinterface_ln0' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 21 [1/1] (0.00ns)   --->   "%specinterface_ln0 = specinterface void @_ssdm_op_SpecInterface, i512 %rx_exh2drop_MetaFifo, void @empty_5, i32 0, i32 0, void @empty, i32 0, i32 0, void @empty, void @empty, void @empty, i32 0, i32 0, i32 0, i32 0, void @empty, void @empty, i32 4294967295, i32 0"   --->   Operation 21 'specinterface' 'specinterface_ln0' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 22 [1/1] (0.00ns)   --->   "%specinterface_ln0 = specinterface void @_ssdm_op_SpecInterface, i256 %rx_ipUdpMetaFifo, void @empty_5, i32 0, i32 0, void @empty, i32 0, i32 0, void @empty, void @empty, void @empty, i32 0, i32 0, i32 0, i32 0, void @empty, void @empty, i32 4294967295, i32 0"   --->   Operation 22 'specinterface' 'specinterface_ln0' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 23 [1/1] (0.00ns)   --->   "%specpipeline_ln1811 = specpipeline void @_ssdm_op_SpecPipeline, i32 1, i32 0, i32 0, i32 0, void @empty" [/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/rocev2/../ib_transport_protocol/ib_transport_protocol.cpp:1811]   --->   Operation 23 'specpipeline' 'specpipeline_ln1811' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 24 [1/1] (0.00ns)   --->   "%tmp_i = nbreadreq i1 @_ssdm_op_NbReadReq.ap_fifo.i256P0A, i256 %rx_ipUdpMetaFifo, i32 1" [/tools/Xilinx/Vitis_HLS/2022.1/common/technology/autopilot/hls_stream_39.h:136]   --->   Operation 24 'nbreadreq' 'tmp_i' <Predicate = true> <Delay = 0.00> <CoreInst = "FIFO">   --->   Core 78 'FIFO' <Latency = 0> <II = 1> <Delay = 1.06> <Storage> <Opcode : 'read' 'write' 'nbread' 'nbwrite'> <Ports = 0> <Width = 256> <Depth = 8> <FIFO>
+ST_1 : Operation 25 [1/1] (0.00ns)   --->   "%br_ln1827 = br i1 %tmp_i, void %ipUdpMetaHandler<512>.exit, void %land.lhs.true.i" [/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/rocev2/../ib_transport_protocol/ib_transport_protocol.cpp:1827]   --->   Operation 25 'br' 'br_ln1827' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 26 [1/1] (0.00ns)   --->   "%tmp_i_235 = nbreadreq i1 @_ssdm_op_NbReadReq.ap_fifo.i512P0A, i512 %rx_exh2drop_MetaFifo, i32 1" [/tools/Xilinx/Vitis_HLS/2022.1/common/technology/autopilot/hls_stream_39.h:136]   --->   Operation 26 'nbreadreq' 'tmp_i_235' <Predicate = (tmp_i)> <Delay = 0.00> <CoreInst = "FIFO">   --->   Core 78 'FIFO' <Latency = 0> <II = 1> <Delay = 1.23> <Storage> <Opcode : 'read' 'write' 'nbread' 'nbwrite'> <Ports = 0> <Width = 512> <Depth = 8> <FIFO>
+ST_1 : Operation 27 [1/1] (0.00ns)   --->   "%br_ln1827 = br i1 %tmp_i_235, void %ipUdpMetaHandler<512>.exit, void %land.lhs.true2.i" [/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/rocev2/../ib_transport_protocol/ib_transport_protocol.cpp:1827]   --->   Operation 27 'br' 'br_ln1827' <Predicate = (tmp_i)> <Delay = 0.00>
+ST_1 : Operation 28 [1/1] (0.00ns)   --->   "%tmp_201_i = nbreadreq i1 @_ssdm_op_NbReadReq.ap_fifo.i16P0A, i16 %rx_ibhDropMetaFifo, i32 1" [/tools/Xilinx/Vitis_HLS/2022.1/common/technology/autopilot/hls_stream_39.h:136]   --->   Operation 28 'nbreadreq' 'tmp_201_i' <Predicate = (tmp_i & tmp_i_235)> <Delay = 0.00> <CoreInst = "FIFO_SRL">   --->   Core 81 'FIFO_SRL' <Latency = 0> <II = 1> <Delay = 1.34> <Storage> <Opcode : 'read' 'write' 'nbread' 'nbwrite'> <Ports = 0> <Width = 16> <Depth = 2> <FIFO>
+ST_1 : Operation 29 [1/1] (0.00ns)   --->   "%br_ln1827 = br i1 %tmp_201_i, void %ipUdpMetaHandler<512>.exit, void %if.then.i" [/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/rocev2/../ib_transport_protocol/ib_transport_protocol.cpp:1827]   --->   Operation 29 'br' 'br_ln1827' <Predicate = (tmp_i & tmp_i_235)> <Delay = 0.00>
+ST_1 : Operation 30 [1/1] (1.06ns)   --->   "%rx_ipUdpMetaFifo_read = read i256 @_ssdm_op_Read.ap_fifo.volatile.i256P0A, i256 %rx_ipUdpMetaFifo" [/tools/Xilinx/Vitis_HLS/2022.1/common/technology/autopilot/hls_stream_39.h:145]   --->   Operation 30 'read' 'rx_ipUdpMetaFifo_read' <Predicate = (tmp_i & tmp_i_235 & tmp_201_i)> <Delay = 1.06> <CoreInst = "FIFO">   --->   Core 78 'FIFO' <Latency = 0> <II = 1> <Delay = 1.06> <Storage> <Opcode : 'read' 'write' 'nbread' 'nbwrite'> <Ports = 0> <Width = 256> <Depth = 8> <FIFO>
+ST_1 : Operation 31 [1/1] (0.00ns)   --->   "%meta_length_V_2 = partselect i16 @_ssdm_op_PartSelect.i16.i256.i32.i32, i256 %rx_ipUdpMetaFifo_read, i32 160, i32 175" [/tools/Xilinx/Vitis_HLS/2022.1/common/technology/autopilot/hls_stream_39.h:145]   --->   Operation 31 'partselect' 'meta_length_V_2' <Predicate = (tmp_i & tmp_i_235 & tmp_201_i)> <Delay = 0.00>
+ST_1 : Operation 32 [1/1] (1.16ns)   --->   "%rx_exh2drop_MetaFifo_read = read i512 @_ssdm_op_Read.ap_fifo.volatile.i512P0A, i512 %rx_exh2drop_MetaFifo" [/tools/Xilinx/Vitis_HLS/2022.1/common/technology/autopilot/hls_stream_39.h:145]   --->   Operation 32 'read' 'rx_exh2drop_MetaFifo_read' <Predicate = (tmp_i & tmp_i_235 & tmp_201_i)> <Delay = 1.16> <CoreInst = "FIFO">   --->   Core 78 'FIFO' <Latency = 0> <II = 1> <Delay = 1.23> <Storage> <Opcode : 'read' 'write' 'nbread' 'nbwrite'> <Ports = 0> <Width = 512> <Depth = 8> <FIFO>
+ST_1 : Operation 33 [1/1] (1.16ns)   --->   "%rx_ibhDropMetaFifo_read = read i16 @_ssdm_op_Read.ap_fifo.volatile.i16P0A, i16 %rx_ibhDropMetaFifo" [/tools/Xilinx/Vitis_HLS/2022.1/common/technology/autopilot/hls_stream_39.h:145]   --->   Operation 33 'read' 'rx_ibhDropMetaFifo_read' <Predicate = (tmp_i & tmp_i_235 & tmp_201_i)> <Delay = 1.16> <CoreInst = "FIFO_SRL">   --->   Core 81 'FIFO_SRL' <Latency = 0> <II = 1> <Delay = 1.34> <Storage> <Opcode : 'read' 'write' 'nbread' 'nbwrite'> <Ports = 0> <Width = 16> <Depth = 2> <FIFO>
+ST_1 : Operation 34 [1/1] (0.00ns)   --->   "%policy_isDrop = trunc i16 %rx_ibhDropMetaFifo_read" [/tools/Xilinx/Vitis_HLS/2022.1/common/technology/autopilot/hls_stream_39.h:145]   --->   Operation 34 'trunc' 'policy_isDrop' <Predicate = (tmp_i & tmp_i_235 & tmp_201_i)> <Delay = 0.00>
+ST_1 : Operation 35 [1/1] (0.00ns)   --->   "%policy_ackOnly = bitselect i1 @_ssdm_op_BitSelect.i1.i16.i16, i16 %rx_ibhDropMetaFifo_read, i16 8" [/tools/Xilinx/Vitis_HLS/2022.1/common/technology/autopilot/hls_stream_39.h:145]   --->   Operation 35 'bitselect' 'policy_ackOnly' <Predicate = (tmp_i & tmp_i_235 & tmp_201_i)> <Delay = 0.00>
+ST_1 : Operation 36 [1/1] (0.00ns)   --->   "%br_ln1832 = br i1 %policy_isDrop, void %if.then5.i, void %if.end7.i" [/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/rocev2/../ib_transport_protocol/ib_transport_protocol.cpp:1832]   --->   Operation 36 'br' 'br_ln1832' <Predicate = (tmp_i & tmp_i_235 & tmp_201_i)> <Delay = 0.00>
+ST_1 : Operation 37 [1/1] (0.00ns)   --->   "%br_ln1834 = br i1 %policy_ackOnly, void %if.then6.i, void %if.end.i" [/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/rocev2/../ib_transport_protocol/ib_transport_protocol.cpp:1834]   --->   Operation 37 'br' 'br_ln1834' <Predicate = (tmp_i & tmp_i_235 & tmp_201_i & !policy_isDrop)> <Delay = 0.00>
+ST_1 : Operation 38 [1/1] (0.00ns)   --->   "%br_ln1842 = br void %if.end7.i" [/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/rocev2/../ib_transport_protocol/ib_transport_protocol.cpp:1842]   --->   Operation 38 'br' 'br_ln1842' <Predicate = (tmp_i & tmp_i_235 & tmp_201_i & !policy_isDrop)> <Delay = 0.00>
+ST_1 : Operation 39 [1/1] (0.00ns)   --->   "%br_ln1843 = br void %ipUdpMetaHandler<512>.exit" [/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/rocev2/../ib_transport_protocol/ib_transport_protocol.cpp:1843]   --->   Operation 39 'br' 'br_ln1843' <Predicate = (tmp_i & tmp_i_235 & tmp_201_i)> <Delay = 0.00>
+
+State 2 <SV = 1> <Delay = 1.16>
+ST_2 : Operation 40 [1/1] (1.16ns)   --->   "%write_ln174 = write void @_ssdm_op_Write.ap_fifo.volatile.i16P0A, i16 %exh_lengthFifo, i16 %meta_length_V_2" [/tools/Xilinx/Vitis_HLS/2022.1/common/technology/autopilot/hls_stream_39.h:174]   --->   Operation 40 'write' 'write_ln174' <Predicate = (tmp_i & tmp_i_235 & tmp_201_i & !policy_isDrop & !policy_ackOnly)> <Delay = 1.16> <CoreInst = "FIFO_SRL">   --->   Core 81 'FIFO_SRL' <Latency = 0> <II = 1> <Delay = 1.33> <Storage> <Opcode : 'read' 'write' 'nbread' 'nbwrite'> <Ports = 0> <Width = 16> <Depth = 4> <FIFO>
+ST_2 : Operation 41 [1/1] (1.16ns)   --->   "%write_ln174 = write void @_ssdm_op_Write.ap_fifo.volatile.i512P0A, i512 %rx_drop2exhFsm_MetaFifo, i512 %rx_exh2drop_MetaFifo_read" [/tools/Xilinx/Vitis_HLS/2022.1/common/technology/autopilot/hls_stream_39.h:174]   --->   Operation 41 'write' 'write_ln174' <Predicate = (tmp_i & tmp_i_235 & tmp_201_i & !policy_isDrop & !policy_ackOnly)> <Delay = 1.16> <CoreInst = "FIFO_SRL">   --->   Core 81 'FIFO_SRL' <Latency = 0> <II = 1> <Delay = 1.41> <Storage> <Opcode : 'read' 'write' 'nbread' 'nbwrite'> <Ports = 0> <Width = 512> <Depth = 2> <FIFO>
+ST_2 : Operation 42 [1/1] (0.00ns)   --->   "%br_ln1840 = br void %if.end.i" [/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/rocev2/../ib_transport_protocol/ib_transport_protocol.cpp:1840]   --->   Operation 42 'br' 'br_ln1840' <Predicate = (tmp_i & tmp_i_235 & tmp_201_i & !policy_isDrop & !policy_ackOnly)> <Delay = 0.00>
+ST_2 : Operation 43 [1/1] (0.00ns)   --->   "%ret_ln0 = ret"   --->   Operation 43 'ret' 'ret_ln0' <Predicate = true> <Delay = 0.00>
+
+
+============================================================
++ Verbose Summary: Binding
+============================================================
+STG Binding: 
+---------------- STG Properties BEGIN ----------------
+- Is combinational: 0
+- Is one-state seq: 0
+- Is datapath-only: 0
+- Is pipelined: 1
+- Is top level: 0
+Port [ Return ] is wired: 1; IO mode=ap_ctrl_hs:ce=0
+Port [ rx_ipUdpMetaFifo]:  wired=1; compound=1; hidden=0; nouse=0; global=1; static=1; extern=0; dir=0; type=3; pingpong=0; private_global=0; IO mode=ap_fifo:ce=0
+Port [ rx_exh2drop_MetaFifo]:  wired=1; compound=1; hidden=0; nouse=0; global=1; static=1; extern=0; dir=0; type=3; pingpong=0; private_global=0; IO mode=ap_fifo:ce=0
+Port [ rx_ibhDropMetaFifo]:  wired=1; compound=1; hidden=0; nouse=0; global=1; static=1; extern=0; dir=0; type=3; pingpong=0; private_global=0; IO mode=ap_fifo:ce=0
+Port [ exh_lengthFifo]:  wired=1; compound=1; hidden=0; nouse=0; global=1; static=1; extern=0; dir=1; type=3; pingpong=0; private_global=0; IO mode=ap_fifo:ce=0
+Port [ rx_drop2exhFsm_MetaFifo]:  wired=1; compound=1; hidden=0; nouse=0; global=1; static=1; extern=0; dir=1; type=3; pingpong=0; private_global=0; IO mode=ap_fifo:ce=0
+---------------- STG Properties END ------------------
+
+---------------- Datapath Model BEGIN ----------------
+
+<LifeTime>
+<method=bitvector/>
+specinterface_ln0         (specinterface) [ 000]
+specinterface_ln0         (specinterface) [ 000]
+specinterface_ln0         (specinterface) [ 000]
+specinterface_ln0         (specinterface) [ 000]
+specinterface_ln0         (specinterface) [ 000]
+specinterface_ln0         (specinterface) [ 000]
+specinterface_ln0         (specinterface) [ 000]
+specinterface_ln0         (specinterface) [ 000]
+specinterface_ln0         (specinterface) [ 000]
+specinterface_ln0         (specinterface) [ 000]
+specinterface_ln0         (specinterface) [ 000]
+specinterface_ln0         (specinterface) [ 000]
+specinterface_ln0         (specinterface) [ 000]
+specinterface_ln0         (specinterface) [ 000]
+specinterface_ln0         (specinterface) [ 000]
+specinterface_ln0         (specinterface) [ 000]
+specinterface_ln0         (specinterface) [ 000]
+specinterface_ln0         (specinterface) [ 000]
+specinterface_ln0         (specinterface) [ 000]
+specinterface_ln0         (specinterface) [ 000]
+specpipeline_ln1811       (specpipeline ) [ 000]
+tmp_i                     (nbreadreq    ) [ 011]
+br_ln1827                 (br           ) [ 000]
+tmp_i_235                 (nbreadreq    ) [ 011]
+br_ln1827                 (br           ) [ 000]
+tmp_201_i                 (nbreadreq    ) [ 011]
+br_ln1827                 (br           ) [ 000]
+rx_ipUdpMetaFifo_read     (read         ) [ 000]
+meta_length_V_2           (partselect   ) [ 011]
+rx_exh2drop_MetaFifo_read (read         ) [ 011]
+rx_ibhDropMetaFifo_read   (read         ) [ 000]
+policy_isDrop             (trunc        ) [ 011]
+policy_ackOnly            (bitselect    ) [ 011]
+br_ln1832                 (br           ) [ 000]
+br_ln1834                 (br           ) [ 000]
+br_ln1842                 (br           ) [ 000]
+br_ln1843                 (br           ) [ 000]
+write_ln174               (write        ) [ 000]
+write_ln174               (write        ) [ 000]
+br_ln1840                 (br           ) [ 000]
+ret_ln0                   (ret          ) [ 000]
+</LifeTime>
+
+<model>
+
+<comp_list>
+<comp id="0" class="1000" name="rx_ipUdpMetaFifo">
+<pin_list>
+<pin id="1" dir="1" index="0" bw="1" slack="0"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="rx_ipUdpMetaFifo"/></StgValue>
+</bind>
+</comp>
+
+<comp id="2" class="1000" name="rx_exh2drop_MetaFifo">
+<pin_list>
+<pin id="3" dir="1" index="0" bw="1" slack="0"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="rx_exh2drop_MetaFifo"/></StgValue>
+</bind>
+</comp>
+
+<comp id="4" class="1000" name="rx_ibhDropMetaFifo">
+<pin_list>
+<pin id="5" dir="1" index="0" bw="1" slack="0"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="rx_ibhDropMetaFifo"/></StgValue>
+</bind>
+</comp>
+
+<comp id="6" class="1000" name="exh_lengthFifo">
+<pin_list>
+<pin id="7" dir="1" index="0" bw="1" slack="0"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="exh_lengthFifo"/></StgValue>
+</bind>
+</comp>
+
+<comp id="8" class="1000" name="rx_drop2exhFsm_MetaFifo">
+<pin_list>
+<pin id="9" dir="1" index="0" bw="1" slack="0"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="rx_drop2exhFsm_MetaFifo"/></StgValue>
+</bind>
+</comp>
+
+<comp id="10" class="1001" name="const_10">
+<pin_list>
+<pin id="11" dir="1" index="0" bw="1" slack="2147483647"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="_ssdm_op_SpecInterface"/></StgValue>
+</bind>
+</comp>
+
+<comp id="12" class="1001" name="const_12">
+<pin_list>
+<pin id="13" dir="1" index="0" bw="1" slack="2147483647"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="empty_5"/></StgValue>
+</bind>
+</comp>
+
+<comp id="14" class="1001" name="const_14">
+<pin_list>
+<pin id="15" dir="1" index="0" bw="1" slack="2147483647"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name=""/></StgValue>
+</bind>
+</comp>
+
+<comp id="16" class="1001" name="const_16">
+<pin_list>
+<pin id="17" dir="1" index="0" bw="1" slack="2147483647"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="empty"/></StgValue>
+</bind>
+</comp>
+
+<comp id="18" class="1001" name="const_18">
+<pin_list>
+<pin id="19" dir="1" index="0" bw="1" slack="2147483647"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name=""/></StgValue>
+</bind>
+</comp>
+
+<comp id="20" class="1001" name="const_20">
+<pin_list>
+<pin id="21" dir="1" index="0" bw="1" slack="2147483647"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="_ssdm_op_SpecPipeline"/></StgValue>
+</bind>
+</comp>
+
+<comp id="22" class="1001" name="const_22">
+<pin_list>
+<pin id="23" dir="1" index="0" bw="1" slack="0"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name=""/></StgValue>
+</bind>
+</comp>
+
+<comp id="24" class="1001" name="const_24">
+<pin_list>
+<pin id="25" dir="1" index="0" bw="1" slack="0"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="_ssdm_op_NbReadReq.ap_fifo.i256P0A"/></StgValue>
+</bind>
+</comp>
+
+<comp id="26" class="1001" name="const_26">
+<pin_list>
+<pin id="27" dir="1" index="0" bw="1" slack="0"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="_ssdm_op_NbReadReq.ap_fifo.i512P0A"/></StgValue>
+</bind>
+</comp>
+
+<comp id="28" class="1001" name="const_28">
+<pin_list>
+<pin id="29" dir="1" index="0" bw="1" slack="0"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="_ssdm_op_NbReadReq.ap_fifo.i16P0A"/></StgValue>
+</bind>
+</comp>
+
+<comp id="30" class="1001" name="const_30">
+<pin_list>
+<pin id="31" dir="1" index="0" bw="1" slack="0"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="_ssdm_op_Read.ap_fifo.volatile.i256P0A"/></StgValue>
+</bind>
+</comp>
+
+<comp id="32" class="1001" name="const_32">
+<pin_list>
+<pin id="33" dir="1" index="0" bw="1" slack="0"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="_ssdm_op_PartSelect.i16.i256.i32.i32"/></StgValue>
+</bind>
+</comp>
+
+<comp id="34" class="1001" name="const_34">
+<pin_list>
+<pin id="35" dir="1" index="0" bw="1" slack="0"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name=""/></StgValue>
+</bind>
+</comp>
+
+<comp id="36" class="1001" name="const_36">
+<pin_list>
+<pin id="37" dir="1" index="0" bw="1" slack="0"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name=""/></StgValue>
+</bind>
+</comp>
+
+<comp id="38" class="1001" name="const_38">
+<pin_list>
+<pin id="39" dir="1" index="0" bw="1" slack="0"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="_ssdm_op_Read.ap_fifo.volatile.i512P0A"/></StgValue>
+</bind>
+</comp>
+
+<comp id="40" class="1001" name="const_40">
+<pin_list>
+<pin id="41" dir="1" index="0" bw="1" slack="0"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="_ssdm_op_Read.ap_fifo.volatile.i16P0A"/></StgValue>
+</bind>
+</comp>
+
+<comp id="42" class="1001" name="const_42">
+<pin_list>
+<pin id="43" dir="1" index="0" bw="1" slack="0"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="_ssdm_op_BitSelect.i1.i16.i16"/></StgValue>
+</bind>
+</comp>
+
+<comp id="44" class="1001" name="const_44">
+<pin_list>
+<pin id="45" dir="1" index="0" bw="1" slack="0"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name=""/></StgValue>
+</bind>
+</comp>
+
+<comp id="46" class="1001" name="const_46">
+<pin_list>
+<pin id="47" dir="1" index="0" bw="1" slack="0"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="_ssdm_op_Write.ap_fifo.volatile.i16P0A"/></StgValue>
+</bind>
+</comp>
+
+<comp id="48" class="1001" name="const_48">
+<pin_list>
+<pin id="49" dir="1" index="0" bw="1" slack="0"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="_ssdm_op_Write.ap_fifo.volatile.i512P0A"/></StgValue>
+</bind>
+</comp>
+
+<comp id="50" class="1004" name="tmp_i_nbreadreq_fu_50">
+<pin_list>
+<pin id="51" dir="0" index="0" bw="1" slack="0"/>
+<pin id="52" dir="0" index="1" bw="256" slack="0"/>
+<pin id="53" dir="0" index="2" bw="1" slack="0"/>
+<pin id="54" dir="1" index="3" bw="1" slack="1"/>
+</pin_list>
+<bind>
+<opcode="nbreadreq(1156) " fcode="nbreadreq"/>
+<opset="tmp_i/1 "/>
+</bind>
+</comp>
+
+<comp id="58" class="1004" name="tmp_i_235_nbreadreq_fu_58">
+<pin_list>
+<pin id="59" dir="0" index="0" bw="1" slack="0"/>
+<pin id="60" dir="0" index="1" bw="512" slack="0"/>
+<pin id="61" dir="0" index="2" bw="1" slack="0"/>
+<pin id="62" dir="1" index="3" bw="1" slack="1"/>
+</pin_list>
+<bind>
+<opcode="nbreadreq(1156) " fcode="nbreadreq"/>
+<opset="tmp_i_235/1 "/>
+</bind>
+</comp>
+
+<comp id="66" class="1004" name="tmp_201_i_nbreadreq_fu_66">
+<pin_list>
+<pin id="67" dir="0" index="0" bw="1" slack="0"/>
+<pin id="68" dir="0" index="1" bw="16" slack="0"/>
+<pin id="69" dir="0" index="2" bw="1" slack="0"/>
+<pin id="70" dir="1" index="3" bw="1" slack="1"/>
+</pin_list>
+<bind>
+<opcode="nbreadreq(1156) " fcode="nbreadreq"/>
+<opset="tmp_201_i/1 "/>
+</bind>
+</comp>
+
+<comp id="74" class="1004" name="rx_ipUdpMetaFifo_read_read_fu_74">
+<pin_list>
+<pin id="75" dir="0" index="0" bw="256" slack="0"/>
+<pin id="76" dir="0" index="1" bw="256" slack="0"/>
+<pin id="77" dir="1" index="2" bw="256" slack="0"/>
+</pin_list>
+<bind>
+<opcode="read(1150) " fcode="read"/>
+<opset="rx_ipUdpMetaFifo_read/1 "/>
+</bind>
+</comp>
+
+<comp id="80" class="1004" name="rx_exh2drop_MetaFifo_read_read_fu_80">
+<pin_list>
+<pin id="81" dir="0" index="0" bw="512" slack="0"/>
+<pin id="82" dir="0" index="1" bw="512" slack="0"/>
+<pin id="83" dir="1" index="2" bw="512" slack="1"/>
+</pin_list>
+<bind>
+<opcode="read(1150) " fcode="read"/>
+<opset="rx_exh2drop_MetaFifo_read/1 "/>
+</bind>
+</comp>
+
+<comp id="86" class="1004" name="rx_ibhDropMetaFifo_read_read_fu_86">
+<pin_list>
+<pin id="87" dir="0" index="0" bw="16" slack="0"/>
+<pin id="88" dir="0" index="1" bw="16" slack="0"/>
+<pin id="89" dir="1" index="2" bw="16" slack="0"/>
+</pin_list>
+<bind>
+<opcode="read(1150) " fcode="read"/>
+<opset="rx_ibhDropMetaFifo_read/1 "/>
+</bind>
+</comp>
+
+<comp id="92" class="1004" name="write_ln174_write_fu_92">
+<pin_list>
+<pin id="93" dir="0" index="0" bw="0" slack="0"/>
+<pin id="94" dir="0" index="1" bw="16" slack="0"/>
+<pin id="95" dir="0" index="2" bw="16" slack="1"/>
+<pin id="96" dir="1" index="3" bw="0" slack="2147483647"/>
+</pin_list>
+<bind>
+<opcode="write(1151) " fcode="write"/>
+<opset="write_ln174/2 "/>
+</bind>
+</comp>
+
+<comp id="99" class="1004" name="write_ln174_write_fu_99">
+<pin_list>
+<pin id="100" dir="0" index="0" bw="0" slack="0"/>
+<pin id="101" dir="0" index="1" bw="512" slack="0"/>
+<pin id="102" dir="0" index="2" bw="512" slack="1"/>
+<pin id="103" dir="1" index="3" bw="0" slack="2147483647"/>
+</pin_list>
+<bind>
+<opcode="write(1151) " fcode="write"/>
+<opset="write_ln174/2 "/>
+</bind>
+</comp>
+
+<comp id="106" class="1004" name="meta_length_V_2_fu_106">
+<pin_list>
+<pin id="107" dir="0" index="0" bw="16" slack="0"/>
+<pin id="108" dir="0" index="1" bw="256" slack="0"/>
+<pin id="109" dir="0" index="2" bw="9" slack="0"/>
+<pin id="110" dir="0" index="3" bw="9" slack="0"/>
+<pin id="111" dir="1" index="4" bw="16" slack="1"/>
+</pin_list>
+<bind>
+<opcode="partselect(1002) " fcode="partselect"/>
+<opset="meta_length_V_2/1 "/>
+</bind>
+</comp>
+
+<comp id="116" class="1004" name="policy_isDrop_fu_116">
+<pin_list>
+<pin id="117" dir="0" index="0" bw="16" slack="0"/>
+<pin id="118" dir="1" index="1" bw="1" slack="1"/>
+</pin_list>
+<bind>
+<opcode="trunc(33) " fcode="trunc"/>
+<opset="policy_isDrop/1 "/>
+</bind>
+</comp>
+
+<comp id="120" class="1004" name="policy_ackOnly_fu_120">
+<pin_list>
+<pin id="121" dir="0" index="0" bw="1" slack="0"/>
+<pin id="122" dir="0" index="1" bw="16" slack="0"/>
+<pin id="123" dir="0" index="2" bw="5" slack="0"/>
+<pin id="124" dir="1" index="3" bw="1" slack="1"/>
+</pin_list>
+<bind>
+<opcode="bitselect(1000) " fcode="bitselect"/>
+<opset="policy_ackOnly/1 "/>
+</bind>
+</comp>
+
+<comp id="128" class="1005" name="tmp_i_reg_128">
+<pin_list>
+<pin id="129" dir="0" index="0" bw="1" slack="1"/>
+<pin id="130" dir="1" index="1" bw="1" slack="2147483647"/>
+</pin_list>
+<bind>
+<opset="tmp_i "/>
+</bind>
+</comp>
+
+<comp id="132" class="1005" name="tmp_i_235_reg_132">
+<pin_list>
+<pin id="133" dir="0" index="0" bw="1" slack="1"/>
+<pin id="134" dir="1" index="1" bw="1" slack="2147483647"/>
+</pin_list>
+<bind>
+<opset="tmp_i_235 "/>
+</bind>
+</comp>
+
+<comp id="136" class="1005" name="tmp_201_i_reg_136">
+<pin_list>
+<pin id="137" dir="0" index="0" bw="1" slack="1"/>
+<pin id="138" dir="1" index="1" bw="1" slack="2147483647"/>
+</pin_list>
+<bind>
+<opset="tmp_201_i "/>
+</bind>
+</comp>
+
+<comp id="140" class="1005" name="meta_length_V_2_reg_140">
+<pin_list>
+<pin id="141" dir="0" index="0" bw="16" slack="1"/>
+<pin id="142" dir="1" index="1" bw="16" slack="1"/>
+</pin_list>
+<bind>
+<opset="meta_length_V_2 "/>
+</bind>
+</comp>
+
+<comp id="145" class="1005" name="rx_exh2drop_MetaFifo_read_reg_145">
+<pin_list>
+<pin id="146" dir="0" index="0" bw="512" slack="1"/>
+<pin id="147" dir="1" index="1" bw="512" slack="1"/>
+</pin_list>
+<bind>
+<opset="rx_exh2drop_MetaFifo_read "/>
+</bind>
+</comp>
+
+<comp id="150" class="1005" name="policy_isDrop_reg_150">
+<pin_list>
+<pin id="151" dir="0" index="0" bw="1" slack="1"/>
+<pin id="152" dir="1" index="1" bw="1" slack="2147483647"/>
+</pin_list>
+<bind>
+<opset="policy_isDrop "/>
+</bind>
+</comp>
+
+<comp id="154" class="1005" name="policy_ackOnly_reg_154">
+<pin_list>
+<pin id="155" dir="0" index="0" bw="1" slack="1"/>
+<pin id="156" dir="1" index="1" bw="1" slack="2147483647"/>
+</pin_list>
+<bind>
+<opset="policy_ackOnly "/>
+</bind>
+</comp>
+
+</comp_list>
+
+<net_list>
+<net id="55"><net_src comp="24" pin="0"/><net_sink comp="50" pin=0"/></net>
+
+<net id="56"><net_src comp="0" pin="0"/><net_sink comp="50" pin=1"/></net>
+
+<net id="57"><net_src comp="22" pin="0"/><net_sink comp="50" pin=2"/></net>
+
+<net id="63"><net_src comp="26" pin="0"/><net_sink comp="58" pin=0"/></net>
+
+<net id="64"><net_src comp="2" pin="0"/><net_sink comp="58" pin=1"/></net>
+
+<net id="65"><net_src comp="22" pin="0"/><net_sink comp="58" pin=2"/></net>
+
+<net id="71"><net_src comp="28" pin="0"/><net_sink comp="66" pin=0"/></net>
+
+<net id="72"><net_src comp="4" pin="0"/><net_sink comp="66" pin=1"/></net>
+
+<net id="73"><net_src comp="22" pin="0"/><net_sink comp="66" pin=2"/></net>
+
+<net id="78"><net_src comp="30" pin="0"/><net_sink comp="74" pin=0"/></net>
+
+<net id="79"><net_src comp="0" pin="0"/><net_sink comp="74" pin=1"/></net>
+
+<net id="84"><net_src comp="38" pin="0"/><net_sink comp="80" pin=0"/></net>
+
+<net id="85"><net_src comp="2" pin="0"/><net_sink comp="80" pin=1"/></net>
+
+<net id="90"><net_src comp="40" pin="0"/><net_sink comp="86" pin=0"/></net>
+
+<net id="91"><net_src comp="4" pin="0"/><net_sink comp="86" pin=1"/></net>
+
+<net id="97"><net_src comp="46" pin="0"/><net_sink comp="92" pin=0"/></net>
+
+<net id="98"><net_src comp="6" pin="0"/><net_sink comp="92" pin=1"/></net>
+
+<net id="104"><net_src comp="48" pin="0"/><net_sink comp="99" pin=0"/></net>
+
+<net id="105"><net_src comp="8" pin="0"/><net_sink comp="99" pin=1"/></net>
+
+<net id="112"><net_src comp="32" pin="0"/><net_sink comp="106" pin=0"/></net>
+
+<net id="113"><net_src comp="74" pin="2"/><net_sink comp="106" pin=1"/></net>
+
+<net id="114"><net_src comp="34" pin="0"/><net_sink comp="106" pin=2"/></net>
+
+<net id="115"><net_src comp="36" pin="0"/><net_sink comp="106" pin=3"/></net>
+
+<net id="119"><net_src comp="86" pin="2"/><net_sink comp="116" pin=0"/></net>
+
+<net id="125"><net_src comp="42" pin="0"/><net_sink comp="120" pin=0"/></net>
+
+<net id="126"><net_src comp="86" pin="2"/><net_sink comp="120" pin=1"/></net>
+
+<net id="127"><net_src comp="44" pin="0"/><net_sink comp="120" pin=2"/></net>
+
+<net id="131"><net_src comp="50" pin="3"/><net_sink comp="128" pin=0"/></net>
+
+<net id="135"><net_src comp="58" pin="3"/><net_sink comp="132" pin=0"/></net>
+
+<net id="139"><net_src comp="66" pin="3"/><net_sink comp="136" pin=0"/></net>
+
+<net id="143"><net_src comp="106" pin="4"/><net_sink comp="140" pin=0"/></net>
+
+<net id="144"><net_src comp="140" pin="1"/><net_sink comp="92" pin=2"/></net>
+
+<net id="148"><net_src comp="80" pin="2"/><net_sink comp="145" pin=0"/></net>
+
+<net id="149"><net_src comp="145" pin="1"/><net_sink comp="99" pin=2"/></net>
+
+<net id="153"><net_src comp="116" pin="1"/><net_sink comp="150" pin=0"/></net>
+
+<net id="157"><net_src comp="120" pin="3"/><net_sink comp="154" pin=0"/></net>
+
+</net_list>
+
+</model> 
+---------------- Datapath Model END ------------------
+
+* FSMD analyzer results:
+  - Output states:
+	Port: rx_ipUdpMetaFifo | {}
+	Port: rx_exh2drop_MetaFifo | {}
+	Port: rx_ibhDropMetaFifo | {}
+	Port: exh_lengthFifo | {2 }
+	Port: rx_drop2exhFsm_MetaFifo | {2 }
+ - Input state : 
+	Port: ipUdpMetaHandler<512> : rx_ipUdpMetaFifo | {1 }
+	Port: ipUdpMetaHandler<512> : rx_exh2drop_MetaFifo | {1 }
+	Port: ipUdpMetaHandler<512> : rx_ibhDropMetaFifo | {1 }
+	Port: ipUdpMetaHandler<512> : exh_lengthFifo | {}
+	Port: ipUdpMetaHandler<512> : rx_drop2exhFsm_MetaFifo | {}
+  - Chain level:
+	State 1
+		br_ln1832 : 1
+		br_ln1834 : 1
+	State 2
+
+
+============================================================
++ Verbose Summary: Datapath Resource usage 
+============================================================
+
+* Functional unit list:
+|----------|--------------------------------------|
+| Operation|            Functional Unit           |
+|----------|--------------------------------------|
+|          |         tmp_i_nbreadreq_fu_50        |
+| nbreadreq|       tmp_i_235_nbreadreq_fu_58      |
+|          |       tmp_201_i_nbreadreq_fu_66      |
+|----------|--------------------------------------|
+|          |   rx_ipUdpMetaFifo_read_read_fu_74   |
+|   read   | rx_exh2drop_MetaFifo_read_read_fu_80 |
+|          |  rx_ibhDropMetaFifo_read_read_fu_86  |
+|----------|--------------------------------------|
+|   write  |        write_ln174_write_fu_92       |
+|          |        write_ln174_write_fu_99       |
+|----------|--------------------------------------|
+|partselect|        meta_length_V_2_fu_106        |
+|----------|--------------------------------------|
+|   trunc  |         policy_isDrop_fu_116         |
+|----------|--------------------------------------|
+| bitselect|         policy_ackOnly_fu_120        |
+|----------|--------------------------------------|
+|   Total  |                                      |
+|----------|--------------------------------------|
+
+Memories:
+N/A
+
+* Register list:
++---------------------------------+--------+
+|                                 |   FF   |
++---------------------------------+--------+
+|     meta_length_V_2_reg_140     |   16   |
+|      policy_ackOnly_reg_154     |    1   |
+|      policy_isDrop_reg_150      |    1   |
+|rx_exh2drop_MetaFifo_read_reg_145|   512  |
+|        tmp_201_i_reg_136        |    1   |
+|        tmp_i_235_reg_132        |    1   |
+|          tmp_i_reg_128          |    1   |
++---------------------------------+--------+
+|              Total              |   533  |
++---------------------------------+--------+
+
+* Multiplexer (MUX) list: 
+|--------|------|------|------|--------|
+|  Comp  |  Pin | Size |  BW  | S x BW |
+|--------|------|------|------|--------|
+|  Total |      |      |      |    0   |
+|--------|------|------|------|--------|
+
+
+
+* Summary:
++-----------+--------+
+|           |   FF   |
++-----------+--------+
+|  Function |    -   |
+|   Memory  |    -   |
+|Multiplexer|    -   |
+|  Register |   533  |
++-----------+--------+
+|   Total   |   533  |
++-----------+--------+

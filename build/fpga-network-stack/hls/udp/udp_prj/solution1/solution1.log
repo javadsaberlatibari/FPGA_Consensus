@@ -1,0 +1,283 @@
+==============================================================
+Vitis HLS - High-Level Synthesis from C, C++ and OpenCL v2022.1 (64-bit)
+Tool Version Limit: 2022.04
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+==============================================================
+INFO: [HLS 200-1505] Using default flow_target 'vivado'
+INFO: [HLS 200-435] Setting 'open_solution -flow_target vivado' configuration: config_interface -m_axi_latency=0
+INFO: [HLS 200-1510] Running: set_part xcu280-fsvh2892-2L-e 
+INFO: [HLS 200-1611] Setting target device to 'xcu280-fsvh2892-2L-e'
+INFO: [HLS 200-1510] Running: create_clock -period 3.2 -name default 
+INFO: [SYN 201-201] Setting up clock 'default' with a period of 3.2ns.
+INFO: [HLS 200-1510] Running: set_top udp_top 
+INFO: [HLS 200-1510] Running: add_files /mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/udp/udp.cpp -cflags -I/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/build/fpga-network-stack/hls/udp 
+INFO: [HLS 200-10] Adding design file '/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/udp/udp.cpp' to the project
+INFO: [HLS 200-1510] Running: csynth_design 
+INFO: [HLS 200-111] Finished File checks and directory preparation: CPU user time: 0.04 seconds. CPU system time: 0 seconds. Elapsed time: 0.03 seconds; current allocated memory: 1.624 GB.
+INFO: [HLS 200-10] Analyzing design file '/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/udp/udp.cpp' ... 
+WARNING: [HLS 207-997] '/*' within block comment (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/udp/../packet.hpp:97:4)
+WARNING: [HLS 207-997] '/*' within block comment (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/udp/../packet.hpp:123:2)
+WARNING: [HLS 207-5505] the pragma is not supported and will be ignored (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/udp/udp.cpp:222:9)
+WARNING: [HLS 207-5505] the pragma is not supported and will be ignored (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/udp/udp.cpp:269:9)
+WARNING: [HLS 207-5505] the pragma is not supported and will be ignored (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/udp/udp.cpp:270:9)
+WARNING: [HLS 207-5505] the pragma is not supported and will be ignored (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/udp/udp.cpp:271:9)
+WARNING: [HLS 207-5505] the pragma is not supported and will be ignored (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/udp/udp.cpp:272:9)
+WARNING: [HLS 207-5526] 'Ap_stable' in '#pragma HLS INTERFACE' is deprecated, use 'Stable Pragma' instead (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/udp/udp.cpp:273:23)
+WARNING: [HLS 207-5526] 'Ap_stable' in '#pragma HLS INTERFACE' is deprecated, use 'Stable Pragma' instead (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/udp/udp.cpp:274:23)
+WARNING: [HLS 207-5292] unused parameter 'output' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/udp/../axi_utils.hpp:198:26)
+WARNING: [HLS 207-5292] unused parameter 'word' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/udp/../axi_utils.hpp:198:47)
+WARNING: [HLS 207-5292] unused parameter 'output' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/udp/../axi_utils.hpp:213:28)
+WARNING: [HLS 207-5292] unused parameter 'data' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/udp/../axi_utils.hpp:213:48)
+WARNING: [HLS 207-5292] unused parameter 'output' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/udp/../axi_utils.hpp:226:28)
+WARNING: [HLS 207-5292] unused parameter 'word' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/udp/../axi_utils.hpp:226:49)
+WARNING: [HLS 207-5292] unused parameter 'output' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/udp/../axi_utils.hpp:241:28)
+WARNING: [HLS 207-5292] unused parameter 'word' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/udp/../axi_utils.hpp:241:59)
+WARNING: [HLS 207-5292] unused parameter 'd' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/udp/../axi_utils.hpp:417:20)
+WARNING: [HLS 207-5292] unused parameter 's' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/udp/../axi_utils.hpp:417:26)
+WARNING: [HLS 207-5292] unused parameter 'reg_ip_address' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/udp/udp.cpp:208:18)
+INFO: [HLS 200-111] Finished Source Code Analysis and Preprocessing: CPU user time: 5.89 seconds. CPU system time: 0.78 seconds. Elapsed time: 6.54 seconds; current allocated memory: 634.039 MB.
+INFO: [HLS 200-777] Using interface defaults for 'Vivado' flow target.
+WARNING: [HLS 214-273] In function 'void udp<512>(hls::stream<ipv4Meta, 0>&, hls::stream<net_axis<512>, 0>&, hls::stream<ipUdpMeta, 0>&, hls::stream<net_axis<512>, 0>&, hls::stream<ipUdpMeta, 0>&, hls::stream<net_axis<512>, 0>&, hls::stream<ipv4Meta, 0>&, hls::stream<net_axis<512>, 0>&, ap_uint<128>, ap_uint<16>)', Pragma conflict happens on 'INLINE' and DATAFLOW pragmas: Inline into dataflow region may break the canonical form (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/udp/udp.cpp:210:0)
+INFO: [HLS 214-131] Inlining function 'void udp<512>(hls::stream<ipv4Meta, 0>&, hls::stream<net_axis<512>, 0>&, hls::stream<ipUdpMeta, 0>&, hls::stream<net_axis<512>, 0>&, hls::stream<ipUdpMeta, 0>&, hls::stream<net_axis<512>, 0>&, hls::stream<ipv4Meta, 0>&, hls::stream<net_axis<512>, 0>&, ap_uint<128>, ap_uint<16>)' into 'udp_top(hls::stream<ipv4Meta, 0>&, hls::stream<net_axis<512>, 0>&, hls::stream<ipUdpMeta, 0>&, hls::stream<net_axis<512>, 0>&, hls::stream<ipUdpMeta, 0>&, hls::stream<net_axis<512>, 0>&, hls::stream<ipv4Meta, 0>&, hls::stream<net_axis<512>, 0>&, ap_uint<128>, ap_uint<16>)' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/udp/udp.cpp:277:2)
+INFO: [HLS 214-291] Loop 'VITIS_LOOP_76_1' is marked as complete unroll implied by the pipeline pragma (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/udp/../axi_utils.hpp:76:19)
+INFO: [HLS 214-186] Unrolling loop 'VITIS_LOOP_76_1' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/udp/../axi_utils.hpp:76:19) in function 'reverse<16>' completely with a factor of 2 (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/udp/../axi_utils.hpp:74:0)
+INFO: [HLS 214-178] Inlining function 'ap_uint<16> reverse<16>(ap_uint<16> const&)' into 'udpHeader<512>::getDstPort()' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/udp/udp.hpp:98:0)
+INFO: [HLS 214-178] Inlining function 'ap_uint<16> reverse<16>(ap_uint<16> const&)' into 'udpHeader<512>::getSrcPort()' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/udp/udp.hpp:90:0)
+INFO: [HLS 214-178] Inlining function 'ap_uint<16> reverse<16>(ap_uint<16> const&)' into 'udpHeader<512>::getLength()' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/udp/udp.hpp:106:0)
+INFO: [HLS 214-178] Inlining function 'packetHeader<512, 64>::parseWord(ap_uint<512>&)' into 'void process_udp<512>(hls::stream<net_axis<512>, 0>&, hls::stream<udpMeta, 0>&, hls::stream<net_axis<512>, 0>&, ap_uint<16>)' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/udp/udp.cpp:35:0)
+INFO: [HLS 214-178] Inlining function 'udpHeader<512>::getDstPort()' into 'void process_udp<512>(hls::stream<net_axis<512>, 0>&, hls::stream<udpMeta, 0>&, hls::stream<net_axis<512>, 0>&, ap_uint<16>)' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/udp/udp.cpp:35:0)
+INFO: [HLS 214-178] Inlining function 'packetHeader<512, 64>::isReady()' into 'void process_udp<512>(hls::stream<net_axis<512>, 0>&, hls::stream<udpMeta, 0>&, hls::stream<net_axis<512>, 0>&, ap_uint<16>)' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/udp/udp.cpp:35:0)
+INFO: [HLS 214-178] Inlining function 'udpHeader<512>::getSrcPort()' into 'void process_udp<512>(hls::stream<net_axis<512>, 0>&, hls::stream<udpMeta, 0>&, hls::stream<net_axis<512>, 0>&, ap_uint<16>)' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/udp/udp.cpp:35:0)
+INFO: [HLS 214-178] Inlining function 'udpHeader<512>::getLength()' into 'void process_udp<512>(hls::stream<net_axis<512>, 0>&, hls::stream<udpMeta, 0>&, hls::stream<net_axis<512>, 0>&, ap_uint<16>)' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/udp/udp.cpp:35:0)
+INFO: [HLS 214-178] Inlining function 'udpMeta::udpMeta(ap_uint<16>, ap_uint<16>, ap_uint<16>, bool)' into 'void process_udp<512>(hls::stream<net_axis<512>, 0>&, hls::stream<udpMeta, 0>&, hls::stream<net_axis<512>, 0>&, ap_uint<16>)' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/udp/udp.cpp:35:0)
+INFO: [HLS 214-178] Inlining function 'udpMeta::udpMeta()' into 'merge_rx_meta(hls::stream<ipv4Meta, 0>&, hls::stream<udpMeta, 0>&, hls::stream<ipUdpMeta, 0>&)' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/udp/udp.cpp:180:0)
+INFO: [HLS 214-178] Inlining function 'ipUdpMeta::ipUdpMeta(ap_uint<128>, ap_uint<16>, ap_uint<16>, ap_uint<16>)' into 'merge_rx_meta(hls::stream<ipv4Meta, 0>&, hls::stream<udpMeta, 0>&, hls::stream<ipUdpMeta, 0>&)' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/udp/udp.cpp:180:0)
+INFO: [HLS 214-178] Inlining function 'ipv4Meta::ipv4Meta(ap_uint<128>, ap_uint<16>)' into 'split_tx_meta(hls::stream<ipUdpMeta, 0>&, hls::stream<ipv4Meta, 0>&, hls::stream<udpMeta, 0>&)' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/udp/udp.cpp:162:0)
+INFO: [HLS 214-178] Inlining function 'udpMeta::udpMeta(ap_uint<16>, ap_uint<16>, ap_uint<16>)' into 'split_tx_meta(hls::stream<ipUdpMeta, 0>&, hls::stream<ipv4Meta, 0>&, hls::stream<udpMeta, 0>&)' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/udp/udp.cpp:162:0)
+INFO: [HLS 214-178] Inlining function 'ap_uint<16> reverse<16>(ap_uint<16> const&)' into 'udpHeader<512>::setDstPort(ap_uint<16>)' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/udp/udp.hpp:94:0)
+INFO: [HLS 214-178] Inlining function 'ap_uint<16> reverse<16>(ap_uint<16> const&)' into 'udpHeader<512>::setSrcPort(ap_uint<16>)' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/udp/udp.hpp:86:0)
+INFO: [HLS 214-178] Inlining function 'ap_uint<16> reverse<16>(ap_uint<16> const&)' into 'udpHeader<512>::setLength(ap_uint<16>)' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/udp/udp.hpp:102:0)
+INFO: [HLS 214-178] Inlining function 'udpMeta::udpMeta()' into 'void generate_udp<512>(hls::stream<udpMeta, 0>&, hls::stream<net_axis<512>, 0>&, hls::stream<net_axis<512>, 0>&)' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/udp/udp.cpp:85:0)
+INFO: [HLS 214-178] Inlining function 'udpHeader<512>::setDstPort(ap_uint<16>)' into 'void generate_udp<512>(hls::stream<udpMeta, 0>&, hls::stream<net_axis<512>, 0>&, hls::stream<net_axis<512>, 0>&)' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/udp/udp.cpp:85:0)
+INFO: [HLS 214-178] Inlining function 'udpHeader<512>::setSrcPort(ap_uint<16>)' into 'void generate_udp<512>(hls::stream<udpMeta, 0>&, hls::stream<net_axis<512>, 0>&, hls::stream<net_axis<512>, 0>&)' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/udp/udp.cpp:85:0)
+INFO: [HLS 214-178] Inlining function 'udpHeader<512>::setLength(ap_uint<16>)' into 'void generate_udp<512>(hls::stream<udpMeta, 0>&, hls::stream<net_axis<512>, 0>&, hls::stream<net_axis<512>, 0>&)' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/udp/udp.cpp:85:0)
+INFO: [HLS 214-178] Inlining function 'packetHeader<512, 64>::consumeWord(ap_uint<512>&)' into 'void generate_udp<512>(hls::stream<udpMeta, 0>&, hls::stream<net_axis<512>, 0>&, hls::stream<net_axis<512>, 0>&)' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/udp/udp.cpp:85:0)
+INFO: [HLS 214-131] Inlining function '_llvm.fpga.pack.none.i64.s_struct.udpMetas' into 'void process_udp<512>(hls::stream<net_axis<512>, 0>&, hls::stream<udpMeta, 0>&, hls::stream<net_axis<512>, 0>&, ap_uint<16>) (.1)' (/tools/Xilinx/Vitis_HLS/2022.1/common/technology/autopilot/hls_stream_39.h:174:9)
+INFO: [HLS 214-131] Inlining function '_llvm.fpga.pack.none.i1024.s_struct.net_axis<512>s' into 'void udp_rshiftWordByOctet<net_axis<512>, 512, 2>(unsigned short, hls::stream<net_axis<512>, 0>&, hls::stream<net_axis<512>, 0>&) (.1)' (/tools/Xilinx/Vitis_HLS/2022.1/common/technology/autopilot/hls_stream_39.h:174:9)
+INFO: [HLS 214-131] Inlining function '_llvm.fpga.pack.none.i256.s_struct.ipUdpMetas' into 'merge_rx_meta(hls::stream<ipv4Meta, 0>&, hls::stream<udpMeta, 0>&, hls::stream<ipUdpMeta, 0>&) (.1)' (/tools/Xilinx/Vitis_HLS/2022.1/common/technology/autopilot/hls_stream_39.h:174:9)
+INFO: [HLS 214-131] Inlining function '_llvm.fpga.pack.none.i64.s_struct.ipv4Metas' into 'split_tx_meta(hls::stream<ipUdpMeta, 0>&, hls::stream<ipv4Meta, 0>&, hls::stream<udpMeta, 0>&) (.1)' (/tools/Xilinx/Vitis_HLS/2022.1/common/technology/autopilot/hls_stream_39.h:174:9)
+INFO: [HLS 214-131] Inlining function '_llvm.fpga.pack.none.i64.s_struct.udpMetas' into 'split_tx_meta(hls::stream<ipUdpMeta, 0>&, hls::stream<ipv4Meta, 0>&, hls::stream<udpMeta, 0>&) (.1)' (/tools/Xilinx/Vitis_HLS/2022.1/common/technology/autopilot/hls_stream_39.h:174:9)
+INFO: [HLS 214-131] Inlining function '_llvm.fpga.pack.none.i1024.s_struct.net_axis<512>s' into 'void udp_lshiftWordByOctet<512, 1>(unsigned short, hls::stream<net_axis<512>, 0>&, hls::stream<net_axis<512>, 0>&) (.1)' (/tools/Xilinx/Vitis_HLS/2022.1/common/technology/autopilot/hls_stream_39.h:174:9)
+INFO: [HLS 214-131] Inlining function '_llvm.fpga.pack.none.i1024.s_struct.net_axis<512>s' into 'void generate_udp<512>(hls::stream<udpMeta, 0>&, hls::stream<net_axis<512>, 0>&, hls::stream<net_axis<512>, 0>&) (.1)' (/tools/Xilinx/Vitis_HLS/2022.1/common/technology/autopilot/hls_stream_39.h:174:9)
+INFO: [HLS 200-111] Finished Compiling Optimization and Transform: CPU user time: 4.27 seconds. CPU system time: 0.88 seconds. Elapsed time: 6.52 seconds; current allocated memory: 634.836 MB.
+INFO: [HLS 200-111] Finished Checking Pragmas: CPU user time: 0 seconds. CPU system time: 0 seconds. Elapsed time: 0 seconds; current allocated memory: 634.836 MB.
+INFO: [HLS 200-10] Starting code transformations ...
+INFO: [HLS 200-111] Finished Standard Transforms: CPU user time: 0.11 seconds. CPU system time: 0.03 seconds. Elapsed time: 0.24 seconds; current allocated memory: 651.711 MB.
+INFO: [HLS 200-10] Checking synthesizability ...
+WARNING: [SYNCHK 200-23] /tools/Xilinx/Vitis_HLS/2022.1/common/technology/autopilot/ap_int_ref.h:414: variable-indexed range selection may cause suboptimal QoR.
+INFO: [SYNCHK 200-10] 0 error(s), 1 warning(s).
+INFO: [HLS 200-111] Finished Checking Synthesizability: CPU user time: 0.19 seconds. CPU system time: 0.02 seconds. Elapsed time: 0.29 seconds; current allocated memory: 675.453 MB.
+INFO: [XFORM 203-712] Applying dataflow to function 'udp_top' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/udp/udp.cpp:246), detected/extracted 6 process function(s): 
+	 'process_udp<512>'
+	 'udp_rshiftWordByOctet<net_axis<512>, 512, 2>'
+	 'merge_rx_meta'
+	 'split_tx_meta'
+	 'udp_lshiftWordByOctet<512, 1>'
+	 'generate_udp<512>'.
+INFO: [XFORM 203-401] Performing if-conversion on hyperblock from (/tools/Xilinx/Vitis_HLS/2022.1/common/technology/autopilot/hls_stream_39.h:145:9) to (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/udp/../axi_utils.hpp:1091:8) in function 'udp_lshiftWordByOctet<512, 1>'... converting 4 basic blocks.
+INFO: [HLS 200-111] Finished Loop, function and other optimizations: CPU user time: 0.36 seconds. CPU system time: 0.03 seconds. Elapsed time: 0.49 seconds; current allocated memory: 720.074 MB.
+WARNING: [HLS 200-1614] Cosimulation may deadlock if process merge_rx_meta has a streamed top-level array input and has predecessor processes. If a deadlock occurs, please consider converting the streamed array into an hls::stream
+INFO: [HLS 200-111] Finished Architecture Synthesis: CPU user time: 0.21 seconds. CPU system time: 0.05 seconds. Elapsed time: 0.27 seconds; current allocated memory: 776.844 MB.
+INFO: [HLS 200-10] Starting hardware synthesis ...
+INFO: [HLS 200-10] Synthesizing 'udp_top' ...
+WARNING: [SYN 201-103] Legalizing function name 'process_udp<512>' to 'process_udp_512_s'.
+WARNING: [SYN 201-103] Legalizing function name 'udp_rshiftWordByOctet<net_axis<512>, 512, 2>' to 'udp_rshiftWordByOctet_net_axis_512_512_2_s'.
+WARNING: [SYN 201-103] Legalizing function name 'udp_lshiftWordByOctet<512, 1>' to 'udp_lshiftWordByOctet_512_1_s'.
+WARNING: [SYN 201-103] Legalizing function name 'generate_udp<512>' to 'generate_udp_512_s'.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'process_udp_512_s' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-61] Pipelining function 'process_udp<512>'.
+INFO: [HLS 200-1470] Pipelining result : Target II = 1, Final II = 1, Depth = 3, function 'process_udp<512>'
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111] Finished Scheduling: CPU user time: 0.13 seconds. CPU system time: 0.05 seconds. Elapsed time: 0.3 seconds; current allocated memory: 777.613 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111] Finished Binding: CPU user time: 0.06 seconds. CPU system time: 0 seconds. Elapsed time: 0.11 seconds; current allocated memory: 777.844 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'udp_rshiftWordByOctet_net_axis_512_512_2_s' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-61] Pipelining function 'udp_rshiftWordByOctet<net_axis<512>, 512, 2>'.
+INFO: [HLS 200-1470] Pipelining result : Target II = 1, Final II = 1, Depth = 3, function 'udp_rshiftWordByOctet<net_axis<512>, 512, 2>'
+WARNING: [HLS 200-871] Estimated clock period (2.686ns) exceeds the target (target clock period: 3.2ns, clock uncertainty: 0.864ns, effective delay budget: 2.336ns).
+WARNING: [HLS 200-1016] The critical path in module 'udp_rshiftWordByOctet_net_axis_512_512_2_s' consists of the following:	fifo read operation ('rx_udp2shiftFifo_read', /tools/Xilinx/Vitis_HLS/2022.1/common/technology/autopilot/hls_stream_39.h:145) on port 'rx_udp2shiftFifo' (/tools/Xilinx/Vitis_HLS/2022.1/common/technology/autopilot/hls_stream_39.h:145) [21]  (1.17 ns)
+	'icmp' operation ('sendWord.last.V') [33]  (1.01 ns)
+	multiplexor before 'phi' operation ('sendWord.last.V') with incoming values : ('sendWord.last.V') [39]  (0.387 ns)
+	'phi' operation ('sendWord.last.V') with incoming values : ('sendWord.last.V') [39]  (0 ns)
+	blocking operation 0.122 ns on control path)
+
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111] Finished Scheduling: CPU user time: 0.1 seconds. CPU system time: 0.02 seconds. Elapsed time: 0.21 seconds; current allocated memory: 778.137 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111] Finished Binding: CPU user time: 0.05 seconds. CPU system time: 0 seconds. Elapsed time: 0.1 seconds; current allocated memory: 778.215 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'merge_rx_meta' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-61] Pipelining function 'merge_rx_meta'.
+INFO: [HLS 200-1470] Pipelining result : Target II = 1, Final II = 1, Depth = 3, function 'merge_rx_meta'
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111] Finished Scheduling: CPU user time: 0.05 seconds. CPU system time: 0.01 seconds. Elapsed time: 0.12 seconds; current allocated memory: 778.359 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111] Finished Binding: CPU user time: 0.04 seconds. CPU system time: 0.01 seconds. Elapsed time: 0.1 seconds; current allocated memory: 778.547 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'split_tx_meta' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-61] Pipelining function 'split_tx_meta'.
+INFO: [HLS 200-1470] Pipelining result : Target II = 1, Final II = 1, Depth = 3, function 'split_tx_meta'
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111] Finished Scheduling: CPU user time: 0.05 seconds. CPU system time: 0 seconds. Elapsed time: 0.13 seconds; current allocated memory: 778.664 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111] Finished Binding: CPU user time: 0.05 seconds. CPU system time: 0.01 seconds. Elapsed time: 0.1 seconds; current allocated memory: 778.844 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'udp_lshiftWordByOctet_512_1_s' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-61] Pipelining function 'udp_lshiftWordByOctet<512, 1>'.
+INFO: [HLS 200-1470] Pipelining result : Target II = 1, Final II = 1, Depth = 2, function 'udp_lshiftWordByOctet<512, 1>'
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111] Finished Scheduling: CPU user time: 0.06 seconds. CPU system time: 0 seconds. Elapsed time: 0.12 seconds; current allocated memory: 779.090 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111] Finished Binding: CPU user time: 0.05 seconds. CPU system time: 0 seconds. Elapsed time: 0.1 seconds; current allocated memory: 779.211 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'generate_udp_512_s' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-61] Pipelining function 'generate_udp<512>'.
+INFO: [HLS 200-1470] Pipelining result : Target II = 1, Final II = 1, Depth = 3, function 'generate_udp<512>'
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111] Finished Scheduling: CPU user time: 0.1 seconds. CPU system time: 0 seconds. Elapsed time: 0.18 seconds; current allocated memory: 780.008 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111] Finished Binding: CPU user time: 0.06 seconds. CPU system time: 0.01 seconds. Elapsed time: 0.13 seconds; current allocated memory: 780.023 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'udp_top' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+WARNING: [HLS 200-871] Estimated clock period (2.686ns) exceeds the target (target clock period: 3.2ns, clock uncertainty: 0.864ns, effective delay budget: 2.336ns).
+WARNING: [HLS 200-1016] The critical path in module 'udp_top' consists of the following:	'call' operation ('_ln225', /mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/udp/udp.cpp:225) to 'udp_rshiftWordByOctet<net_axis<512>, 512, 2>' [63]  (2.69 ns)
+
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111] Finished Scheduling: CPU user time: 0.1 seconds. CPU system time: 0.01 seconds. Elapsed time: 0.19 seconds; current allocated memory: 780.184 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111] Finished Binding: CPU user time: 0.07 seconds. CPU system time: 0.01 seconds. Elapsed time: 0.19 seconds; current allocated memory: 780.402 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'process_udp_512_s' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+WARNING: [RTGEN 206-101] Register 'pu_header_ready' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'pu_header_idx' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'pu_header_header_V' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'metaWritten' is power-on initialization.
+INFO: [HLS 200-1030] Apply Unified Pipeline Control on module 'process_udp_512_s' pipeline 'process_udp<512>' pipeline type 'function pipeline'
+INFO: [RTGEN 206-100] Finished creating RTL model for 'process_udp_512_s'.
+INFO: [HLS 200-111] Finished Creating RTL model: CPU user time: 0.13 seconds. CPU system time: 0.02 seconds. Elapsed time: 0.25 seconds; current allocated memory: 780.590 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'udp_rshiftWordByOctet_net_axis_512_512_2_s' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+WARNING: [RTGEN 206-101] Register 'fsmState' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'prevWord_data_V' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'prevWord_keep_V' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'rs_firstWord' is power-on initialization.
+INFO: [HLS 200-1030] Apply Unified Pipeline Control on module 'udp_rshiftWordByOctet_net_axis_512_512_2_s' pipeline 'udp_rshiftWordByOctet<net_axis<512>, 512, 2>' pipeline type 'function pipeline'
+INFO: [RTGEN 206-100] Finished creating RTL model for 'udp_rshiftWordByOctet_net_axis_512_512_2_s'.
+INFO: [HLS 200-111] Finished Creating RTL model: CPU user time: 0.25 seconds. CPU system time: 0.02 seconds. Elapsed time: 0.43 seconds; current allocated memory: 781.988 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'merge_rx_meta' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-1030] Apply Unified Pipeline Control on module 'merge_rx_meta' pipeline 'merge_rx_meta' pipeline type 'function pipeline'
+INFO: [RTGEN 206-100] Finished creating RTL model for 'merge_rx_meta'.
+INFO: [HLS 200-111] Finished Creating RTL model: CPU user time: 0.16 seconds. CPU system time: 0.01 seconds. Elapsed time: 0.26 seconds; current allocated memory: 783.148 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'split_tx_meta' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-1030] Apply Unified Pipeline Control on module 'split_tx_meta' pipeline 'split_tx_meta' pipeline type 'function pipeline'
+INFO: [RTGEN 206-100] Finished creating RTL model for 'split_tx_meta'.
+INFO: [HLS 200-111] Finished Creating RTL model: CPU user time: 0.13 seconds. CPU system time: 0.01 seconds. Elapsed time: 0.24 seconds; current allocated memory: 784.160 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'udp_lshiftWordByOctet_512_1_s' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+WARNING: [RTGEN 206-101] Register 'ls_writeRemainder' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'prevWord_data_V_1' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'prevWord_keep_V_1' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'ls_firstWord' is power-on initialization.
+INFO: [HLS 200-1030] Apply Unified Pipeline Control on module 'udp_lshiftWordByOctet_512_1_s' pipeline 'udp_lshiftWordByOctet<512, 1>' pipeline type 'function pipeline'
+INFO: [RTGEN 206-100] Finished creating RTL model for 'udp_lshiftWordByOctet_512_1_s'.
+INFO: [HLS 200-111] Finished Creating RTL model: CPU user time: 0.14 seconds. CPU system time: 0.01 seconds. Elapsed time: 0.29 seconds; current allocated memory: 784.949 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'generate_udp_512_s' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+WARNING: [RTGEN 206-101] Register 'state' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'header_idx' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'header_header_V' is power-on initialization.
+INFO: [HLS 200-1030] Apply Unified Pipeline Control on module 'generate_udp_512_s' pipeline 'generate_udp<512>' pipeline type 'function pipeline'
+INFO: [RTGEN 206-100] Finished creating RTL model for 'generate_udp_512_s'.
+INFO: [HLS 200-111] Finished Creating RTL model: CPU user time: 0.18 seconds. CPU system time: 0.01 seconds. Elapsed time: 0.34 seconds; current allocated memory: 786.418 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'udp_top' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+WARNING: [RTGEN 206-101] Design contains AXI ports. Reset is fixed to synchronous and active low.
+INFO: [RTGEN 206-500] Setting interface mode on port 'udp_top/s_axis_rx_meta' to 'axis' (register, both mode).
+INFO: [RTGEN 206-500] Setting interface mode on port 'udp_top/s_axis_rx_data' to 'axis' (register, both mode).
+INFO: [RTGEN 206-500] Setting interface mode on port 'udp_top/m_axis_rx_meta' to 'axis' (register, both mode).
+INFO: [RTGEN 206-500] Setting interface mode on port 'udp_top/m_axis_rx_data' to 'axis' (register, both mode).
+INFO: [RTGEN 206-500] Setting interface mode on port 'udp_top/s_axis_tx_meta' to 'axis' (register, both mode).
+INFO: [RTGEN 206-500] Setting interface mode on port 'udp_top/s_axis_tx_data' to 'axis' (register, both mode).
+INFO: [RTGEN 206-500] Setting interface mode on port 'udp_top/m_axis_tx_meta' to 'axis' (register, both mode).
+INFO: [RTGEN 206-500] Setting interface mode on port 'udp_top/m_axis_tx_data' to 'axis' (register, both mode).
+INFO: [RTGEN 206-500] Setting interface mode on port 'udp_top/reg_ip_address' to 'ap_stable' (register).
+INFO: [RTGEN 206-500] Setting interface mode on port 'udp_top/reg_listen_port' to 'ap_stable' (register).
+INFO: [RTGEN 206-500] Setting interface mode on function 'udp_top' to 'ap_ctrl_none'.
+WARNING: [HLS 200-656] Deadlocks can occur since process process_udp<512> is instantiated in a dataflow region with ap_ctrl_none or without start propagation and contains an auto-rewind pipeline.
+WARNING: [HLS 200-656] Deadlocks can occur since process udp_rshiftWordByOctet<net_axis<512>, 512, 2> is instantiated in a dataflow region with ap_ctrl_none or without start propagation and contains an auto-rewind pipeline.
+WARNING: [HLS 200-656] Deadlocks can occur since process merge_rx_meta is instantiated in a dataflow region with ap_ctrl_none or without start propagation and contains an auto-rewind pipeline.
+WARNING: [HLS 200-656] Deadlocks can occur since process split_tx_meta is instantiated in a dataflow region with ap_ctrl_none or without start propagation and contains an auto-rewind pipeline.
+WARNING: [HLS 200-656] Deadlocks can occur since process udp_lshiftWordByOctet<512, 1> is instantiated in a dataflow region with ap_ctrl_none or without start propagation and contains an auto-rewind pipeline.
+==============================================================
+Vitis HLS - High-Level Synthesis from C, C++ and OpenCL v2022.1 (64-bit)
+Tool Version Limit: 2022.04
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+==============================================================
+==============================================================
+Vitis HLS - High-Level Synthesis from C, C++ and OpenCL v2022.1 (64-bit)
+Tool Version Limit: 2022.04
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+==============================================================

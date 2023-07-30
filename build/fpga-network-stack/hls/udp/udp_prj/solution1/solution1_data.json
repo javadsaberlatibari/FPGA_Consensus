@@ -1,0 +1,868 @@
+{
+  "Top": "udp_top",
+  "RtlTop": "udp_top",
+  "RtlPrefix": "",
+  "RtlSubPrefix": "udp_top_",
+  "SourceLanguage": "cpp",
+  "HostMachineBits": "64",
+  "FunctionProtocol": "ap_ctrl_none",
+  "ResetStyle": "control",
+  "Target": {
+    "Family": "virtexuplushbm",
+    "Device": "xcu280",
+    "Package": "-fsvh2892",
+    "Speed": "-2L-e",
+    "Triple": "fpga64-xilinx-none"
+  },
+  "Args": {
+    "s_axis_rx_meta": {
+      "index": "0",
+      "direction": "in",
+      "srcType": "stream<ipv4Meta, 0>&",
+      "srcSize": "64",
+      "hwRefs": [{
+          "type": "interface",
+          "interface": "s_axis_rx_meta",
+          "name": "",
+          "usage": "data",
+          "direction": "in"
+        }]
+    },
+    "s_axis_rx_data": {
+      "index": "1",
+      "direction": "in",
+      "srcType": "stream<net_axis<512>, 0>&",
+      "srcSize": "1024",
+      "hwRefs": [{
+          "type": "interface",
+          "interface": "s_axis_rx_data",
+          "name": "",
+          "usage": "data",
+          "direction": "in"
+        }]
+    },
+    "m_axis_rx_meta": {
+      "index": "2",
+      "direction": "out",
+      "srcType": "stream<ipUdpMeta, 0>&",
+      "srcSize": "256",
+      "hwRefs": [{
+          "type": "interface",
+          "interface": "m_axis_rx_meta",
+          "name": "",
+          "usage": "data",
+          "direction": "out"
+        }]
+    },
+    "m_axis_rx_data": {
+      "index": "3",
+      "direction": "out",
+      "srcType": "stream<net_axis<512>, 0>&",
+      "srcSize": "1024",
+      "hwRefs": [{
+          "type": "interface",
+          "interface": "m_axis_rx_data",
+          "name": "",
+          "usage": "data",
+          "direction": "out"
+        }]
+    },
+    "s_axis_tx_meta": {
+      "index": "4",
+      "direction": "in",
+      "srcType": "stream<ipUdpMeta, 0>&",
+      "srcSize": "256",
+      "hwRefs": [{
+          "type": "interface",
+          "interface": "s_axis_tx_meta",
+          "name": "",
+          "usage": "data",
+          "direction": "in"
+        }]
+    },
+    "s_axis_tx_data": {
+      "index": "5",
+      "direction": "in",
+      "srcType": "stream<net_axis<512>, 0>&",
+      "srcSize": "1024",
+      "hwRefs": [{
+          "type": "interface",
+          "interface": "s_axis_tx_data",
+          "name": "",
+          "usage": "data",
+          "direction": "in"
+        }]
+    },
+    "m_axis_tx_meta": {
+      "index": "6",
+      "direction": "out",
+      "srcType": "stream<ipv4Meta, 0>&",
+      "srcSize": "64",
+      "hwRefs": [{
+          "type": "interface",
+          "interface": "m_axis_tx_meta",
+          "name": "",
+          "usage": "data",
+          "direction": "out"
+        }]
+    },
+    "m_axis_tx_data": {
+      "index": "7",
+      "direction": "out",
+      "srcType": "stream<net_axis<512>, 0>&",
+      "srcSize": "1024",
+      "hwRefs": [{
+          "type": "interface",
+          "interface": "m_axis_tx_data",
+          "name": "",
+          "usage": "data",
+          "direction": "out"
+        }]
+    },
+    "reg_ip_address": {
+      "index": "8",
+      "direction": "in",
+      "srcType": "ap_uint<128>",
+      "srcSize": "128",
+      "hwRefs": [{
+          "type": "port",
+          "interface": "reg_ip_address",
+          "name": "reg_ip_address",
+          "usage": "data",
+          "direction": "in"
+        }]
+    },
+    "reg_listen_port": {
+      "index": "9",
+      "direction": "in",
+      "srcType": "ap_uint<16>",
+      "srcSize": "16",
+      "hwRefs": [{
+          "type": "port",
+          "interface": "reg_listen_port",
+          "name": "reg_listen_port",
+          "usage": "data",
+          "direction": "in"
+        }]
+    }
+  },
+  "HlsSolution": {
+    "FlowTarget": "vivado",
+    "ConfigTcl": [
+      "config_interface -m_axi_latency=0",
+      "config_export -description=-display_name=UDP",
+      "config_export -format=ip_catalog",
+      "config_export -ipname=udp",
+      "config_export -vendor=ethz.systems.fpga",
+      "config_export -version=0.4"
+    ],
+    "ProfileOption": "0",
+    "ProfileType": "none",
+    "KernelName": "udp_top"
+  },
+  "ClockInfo": {
+    "ClockName": "ap_clk",
+    "ClockPeriod": "3.2",
+    "Uncertainty": "0.864",
+    "IsCombinational": "0",
+    "II": "1",
+    "Latency": "5"
+  },
+  "Xdc": {
+    "OocClocks": ["create_clock -name ap_clk -period 3.200 [get_ports ap_clk]"],
+    "FalsePaths": [
+      "set_false_path -through [get_ports reg_ip_address[*]]",
+      "set_false_path -through [get_ports reg_listen_port[*]]"
+    ]
+  },
+  "Ipx": {
+    "Vendor": "ethz.systems.fpga",
+    "Library": "hls",
+    "Name": "udp",
+    "Version": "0.4",
+    "DisplayName": "Udp",
+    "Revision": "2113113509",
+    "Description": "-display_name=UDP",
+    "Taxonomy": "\/VITIS_HLS_IP",
+    "AutoFamilySupport": "",
+    "ZipFile": "ethz_systems_fpga_hls_udp_0_4.zip"
+  },
+  "Files": {
+    "CSource": ["\/mnt\/scratch\/pyuvaraj\/Vitis_RoCE_W\/Vitis_RoCE\/fpga-network-stack\/hls\/udp\/udp.cpp"],
+    "Vhdl": [
+      "impl\/vhdl\/udp_top_fifo_w64_d2_S.vhd",
+      "impl\/vhdl\/udp_top_fifo_w1024_d2_S.vhd",
+      "impl\/vhdl\/udp_top_generate_udp_512_s.vhd",
+      "impl\/vhdl\/udp_top_merge_rx_meta.vhd",
+      "impl\/vhdl\/udp_top_process_udp_512_s.vhd",
+      "impl\/vhdl\/udp_top_regslice_both.vhd",
+      "impl\/vhdl\/udp_top_split_tx_meta.vhd",
+      "impl\/vhdl\/udp_top_udp_lshiftWordByOctet_512_1_s.vhd",
+      "impl\/vhdl\/udp_top_udp_rshiftWordByOctet_net_axis_512_512_2_s.vhd",
+      "impl\/vhdl\/udp_top.vhd"
+    ],
+    "Verilog": [
+      "impl\/verilog\/udp_top_fifo_w64_d2_S.v",
+      "impl\/verilog\/udp_top_fifo_w1024_d2_S.v",
+      "impl\/verilog\/udp_top_generate_udp_512_s.v",
+      "impl\/verilog\/udp_top_hls_deadlock_detection_unit.v",
+      "impl\/verilog\/udp_top_hls_deadlock_detector.vh",
+      "impl\/verilog\/udp_top_hls_deadlock_idx0_monitor.v",
+      "impl\/verilog\/udp_top_hls_deadlock_idx3_monitor.v",
+      "impl\/verilog\/udp_top_hls_deadlock_idx4_monitor.v",
+      "impl\/verilog\/udp_top_hls_deadlock_kernel_monitor_top.vh",
+      "impl\/verilog\/udp_top_hls_deadlock_report_unit.vh",
+      "impl\/verilog\/udp_top_merge_rx_meta.v",
+      "impl\/verilog\/udp_top_process_udp_512_s.v",
+      "impl\/verilog\/udp_top_regslice_both.v",
+      "impl\/verilog\/udp_top_split_tx_meta.v",
+      "impl\/verilog\/udp_top_udp_lshiftWordByOctet_512_1_s.v",
+      "impl\/verilog\/udp_top_udp_rshiftWordByOctet_net_axis_512_512_2_s.v",
+      "impl\/verilog\/udp_top.v"
+    ],
+    "IpMisc": ["impl\/misc\/logo.png"],
+    "CsynthXml": "syn\/report\/csynth.xml",
+    "DebugDir": ".debug",
+    "KernelXml": ".autopilot\/db\/kernel.internal.xml",
+    "Xo": "",
+    "XoHlsDir": "",
+    "ProtoInst": [".debug\/udp_top.protoinst"]
+  },
+  "SubcoreInfo": {
+    "HasXpmMemory": false,
+    "HasClockedDsp": false,
+    "Ip": []
+  },
+  "Interfaces": {
+    "s_axis_rx_meta": {
+      "type": "axi4stream",
+      "busTypeName": "axis",
+      "mode": "slave",
+      "dataWidth": "64",
+      "portPrefix": "s_axis_rx_meta_",
+      "ports": [
+        "s_axis_rx_meta_TDATA",
+        "s_axis_rx_meta_TREADY",
+        "s_axis_rx_meta_TVALID"
+      ],
+      "constraints": [{
+          "constraint_type": "pragma interface",
+          "mode": "axis",
+          "register_option": "1",
+          "register_mode": "both",
+          "argName": "s_axis_rx_meta"
+        }]
+    },
+    "s_axis_rx_data": {
+      "type": "axi4stream",
+      "busTypeName": "axis",
+      "mode": "slave",
+      "dataWidth": "1024",
+      "portPrefix": "s_axis_rx_data_",
+      "ports": [
+        "s_axis_rx_data_TDATA",
+        "s_axis_rx_data_TREADY",
+        "s_axis_rx_data_TVALID"
+      ],
+      "constraints": [{
+          "constraint_type": "pragma interface",
+          "mode": "axis",
+          "register_option": "1",
+          "register_mode": "both",
+          "argName": "s_axis_rx_data"
+        }]
+    },
+    "m_axis_rx_meta": {
+      "type": "axi4stream",
+      "busTypeName": "axis",
+      "mode": "master",
+      "dataWidth": "256",
+      "portPrefix": "m_axis_rx_meta_",
+      "ports": [
+        "m_axis_rx_meta_TDATA",
+        "m_axis_rx_meta_TREADY",
+        "m_axis_rx_meta_TVALID"
+      ],
+      "constraints": [{
+          "constraint_type": "pragma interface",
+          "mode": "axis",
+          "register_option": "1",
+          "register_mode": "both",
+          "argName": "m_axis_rx_meta"
+        }]
+    },
+    "m_axis_rx_data": {
+      "type": "axi4stream",
+      "busTypeName": "axis",
+      "mode": "master",
+      "dataWidth": "1024",
+      "portPrefix": "m_axis_rx_data_",
+      "ports": [
+        "m_axis_rx_data_TDATA",
+        "m_axis_rx_data_TREADY",
+        "m_axis_rx_data_TVALID"
+      ],
+      "constraints": [{
+          "constraint_type": "pragma interface",
+          "mode": "axis",
+          "register_option": "1",
+          "register_mode": "both",
+          "argName": "m_axis_rx_data"
+        }]
+    },
+    "s_axis_tx_meta": {
+      "type": "axi4stream",
+      "busTypeName": "axis",
+      "mode": "slave",
+      "dataWidth": "256",
+      "portPrefix": "s_axis_tx_meta_",
+      "ports": [
+        "s_axis_tx_meta_TDATA",
+        "s_axis_tx_meta_TREADY",
+        "s_axis_tx_meta_TVALID"
+      ],
+      "constraints": [{
+          "constraint_type": "pragma interface",
+          "mode": "axis",
+          "register_option": "1",
+          "register_mode": "both",
+          "argName": "s_axis_tx_meta"
+        }]
+    },
+    "s_axis_tx_data": {
+      "type": "axi4stream",
+      "busTypeName": "axis",
+      "mode": "slave",
+      "dataWidth": "1024",
+      "portPrefix": "s_axis_tx_data_",
+      "ports": [
+        "s_axis_tx_data_TDATA",
+        "s_axis_tx_data_TREADY",
+        "s_axis_tx_data_TVALID"
+      ],
+      "constraints": [{
+          "constraint_type": "pragma interface",
+          "mode": "axis",
+          "register_option": "1",
+          "register_mode": "both",
+          "argName": "s_axis_tx_data"
+        }]
+    },
+    "m_axis_tx_meta": {
+      "type": "axi4stream",
+      "busTypeName": "axis",
+      "mode": "master",
+      "dataWidth": "64",
+      "portPrefix": "m_axis_tx_meta_",
+      "ports": [
+        "m_axis_tx_meta_TDATA",
+        "m_axis_tx_meta_TREADY",
+        "m_axis_tx_meta_TVALID"
+      ],
+      "constraints": [{
+          "constraint_type": "pragma interface",
+          "mode": "axis",
+          "register_option": "1",
+          "register_mode": "both",
+          "argName": "m_axis_tx_meta"
+        }]
+    },
+    "m_axis_tx_data": {
+      "type": "axi4stream",
+      "busTypeName": "axis",
+      "mode": "master",
+      "dataWidth": "1024",
+      "portPrefix": "m_axis_tx_data_",
+      "ports": [
+        "m_axis_tx_data_TDATA",
+        "m_axis_tx_data_TREADY",
+        "m_axis_tx_data_TVALID"
+      ],
+      "constraints": [{
+          "constraint_type": "pragma interface",
+          "mode": "axis",
+          "register_option": "1",
+          "register_mode": "both",
+          "argName": "m_axis_tx_data"
+        }]
+    },
+    "reg_ip_address": {
+      "type": "data",
+      "busTypeName": "data",
+      "protocol": "ap_stable",
+      "mode": "slave",
+      "dataWidth": "128",
+      "portMap": {"reg_ip_address": "DATA"},
+      "ports": ["reg_ip_address"],
+      "constraints": [{
+          "constraint_type": "pragma interface",
+          "mode": "ap_stable",
+          "register_option": "1",
+          "argName": "reg_ip_address"
+        }]
+    },
+    "reg_listen_port": {
+      "type": "data",
+      "busTypeName": "data",
+      "protocol": "ap_stable",
+      "mode": "slave",
+      "dataWidth": "16",
+      "portMap": {"reg_listen_port": "DATA"},
+      "ports": ["reg_listen_port"],
+      "constraints": [{
+          "constraint_type": "pragma interface",
+          "mode": "ap_stable",
+          "register_option": "1",
+          "argName": "reg_listen_port"
+        }]
+    },
+    "ap_clk": {
+      "type": "clock",
+      "busTypeName": "clock",
+      "mode": "slave",
+      "busParams": {
+        "ASSOCIATED_BUSIF": "s_axis_rx_meta:s_axis_rx_data:m_axis_rx_meta:m_axis_rx_data:s_axis_tx_meta:s_axis_tx_data:m_axis_tx_meta:m_axis_tx_data",
+        "ASSOCIATED_RESET": "ap_rst_n"
+      },
+      "portMap": {"ap_clk": "CLK"},
+      "ports": ["ap_clk"]
+    },
+    "ap_rst_n": {
+      "type": "reset",
+      "busTypeName": "reset",
+      "mode": "slave",
+      "busParams": {"POLARITY": "ACTIVE_LOW"},
+      "portMap": {"ap_rst_n": "RST"},
+      "ports": ["ap_rst_n"]
+    }
+  },
+  "RtlPorts": {
+    "s_axis_rx_meta_TDATA": {
+      "dir": "in",
+      "width": "64"
+    },
+    "s_axis_rx_meta_TVALID": {
+      "dir": "in",
+      "width": "1"
+    },
+    "s_axis_rx_meta_TREADY": {
+      "dir": "out",
+      "width": "1"
+    },
+    "s_axis_rx_data_TDATA": {
+      "dir": "in",
+      "width": "1024"
+    },
+    "s_axis_rx_data_TVALID": {
+      "dir": "in",
+      "width": "1"
+    },
+    "s_axis_rx_data_TREADY": {
+      "dir": "out",
+      "width": "1"
+    },
+    "m_axis_rx_meta_TDATA": {
+      "dir": "out",
+      "width": "256"
+    },
+    "m_axis_rx_meta_TVALID": {
+      "dir": "out",
+      "width": "1"
+    },
+    "m_axis_rx_meta_TREADY": {
+      "dir": "in",
+      "width": "1"
+    },
+    "m_axis_rx_data_TDATA": {
+      "dir": "out",
+      "width": "1024"
+    },
+    "m_axis_rx_data_TVALID": {
+      "dir": "out",
+      "width": "1"
+    },
+    "m_axis_rx_data_TREADY": {
+      "dir": "in",
+      "width": "1"
+    },
+    "s_axis_tx_meta_TDATA": {
+      "dir": "in",
+      "width": "256"
+    },
+    "s_axis_tx_meta_TVALID": {
+      "dir": "in",
+      "width": "1"
+    },
+    "s_axis_tx_meta_TREADY": {
+      "dir": "out",
+      "width": "1"
+    },
+    "s_axis_tx_data_TDATA": {
+      "dir": "in",
+      "width": "1024"
+    },
+    "s_axis_tx_data_TVALID": {
+      "dir": "in",
+      "width": "1"
+    },
+    "s_axis_tx_data_TREADY": {
+      "dir": "out",
+      "width": "1"
+    },
+    "m_axis_tx_meta_TDATA": {
+      "dir": "out",
+      "width": "64"
+    },
+    "m_axis_tx_meta_TVALID": {
+      "dir": "out",
+      "width": "1"
+    },
+    "m_axis_tx_meta_TREADY": {
+      "dir": "in",
+      "width": "1"
+    },
+    "m_axis_tx_data_TDATA": {
+      "dir": "out",
+      "width": "1024"
+    },
+    "m_axis_tx_data_TVALID": {
+      "dir": "out",
+      "width": "1"
+    },
+    "m_axis_tx_data_TREADY": {
+      "dir": "in",
+      "width": "1"
+    },
+    "reg_ip_address": {
+      "dir": "in",
+      "width": "128"
+    },
+    "reg_listen_port": {
+      "dir": "in",
+      "width": "16"
+    },
+    "ap_clk": {
+      "dir": "in",
+      "width": "1"
+    },
+    "ap_rst_n": {
+      "dir": "in",
+      "width": "1"
+    }
+  },
+  "ModuleInfo": {
+    "Hierarchy": {
+      "ModuleName": "udp_top",
+      "Instances": [
+        {
+          "ModuleName": "process_udp_512_s",
+          "InstanceName": "process_udp_512_U0"
+        },
+        {
+          "ModuleName": "split_tx_meta",
+          "InstanceName": "split_tx_meta_U0"
+        },
+        {
+          "ModuleName": "udp_lshiftWordByOctet_512_1_s",
+          "InstanceName": "udp_lshiftWordByOctet_512_1_U0"
+        },
+        {
+          "ModuleName": "udp_rshiftWordByOctet_net_axis_512_512_2_s",
+          "InstanceName": "udp_rshiftWordByOctet_net_axis_512_512_2_U0"
+        },
+        {
+          "ModuleName": "merge_rx_meta",
+          "InstanceName": "merge_rx_meta_U0"
+        },
+        {
+          "ModuleName": "generate_udp_512_s",
+          "InstanceName": "generate_udp_512_U0"
+        }
+      ]
+    },
+    "Info": {
+      "process_udp_512_s": {
+        "FunctionProtocol": "ap_ctrl_hs",
+        "isTaskLevelControl": "0",
+        "isPipelined": "1",
+        "isCombinational": "0",
+        "isOneStateSeq": "0"
+      },
+      "udp_rshiftWordByOctet_net_axis_512_512_2_s": {
+        "FunctionProtocol": "ap_ctrl_hs",
+        "isTaskLevelControl": "0",
+        "isPipelined": "1",
+        "isCombinational": "0",
+        "isOneStateSeq": "0"
+      },
+      "merge_rx_meta": {
+        "FunctionProtocol": "ap_ctrl_hs",
+        "isTaskLevelControl": "0",
+        "isPipelined": "1",
+        "isCombinational": "0",
+        "isOneStateSeq": "0"
+      },
+      "split_tx_meta": {
+        "FunctionProtocol": "ap_ctrl_hs",
+        "isTaskLevelControl": "0",
+        "isPipelined": "1",
+        "isCombinational": "0",
+        "isOneStateSeq": "0"
+      },
+      "udp_lshiftWordByOctet_512_1_s": {
+        "FunctionProtocol": "ap_ctrl_hs",
+        "isTaskLevelControl": "0",
+        "isPipelined": "1",
+        "isCombinational": "0",
+        "isOneStateSeq": "0"
+      },
+      "generate_udp_512_s": {
+        "FunctionProtocol": "ap_ctrl_hs",
+        "isTaskLevelControl": "0",
+        "isPipelined": "1",
+        "isCombinational": "0",
+        "isOneStateSeq": "0"
+      },
+      "udp_top": {
+        "FunctionProtocol": "ap_ctrl_none",
+        "isTaskLevelControl": "0",
+        "isPipelined": "1",
+        "isCombinational": "0",
+        "isOneStateSeq": "0"
+      }
+    },
+    "Metrics": {
+      "process_udp_512_s": {
+        "Latency": {
+          "LatencyBest": "2",
+          "LatencyAvg": "2",
+          "LatencyWorst": "2",
+          "PipelineII": "1",
+          "PipelineDepth": "3",
+          "PipelineType": "yes"
+        },
+        "Timing": {
+          "Target": "3.20",
+          "Uncertainty": "0.86",
+          "Estimate": "1.844"
+        },
+        "Area": {
+          "FF": "2202",
+          "AVAIL_FF": "2607360",
+          "UTIL_FF": "~0",
+          "LUT": "691",
+          "AVAIL_LUT": "1303680",
+          "UTIL_LUT": "~0",
+          "BRAM_18K": "0",
+          "AVAIL_BRAM": "4032",
+          "UTIL_BRAM": "0",
+          "DSP": "0",
+          "AVAIL_DSP": "9024",
+          "UTIL_DSP": "0",
+          "URAM": "0",
+          "AVAIL_URAM": "960",
+          "UTIL_URAM": "0"
+        }
+      },
+      "udp_rshiftWordByOctet_net_axis_512_512_2_s": {
+        "Latency": {
+          "LatencyBest": "2",
+          "LatencyAvg": "2",
+          "LatencyWorst": "2",
+          "PipelineII": "1",
+          "PipelineDepth": "3",
+          "PipelineType": "yes"
+        },
+        "Timing": {
+          "Target": "3.20",
+          "Uncertainty": "0.86",
+          "Estimate": "2.686"
+        },
+        "Area": {
+          "FF": "1237",
+          "AVAIL_FF": "2607360",
+          "UTIL_FF": "~0",
+          "LUT": "123",
+          "AVAIL_LUT": "1303680",
+          "UTIL_LUT": "~0",
+          "BRAM_18K": "0",
+          "AVAIL_BRAM": "4032",
+          "UTIL_BRAM": "0",
+          "DSP": "0",
+          "AVAIL_DSP": "9024",
+          "UTIL_DSP": "0",
+          "URAM": "0",
+          "AVAIL_URAM": "960",
+          "UTIL_URAM": "0"
+        }
+      },
+      "merge_rx_meta": {
+        "Latency": {
+          "LatencyBest": "2",
+          "LatencyAvg": "2",
+          "LatencyWorst": "2",
+          "PipelineII": "1",
+          "PipelineDepth": "3",
+          "PipelineType": "yes"
+        },
+        "Timing": {
+          "Target": "3.20",
+          "Uncertainty": "0.86",
+          "Estimate": "1.290"
+        },
+        "Area": {
+          "FF": "90",
+          "AVAIL_FF": "2607360",
+          "UTIL_FF": "~0",
+          "LUT": "60",
+          "AVAIL_LUT": "1303680",
+          "UTIL_LUT": "~0",
+          "BRAM_18K": "0",
+          "AVAIL_BRAM": "4032",
+          "UTIL_BRAM": "0",
+          "DSP": "0",
+          "AVAIL_DSP": "9024",
+          "UTIL_DSP": "0",
+          "URAM": "0",
+          "AVAIL_URAM": "960",
+          "UTIL_URAM": "0"
+        }
+      },
+      "split_tx_meta": {
+        "Latency": {
+          "LatencyBest": "2",
+          "LatencyAvg": "2",
+          "LatencyWorst": "2",
+          "PipelineII": "1",
+          "PipelineDepth": "3",
+          "PipelineType": "yes"
+        },
+        "Timing": {
+          "Target": "3.20",
+          "Uncertainty": "0.86",
+          "Estimate": "1.953"
+        },
+        "Area": {
+          "FF": "86",
+          "AVAIL_FF": "2607360",
+          "UTIL_FF": "~0",
+          "LUT": "77",
+          "AVAIL_LUT": "1303680",
+          "UTIL_LUT": "~0",
+          "BRAM_18K": "0",
+          "AVAIL_BRAM": "4032",
+          "UTIL_BRAM": "0",
+          "DSP": "0",
+          "AVAIL_DSP": "9024",
+          "UTIL_DSP": "0",
+          "URAM": "0",
+          "AVAIL_URAM": "960",
+          "UTIL_URAM": "0"
+        }
+      },
+      "udp_lshiftWordByOctet_512_1_s": {
+        "Latency": {
+          "LatencyBest": "1",
+          "LatencyAvg": "1",
+          "LatencyWorst": "1",
+          "PipelineII": "1",
+          "PipelineDepth": "2",
+          "PipelineType": "yes"
+        },
+        "Timing": {
+          "Target": "3.20",
+          "Uncertainty": "0.86",
+          "Estimate": "1.746"
+        },
+        "Area": {
+          "FF": "1161",
+          "AVAIL_FF": "2607360",
+          "UTIL_FF": "~0",
+          "LUT": "590",
+          "AVAIL_LUT": "1303680",
+          "UTIL_LUT": "~0",
+          "BRAM_18K": "0",
+          "AVAIL_BRAM": "4032",
+          "UTIL_BRAM": "0",
+          "DSP": "0",
+          "AVAIL_DSP": "9024",
+          "UTIL_DSP": "0",
+          "URAM": "0",
+          "AVAIL_URAM": "960",
+          "UTIL_URAM": "0"
+        }
+      },
+      "generate_udp_512_s": {
+        "Latency": {
+          "LatencyBest": "2",
+          "LatencyAvg": "2",
+          "LatencyWorst": "2",
+          "PipelineII": "1",
+          "PipelineDepth": "3",
+          "PipelineType": "yes"
+        },
+        "Timing": {
+          "Target": "3.20",
+          "Uncertainty": "0.86",
+          "Estimate": "1.866"
+        },
+        "Area": {
+          "FF": "2207",
+          "AVAIL_FF": "2607360",
+          "UTIL_FF": "~0",
+          "LUT": "205",
+          "AVAIL_LUT": "1303680",
+          "UTIL_LUT": "~0",
+          "BRAM_18K": "0",
+          "AVAIL_BRAM": "4032",
+          "UTIL_BRAM": "0",
+          "DSP": "0",
+          "AVAIL_DSP": "9024",
+          "UTIL_DSP": "0",
+          "URAM": "0",
+          "AVAIL_URAM": "960",
+          "UTIL_URAM": "0"
+        }
+      },
+      "udp_top": {
+        "Latency": {
+          "LatencyBest": "5",
+          "LatencyAvg": "5",
+          "LatencyWorst": "5",
+          "PipelineII": "1",
+          "PipelineDepth": "",
+          "PipelineType": "dataflow"
+        },
+        "Timing": {
+          "Target": "3.20",
+          "Uncertainty": "0.86",
+          "Estimate": "2.686"
+        },
+        "Area": {
+          "FF": "11365",
+          "AVAIL_FF": "2607360",
+          "UTIL_FF": "~0",
+          "LUT": "3954",
+          "AVAIL_LUT": "1303680",
+          "UTIL_LUT": "~0",
+          "BRAM_18K": "0",
+          "AVAIL_BRAM": "4032",
+          "UTIL_BRAM": "0",
+          "DSP": "0",
+          "AVAIL_DSP": "9024",
+          "UTIL_DSP": "0",
+          "URAM": "0",
+          "AVAIL_URAM": "960",
+          "UTIL_URAM": "0"
+        }
+      }
+    }
+  },
+  "GenerateBdFiles": "0",
+  "GenData": {
+    "DataVersion": "0.2",
+    "Time": "2023-07-11 09:29:18 CEST",
+    "ToolName": "vitis_hls",
+    "ToolVersion": "2022.1"
+  }
+}

@@ -1,0 +1,199 @@
+
+
+================================================================
+== Vitis HLS Report for 'mem_cmd_merger_512_s'
+================================================================
+* Date:           Tue Jul 11 09:32:37 2023
+
+* Version:        2022.1 (Build 3526262 on Mon Apr 18 15:47:01 MDT 2022)
+* Project:        rocev2_prj
+* Solution:       solution1 (Vivado IP Flow Target)
+* Product family: virtexuplus
+* Target device:  xcu280-fsvh2892-2L-e
+
+
+================================================================
+== Performance Estimates
+================================================================
++ Timing: 
+    * Summary: 
+    +--------+---------+----------+------------+
+    |  Clock |  Target | Estimated| Uncertainty|
+    +--------+---------+----------+------------+
+    |ap_clk  |  3.20 ns|  2.355 ns|     0.86 ns|
+    +--------+---------+----------+------------+
+
++ Latency: 
+    * Summary: 
+    +---------+---------+----------+----------+-----+-----+---------+
+    |  Latency (cycles) |  Latency (absolute) |  Interval | Pipeline|
+    |   min   |   max   |    min   |    max   | min | max |   Type  |
+    +---------+---------+----------+----------+-----+-----+---------+
+    |        3|        3|  9.600 ns|  9.600 ns|    1|    1|      yes|
+    +---------+---------+----------+----------+-----+-----+---------+
+
+    + Detail: 
+        * Instance: 
+        N/A
+
+        * Loop: 
+        N/A
+
+============================================================
++ Verbose Summary: Synthesis Manager
+============================================================
+InlineROM: 1
+ExposeGlobal: 0
+============================================================
++ Verbose Summary: CDFG Model
+============================================================
+IsTopModel: 0
+ResetActiveHigh: 1
+IsCombinational: 2
+IsDatapathOnly: 0
+HasWiredReturn: 1
+HasMFsm: 2
+HasVarLatency: 0
+IsPipeline: 1
+IsRtlPipelined: 1
+IsInstanceOverlapped: 0
+IsDontTouch: 0
+HasImplIP: 0
+IsGatedGlobalClock: 0
+
++ Individual pipeline summary: 
+  * Pipeline-0: initiation interval (II) = 1, depth = 4
+
+
+============================================================
++ Verbose Summary: Schedule
+============================================================
+* Number of FSM states : 4
+* Pipeline : 1
+  Pipeline-0 : II = 1, D = 4, States = { 1 2 3 4 }
+* Dataflow Pipeline: 0
+
+* FSM state transitions: 
+1 --> 2 
+2 --> 3 
+3 --> 4 
+4 --> 
+
+* FSM state operations: 
+
+State 1 <SV = 0> <Delay = 1.86>
+ST_1 : Operation 5 [1/1] (0.00ns)   --->   "%specinterface_ln0 = specinterface void @_ssdm_op_SpecInterface, i192 %rx_remoteMemCmd, void @empty_5, i32 0, i32 0, void @empty, i32 0, i32 0, void @empty, void @empty, void @empty, i32 0, i32 0, i32 0, i32 0, void @empty, void @empty, i32 4294967295, i32 0"   --->   Operation 5 'specinterface' 'specinterface_ln0' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 6 [1/1] (0.00ns)   --->   "%specinterface_ln0 = specinterface void @_ssdm_op_SpecInterface, i192 %rx_remoteMemCmd, void @empty_5, i32 0, i32 0, void @empty, i32 0, i32 0, void @empty, void @empty, void @empty, i32 0, i32 0, i32 0, i32 0, void @empty, void @empty, i32 4294967295, i32 0"   --->   Operation 6 'specinterface' 'specinterface_ln0' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 7 [1/1] (0.00ns)   --->   "%specinterface_ln0 = specinterface void @_ssdm_op_SpecInterface, i192 %rx_remoteMemCmd, void @empty_5, i32 0, i32 0, void @empty, i32 0, i32 0, void @empty, void @empty, void @empty, i32 0, i32 0, i32 0, i32 0, void @empty, void @empty, i32 4294967295, i32 0"   --->   Operation 7 'specinterface' 'specinterface_ln0' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 8 [1/1] (0.00ns)   --->   "%specinterface_ln0 = specinterface void @_ssdm_op_SpecInterface, i192 %tx_localMemCmdFifo, void @empty_5, i32 0, i32 0, void @empty, i32 0, i32 0, void @empty, void @empty, void @empty, i32 0, i32 0, i32 0, i32 0, void @empty, void @empty, i32 4294967295, i32 0"   --->   Operation 8 'specinterface' 'specinterface_ln0' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 9 [1/1] (0.00ns)   --->   "%specinterface_ln0 = specinterface void @_ssdm_op_SpecInterface, i192 %tx_localMemCmdFifo, void @empty_5, i32 0, i32 0, void @empty, i32 0, i32 0, void @empty, void @empty, void @empty, i32 0, i32 0, i32 0, i32 0, void @empty, void @empty, i32 4294967295, i32 0"   --->   Operation 9 'specinterface' 'specinterface_ln0' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 10 [1/1] (0.00ns)   --->   "%specinterface_ln0 = specinterface void @_ssdm_op_SpecInterface, i192 %tx_localMemCmdFifo, void @empty_5, i32 0, i32 0, void @empty, i32 0, i32 0, void @empty, void @empty, void @empty, i32 0, i32 0, i32 0, i32 0, void @empty, void @empty, i32 4294967295, i32 0"   --->   Operation 10 'specinterface' 'specinterface_ln0' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 11 [1/1] (0.00ns)   --->   "%specinterface_ln0 = specinterface void @_ssdm_op_SpecInterface, i96 %tx_pkgInfoFifo, void @empty_5, i32 0, i32 0, void @empty, i32 0, i32 0, void @empty, void @empty, void @empty, i32 0, i32 0, i32 0, i32 0, void @empty, void @empty, i32 4294967295, i32 0"   --->   Operation 11 'specinterface' 'specinterface_ln0' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 12 [1/1] (0.00ns)   --->   "%specinterface_ln0 = specinterface void @_ssdm_op_SpecInterface, i96 %tx_pkgInfoFifo, void @empty_5, i32 0, i32 0, void @empty, i32 0, i32 0, void @empty, void @empty, void @empty, i32 0, i32 0, i32 0, i32 0, void @empty, void @empty, i32 4294967295, i32 0"   --->   Operation 12 'specinterface' 'specinterface_ln0' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 13 [1/1] (0.00ns)   --->   "%specinterface_ln0 = specinterface void @_ssdm_op_SpecInterface, i96 %tx_pkgInfoFifo, void @empty_5, i32 0, i32 0, void @empty, i32 0, i32 0, void @empty, void @empty, void @empty, i32 0, i32 0, i32 0, i32 0, void @empty, void @empty, i32 4294967295, i32 0"   --->   Operation 13 'specinterface' 'specinterface_ln0' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 14 [1/1] (0.00ns)   --->   "%specinterface_ln0 = specinterface void @_ssdm_op_SpecInterface, i96 %tx_pkgInfoFifo, void @empty_5, i32 0, i32 0, void @empty, i32 0, i32 0, void @empty, void @empty, void @empty, i32 0, i32 0, i32 0, i32 0, void @empty, void @empty, i32 4294967295, i32 0"   --->   Operation 14 'specinterface' 'specinterface_ln0' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 15 [1/1] (0.00ns)   --->   "%specinterface_ln0 = specinterface void @_ssdm_op_SpecInterface, i192 %tx_localMemCmdFifo, void @empty_5, i32 0, i32 0, void @empty, i32 0, i32 0, void @empty, void @empty, void @empty, i32 0, i32 0, i32 0, i32 0, void @empty, void @empty, i32 4294967295, i32 0"   --->   Operation 15 'specinterface' 'specinterface_ln0' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 16 [1/1] (0.00ns)   --->   "%specinterface_ln0 = specinterface void @_ssdm_op_SpecInterface, i192 %rx_remoteMemCmd, void @empty_5, i32 0, i32 0, void @empty, i32 0, i32 0, void @empty, void @empty, void @empty, i32 0, i32 0, i32 0, i32 0, void @empty, void @empty, i32 4294967295, i32 0"   --->   Operation 16 'specinterface' 'specinterface_ln0' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 17 [1/1] (0.00ns)   --->   "%specinterface_ln0 = specinterface void @_ssdm_op_SpecInterface, i192 %m_axis_mem_read_cmd, void @empty_1, i32 1, i32 1, void @empty_0, i32 0, i32 0, void @empty, void @empty, void @empty, i32 0, i32 0, i32 0, i32 0, void @empty, void @empty, i32 4294967295, i32 0"   --->   Operation 17 'specinterface' 'specinterface_ln0' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 18 [1/1] (0.00ns)   --->   "%specpipeline_ln1923 = specpipeline void @_ssdm_op_SpecPipeline, i32 1, i32 0, i32 0, i32 0, void @empty" [/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/rocev2/../ib_transport_protocol/ib_transport_protocol.cpp:1923]   --->   Operation 18 'specpipeline' 'specpipeline_ln1923' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 19 [1/1] (0.00ns)   --->   "%tmp_i = nbreadreq i1 @_ssdm_op_NbReadReq.ap_fifo.i192P0A, i192 %rx_remoteMemCmd, i32 1" [/tools/Xilinx/Vitis_HLS/2022.1/common/technology/autopilot/hls_stream_39.h:136]   --->   Operation 19 'nbreadreq' 'tmp_i' <Predicate = true> <Delay = 0.00> <CoreInst = "FIFO">   --->   Core 78 'FIFO' <Latency = 0> <II = 1> <Delay = 0.98> <Storage> <Opcode : 'read' 'write' 'nbread' 'nbwrite'> <Ports = 0> <Width = 192> <Depth = 512> <FIFO>
+ST_1 : Operation 20 [1/1] (0.00ns)   --->   "%br_ln1933 = br i1 %tmp_i, void %if.else.i, void %if.then.i" [/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/rocev2/../ib_transport_protocol/ib_transport_protocol.cpp:1933]   --->   Operation 20 'br' 'br_ln1933' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 21 [1/1] (0.00ns)   --->   "%br_ln0 = br void %mem_cmd_merger<512>.exit"   --->   Operation 21 'br' 'br_ln0' <Predicate = (!tmp_i)> <Delay = 0.00>
+ST_1 : Operation 22 [1/1] (0.98ns)   --->   "%rx_remoteMemCmd_read = read i192 @_ssdm_op_Read.ap_fifo.volatile.i192P0A, i192 %rx_remoteMemCmd" [/tools/Xilinx/Vitis_HLS/2022.1/common/technology/autopilot/hls_stream_39.h:145]   --->   Operation 22 'read' 'rx_remoteMemCmd_read' <Predicate = (tmp_i)> <Delay = 0.98> <CoreInst = "FIFO">   --->   Core 78 'FIFO' <Latency = 0> <II = 1> <Delay = 0.98> <Storage> <Opcode : 'read' 'write' 'nbread' 'nbwrite'> <Ports = 0> <Width = 192> <Depth = 512> <FIFO>
+ST_1 : Operation 23 [1/1] (0.00ns)   --->   "%cmd_len_V = partselect i32 @_ssdm_op_PartSelect.i32.i192.i32.i32, i192 %rx_remoteMemCmd_read, i32 128, i32 159" [/tools/Xilinx/Vitis_HLS/2022.1/common/technology/autopilot/hls_stream_39.h:145]   --->   Operation 23 'partselect' 'cmd_len_V' <Predicate = (tmp_i)> <Delay = 0.00>
+ST_1 : Operation 24 [1/1] (0.00ns)   --->   "%tmp_40 = bitselect i1 @_ssdm_op_BitSelect.i1.i192.i192, i192 %rx_remoteMemCmd_read, i192 160" [/tools/Xilinx/Vitis_HLS/2022.1/common/technology/autopilot/hls_stream_39.h:174]   --->   Operation 24 'bitselect' 'tmp_40' <Predicate = (tmp_i)> <Delay = 0.00>
+ST_1 : Operation 25 [1/1] (0.00ns)   --->   "%tmp_170_i = partselect i96 @_ssdm_op_PartSelect.i96.i192.i32.i32, i192 %rx_remoteMemCmd_read, i32 64, i32 159" [/tools/Xilinx/Vitis_HLS/2022.1/common/technology/autopilot/hls_stream_39.h:174]   --->   Operation 25 'partselect' 'tmp_170_i' <Predicate = (tmp_i)> <Delay = 0.00>
+ST_1 : Operation 26 [1/1] (0.00ns)   --->   "%zext_ln1541 = zext i32 %cmd_len_V"   --->   Operation 26 'zext' 'zext_ln1541' <Predicate = (tmp_i)> <Delay = 0.00>
+ST_1 : Operation 27 [1/1] (0.88ns)   --->   "%add_ln1559 = add i33 %zext_ln1541, i33 63"   --->   Operation 27 'add' 'add_ln1559' <Predicate = (tmp_i)> <Delay = 0.88> <CoreInst = "Adder">   --->   Core 1 'Adder' <Latency = 0> <II = 1> <Delay = 0.88> <FuncUnit> <Opcode : 'add' 'sub'> <InPorts = 2> <OutPorts = 1>
+ST_1 : Operation 28 [1/1] (0.00ns)   --->   "%tmp = partselect i27 @_ssdm_op_PartSelect.i27.i33.i32.i32, i33 %add_ln1559, i32 6, i32 32" [/tools/Xilinx/Vitis_HLS/2022.1/common/technology/autopilot/hls_stream_39.h:174]   --->   Operation 28 'partselect' 'tmp' <Predicate = (tmp_i)> <Delay = 0.00>
+
+State 2 <SV = 1> <Delay = 2.35>
+ST_2 : Operation 29 [1/1] (0.00ns)   --->   "%tmp_i_231 = nbreadreq i1 @_ssdm_op_NbReadReq.ap_fifo.i192P0A, i192 %tx_localMemCmdFifo, i32 1" [/tools/Xilinx/Vitis_HLS/2022.1/common/technology/autopilot/hls_stream_39.h:136]   --->   Operation 29 'nbreadreq' 'tmp_i_231' <Predicate = (!tmp_i)> <Delay = 0.00> <CoreInst = "FIFO_SRL">   --->   Core 81 'FIFO_SRL' <Latency = 0> <II = 1> <Delay = 1.42> <Storage> <Opcode : 'read' 'write' 'nbread' 'nbwrite'> <Ports = 0> <Width = 192> <Depth = 2> <FIFO>
+ST_2 : Operation 30 [1/1] (0.00ns)   --->   "%br_ln1948 = br i1 %tmp_i_231, void %if.end32.i, void %if.then9.i" [/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/rocev2/../ib_transport_protocol/ib_transport_protocol.cpp:1948]   --->   Operation 30 'br' 'br_ln1948' <Predicate = (!tmp_i)> <Delay = 0.00>
+ST_2 : Operation 31 [1/1] (1.16ns)   --->   "%tx_localMemCmdFifo_read = read i192 @_ssdm_op_Read.ap_fifo.volatile.i192P0A, i192 %tx_localMemCmdFifo" [/tools/Xilinx/Vitis_HLS/2022.1/common/technology/autopilot/hls_stream_39.h:145]   --->   Operation 31 'read' 'tx_localMemCmdFifo_read' <Predicate = (!tmp_i & tmp_i_231)> <Delay = 1.16> <CoreInst = "FIFO_SRL">   --->   Core 81 'FIFO_SRL' <Latency = 0> <II = 1> <Delay = 1.42> <Storage> <Opcode : 'read' 'write' 'nbread' 'nbwrite'> <Ports = 0> <Width = 192> <Depth = 2> <FIFO>
+ST_2 : Operation 32 [1/1] (0.00ns)   --->   "%cmd_addr_V = partselect i64 @_ssdm_op_PartSelect.i64.i192.i32.i32, i192 %tx_localMemCmdFifo_read, i32 64, i32 127" [/tools/Xilinx/Vitis_HLS/2022.1/common/technology/autopilot/hls_stream_39.h:145]   --->   Operation 32 'partselect' 'cmd_addr_V' <Predicate = (!tmp_i & tmp_i_231)> <Delay = 0.00>
+ST_2 : Operation 33 [1/1] (0.00ns)   --->   "%cmd_len_V_1 = partselect i32 @_ssdm_op_PartSelect.i32.i192.i32.i32, i192 %tx_localMemCmdFifo_read, i32 128, i32 159" [/tools/Xilinx/Vitis_HLS/2022.1/common/technology/autopilot/hls_stream_39.h:145]   --->   Operation 33 'partselect' 'cmd_len_V_1' <Predicate = (!tmp_i & tmp_i_231)> <Delay = 0.00>
+ST_2 : Operation 34 [1/1] (1.06ns)   --->   "%icmp_ln1069 = icmp_eq  i64 %cmd_addr_V, i64 0"   --->   Operation 34 'icmp' 'icmp_ln1069' <Predicate = (!tmp_i & tmp_i_231)> <Delay = 1.06> <CoreInst = "Cmp">   --->   Core 9 'Cmp' <Latency = 0> <II = 1> <Delay = 1.06> <FuncUnit> <Opcode : 'icmp'> <InPorts = 2> <OutPorts = 1>
+ST_2 : Operation 35 [1/1] (0.00ns)   --->   "%br_ln1952 = br i1 %icmp_ln1069, void %if.then12.i, void %if.else25.i" [/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/rocev2/../ib_transport_protocol/ib_transport_protocol.cpp:1952]   --->   Operation 35 'br' 'br_ln1952' <Predicate = (!tmp_i & tmp_i_231)> <Delay = 0.00>
+ST_2 : Operation 36 [1/1] (0.00ns)   --->   "%tmp_41 = bitselect i1 @_ssdm_op_BitSelect.i1.i192.i192, i192 %tx_localMemCmdFifo_read, i192 160" [/tools/Xilinx/Vitis_HLS/2022.1/common/technology/autopilot/hls_stream_39.h:174]   --->   Operation 36 'bitselect' 'tmp_41' <Predicate = (!tmp_i & tmp_i_231 & !icmp_ln1069)> <Delay = 0.00>
+ST_2 : Operation 37 [1/1] (0.00ns)   --->   "%tmp_173_i = partselect i96 @_ssdm_op_PartSelect.i96.i192.i32.i32, i192 %tx_localMemCmdFifo_read, i32 64, i32 159" [/tools/Xilinx/Vitis_HLS/2022.1/common/technology/autopilot/hls_stream_39.h:174]   --->   Operation 37 'partselect' 'tmp_173_i' <Predicate = (!tmp_i & tmp_i_231 & !icmp_ln1069)> <Delay = 0.00>
+ST_2 : Operation 38 [1/1] (0.00ns)   --->   "%br_ln1961 = br void %if.end32.i" [/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/rocev2/../ib_transport_protocol/ib_transport_protocol.cpp:1961]   --->   Operation 38 'br' 'br_ln1961' <Predicate = (!tmp_i & tmp_i_231)> <Delay = 0.00>
+
+State 3 <SV = 2> <Delay = 2.04>
+ST_3 : Operation 39 [1/1] (0.00ns)   --->   "%tmp_174_i = bitconcatenate i129 @_ssdm_op_BitConcatenate.i129.i1.i32.i96, i1 %tmp_41, i32 0, i96 %tmp_173_i" [/tools/Xilinx/Vitis_HLS/2022.1/common/technology/autopilot/hls_stream_39.h:174]   --->   Operation 39 'bitconcatenate' 'tmp_174_i' <Predicate = (!tmp_i & tmp_i_231 & !icmp_ln1069)> <Delay = 0.00>
+ST_3 : Operation 40 [1/1] (0.00ns)   --->   "%zext_ln174_59 = zext i129 %tmp_174_i" [/tools/Xilinx/Vitis_HLS/2022.1/common/technology/autopilot/hls_stream_39.h:174]   --->   Operation 40 'zext' 'zext_ln174_59' <Predicate = (!tmp_i & tmp_i_231 & !icmp_ln1069)> <Delay = 0.00>
+ST_3 : Operation 41 [2/2] (0.00ns)   --->   "%write_ln174 = write void @_ssdm_op_Write.axis.volatile.i192P128A, i192 %m_axis_mem_read_cmd, i192 %zext_ln174_59" [/tools/Xilinx/Vitis_HLS/2022.1/common/technology/autopilot/hls_stream_39.h:174]   --->   Operation 41 'write' 'write_ln174' <Predicate = (!tmp_i & tmp_i_231 & !icmp_ln1069)> <Delay = 0.00> <CoreInst = "axis">   --->   Core 123 'axis' <Latency = 0> <II = 1> <Delay = 1.00> <Adapter> <Opcode : >
+ST_3 : Operation 42 [1/1] (0.00ns)   --->   "%zext_ln1541_2 = zext i32 %cmd_len_V_1"   --->   Operation 42 'zext' 'zext_ln1541_2' <Predicate = (!tmp_i & tmp_i_231 & !icmp_ln1069)> <Delay = 0.00>
+ST_3 : Operation 43 [1/1] (0.88ns)   --->   "%add_ln1559_2 = add i33 %zext_ln1541_2, i33 63"   --->   Operation 43 'add' 'add_ln1559_2' <Predicate = (!tmp_i & tmp_i_231 & !icmp_ln1069)> <Delay = 0.88> <CoreInst = "Adder">   --->   Core 1 'Adder' <Latency = 0> <II = 1> <Delay = 0.88> <FuncUnit> <Opcode : 'add' 'sub'> <InPorts = 2> <OutPorts = 1>
+ST_3 : Operation 44 [1/1] (0.00ns)   --->   "%tmp_9 = partselect i27 @_ssdm_op_PartSelect.i27.i33.i32.i32, i33 %add_ln1559_2, i32 6, i32 32" [/tools/Xilinx/Vitis_HLS/2022.1/common/technology/autopilot/hls_stream_39.h:174]   --->   Operation 44 'partselect' 'tmp_9' <Predicate = (!tmp_i & tmp_i_231 & !icmp_ln1069)> <Delay = 0.00>
+ST_3 : Operation 45 [1/1] (0.00ns)   --->   "%shl_ln174_1 = bitconcatenate i91 @_ssdm_op_BitConcatenate.i91.i27.i64, i27 %tmp_9, i64 0" [/tools/Xilinx/Vitis_HLS/2022.1/common/technology/autopilot/hls_stream_39.h:174]   --->   Operation 45 'bitconcatenate' 'shl_ln174_1' <Predicate = (!tmp_i & tmp_i_231 & !icmp_ln1069)> <Delay = 0.00>
+ST_3 : Operation 46 [1/1] (0.00ns)   --->   "%or_ln174_3 = or i91 %shl_ln174_1, i91 1" [/tools/Xilinx/Vitis_HLS/2022.1/common/technology/autopilot/hls_stream_39.h:174]   --->   Operation 46 'or' 'or_ln174_3' <Predicate = (!tmp_i & tmp_i_231 & !icmp_ln1069)> <Delay = 0.00>
+ST_3 : Operation 47 [1/1] (0.00ns)   --->   "%zext_ln174_60 = zext i91 %or_ln174_3" [/tools/Xilinx/Vitis_HLS/2022.1/common/technology/autopilot/hls_stream_39.h:174]   --->   Operation 47 'zext' 'zext_ln174_60' <Predicate = (!tmp_i & tmp_i_231 & !icmp_ln1069)> <Delay = 0.00>
+ST_3 : Operation 48 [1/1] (1.16ns)   --->   "%write_ln174 = write void @_ssdm_op_Write.ap_fifo.volatile.i96P0A, i96 %tx_pkgInfoFifo, i96 %zext_ln174_60" [/tools/Xilinx/Vitis_HLS/2022.1/common/technology/autopilot/hls_stream_39.h:174]   --->   Operation 48 'write' 'write_ln174' <Predicate = (!tmp_i & tmp_i_231 & !icmp_ln1069)> <Delay = 1.16> <CoreInst = "FIFO">   --->   Core 78 'FIFO' <Latency = 0> <II = 1> <Delay = 1.23> <Storage> <Opcode : 'read' 'write' 'nbread' 'nbwrite'> <Ports = 0> <Width = 96> <Depth = 128> <FIFO>
+ST_3 : Operation 49 [1/1] (0.00ns)   --->   "%zext_ln1541_1 = zext i32 %cmd_len_V_1"   --->   Operation 49 'zext' 'zext_ln1541_1' <Predicate = (!tmp_i & tmp_i_231 & icmp_ln1069)> <Delay = 0.00>
+ST_3 : Operation 50 [1/1] (0.88ns)   --->   "%add_ln1559_1 = add i33 %zext_ln1541_1, i33 63"   --->   Operation 50 'add' 'add_ln1559_1' <Predicate = (!tmp_i & tmp_i_231 & icmp_ln1069)> <Delay = 0.88> <CoreInst = "Adder">   --->   Core 1 'Adder' <Latency = 0> <II = 1> <Delay = 0.88> <FuncUnit> <Opcode : 'add' 'sub'> <InPorts = 2> <OutPorts = 1>
+ST_3 : Operation 51 [1/1] (0.00ns)   --->   "%tmp_8 = partselect i27 @_ssdm_op_PartSelect.i27.i33.i32.i32, i33 %add_ln1559_1, i32 6, i32 32" [/tools/Xilinx/Vitis_HLS/2022.1/common/technology/autopilot/hls_stream_39.h:174]   --->   Operation 51 'partselect' 'tmp_8' <Predicate = (!tmp_i & tmp_i_231 & icmp_ln1069)> <Delay = 0.00>
+ST_3 : Operation 52 [1/1] (0.00ns)   --->   "%shl_ln174_s = bitconcatenate i91 @_ssdm_op_BitConcatenate.i91.i27.i64, i27 %tmp_8, i64 0" [/tools/Xilinx/Vitis_HLS/2022.1/common/technology/autopilot/hls_stream_39.h:174]   --->   Operation 52 'bitconcatenate' 'shl_ln174_s' <Predicate = (!tmp_i & tmp_i_231 & icmp_ln1069)> <Delay = 0.00>
+ST_3 : Operation 53 [1/1] (0.00ns)   --->   "%or_ln174 = or i91 %shl_ln174_s, i91 4294967297" [/tools/Xilinx/Vitis_HLS/2022.1/common/technology/autopilot/hls_stream_39.h:174]   --->   Operation 53 'or' 'or_ln174' <Predicate = (!tmp_i & tmp_i_231 & icmp_ln1069)> <Delay = 0.00>
+ST_3 : Operation 54 [1/1] (0.00ns)   --->   "%zext_ln174_58 = zext i91 %or_ln174" [/tools/Xilinx/Vitis_HLS/2022.1/common/technology/autopilot/hls_stream_39.h:174]   --->   Operation 54 'zext' 'zext_ln174_58' <Predicate = (!tmp_i & tmp_i_231 & icmp_ln1069)> <Delay = 0.00>
+ST_3 : Operation 55 [1/1] (1.16ns)   --->   "%write_ln174 = write void @_ssdm_op_Write.ap_fifo.volatile.i96P0A, i96 %tx_pkgInfoFifo, i96 %zext_ln174_58" [/tools/Xilinx/Vitis_HLS/2022.1/common/technology/autopilot/hls_stream_39.h:174]   --->   Operation 55 'write' 'write_ln174' <Predicate = (!tmp_i & tmp_i_231 & icmp_ln1069)> <Delay = 1.16> <CoreInst = "FIFO">   --->   Core 78 'FIFO' <Latency = 0> <II = 1> <Delay = 1.23> <Storage> <Opcode : 'read' 'write' 'nbread' 'nbwrite'> <Ports = 0> <Width = 96> <Depth = 128> <FIFO>
+ST_3 : Operation 56 [1/1] (0.00ns)   --->   "%br_ln0 = br void %if.end.i"   --->   Operation 56 'br' 'br_ln0' <Predicate = (!tmp_i & tmp_i_231 & icmp_ln1069)> <Delay = 0.00>
+ST_3 : Operation 57 [1/1] (0.00ns)   --->   "%tmp_171_i = bitconcatenate i129 @_ssdm_op_BitConcatenate.i129.i1.i32.i96, i1 %tmp_40, i32 0, i96 %tmp_170_i" [/tools/Xilinx/Vitis_HLS/2022.1/common/technology/autopilot/hls_stream_39.h:174]   --->   Operation 57 'bitconcatenate' 'tmp_171_i' <Predicate = (tmp_i)> <Delay = 0.00>
+ST_3 : Operation 58 [1/1] (0.00ns)   --->   "%zext_ln174 = zext i129 %tmp_171_i" [/tools/Xilinx/Vitis_HLS/2022.1/common/technology/autopilot/hls_stream_39.h:174]   --->   Operation 58 'zext' 'zext_ln174' <Predicate = (tmp_i)> <Delay = 0.00>
+ST_3 : Operation 59 [2/2] (0.00ns)   --->   "%write_ln174 = write void @_ssdm_op_Write.axis.volatile.i192P128A, i192 %m_axis_mem_read_cmd, i192 %zext_ln174" [/tools/Xilinx/Vitis_HLS/2022.1/common/technology/autopilot/hls_stream_39.h:174]   --->   Operation 59 'write' 'write_ln174' <Predicate = (tmp_i)> <Delay = 0.00> <CoreInst = "axis">   --->   Core 123 'axis' <Latency = 0> <II = 1> <Delay = 1.00> <Adapter> <Opcode : >
+ST_3 : Operation 60 [1/1] (0.00ns)   --->   "%shl_ln = bitconcatenate i91 @_ssdm_op_BitConcatenate.i91.i27.i64, i27 %tmp, i64 0" [/tools/Xilinx/Vitis_HLS/2022.1/common/technology/autopilot/hls_stream_39.h:174]   --->   Operation 60 'bitconcatenate' 'shl_ln' <Predicate = (tmp_i)> <Delay = 0.00>
+ST_3 : Operation 61 [1/1] (0.00ns)   --->   "%zext_ln174_57 = zext i91 %shl_ln" [/tools/Xilinx/Vitis_HLS/2022.1/common/technology/autopilot/hls_stream_39.h:174]   --->   Operation 61 'zext' 'zext_ln174_57' <Predicate = (tmp_i)> <Delay = 0.00>
+ST_3 : Operation 62 [1/1] (1.16ns)   --->   "%write_ln174 = write void @_ssdm_op_Write.ap_fifo.volatile.i96P0A, i96 %tx_pkgInfoFifo, i96 %zext_ln174_57" [/tools/Xilinx/Vitis_HLS/2022.1/common/technology/autopilot/hls_stream_39.h:174]   --->   Operation 62 'write' 'write_ln174' <Predicate = (tmp_i)> <Delay = 1.16> <CoreInst = "FIFO">   --->   Core 78 'FIFO' <Latency = 0> <II = 1> <Delay = 1.23> <Storage> <Opcode : 'read' 'write' 'nbread' 'nbwrite'> <Ports = 0> <Width = 96> <Depth = 128> <FIFO>
+
+State 4 <SV = 3> <Delay = 0.00>
+ST_4 : Operation 63 [1/2] (0.00ns)   --->   "%write_ln174 = write void @_ssdm_op_Write.axis.volatile.i192P128A, i192 %m_axis_mem_read_cmd, i192 %zext_ln174_59" [/tools/Xilinx/Vitis_HLS/2022.1/common/technology/autopilot/hls_stream_39.h:174]   --->   Operation 63 'write' 'write_ln174' <Predicate = (!tmp_i & tmp_i_231 & !icmp_ln1069)> <Delay = 0.00> <CoreInst = "axis">   --->   Core 123 'axis' <Latency = 0> <II = 1> <Delay = 1.00> <Adapter> <Opcode : >
+ST_4 : Operation 64 [1/1] (0.00ns)   --->   "%br_ln1956 = br void %if.end.i" [/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/rocev2/../ib_transport_protocol/ib_transport_protocol.cpp:1956]   --->   Operation 64 'br' 'br_ln1956' <Predicate = (!tmp_i & tmp_i_231 & !icmp_ln1069)> <Delay = 0.00>
+ST_4 : Operation 65 [1/2] (0.00ns)   --->   "%write_ln174 = write void @_ssdm_op_Write.axis.volatile.i192P128A, i192 %m_axis_mem_read_cmd, i192 %zext_ln174" [/tools/Xilinx/Vitis_HLS/2022.1/common/technology/autopilot/hls_stream_39.h:174]   --->   Operation 65 'write' 'write_ln174' <Predicate = (tmp_i)> <Delay = 0.00> <CoreInst = "axis">   --->   Core 123 'axis' <Latency = 0> <II = 1> <Delay = 1.00> <Adapter> <Opcode : >
+ST_4 : Operation 66 [1/1] (0.00ns)   --->   "%br_ln1947 = br void %mem_cmd_merger<512>.exit" [/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/rocev2/../ib_transport_protocol/ib_transport_protocol.cpp:1947]   --->   Operation 66 'br' 'br_ln1947' <Predicate = (tmp_i)> <Delay = 0.00>
+ST_4 : Operation 67 [1/1] (0.00ns)   --->   "%ret_ln0 = ret"   --->   Operation 67 'ret' 'ret_ln0' <Predicate = true> <Delay = 0.00>
+
+
+============================================================
++ Verbose Summary: Timing violations
+============================================================
+Target clock period: 3.2ns, clock uncertainty: 0.864ns.
+
+ <State 1>: 1.87ns
+The critical path consists of the following:
+	fifo read operation ('rx_remoteMemCmd_read', /tools/Xilinx/Vitis_HLS/2022.1/common/technology/autopilot/hls_stream_39.h:145) on port 'rx_remoteMemCmd' (/tools/Xilinx/Vitis_HLS/2022.1/common/technology/autopilot/hls_stream_39.h:145) [58]  (0.989 ns)
+	'add' operation ('add_ln1559') [66]  (0.88 ns)
+
+ <State 2>: 2.35ns
+The critical path consists of the following:
+	fifo read operation ('tx_localMemCmdFifo_read', /tools/Xilinx/Vitis_HLS/2022.1/common/technology/autopilot/hls_stream_39.h:145) on port 'tx_localMemCmdFifo' (/tools/Xilinx/Vitis_HLS/2022.1/common/technology/autopilot/hls_stream_39.h:145) [25]  (1.17 ns)
+	'icmp' operation ('icmp_ln1069') [28]  (1.06 ns)
+	blocking operation 0.122 ns on control path)
+
+ <State 3>: 2.05ns
+The critical path consists of the following:
+	'add' operation ('add_ln1559_1') [46]  (0.88 ns)
+	'or' operation ('or_ln174', /tools/Xilinx/Vitis_HLS/2022.1/common/technology/autopilot/hls_stream_39.h:174) [49]  (0 ns)
+	fifo write operation ('write_ln174', /tools/Xilinx/Vitis_HLS/2022.1/common/technology/autopilot/hls_stream_39.h:174) on port 'tx_pkgInfoFifo' (/tools/Xilinx/Vitis_HLS/2022.1/common/technology/autopilot/hls_stream_39.h:174) [51]  (1.17 ns)
+
+ <State 4>: 0ns
+The critical path consists of the following:
+
+
+============================================================
++ Verbose Summary: Binding
+============================================================
+N/A
+* FSMD analyzer results:
+  - Output states:
+ - Input state : 
+  - Chain level:
+	State 1
+	State 2
+	State 3
+	State 4
+
+
+============================================================
++ Verbose Summary: Datapath Resource usage 
+============================================================
+N/A

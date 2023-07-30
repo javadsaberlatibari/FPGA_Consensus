@@ -1,0 +1,178 @@
+
+
+================================================================
+== Synthesis Summary Report of 'icmp_server'
+================================================================
++ General Information: 
+    * Date:           Tue Jul 11 09:16:16 2023
+    * Version:        2022.1 (Build 3526262 on Mon Apr 18 15:47:01 MDT 2022)
+    * Project:        icmp_server_prj
+    * Solution:       solution1 (Vivado IP Flow Target)
+    * Product family: virtexuplus
+    * Target device:  xcu280-fsvh2892-2L-e
+    
+
++ Performance & Resource Estimates: 
+    
+    PS: '+' for module; 'o' for loop; '*' for dataflow
+    +------------------------+--------+-------+---------+--------+----------+---------+------+----------+---------+----+------------+------------+-----+
+    |         Modules        |  Issue |       | Latency | Latency| Iteration|         | Trip |          |         |    |            |            |     |
+    |         & Loops        |  Type  | Slack | (cycles)|  (ns)  |  Latency | Interval| Count| Pipelined|  BRAM   | DSP|     FF     |     LUT    | URAM|
+    +------------------------+--------+-------+---------+--------+----------+---------+------+----------+---------+----+------------+------------+-----+
+    |+ icmp_server*          |  Timing|  -0.88|        5|  16.122|         -|        1|     -|  dataflow|  4 (~0%)|   -|  2742 (~0%)|  3639 (~0%)|    -|
+    | + check_icmp_checksum  |       -|   0.25|        1|   3.200|         -|        1|     -|       yes|        -|   -|   401 (~0%)|  1159 (~0%)|    -|
+    | + udpPortUnreachable   |  Timing|  -0.88|        0|   0.000|         -|        1|     -|       yes|        -|   -|    28 (~0%)|   592 (~0%)|    -|
+    | + udpAddIpHeader       |  Timing|  -0.74|        0|   0.000|         -|        1|     -|       yes|        -|   -|   109 (~0%)|   215 (~0%)|    -|
+    | + dropper              |  Timing|  -0.12|        0|   0.000|         -|        0|     -|        no|        -|   -|     4 (~0%)|   132 (~0%)|    -|
+    | + insertChecksum       |       -|   0.12|        2|   6.400|         -|        1|     -|       yes|        -|   -|   470 (~0%)|   375 (~0%)|    -|
+    +------------------------+--------+-------+---------+--------+----------+---------+------+----------+---------+----+------------+------------+-----+
+
+
+================================================================
+== HW Interfaces
+================================================================
+* AXIS
++-----------+---------------+-------+--------+--------+
+| Interface | Register Mode | TDATA | TREADY | TVALID |
++-----------+---------------+-------+--------+--------+
+| m_axis    | both          | 128   | 1      | 1      |
+| s_axis    | both          | 128   | 1      | 1      |
+| ttlIn     | both          | 128   | 1      | 1      |
+| udpIn     | both          | 128   | 1      | 1      |
++-----------+---------------+-------+--------+--------+
+
+* TOP LEVEL CONTROL
++-----------+--------------+----------+
+| Interface | Type         | Ports    |
++-----------+--------------+----------+
+| ap_clk    | clock        | ap_clk   |
+| ap_rst_n  | reset        | ap_rst_n |
+| ap_ctrl   | ap_ctrl_none |          |
++-----------+--------------+----------+
+
+
+================================================================
+== SW I/O Information
+================================================================
+* Top Function Arguments
++----------+-----------+---------------------+
+| Argument | Direction | Datatype            |
++----------+-----------+---------------------+
+| dataIn   | in        | stream<axiWord, 0>& |
+| udpIn    | in        | stream<axiWord, 0>& |
+| ttlIn    | in        | stream<axiWord, 0>& |
+| dataOut  | out       | stream<axiWord, 0>& |
++----------+-----------+---------------------+
+
+* SW-to-HW Mapping
++----------+--------------+-----------+
+| Argument | HW Interface | HW Type   |
++----------+--------------+-----------+
+| dataIn   | s_axis       | interface |
+| udpIn    | udpIn        | interface |
+| ttlIn    | ttlIn        | interface |
+| dataOut  | m_axis       | interface |
++----------+--------------+-----------+
+
+
+================================================================
+== M_AXI Burst Information
+================================================================
+ Note: All burst requests might be further partitioned into multiple requests during RTL generation based on max_read_burst_length or max_write_burst_length settings.
+
+  No burst in design
+
+================================================================
+== Bind Op Report
+================================================================
++----------------------------+-----+--------+---------------+-----+--------+---------+
+| Name                       | DSP | Pragma | Variable      | Op  | Impl   | Latency |
++----------------------------+-----+--------+---------------+-----+--------+---------+
+| + icmp_server              | 0   |        |               |     |        |         |
+|  + check_icmp_checksum     | 0   |        |               |     |        |         |
+|    add_ln886_3_fu_411_p2   | -   |        | add_ln886_3   | add | fabric | 0       |
+|    add_ln886_4_fu_459_p2   | -   |        | add_ln886_4   | add | fabric | 0       |
+|    add_ln886_7_fu_555_p2   | -   |        | add_ln886_7   | add | fabric | 0       |
+|    add_ln232_18_fu_579_p2  | -   |        | add_ln232_18  | add | fabric | 0       |
+|    add_ln886_5_fu_625_p2   | -   |        | add_ln886_5   | add | fabric | 0       |
+|    add_ln886_9_fu_701_p2   | -   |        | add_ln886_9   | add | fabric | 0       |
+|    add_ln232_20_fu_725_p2  | -   |        | add_ln232_20  | add | fabric | 0       |
+|    add_ln886_8_fu_759_p2   | -   |        | add_ln886_8   | add | fabric | 0       |
+|    add_ln886_11_fu_831_p2  | -   |        | add_ln886_11  | add | fabric | 0       |
+|    add_ln232_22_fu_855_p2  | -   |        | add_ln232_22  | add | fabric | 0       |
+|    add_ln886_10_fu_879_p2  | -   |        | add_ln886_10  | add | fabric | 0       |
+|    add_ln886_13_fu_951_p2  | -   |        | add_ln886_13  | add | fabric | 0       |
+|    add_ln232_24_fu_975_p2  | -   |        | add_ln232_24  | add | fabric | 0       |
+|    add_ln886_12_fu_999_p2  | -   |        | add_ln886_12  | add | fabric | 0       |
+|    add_ln886_14_fu_1047_p2 | -   |        | add_ln886_14  | add | fabric | 0       |
+|    add_ln886_2_fu_1092_p2  | -   |        | add_ln886_2   | add | fabric | 0       |
+|    add_ln887_fu_1390_p2    | -   |        | add_ln887     | add | fabric | 0       |
+|    add_ln886_fu_1136_p2    | -   |        | add_ln886     | add | fabric | 0       |
+|    add_ln886_1_fu_1176_p2  | -   |        | add_ln886_1   | add | fabric | 0       |
+|    add_ln886_6_fu_1252_p2  | -   |        | add_ln886_6   | add | fabric | 0       |
+|  + udpPortUnreachable      | 0   |        |               |     |        |         |
+|    add_ln232_2_fu_401_p2   | -   |        | add_ln232_2   | add | fabric | 0       |
+|    add_ln232_3_fu_411_p2   | -   |        | add_ln232_3   | add | fabric | 0       |
+|    add_ln232_4_fu_421_p2   | -   |        | add_ln232_4   | add | fabric | 0       |
+|    add_ln232_5_fu_431_p2   | -   |        | add_ln232_5   | add | fabric | 0       |
+|    add_ln232_6_fu_543_p2   | -   |        | add_ln232_6   | add | fabric | 0       |
+|    add_ln232_7_fu_553_p2   | -   |        | add_ln232_7   | add | fabric | 0       |
+|    add_ln232_8_fu_563_p2   | -   |        | add_ln232_8   | add | fabric | 0       |
+|    add_ln232_9_fu_573_p2   | -   |        | add_ln232_9   | add | fabric | 0       |
+|    add_ln886_fu_606_p2     | -   |        | add_ln886     | add | fabric | 0       |
+|    add_ln232_fu_646_p2     | -   |        | add_ln232     | add | fabric | 0       |
+|    add_ln1543_fu_652_p2    | -   |        | add_ln1543    | add | fabric | 0       |
+|    add_ln232_1_fu_674_p2   | -   |        | add_ln232_1   | add | fabric | 0       |
+|  + udpAddIpHeader          | 0   |        |               |     |        |         |
+|    inputVector_V_fu_535_p2 | -   |        | inputVector_V | add | fabric | 0       |
+|  + insertChecksum          | 0   |        |               |     |        |         |
+|    add_ln886_fu_324_p2     | -   |        | add_ln886     | add | fabric | 0       |
++----------------------------+-----+--------+---------------+-----+--------+---------+
+
+
+================================================================
+== Bind Storage Report
+================================================================
+  No bind storage info in design
+
+================================================================
+== Pragma Report
+================================================================
+* Ignored Pragmas
++-----------+----------+-----------------------------------------------------------------------------------------------------------------------------------------------+-------------------------------------------------+
+| Type      | Options  | Location                                                                                                                                      | Messages                                        |
++-----------+----------+-----------------------------------------------------------------------------------------------------------------------------------------------+-------------------------------------------------+
+| data_pack | variable | ../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/icmp_server/icmp_server.cpp:440 in icmp_server | the pragma is not supported and will be ignored |
+| data_pack | variable | ../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/icmp_server/icmp_server.cpp:441 in icmp_server | the pragma is not supported and will be ignored |
++-----------+----------+-----------------------------------------------------------------------------------------------------------------------------------------------+-------------------------------------------------+
+
+* Valid Pragma Syntax
++-----------+----------------------------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Type      | Options                                      | Location                                                                                                                                                                  |
++-----------+----------------------------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| inline    | off                                          | ../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/icmp_server/icmp_server.cpp:47 in check_icmp_checksum                      |
+| pipeline  | II=1                                         | ../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/icmp_server/icmp_server.cpp:48 in check_icmp_checksum                      |
+| unroll    |                                              | ../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/icmp_server/icmp_server.cpp:128 in check_icmp_checksum                     |
+| unroll    |                                              | ../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/icmp_server/icmp_server.cpp:140 in check_icmp_checksum                     |
+| inline    | off                                          | ../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/icmp_server/icmp_server.cpp:171 in udpportunreachable                      |
+| pipeline  | II=1                                         | ../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/icmp_server/icmp_server.cpp:172 in udpportunreachable                      |
+| inline    | off                                          | ../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/icmp_server/icmp_server.cpp:243 in udpaddipheader                          |
+| pipeline  | II=1                                         | ../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/icmp_server/icmp_server.cpp:244 in udpaddipheader                          |
+| inline    | off                                          | ../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/icmp_server/icmp_server.cpp:362 in insertchecksum                          |
+| pipeline  | II=1                                         | ../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/icmp_server/icmp_server.cpp:363 in insertchecksum                          |
+| dataflow  | disable_start_propagation                    | ../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/icmp_server/icmp_server.cpp:416 in icmp_server                             |
+| interface | ap_ctrl_none port=return                     | ../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/icmp_server/icmp_server.cpp:417 in icmp_server, return                     |
+| interface | axis register port=dataIn name=s_axis        | ../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/icmp_server/icmp_server.cpp:419 in icmp_server, dataIn                     |
+| interface | axis register port=udpIn name=udpIn          | ../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/icmp_server/icmp_server.cpp:420 in icmp_server, udpIn                      |
+| interface | axis register port=ttlIn name=ttlIn          | ../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/icmp_server/icmp_server.cpp:421 in icmp_server, ttlIn                      |
+| interface | axis register port=dataOut name=m_axis       | ../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/icmp_server/icmp_server.cpp:422 in icmp_server, dataOut                    |
+| stream    | variable=dataStreams depth=16                | ../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/icmp_server/icmp_server.cpp:431 in icmp_server, dataStreams                |
+| stream    | variable=checksumStreams depth=16            | ../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/icmp_server/icmp_server.cpp:433 in icmp_server, checksumStreams            |
+| stream    | variable=packageBuffer1 depth=64             | ../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/icmp_server/icmp_server.cpp:435 in icmp_server, packageBuffer1             |
+| stream    | variable=udpPort2insertChecksum depth=8      | ../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/icmp_server/icmp_server.cpp:436 in icmp_server, udpPort2insertChecksum     |
+| stream    | variable=udpPort2addIpHeader_data depth=192  | ../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/icmp_server/icmp_server.cpp:437 in icmp_server, udpPort2addIpHeader_data   |
+| stream    | variable=validFifo depth=8                   | ../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/icmp_server/icmp_server.cpp:438 in icmp_server, validFifo                  |
+| stream    | variable=udpPort2addIpHeader_header depth=64 | ../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/icmp_server/icmp_server.cpp:439 in icmp_server, udpPort2addIpHeader_header |
++-----------+----------------------------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+
+

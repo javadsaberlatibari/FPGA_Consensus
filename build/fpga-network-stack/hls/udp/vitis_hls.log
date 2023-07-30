@@ -1,0 +1,33 @@
+
+****** Vitis HLS - High-Level Synthesis from C, C++ and OpenCL v2022.1 (64-bit)
+  **** SW Build 3526262 on Mon Apr 18 15:47:01 MDT 2022
+  **** IP Build 3524634 on Mon Apr 18 20:55:01 MDT 2022
+    ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+
+source /tools/Xilinx/Vitis_HLS/2022.1/scripts/vitis_hls/hls.tcl -notrace
+INFO: [HLS 200-10] Running '/tools/Xilinx/Vitis_HLS/2022.1/bin/unwrapped/lnx64.o/vitis_hls'
+INFO: [HLS 200-10] For user 'pyuvaraj' on host 'hacc-build-01.inf.ethz.ch' (Linux_x86_64 version 5.4.0-153-generic) on Tue Jul 11 09:29:41 CEST 2023
+INFO: [HLS 200-10] On os Ubuntu 20.04.6 LTS
+INFO: [HLS 200-10] In directory '/pub/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/build/fpga-network-stack/hls/udp'
+Sourcing Tcl script 'make.tcl'
+INFO: [HLS 200-1510] Running: open_project udp_prj 
+INFO: [HLS 200-10] Opening project '/pub/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/build/fpga-network-stack/hls/udp/udp_prj'.
+INFO: [HLS 200-1510] Running: open_solution solution1 
+INFO: [HLS 200-10] Opening solution '/pub/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/build/fpga-network-stack/hls/udp/udp_prj/solution1'.
+INFO: [SYN 201-201] Setting up clock 'default' with a period of 3.2ns.
+INFO: [HLS 200-1611] Setting target device to 'xcu280-fsvh2892-2L-e'
+INFO: [HLS 200-1505] Using flow_target 'vivado'
+Resolution: For help on HLS 200-1505 see www.xilinx.com/cgi-bin/docs/rdoc?v=2022.1;t=hls+guidance;d=200-1505.html
+INFO: [HLS 200-1464] Running solution command: config_interface -m_axi_latency=0
+INFO: [HLS 200-1464] Running solution command: config_export -description=-display_name=UDP
+INFO: [HLS 200-1464] Running solution command: config_export -format=ip_catalog
+INFO: [HLS 200-1464] Running solution command: config_export -ipname=udp
+INFO: [HLS 200-1464] Running solution command: config_export -vendor=ethz.systems.fpga
+INFO: [HLS 200-1464] Running solution command: config_export -version=0.4
+INFO: [HLS 200-1510] Running: set_part xcu280-fsvh2892-2L-e 
+INFO: [HLS 200-1510] Running: create_clock -period 3.2 -name default 
+INFO: [HLS 200-1510] Running: set_top udp_top 
+INFO: [HLS 200-1510] Running: add_files /mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/udp/udp.cpp -cflags -I/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/build/fpga-network-stack/hls/udp 
+INFO: [HLS 200-10] Adding design file '/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/udp/udp.cpp' to the project
+INFO: [HLS 200-112] Total CPU user time: 3.45 seconds. Total CPU system time: 1.07 seconds. Total elapsed time: 3.15 seconds; peak allocated memory: 632.086 MB.
+INFO: [Common 17-206] Exiting vitis_hls at Tue Jul 11 09:29:44 2023...

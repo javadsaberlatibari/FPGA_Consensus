@@ -1,0 +1,248 @@
+<profile>
+
+<section name = "Vitis HLS Report for 'check_icmp_checksum'" level="0">
+<item name = "Date">Tue Jul 11 09:16:13 2023
+</item>
+<item name = "Version">2022.1 (Build 3526262 on Mon Apr 18 15:47:01 MDT 2022)</item>
+<item name = "Project">icmp_server_prj</item>
+<item name = "Solution">solution1 (Vivado IP Flow Target)</item>
+<item name = "Product family">virtexuplus</item>
+<item name = "Target device">xcu280-fsvh2892-2L-e</item>
+</section>
+
+<section name = "Performance Estimates" level="0">
+<item name = "Timing">
+<section name = "" level="1">
+<item name = "Summary"><table name="" hasTotal="0">
+<keys size="4">Clock, Target, Estimated, Uncertainty</keys>
+<column name="ap_clk">3.20 ns, 2.094 ns, 0.86 ns</column>
+</table>
+</item>
+</section>
+</item>
+<item name = "Latency">
+<section name = "" level="1">
+<item name = "Summary"><table name="" hasTotal="0">
+<keys size="8">, min, max, min, max, min, max, Type</keys>
+<column name="">1, 1, 3.200 ns, 3.200 ns, 1, 1, yes</column>
+</table>
+</item>
+<item name = "Detail">
+<section name = "" level="1">
+<item name = "Instance"><table name="" hasTotal="0">
+<keys size="9">Instance, Module, min, max, min, max, min, max, Type</keys>
+</table>
+</item>
+<item name = "Loop"><table name="" hasTotal="0">
+<keys size="8">Loop Name, min, max, Latency, achieved, target, Count, Pipelined</keys>
+</table>
+</item>
+</section>
+</item>
+</section>
+</item>
+</section>
+
+<section name = "Utilization Estimates" level="0">
+<item name = "Summary"><table name="" hasTotal="1">
+<keys size="6">Name, BRAM_18K, DSP, FF, LUT, URAM</keys>
+<column name="DSP">-, -, -, -, -</column>
+<column name="Expression">-, -, 0, 937, -</column>
+<column name="FIFO">-, -, -, -, -</column>
+<column name="Instance">-, -, -, -, -</column>
+<column name="Memory">-, -, -, -, -</column>
+<column name="Multiplexer">-, -, -, 222, -</column>
+<column name="Register">-, -, 401, -, -</column>
+<specialColumn name="Available SLR">1344, 3008, 869120, 434560, 320</specialColumn>
+<specialColumn name="Utilization SLR (%)">0, 0, ~0, ~0, 0</specialColumn>
+<specialColumn name="Available">4032, 9024, 2607360, 1303680, 960</specialColumn>
+<specialColumn name="Utilization (%)">0, 0, ~0, ~0, 0</specialColumn>
+</table>
+</item>
+<item name = "Detail">
+<section name = "" level="1">
+<item name = "Instance"><table name="" hasTotal="1">
+<keys size="7">Instance, Module, BRAM_18K, DSP, FF, LUT, URAM</keys>
+</table>
+</item>
+<item name = "DSP"><table name="" hasTotal="0">
+<keys size="3">Instance, Module, Expression</keys>
+</table>
+</item>
+<item name = "Memory"><table name="" hasTotal="1">
+<keys size="10">Memory, Module, BRAM_18K, FF, LUT, URAM, Words, Bits, Banks, W*Bits*Banks</keys>
+</table>
+</item>
+<item name = "FIFO"><table name="" hasTotal="1">
+<keys size="8">Name, BRAM_18K, FF, LUT, URAM, Depth, Bits, Size:D*B</keys>
+</table>
+</item>
+<item name = "Expression"><table name="" hasTotal="1">
+<keys size="7">Variable Name, Operation, DSP, FF, LUT, Bitwidth P0, Bitwidth P1</keys>
+<column name="add_ln1715_fu_1396_p2">+, 0, 0, 16, 16, 5</column>
+<column name="add_ln232_10_fu_1154_p2">+, 0, 0, 16, 16, 16</column>
+<column name="add_ln232_11_fu_1194_p2">+, 0, 0, 16, 16, 16</column>
+<column name="add_ln232_12_fu_1200_p2">+, 0, 0, 16, 16, 16</column>
+<column name="add_ln232_13_fu_1110_p2">+, 0, 0, 16, 16, 16</column>
+<column name="add_ln232_14_fu_1116_p2">+, 0, 0, 16, 16, 16</column>
+<column name="add_ln232_15_fu_435_p2">+, 0, 0, 16, 16, 16</column>
+<column name="add_ln232_16_fu_483_p2">+, 0, 0, 16, 16, 16</column>
+<column name="add_ln232_17_fu_649_p2">+, 0, 0, 16, 16, 16</column>
+<column name="add_ln232_18_fu_579_p2">+, 0, 0, 23, 16, 16</column>
+<column name="add_ln232_19_fu_783_p2">+, 0, 0, 16, 16, 16</column>
+<column name="add_ln232_20_fu_725_p2">+, 0, 0, 23, 16, 16</column>
+<column name="add_ln232_21_fu_903_p2">+, 0, 0, 16, 16, 16</column>
+<column name="add_ln232_22_fu_855_p2">+, 0, 0, 23, 16, 16</column>
+<column name="add_ln232_23_fu_1023_p2">+, 0, 0, 16, 16, 16</column>
+<column name="add_ln232_24_fu_975_p2">+, 0, 0, 23, 16, 16</column>
+<column name="add_ln232_25_fu_429_p2">+, 0, 0, 16, 16, 16</column>
+<column name="add_ln232_26_fu_477_p2">+, 0, 0, 16, 16, 16</column>
+<column name="add_ln232_27_fu_643_p2">+, 0, 0, 16, 16, 16</column>
+<column name="add_ln232_28_fu_777_p2">+, 0, 0, 16, 16, 16</column>
+<column name="add_ln232_29_fu_897_p2">+, 0, 0, 16, 16, 16</column>
+<column name="add_ln232_30_fu_1017_p2">+, 0, 0, 16, 16, 16</column>
+<column name="add_ln232_fu_1160_p2">+, 0, 0, 16, 16, 16</column>
+<column name="add_ln886_10_fu_879_p2">+, 0, 0, 24, 17, 17</column>
+<column name="add_ln886_11_fu_831_p2">+, 0, 0, 24, 17, 17</column>
+<column name="add_ln886_12_fu_999_p2">+, 0, 0, 24, 17, 17</column>
+<column name="add_ln886_13_fu_951_p2">+, 0, 0, 24, 17, 17</column>
+<column name="add_ln886_14_fu_1047_p2">+, 0, 0, 23, 16, 1</column>
+<column name="add_ln886_1_fu_1176_p2">+, 0, 0, 24, 17, 17</column>
+<column name="add_ln886_2_fu_1092_p2">+, 0, 0, 24, 17, 17</column>
+<column name="add_ln886_3_fu_411_p2">+, 0, 0, 24, 17, 17</column>
+<column name="add_ln886_4_fu_459_p2">+, 0, 0, 24, 17, 17</column>
+<column name="add_ln886_5_fu_625_p2">+, 0, 0, 24, 17, 17</column>
+<column name="add_ln886_6_fu_1252_p2">+, 0, 0, 9, 2, 1</column>
+<column name="add_ln886_7_fu_555_p2">+, 0, 0, 24, 17, 17</column>
+<column name="add_ln886_8_fu_759_p2">+, 0, 0, 24, 17, 17</column>
+<column name="add_ln886_9_fu_701_p2">+, 0, 0, 24, 17, 17</column>
+<column name="add_ln886_fu_1136_p2">+, 0, 0, 24, 17, 17</column>
+<column name="add_ln887_fu_1390_p2">+, 0, 0, 24, 17, 5</column>
+<column name="sub_ln232_fu_1414_p2">-, 0, 0, 16, 16, 16</column>
+<column name="and_ln91_1_fu_1240_p2">and, 0, 0, 2, 1, 1</column>
+<column name="and_ln91_fu_1234_p2">and, 0, 0, 2, 1, 1</column>
+<column name="ap_condition_1035">and, 0, 0, 2, 1, 1</column>
+<column name="ap_condition_1037">and, 0, 0, 2, 1, 1</column>
+<column name="ap_condition_1049">and, 0, 0, 2, 1, 1</column>
+<column name="ap_condition_1052">and, 0, 0, 2, 1, 1</column>
+<column name="ap_condition_1058">and, 0, 0, 2, 1, 1</column>
+<column name="ap_condition_1061">and, 0, 0, 2, 1, 1</column>
+<column name="ap_condition_1064">and, 0, 0, 2, 1, 1</column>
+<column name="ap_condition_1070">and, 0, 0, 2, 1, 1</column>
+<column name="ap_condition_1073">and, 0, 0, 2, 1, 1</column>
+<column name="ap_condition_1078">and, 0, 0, 2, 1, 1</column>
+<column name="ap_condition_1081">and, 0, 0, 2, 1, 1</column>
+<column name="ap_condition_223">and, 0, 0, 2, 1, 1</column>
+<column name="ap_condition_226">and, 0, 0, 2, 1, 1</column>
+<column name="ap_condition_260">and, 0, 0, 2, 1, 1</column>
+<column name="ap_condition_375">and, 0, 0, 2, 1, 1</column>
+<column name="ap_condition_41">and, 0, 0, 2, 1, 1</column>
+<column name="ap_predicate_op238_write_state2">and, 0, 0, 2, 1, 1</column>
+<column name="ap_predicate_op246_write_state2">and, 0, 0, 2, 1, 1</column>
+<column name="ap_predicate_op249_write_state2">and, 0, 0, 2, 1, 1</column>
+<column name="ap_predicate_op267_write_state2">and, 0, 0, 2, 1, 1</column>
+<column name="ap_predicate_op269_write_state2">and, 0, 0, 2, 1, 1</column>
+<column name="tmp_i_nbreadreq_fu_172_p3">and, 0, 0, 2, 1, 0</column>
+<column name="icmp_ln1065_1_fu_1222_p2">icmp, 0, 0, 11, 8, 4</column>
+<column name="icmp_ln1065_2_fu_1228_p2">icmp, 0, 0, 11, 8, 1</column>
+<column name="icmp_ln1065_3_fu_529_p2">icmp, 0, 0, 8, 2, 2</column>
+<column name="icmp_ln1065_4_fu_675_p2">icmp, 0, 0, 8, 2, 2</column>
+<column name="icmp_ln1065_5_fu_805_p2">icmp, 0, 0, 8, 2, 2</column>
+<column name="icmp_ln1065_6_fu_925_p2">icmp, 0, 0, 8, 2, 2</column>
+<column name="icmp_ln1065_fu_1216_p2">icmp, 0, 0, 13, 16, 1</column>
+<column name="ap_block_pp0_stage0_01001">or, 0, 0, 2, 1, 1</column>
+<column name="ap_block_state1_pp0_stage0_iter0">or, 0, 0, 2, 1, 1</column>
+<column name="ap_block_state2_pp0_stage0_iter1">or, 0, 0, 2, 1, 1</column>
+<column name="ap_enable_pp0">xor, 0, 0, 2, 1, 2</column>
+<column name="grp_fu_282_p2">xor, 0, 0, 17, 17, 2</column>
+<column name="r_V_3_fu_1076_p2">xor, 0, 0, 17, 17, 2</column>
+</table>
+</item>
+<item name = "Multiplexer"><table name="" hasTotal="1">
+<keys size="5">Name, LUT, Input Size, Bits, Total Bits</keys>
+<column name="ap_done">9, 2, 1, 2</column>
+<column name="ap_phi_mux_cics_wordCount_V_new_0_i_phi_fu_212_p4">14, 3, 16, 48</column>
+<column name="ap_phi_mux_currWord_data_V_1_phi_fu_222_p8">9, 2, 64, 128</column>
+<column name="ap_phi_reg_pp0_iter1_currWord_data_V_1_reg_219">9, 2, 64, 128</column>
+<column name="cics_sums_V">20, 4, 16, 64</column>
+<column name="cics_sums_V_1">20, 4, 16, 64</column>
+<column name="cics_sums_V_2">20, 4, 16, 64</column>
+<column name="cics_sums_V_3">31, 6, 17, 102</column>
+<column name="icmpChecksum_V">14, 3, 17, 51</column>
+<column name="icmp_server_stream_stream_stream_stream_axiWord_0_checksumStreams_1_blk_n">9, 2, 1, 2</column>
+<column name="packageBuffer1_blk_n">9, 2, 1, 2</column>
+<column name="packageBuffer1_din">26, 5, 128, 640</column>
+<column name="s_axis_TDATA_blk_n">9, 2, 1, 2</column>
+<column name="validFifo_blk_n">9, 2, 1, 2</column>
+<column name="validFifo_din">14, 3, 1, 3</column>
+</table>
+</item>
+<item name = "Register"><table name="" hasTotal="1">
+<keys size="5">Name, FF, LUT, Bits, Const Bits</keys>
+<column name="and_ln91_1_reg_1533">1, 0, 1, 0</column>
+<column name="ap_CS_fsm">1, 0, 1, 0</column>
+<column name="ap_done_reg">1, 0, 1, 0</column>
+<column name="ap_enable_reg_pp0_iter1">1, 0, 1, 0</column>
+<column name="ap_phi_reg_pp0_iter1_currWord_data_V_1_reg_219">64, 0, 64, 0</column>
+<column name="cics_computeCs">1, 0, 1, 0</column>
+<column name="cics_computeCs_load_reg_1472">1, 0, 1, 0</column>
+<column name="cics_prevWord_data_V">64, 0, 64, 0</column>
+<column name="cics_prevWord_keep_V">8, 0, 8, 0</column>
+<column name="cics_prevWord_last_V">1, 0, 1, 0</column>
+<column name="cics_state">2, 0, 2, 0</column>
+<column name="cics_state_load_reg_1529">2, 0, 2, 0</column>
+<column name="cics_sums_V">16, 0, 16, 0</column>
+<column name="cics_sums_V_1">16, 0, 16, 0</column>
+<column name="cics_sums_V_2">16, 0, 16, 0</column>
+<column name="cics_sums_V_3">17, 0, 17, 0</column>
+<column name="cics_wordCount_V">16, 0, 16, 0</column>
+<column name="cics_wordCount_V_load_reg_1494">16, 0, 16, 0</column>
+<column name="cics_writeLastOne">1, 0, 1, 0</column>
+<column name="cics_writeLastOne_load_reg_1454">1, 0, 1, 0</column>
+<column name="currWord_data_V_2_reg_1480">64, 0, 64, 0</column>
+<column name="icmpChecksum_V">17, 0, 17, 0</column>
+<column name="icmpCode_V">8, 0, 8, 0</column>
+<column name="icmpType_V">8, 0, 8, 0</column>
+<column name="sendWord_keep_V_reg_1458">8, 0, 8, 0</column>
+<column name="sendWord_last_V_reg_1465">1, 0, 1, 0</column>
+<column name="tmp_59_i_reg_1503">16, 0, 16, 0</column>
+<column name="tmp_i_reg_1476">1, 0, 1, 0</column>
+<column name="trunc_ln674_6_reg_1498">32, 0, 32, 0</column>
+</table>
+</item>
+</section>
+</item>
+</section>
+
+<section name = "Interface" level="0">
+<item name = "Summary"><table name="" hasTotal="0">
+<keys size="6">RTL Ports, Dir, Bits, Protocol, Source Object, C Type</keys>
+<column name="ap_clk">in, 1, ap_ctrl_hs, check_icmp_checksum, return value</column>
+<column name="ap_rst">in, 1, ap_ctrl_hs, check_icmp_checksum, return value</column>
+<column name="ap_start">in, 1, ap_ctrl_hs, check_icmp_checksum, return value</column>
+<column name="ap_done">out, 1, ap_ctrl_hs, check_icmp_checksum, return value</column>
+<column name="ap_continue">in, 1, ap_ctrl_hs, check_icmp_checksum, return value</column>
+<column name="ap_idle">out, 1, ap_ctrl_hs, check_icmp_checksum, return value</column>
+<column name="ap_ready">out, 1, ap_ctrl_hs, check_icmp_checksum, return value</column>
+<column name="s_axis_TVALID">in, 1, axis, s_axis, pointer</column>
+<column name="s_axis_TDATA">in, 128, axis, s_axis, pointer</column>
+<column name="s_axis_TREADY">out, 1, axis, s_axis, pointer</column>
+<column name="packageBuffer1_din">out, 128, ap_fifo, packageBuffer1, pointer</column>
+<column name="packageBuffer1_num_data_valid">in, 7, ap_fifo, packageBuffer1, pointer</column>
+<column name="packageBuffer1_fifo_cap">in, 7, ap_fifo, packageBuffer1, pointer</column>
+<column name="packageBuffer1_full_n">in, 1, ap_fifo, packageBuffer1, pointer</column>
+<column name="packageBuffer1_write">out, 1, ap_fifo, packageBuffer1, pointer</column>
+<column name="validFifo_din">out, 1, ap_fifo, validFifo, pointer</column>
+<column name="validFifo_num_data_valid">in, 4, ap_fifo, validFifo, pointer</column>
+<column name="validFifo_fifo_cap">in, 4, ap_fifo, validFifo, pointer</column>
+<column name="validFifo_full_n">in, 1, ap_fifo, validFifo, pointer</column>
+<column name="validFifo_write">out, 1, ap_fifo, validFifo, pointer</column>
+<column name="icmp_server_stream_stream_stream_stream_axiWord_0_checksumStreams_1_din">out, 16, ap_fifo, icmp_server_stream_stream_stream_stream_axiWord_0_checksumStreams_1, pointer</column>
+<column name="icmp_server_stream_stream_stream_stream_axiWord_0_checksumStreams_1_num_data_valid">in, 5, ap_fifo, icmp_server_stream_stream_stream_stream_axiWord_0_checksumStreams_1, pointer</column>
+<column name="icmp_server_stream_stream_stream_stream_axiWord_0_checksumStreams_1_fifo_cap">in, 5, ap_fifo, icmp_server_stream_stream_stream_stream_axiWord_0_checksumStreams_1, pointer</column>
+<column name="icmp_server_stream_stream_stream_stream_axiWord_0_checksumStreams_1_full_n">in, 1, ap_fifo, icmp_server_stream_stream_stream_stream_axiWord_0_checksumStreams_1, pointer</column>
+<column name="icmp_server_stream_stream_stream_stream_axiWord_0_checksumStreams_1_write">out, 1, ap_fifo, icmp_server_stream_stream_stream_stream_axiWord_0_checksumStreams_1, pointer</column>
+</table>
+</item>
+</section>
+</profile>

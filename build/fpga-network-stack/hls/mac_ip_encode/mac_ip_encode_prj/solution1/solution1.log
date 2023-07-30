@@ -1,0 +1,371 @@
+==============================================================
+Vitis HLS - High-Level Synthesis from C, C++ and OpenCL v2022.1 (64-bit)
+Tool Version Limit: 2022.04
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+==============================================================
+INFO: [HLS 200-1505] Using default flow_target 'vivado'
+INFO: [HLS 200-435] Setting 'open_solution -flow_target vivado' configuration: config_interface -m_axi_latency=0
+INFO: [HLS 200-1510] Running: set_part xcu280-fsvh2892-2L-e 
+INFO: [HLS 200-1611] Setting target device to 'xcu280-fsvh2892-2L-e'
+INFO: [HLS 200-1510] Running: create_clock -period 3.2 -name default 
+INFO: [SYN 201-201] Setting up clock 'default' with a period of 3.2ns.
+INFO: [HLS 200-1510] Running: set_top mac_ip_encode_top 
+INFO: [HLS 200-1510] Running: add_files /mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/mac_ip_encode/../ipv4/ipv4_utils.cpp 
+INFO: [HLS 200-10] Adding design file '/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/mac_ip_encode/../ipv4/ipv4_utils.cpp' to the project
+INFO: [HLS 200-1510] Running: add_files /mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/mac_ip_encode/mac_ip_encode.cpp -cflags -I/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/build/fpga-network-stack/hls/mac_ip_encode 
+INFO: [HLS 200-10] Adding design file '/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/mac_ip_encode/mac_ip_encode.cpp' to the project
+INFO: [HLS 200-1510] Running: add_files -tb /mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/mac_ip_encode/test_mac_ip_encode.cpp 
+INFO: [HLS 200-10] Adding test bench file '/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/mac_ip_encode/test_mac_ip_encode.cpp' to the project
+INFO: [HLS 200-1510] Running: csynth_design 
+INFO: [HLS 200-111] Finished File checks and directory preparation: CPU user time: 0.05 seconds. CPU system time: 0.01 seconds. Elapsed time: 0.05 seconds; current allocated memory: 1.624 GB.
+INFO: [HLS 200-10] Analyzing design file '/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/mac_ip_encode/mac_ip_encode.cpp' ... 
+WARNING: [HLS 207-997] '/*' within block comment (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/mac_ip_encode/../ethernet/../packet.hpp:97:4)
+WARNING: [HLS 207-997] '/*' within block comment (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/mac_ip_encode/../ethernet/../packet.hpp:123:2)
+WARNING: [HLS 207-5505] the pragma is not supported and will be ignored (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/mac_ip_encode/mac_ip_encode.cpp:390:9)
+WARNING: [HLS 207-5505] the pragma is not supported and will be ignored (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/mac_ip_encode/mac_ip_encode.cpp:391:9)
+WARNING: [HLS 207-5505] the pragma is not supported and will be ignored (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/mac_ip_encode/mac_ip_encode.cpp:392:9)
+WARNING: [HLS 207-5505] the pragma is not supported and will be ignored (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/mac_ip_encode/mac_ip_encode.cpp:393:9)
+WARNING: [HLS 207-5505] the pragma is not supported and will be ignored (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/mac_ip_encode/mac_ip_encode.cpp:394:9)
+WARNING: [HLS 207-5505] the pragma is not supported and will be ignored (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/mac_ip_encode/mac_ip_encode.cpp:402:9)
+WARNING: [HLS 207-5505] the pragma is not supported and will be ignored (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/mac_ip_encode/mac_ip_encode.cpp:435:9)
+WARNING: [HLS 207-5526] 'Ap_stable' in '#pragma HLS INTERFACE' is deprecated, use 'Stable Pragma' instead (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/mac_ip_encode/mac_ip_encode.cpp:437:23)
+WARNING: [HLS 207-5526] 'Ap_stable' in '#pragma HLS INTERFACE' is deprecated, use 'Stable Pragma' instead (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/mac_ip_encode/mac_ip_encode.cpp:438:23)
+WARNING: [HLS 207-5526] 'Ap_stable' in '#pragma HLS INTERFACE' is deprecated, use 'Stable Pragma' instead (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/mac_ip_encode/mac_ip_encode.cpp:439:23)
+WARNING: [HLS 207-5292] unused parameter 'output' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/mac_ip_encode/../axi_utils.hpp:198:26)
+WARNING: [HLS 207-5292] unused parameter 'word' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/mac_ip_encode/../axi_utils.hpp:198:47)
+WARNING: [HLS 207-5292] unused parameter 'output' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/mac_ip_encode/../axi_utils.hpp:213:28)
+WARNING: [HLS 207-5292] unused parameter 'data' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/mac_ip_encode/../axi_utils.hpp:213:48)
+WARNING: [HLS 207-5292] unused parameter 'output' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/mac_ip_encode/../axi_utils.hpp:226:28)
+WARNING: [HLS 207-5292] unused parameter 'word' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/mac_ip_encode/../axi_utils.hpp:226:49)
+WARNING: [HLS 207-5292] unused parameter 'output' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/mac_ip_encode/../axi_utils.hpp:241:28)
+WARNING: [HLS 207-5292] unused parameter 'word' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/mac_ip_encode/../axi_utils.hpp:241:59)
+WARNING: [HLS 207-5292] unused parameter 'd' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/mac_ip_encode/../axi_utils.hpp:417:20)
+WARNING: [HLS 207-5292] unused parameter 's' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/mac_ip_encode/../axi_utils.hpp:417:26)
+INFO: [HLS 200-10] Analyzing design file '/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/mac_ip_encode/../ipv4/ipv4_utils.cpp' ... 
+WARNING: [HLS 207-997] '/*' within block comment (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/mac_ip_encode/../ipv4/../packet.hpp:97:4)
+WARNING: [HLS 207-997] '/*' within block comment (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/mac_ip_encode/../ipv4/../packet.hpp:123:2)
+WARNING: [HLS 207-5292] unused parameter 'output' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/mac_ip_encode/../ipv4/../axi_utils.hpp:198:26)
+WARNING: [HLS 207-5292] unused parameter 'word' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/mac_ip_encode/../ipv4/../axi_utils.hpp:198:47)
+WARNING: [HLS 207-5292] unused parameter 'output' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/mac_ip_encode/../ipv4/../axi_utils.hpp:213:28)
+WARNING: [HLS 207-5292] unused parameter 'data' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/mac_ip_encode/../ipv4/../axi_utils.hpp:213:48)
+WARNING: [HLS 207-5292] unused parameter 'output' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/mac_ip_encode/../ipv4/../axi_utils.hpp:226:28)
+WARNING: [HLS 207-5292] unused parameter 'word' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/mac_ip_encode/../ipv4/../axi_utils.hpp:226:49)
+WARNING: [HLS 207-5292] unused parameter 'output' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/mac_ip_encode/../ipv4/../axi_utils.hpp:241:28)
+WARNING: [HLS 207-5292] unused parameter 'word' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/mac_ip_encode/../ipv4/../axi_utils.hpp:241:59)
+WARNING: [HLS 207-5292] unused parameter 'd' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/mac_ip_encode/../ipv4/../axi_utils.hpp:417:20)
+WARNING: [HLS 207-5292] unused parameter 's' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/mac_ip_encode/../ipv4/../axi_utils.hpp:417:26)
+INFO: [HLS 200-111] Finished Source Code Analysis and Preprocessing: CPU user time: 11.11 seconds. CPU system time: 1.64 seconds. Elapsed time: 12.9 seconds; current allocated memory: 636.004 MB.
+INFO: [HLS 200-777] Using interface defaults for 'Vivado' flow target.
+WARNING: [HLS 214-273] In function 'void mac_ip_encode<512>(hls::stream<net_axis<512>, 0>&, hls::stream<arpTableReply, 0>&, hls::stream<net_axis<512>, 0>&, hls::stream<ap_uint<32>, 0>&, ap_uint<48>, ap_uint<32>, ap_uint<32>)', Pragma conflict happens on 'INLINE' and DATAFLOW pragmas: Inline into dataflow region may break the canonical form (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/mac_ip_encode/mac_ip_encode.cpp:375:0)
+INFO: [HLS 214-131] Inlining function 'void mac_ip_encode<512>(hls::stream<net_axis<512>, 0>&, hls::stream<arpTableReply, 0>&, hls::stream<net_axis<512>, 0>&, hls::stream<ap_uint<32>, 0>&, ap_uint<48>, ap_uint<32>, ap_uint<32>)' into 'mac_ip_encode_top(hls::stream<net_axis<512>, 0>&, hls::stream<arpTableReply, 0>&, hls::stream<net_axis<512>, 0>&, hls::stream<ap_uint<32>, 0>&, ap_uint<48>, ap_uint<32>, ap_uint<32>)' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/mac_ip_encode/mac_ip_encode.cpp:441:2)
+INFO: [HLS 214-291] Loop 'VITIS_LOOP_569_3' is marked as complete unroll implied by the pipeline pragma (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/mac_ip_encode/../ipv4/ipv4.hpp:569:22)
+INFO: [HLS 214-291] Loop 'VITIS_LOOP_559_2' is marked as complete unroll implied by the pipeline pragma (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/mac_ip_encode/../ipv4/ipv4.hpp:559:22)
+INFO: [HLS 214-291] Loop 'VITIS_LOOP_549_1' is marked as complete unroll implied by the pipeline pragma (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/mac_ip_encode/../ipv4/ipv4.hpp:549:22)
+INFO: [HLS 214-291] Loop 'VITIS_LOOP_516_2' is marked as complete unroll implied by the pipeline pragma (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/mac_ip_encode/../ipv4/ipv4_utils.cpp:516:22)
+INFO: [HLS 214-291] Loop 'VITIS_LOOP_497_1' is marked as complete unroll implied by the pipeline pragma (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/mac_ip_encode/../ipv4/ipv4_utils.cpp:497:22)
+INFO: [HLS 214-291] Loop 'VITIS_LOOP_76_1' is marked as complete unroll implied by the pipeline pragma (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/mac_ip_encode/../axi_utils.hpp:76:19)
+INFO: [HLS 214-186] Unrolling loop 'VITIS_LOOP_569_3' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/mac_ip_encode/../ipv4/ipv4.hpp:569:22) in function 'mac_finalize_ipv4_checksum<32>' completely with a factor of 4 (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/mac_ip_encode/../ipv4/ipv4.hpp:539:0)
+INFO: [HLS 214-186] Unrolling loop 'VITIS_LOOP_559_2' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/mac_ip_encode/../ipv4/ipv4.hpp:559:22) in function 'mac_finalize_ipv4_checksum<32>' completely with a factor of 8 (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/mac_ip_encode/../ipv4/ipv4.hpp:539:0)
+INFO: [HLS 214-186] Unrolling loop 'VITIS_LOOP_549_1' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/mac_ip_encode/../ipv4/ipv4.hpp:549:22) in function 'mac_finalize_ipv4_checksum<32>' completely with a factor of 16 (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/mac_ip_encode/../ipv4/ipv4.hpp:539:0)
+INFO: [HLS 214-186] Unrolling loop 'VITIS_LOOP_516_2' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/mac_ip_encode/../ipv4/ipv4_utils.cpp:516:22) in function 'mac_compute_ipv4_checksum' completely with a factor of 32 (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/mac_ip_encode/../ipv4/ipv4_utils.cpp:478:0)
+INFO: [HLS 214-186] Unrolling loop 'VITIS_LOOP_497_1' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/mac_ip_encode/../ipv4/ipv4_utils.cpp:497:22) in function 'mac_compute_ipv4_checksum' completely with a factor of 32 (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/mac_ip_encode/../ipv4/ipv4_utils.cpp:478:0)
+INFO: [HLS 214-186] Unrolling loop 'VITIS_LOOP_76_1' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/mac_ip_encode/../axi_utils.hpp:76:19) in function 'reverse<16>' completely with a factor of 2 (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/mac_ip_encode/../axi_utils.hpp:74:0)
+INFO: [HLS 214-178] Inlining function 'packetHeader<512, 160>::packetHeader()' into 'ipv4Header<512>::ipv4Header()' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/mac_ip_encode/../ipv4/ipv4.hpp:611:0)
+INFO: [HLS 214-178] Inlining function 'ipv4Header<512>::ipv4Header()' into 'void extract_ip_address<512>(hls::stream<net_axis<512>, 0>&, hls::stream<net_axis<512>, 0>&, hls::stream<ap_uint<32>, 0>&, ap_uint<32>, ap_uint<32>)' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/mac_ip_encode/mac_ip_encode.cpp:40:0)
+INFO: [HLS 214-178] Inlining function 'packetHeader<512, 160>::parseWord(ap_uint<512>&)' into 'void extract_ip_address<512>(hls::stream<net_axis<512>, 0>&, hls::stream<net_axis<512>, 0>&, hls::stream<ap_uint<32>, 0>&, ap_uint<32>, ap_uint<32>)' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/mac_ip_encode/mac_ip_encode.cpp:40:0)
+INFO: [HLS 214-178] Inlining function 'packetHeader<512, 160>::isReady()' into 'void extract_ip_address<512>(hls::stream<net_axis<512>, 0>&, hls::stream<net_axis<512>, 0>&, hls::stream<ap_uint<32>, 0>&, ap_uint<32>, ap_uint<32>)' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/mac_ip_encode/mac_ip_encode.cpp:40:0)
+INFO: [HLS 214-178] Inlining function 'ipv4Header<512>::getDstAddr()' into 'void extract_ip_address<512>(hls::stream<net_axis<512>, 0>&, hls::stream<net_axis<512>, 0>&, hls::stream<ap_uint<32>, 0>&, ap_uint<32>, ap_uint<32>)' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/mac_ip_encode/mac_ip_encode.cpp:40:0)
+INFO: [HLS 214-178] Inlining function 'ap_uint<16> reverse<16>(ap_uint<16> const&)' into 'void insert_ip_checksum<512>(hls::stream<net_axis<512>, 0>&, hls::stream<ap_uint<16>, 0>&, hls::stream<net_axis<512>, 0>&)' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/mac_ip_encode/mac_ip_encode.cpp:79:0)
+INFO: [HLS 214-178] Inlining function 'packetHeader<512, 112>::packetHeader()' into 'ethHeader<512>::ethHeader()' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/mac_ip_encode/../ethernet/ethernet.hpp:40:0)
+INFO: [HLS 214-178] Inlining function 'ap_uint<16> reverse<16>(ap_uint<16> const&)' into 'ethHeader<512>::setEthertype(ap_uint<16>)' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/mac_ip_encode/../ethernet/ethernet.hpp:53:0)
+INFO: [HLS 214-178] Inlining function 'ethHeader<512>::ethHeader()' into 'void handle_arp_reply<512>(hls::stream<arpTableReply, 0>&, hls::stream<net_axis<512>, 0>&, hls::stream<ethHeader<512>, 0>&, hls::stream<net_axis<512>, 0>&, ap_uint<48>)' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/mac_ip_encode/mac_ip_encode.cpp:144:0)
+INFO: [HLS 214-178] Inlining function 'ethHeader<512>::setDstAddress(ap_uint<48>)' into 'void handle_arp_reply<512>(hls::stream<arpTableReply, 0>&, hls::stream<net_axis<512>, 0>&, hls::stream<ethHeader<512>, 0>&, hls::stream<net_axis<512>, 0>&, ap_uint<48>)' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/mac_ip_encode/mac_ip_encode.cpp:144:0)
+INFO: [HLS 214-178] Inlining function 'ethHeader<512>::setSrcAddress(ap_uint<48>)' into 'void handle_arp_reply<512>(hls::stream<arpTableReply, 0>&, hls::stream<net_axis<512>, 0>&, hls::stream<ethHeader<512>, 0>&, hls::stream<net_axis<512>, 0>&, ap_uint<48>)' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/mac_ip_encode/mac_ip_encode.cpp:144:0)
+INFO: [HLS 214-178] Inlining function 'ethHeader<512>::setEthertype(ap_uint<16>)' into 'void handle_arp_reply<512>(hls::stream<arpTableReply, 0>&, hls::stream<net_axis<512>, 0>&, hls::stream<ethHeader<512>, 0>&, hls::stream<net_axis<512>, 0>&, ap_uint<48>)' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/mac_ip_encode/mac_ip_encode.cpp:144:0)
+INFO: [HLS 214-178] Inlining function 'packetHeader<512, 112>::consumeWord(ap_uint<512>&)' into 'void insert_ethernet_header<512>(hls::stream<ethHeader<512>, 0>&, hls::stream<net_axis<512>, 0>&, hls::stream<net_axis<512>, 0>&)' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/mac_ip_encode/mac_ip_encode.cpp:214:0)
+INFO: [HLS 214-178] Inlining function 'std::operator&(std::_Ios_Fmtflags, std::_Ios_Fmtflags)' into 'std::operator&=(std::_Ios_Fmtflags&, std::_Ios_Fmtflags)' (/tools/Xilinx/Vitis_HLS/2022.1/tps/lnx64/gcc-8.3.0/lib/gcc/x86_64-pc-linux-gnu/8.3.0/../../../../include/c++/8.3.0/bits/ios_base.h:104:0)
+INFO: [HLS 214-178] Inlining function 'std::operator|(std::_Ios_Fmtflags, std::_Ios_Fmtflags)' into 'std::operator|=(std::_Ios_Fmtflags&, std::_Ios_Fmtflags)' (/tools/Xilinx/Vitis_HLS/2022.1/tps/lnx64/gcc-8.3.0/lib/gcc/x86_64-pc-linux-gnu/8.3.0/../../../../include/c++/8.3.0/bits/ios_base.h:100:0)
+INFO: [HLS 214-178] Inlining function 'std::operator&=(std::_Ios_Fmtflags&, std::_Ios_Fmtflags)' into 'std::ios_base::setf(std::_Ios_Fmtflags, std::_Ios_Fmtflags)' (/tools/Xilinx/Vitis_HLS/2022.1/tps/lnx64/gcc-8.3.0/lib/gcc/x86_64-pc-linux-gnu/8.3.0/../../../../include/c++/8.3.0/bits/ios_base.h:666:0)
+INFO: [HLS 214-178] Inlining function 'std::operator&(std::_Ios_Fmtflags, std::_Ios_Fmtflags)' into 'std::ios_base::setf(std::_Ios_Fmtflags, std::_Ios_Fmtflags)' (/tools/Xilinx/Vitis_HLS/2022.1/tps/lnx64/gcc-8.3.0/lib/gcc/x86_64-pc-linux-gnu/8.3.0/../../../../include/c++/8.3.0/bits/ios_base.h:666:0)
+INFO: [HLS 214-178] Inlining function 'std::operator|=(std::_Ios_Fmtflags&, std::_Ios_Fmtflags)' into 'std::ios_base::setf(std::_Ios_Fmtflags, std::_Ios_Fmtflags)' (/tools/Xilinx/Vitis_HLS/2022.1/tps/lnx64/gcc-8.3.0/lib/gcc/x86_64-pc-linux-gnu/8.3.0/../../../../include/c++/8.3.0/bits/ios_base.h:666:0)
+INFO: [HLS 214-178] Inlining function 'std::ios_base::setf(std::_Ios_Fmtflags, std::_Ios_Fmtflags)' into 'std::hex(std::ios_base&)' (/tools/Xilinx/Vitis_HLS/2022.1/tps/lnx64/gcc-8.3.0/lib/gcc/x86_64-pc-linux-gnu/8.3.0/../../../../include/c++/8.3.0/bits/ios_base.h:1027:0)
+INFO: [HLS 214-131] Inlining function '_llvm.fpga.pack.none.i32.s_struct.ap_uint<32>s' into 'void extract_ip_address<512>(hls::stream<net_axis<512>, 0>&, hls::stream<net_axis<512>, 0>&, hls::stream<ap_uint<32>, 0>&, ap_uint<32>, ap_uint<32>) (.1)' (/tools/Xilinx/Vitis_HLS/2022.1/common/technology/autopilot/hls_stream_39.h:174:9)
+INFO: [HLS 214-131] Inlining function '_llvm.fpga.pack.none.i1024.s_struct.subSums<32>s' into 'mac_compute_ipv4_checksum(hls::stream<net_axis<512>, 0>&, hls::stream<net_axis<512>, 0>&, hls::stream<subSums<32>, 0>&, bool) (.1)' (/tools/Xilinx/Vitis_HLS/2022.1/common/technology/autopilot/hls_stream_39.h:174:9)
+INFO: [HLS 214-131] Inlining function '_llvm.fpga.pack.none.i16.s_struct.ap_uint<16>s' into 'void mac_finalize_ipv4_checksum<32>(hls::stream<subSums<32>, 0>&, hls::stream<ap_uint<16>, 0>&) (.1)' (/tools/Xilinx/Vitis_HLS/2022.1/common/technology/autopilot/hls_stream_39.h:174:9)
+INFO: [HLS 214-131] Inlining function '_llvm.fpga.pack.none.i1024.s_struct.net_axis<512>s' into 'void insert_ip_checksum<512>(hls::stream<net_axis<512>, 0>&, hls::stream<ap_uint<16>, 0>&, hls::stream<net_axis<512>, 0>&) (.1)' (/tools/Xilinx/Vitis_HLS/2022.1/common/technology/autopilot/hls_stream_39.h:174:9)
+INFO: [HLS 214-131] Inlining function '_llvm.fpga.pack.none.i256.s_class.ethHeader<512>s' into 'void handle_arp_reply<512>(hls::stream<arpTableReply, 0>&, hls::stream<net_axis<512>, 0>&, hls::stream<ethHeader<512>, 0>&, hls::stream<net_axis<512>, 0>&, ap_uint<48>) (.1)' (/tools/Xilinx/Vitis_HLS/2022.1/common/technology/autopilot/hls_stream_39.h:174:9)
+INFO: [HLS 214-131] Inlining function '_llvm.fpga.pack.none.i1024.s_struct.net_axis<512>s' into 'void mac_lshiftWordByOctet<512, 1>(unsigned short, hls::stream<net_axis<512>, 0>&, hls::stream<net_axis<512>, 0>&) (.1)' (/tools/Xilinx/Vitis_HLS/2022.1/common/technology/autopilot/hls_stream_39.h:174:9)
+INFO: [HLS 214-131] Inlining function '_llvm.fpga.pack.none.i1024.s_struct.net_axis<512>s' into 'void insert_ethernet_header<512>(hls::stream<ethHeader<512>, 0>&, hls::stream<net_axis<512>, 0>&, hls::stream<net_axis<512>, 0>&) (.1)' (/tools/Xilinx/Vitis_HLS/2022.1/common/technology/autopilot/hls_stream_39.h:174:9)
+INFO: [HLS 200-111] Finished Compiling Optimization and Transform: CPU user time: 5.83 seconds. CPU system time: 0.97 seconds. Elapsed time: 7.72 seconds; current allocated memory: 640.141 MB.
+INFO: [HLS 200-111] Finished Checking Pragmas: CPU user time: 0 seconds. CPU system time: 0.01 seconds. Elapsed time: 0.01 seconds; current allocated memory: 640.141 MB.
+INFO: [HLS 200-10] Starting code transformations ...
+INFO: [HLS 200-111] Finished Standard Transforms: CPU user time: 0.17 seconds. CPU system time: 0.02 seconds. Elapsed time: 0.33 seconds; current allocated memory: 657.574 MB.
+INFO: [HLS 200-10] Checking synthesizability ...
+WARNING: [SYNCHK 200-23] /tools/Xilinx/Vitis_HLS/2022.1/common/technology/autopilot/ap_int_ref.h:674: variable-indexed range selection may cause suboptimal QoR.
+INFO: [SYNCHK 200-10] 0 error(s), 1 warning(s).
+INFO: [HLS 200-111] Finished Checking Synthesizability: CPU user time: 0.44 seconds. CPU system time: 0.01 seconds. Elapsed time: 0.55 seconds; current allocated memory: 678.707 MB.
+INFO: [XFORM 203-102] Partitioning array 'cics_ip_sums.sum.V' automatically.
+INFO: [XFORM 203-602] Inlining function 'reverse<16>' into 'mac_compute_ipv4_checksum' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/mac_ip_encode/../ipv4/ipv4_utils.cpp:500) automatically.
+INFO: [XFORM 203-712] Applying dataflow to function 'mac_ip_encode_top' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/mac_ip_encode/mac_ip_encode.cpp:423), detected/extracted 7 process function(s): 
+	 'extract_ip_address<512>'
+	 'mac_compute_ipv4_checksum'
+	 'mac_finalize_ipv4_checksum<32>'
+	 'insert_ip_checksum<512>'
+	 'handle_arp_reply<512>'
+	 'mac_lshiftWordByOctet<512, 1>'
+	 'insert_ethernet_header<512>'.
+INFO: [XFORM 203-401] Performing if-conversion on hyperblock from (/tools/Xilinx/Vitis_HLS/2022.1/common/technology/autopilot/hls_stream_39.h:145:9) to (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/mac_ip_encode/../axi_utils.hpp:1162:8) in function 'mac_lshiftWordByOctet<512, 1>'... converting 4 basic blocks.
+INFO: [XFORM 203-401] Performing if-conversion on hyperblock to (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/mac_ip_encode/../ipv4/ipv4_utils.cpp:512:3) in function 'mac_compute_ipv4_checksum'... converting 59 basic blocks.
+INFO: [XFORM 203-401] Performing if-conversion on hyperblock from (/tools/Xilinx/Vitis_HLS/2022.1/common/technology/autopilot/hls_stream_39.h:145:9) to (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/mac_ip_encode/mac_ip_encode.cpp:258:3) in function 'insert_ethernet_header<512>'... converting 3 basic blocks.
+INFO: [HLS 200-111] Finished Loop, function and other optimizations: CPU user time: 0.85 seconds. CPU system time: 0.05 seconds. Elapsed time: 1.05 seconds; current allocated memory: 723.980 MB.
+WARNING: [HLS 200-1614] Cosimulation may deadlock if process handle_arp_reply<512> has a streamed top-level array input and has predecessor processes. If a deadlock occurs, please consider converting the streamed array into an hls::stream
+INFO: [HLS 200-111] Finished Architecture Synthesis: CPU user time: 0.43 seconds. CPU system time: 0.03 seconds. Elapsed time: 0.51 seconds; current allocated memory: 801.512 MB.
+INFO: [HLS 200-10] Starting hardware synthesis ...
+INFO: [HLS 200-10] Synthesizing 'mac_ip_encode_top' ...
+WARNING: [SYN 201-103] Legalizing function name 'extract_ip_address<512>' to 'extract_ip_address_512_s'.
+WARNING: [SYN 201-103] Legalizing function name 'mac_finalize_ipv4_checksum<32>' to 'mac_finalize_ipv4_checksum_32_s'.
+WARNING: [SYN 201-103] Legalizing function name 'insert_ip_checksum<512>' to 'insert_ip_checksum_512_s'.
+WARNING: [SYN 201-103] Legalizing function name 'handle_arp_reply<512>' to 'handle_arp_reply_512_s'.
+WARNING: [SYN 201-103] Legalizing function name 'mac_lshiftWordByOctet<512, 1>' to 'mac_lshiftWordByOctet_512_1_s'.
+WARNING: [SYN 201-103] Legalizing function name 'insert_ethernet_header<512>' to 'insert_ethernet_header_512_s'.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'clear' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-61] Pipelining function 'clear'.
+INFO: [HLS 200-1470] Pipelining result : Target II = 1, Final II = 1, Depth = 1, function 'clear'
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111] Finished Scheduling: CPU user time: 0.11 seconds. CPU system time: 0.07 seconds. Elapsed time: 0.37 seconds; current allocated memory: 801.512 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111] Finished Binding: CPU user time: 0.03 seconds. CPU system time: 0.01 seconds. Elapsed time: 0.08 seconds; current allocated memory: 802.500 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'extract_ip_address_512_s' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-61] Pipelining function 'extract_ip_address<512>'.
+WARNING: [HLS 200-880] The II Violation in module 'extract_ip_address_512_s' (function 'extract_ip_address<512>'): Unable to enforce a carried dependence constraint (II = 1, distance = 1, offset = 1) between 'call' operation ('_ln70', /mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/mac_ip_encode/mac_ip_encode.cpp:70) to 'clear' and 'load' operation ('header_ready_load', /mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/mac_ip_encode/../ethernet/../packet.hpp:55) on static variable 'header_ready'.
+INFO: [HLS 200-1470] Pipelining result : Target II = 1, Final II = 2, Depth = 4, function 'extract_ip_address<512>'
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111] Finished Scheduling: CPU user time: 0.08 seconds. CPU system time: 0 seconds. Elapsed time: 0.16 seconds; current allocated memory: 802.773 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111] Finished Binding: CPU user time: 0.06 seconds. CPU system time: 0.01 seconds. Elapsed time: 0.12 seconds; current allocated memory: 802.863 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'mac_compute_ipv4_checksum' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-61] Pipelining function 'mac_compute_ipv4_checksum'.
+INFO: [HLS 200-1470] Pipelining result : Target II = 1, Final II = 1, Depth = 3, function 'mac_compute_ipv4_checksum'
+WARNING: [HLS 200-871] Estimated clock period (2.38944ns) exceeds the target (target clock period: 3.2ns, clock uncertainty: 0.864ns, effective delay budget: 2.336ns).
+WARNING: [HLS 200-1016] The critical path in module 'mac_compute_ipv4_checksum' consists of the following:	'load' operation ('cics_ip_sums_sum_V_29_load') on static variable 'cics_ip_sums_sum_V_29' [82]  (0 ns)
+	'add' operation ('add_ln886_58') [444]  (0.791 ns)
+	'add' operation ('add_ln232_107') [447]  (0 ns)
+	'add' operation ('add_ln232_78') [448]  (0.675 ns)
+	'select' operation ('select_ln1073_28') [450]  (0.268 ns)
+	multiplexor before 'phi' operation ('cics_ip_sums_sum_V_29_new_0_i') with incoming values : ('select_ln1073_28') [500]  (0.387 ns)
+	'phi' operation ('cics_ip_sums_sum_V_29_new_0_i') with incoming values : ('select_ln1073_28') [500]  (0 ns)
+	'select' operation ('select_ln514_28', /mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/mac_ip_encode/../ipv4/ipv4_utils.cpp:514) [545]  (0.268 ns)
+	'store' operation ('cics_ip_sums_sum_V_29_write_ln519', /mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/mac_ip_encode/../ipv4/ipv4_utils.cpp:519) of variable 'select_ln514_28', /mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/mac_ip_encode/../ipv4/ipv4_utils.cpp:514 on static variable 'cics_ip_sums_sum_V_29' [548]  (0 ns)
+
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111] Finished Scheduling: CPU user time: 0.64 seconds. CPU system time: 0.01 seconds. Elapsed time: 0.74 seconds; current allocated memory: 808.953 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111] Finished Binding: CPU user time: 0.32 seconds. CPU system time: 0.01 seconds. Elapsed time: 0.47 seconds; current allocated memory: 808.953 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'mac_finalize_ipv4_checksum_32_s' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-61] Pipelining function 'mac_finalize_ipv4_checksum<32>'.
+INFO: [HLS 200-1470] Pipelining result : Target II = 1, Final II = 1, Depth = 5, function 'mac_finalize_ipv4_checksum<32>'
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111] Finished Scheduling: CPU user time: 0.75 seconds. CPU system time: 0.01 seconds. Elapsed time: 0.88 seconds; current allocated memory: 809.855 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111] Finished Binding: CPU user time: 0.23 seconds. CPU system time: 0 seconds. Elapsed time: 0.32 seconds; current allocated memory: 809.855 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'insert_ip_checksum_512_s' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-61] Pipelining function 'insert_ip_checksum<512>'.
+INFO: [HLS 200-1470] Pipelining result : Target II = 1, Final II = 1, Depth = 2, function 'insert_ip_checksum<512>'
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111] Finished Scheduling: CPU user time: 0.41 seconds. CPU system time: 0 seconds. Elapsed time: 0.52 seconds; current allocated memory: 811.203 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111] Finished Binding: CPU user time: 0.05 seconds. CPU system time: 0.01 seconds. Elapsed time: 0.12 seconds; current allocated memory: 811.457 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'handle_arp_reply_512_s' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-61] Pipelining function 'handle_arp_reply<512>'.
+INFO: [HLS 200-1470] Pipelining result : Target II = 1, Final II = 1, Depth = 2, function 'handle_arp_reply<512>'
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111] Finished Scheduling: CPU user time: 0.1 seconds. CPU system time: 0 seconds. Elapsed time: 0.19 seconds; current allocated memory: 811.891 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111] Finished Binding: CPU user time: 0.05 seconds. CPU system time: 0.01 seconds. Elapsed time: 0.12 seconds; current allocated memory: 812.164 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'mac_lshiftWordByOctet_512_1_s' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-61] Pipelining function 'mac_lshiftWordByOctet<512, 1>'.
+INFO: [HLS 200-1470] Pipelining result : Target II = 1, Final II = 1, Depth = 2, function 'mac_lshiftWordByOctet<512, 1>'
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111] Finished Scheduling: CPU user time: 0.08 seconds. CPU system time: 0.01 seconds. Elapsed time: 0.18 seconds; current allocated memory: 812.184 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111] Finished Binding: CPU user time: 0.06 seconds. CPU system time: 0 seconds. Elapsed time: 0.13 seconds; current allocated memory: 812.480 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'insert_ethernet_header_512_s' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-61] Pipelining function 'insert_ethernet_header<512>'.
+INFO: [HLS 200-1470] Pipelining result : Target II = 1, Final II = 1, Depth = 3, function 'insert_ethernet_header<512>'
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111] Finished Scheduling: CPU user time: 0.1 seconds. CPU system time: 0 seconds. Elapsed time: 0.19 seconds; current allocated memory: 812.707 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111] Finished Binding: CPU user time: 0.07 seconds. CPU system time: 0 seconds. Elapsed time: 0.13 seconds; current allocated memory: 813.051 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'mac_ip_encode_top' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-11] Finished scheduling.
+WARNING: [HLS 200-1018] Consider increasing the depth of FIFO headerFifo (from handle_arp_reply_512_U0 to insert_ethernet_header_512_U0) to 3 to improve performance and/or avoid deadlocks.
+INFO: [HLS 200-111] Finished Scheduling: CPU user time: 0.13 seconds. CPU system time: 0 seconds. Elapsed time: 0.21 seconds; current allocated memory: 813.211 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111] Finished Binding: CPU user time: 0.32 seconds. CPU system time: 0.02 seconds. Elapsed time: 0.4 seconds; current allocated memory: 813.574 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'clear' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [RTGEN 206-100] Finished creating RTL model for 'clear'.
+INFO: [HLS 200-111] Finished Creating RTL model: CPU user time: 0.7 seconds. CPU system time: 0.01 seconds. Elapsed time: 0.79 seconds; current allocated memory: 813.730 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'extract_ip_address_512_s' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+WARNING: [RTGEN 206-101] Register 'header_ready' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'header_header_V' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'header_idx' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'metaWritten' is power-on initialization.
+INFO: [HLS 200-1030] Apply Unified Pipeline Control on module 'extract_ip_address_512_s' pipeline 'extract_ip_address<512>' pipeline type 'function pipeline'
+INFO: [RTGEN 206-100] Finished creating RTL model for 'extract_ip_address_512_s'.
+INFO: [HLS 200-111] Finished Creating RTL model: CPU user time: 0.08 seconds. CPU system time: 0.04 seconds. Elapsed time: 0.27 seconds; current allocated memory: 813.773 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'mac_compute_ipv4_checksum' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+WARNING: [RTGEN 206-101] Register 'cics_firstWord' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'cics_ip_sums_sum_V_0' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'cics_ip_sums_sum_V_1' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'cics_ip_sums_sum_V_2' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'cics_ip_sums_sum_V_3' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'cics_ip_sums_sum_V_4' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'cics_ip_sums_sum_V_6' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'cics_ip_sums_sum_V_7' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'cics_ip_sums_sum_V_8' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'cics_ip_sums_sum_V_9' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'cics_ip_sums_sum_V_10' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'cics_ip_sums_sum_V_11' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'cics_ip_sums_sum_V_12' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'cics_ip_sums_sum_V_13' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'cics_ip_sums_sum_V_14' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'cics_ip_sums_sum_V_15' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'cics_ip_sums_sum_V_16' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'cics_ip_sums_sum_V_17' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'cics_ip_sums_sum_V_18' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'cics_ip_sums_sum_V_19' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'cics_ip_sums_sum_V_20' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'cics_ip_sums_sum_V_21' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'cics_ip_sums_sum_V_22' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'cics_ip_sums_sum_V_23' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'cics_ip_sums_sum_V_24' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'cics_ip_sums_sum_V_25' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'cics_ip_sums_sum_V_26' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'cics_ip_sums_sum_V_27' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'cics_ip_sums_sum_V_28' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'cics_ip_sums_sum_V_29' is power-on initialization.
+INFO: [HLS 200-1030] Apply Unified Pipeline Control on module 'mac_compute_ipv4_checksum' pipeline 'mac_compute_ipv4_checksum' pipeline type 'function pipeline'
+INFO: [RTGEN 206-100] Finished creating RTL model for 'mac_compute_ipv4_checksum'.
+INFO: [HLS 200-111] Finished Creating RTL model: CPU user time: 0.5 seconds. CPU system time: 0.04 seconds. Elapsed time: 0.99 seconds; current allocated memory: 818.992 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'mac_finalize_ipv4_checksum_32_s' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-1030] Apply Unified Pipeline Control on module 'mac_finalize_ipv4_checksum_32_s' pipeline 'mac_finalize_ipv4_checksum<32>' pipeline type 'function pipeline'
+INFO: [RTGEN 206-100] Finished creating RTL model for 'mac_finalize_ipv4_checksum_32_s'.
+INFO: [HLS 200-111] Finished Creating RTL model: CPU user time: 1.37 seconds. CPU system time: 0.04 seconds. Elapsed time: 1.59 seconds; current allocated memory: 830.512 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'insert_ip_checksum_512_s' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+WARNING: [RTGEN 206-101] Register 'wordCount_V' is power-on initialization.
+INFO: [HLS 200-1030] Apply Unified Pipeline Control on module 'insert_ip_checksum_512_s' pipeline 'insert_ip_checksum<512>' pipeline type 'function pipeline'
+INFO: [RTGEN 206-100] Finished creating RTL model for 'insert_ip_checksum_512_s'.
+INFO: [HLS 200-111] Finished Creating RTL model: CPU user time: 0.93 seconds. CPU system time: 0.07 seconds. Elapsed time: 1.45 seconds; current allocated memory: 838.156 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'handle_arp_reply_512_s' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+WARNING: [RTGEN 206-101] Register 'har_state' is power-on initialization.
+INFO: [HLS 200-1030] Apply Unified Pipeline Control on module 'handle_arp_reply_512_s' pipeline 'handle_arp_reply<512>' pipeline type 'function pipeline'
+INFO: [RTGEN 206-100] Finished creating RTL model for 'handle_arp_reply_512_s'.
+INFO: [HLS 200-111] Finished Creating RTL model: CPU user time: 0.16 seconds. CPU system time: 0.01 seconds. Elapsed time: 0.3 seconds; current allocated memory: 839.156 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'mac_lshiftWordByOctet_512_1_s' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+WARNING: [RTGEN 206-101] Register 'ls_writeRemainder' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'prevWord_data_V' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'prevWord_keep_V' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'ls_firstWord' is power-on initialization.
+INFO: [HLS 200-1030] Apply Unified Pipeline Control on module 'mac_lshiftWordByOctet_512_1_s' pipeline 'mac_lshiftWordByOctet<512, 1>' pipeline type 'function pipeline'
+INFO: [RTGEN 206-100] Finished creating RTL model for 'mac_lshiftWordByOctet_512_1_s'.
+INFO: [HLS 200-111] Finished Creating RTL model: CPU user time: 0.16 seconds. CPU system time: 0.02 seconds. Elapsed time: 0.32 seconds; current allocated memory: 840.758 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'insert_ethernet_header_512_s' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+WARNING: [RTGEN 206-101] Register 'ge_state' is power-on initialization.
+INFO: [HLS 200-1030] Apply Unified Pipeline Control on module 'insert_ethernet_header_512_s' pipeline 'insert_ethernet_header<512>' pipeline type 'function pipeline'
+INFO: [RTGEN 206-100] Finished creating RTL model for 'insert_ethernet_header_512_s'.
+INFO: [HLS 200-111] Finished Creating RTL model: CPU user time: 0.17 seconds. CPU system time: 0.01 seconds. Elapsed time: 0.31 seconds; current allocated memory: 841.348 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'mac_ip_encode_top' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+WARNING: [RTGEN 206-101] Design contains AXI ports. Reset is fixed to synchronous and active low.
+INFO: [RTGEN 206-500] Setting interface mode on port 'mac_ip_encode_top/s_axis_ip' to 'axis' (register, both mode).
+INFO: [RTGEN 206-500] Setting interface mode on port 'mac_ip_encode_top/s_axis_arp_lookup_reply' to 'axis' (register, both mode).
+==============================================================
+Vitis HLS - High-Level Synthesis from C, C++ and OpenCL v2022.1 (64-bit)
+Tool Version Limit: 2022.04
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+==============================================================
+==============================================================
+Vitis HLS - High-Level Synthesis from C, C++ and OpenCL v2022.1 (64-bit)
+Tool Version Limit: 2022.04
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+==============================================================

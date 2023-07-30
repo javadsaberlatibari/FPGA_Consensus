@@ -1,0 +1,179 @@
+
+
+================================================================
+== Vitis HLS Report for 'rxPackageDropper_512_s'
+================================================================
+* Date:           Tue Jul 11 09:26:30 2023
+
+* Version:        2022.1 (Build 3526262 on Mon Apr 18 15:47:01 MDT 2022)
+* Project:        toe_prj
+* Solution:       solution1 (Vivado IP Flow Target)
+* Product family: virtexuplus
+* Target device:  xcu280-fsvh2892-2L-e
+
+
+================================================================
+== Performance Estimates
+================================================================
++ Timing: 
+    * Summary: 
+    +--------+---------+----------+------------+
+    |  Clock |  Target | Estimated| Uncertainty|
+    +--------+---------+----------+------------+
+    |ap_clk  |  3.20 ns|  1.866 ns|     0.86 ns|
+    +--------+---------+----------+------------+
+
++ Latency: 
+    * Summary: 
+    +---------+---------+----------+----------+-----+-----+---------+
+    |  Latency (cycles) |  Latency (absolute) |  Interval | Pipeline|
+    |   min   |   max   |    min   |    max   | min | max |   Type  |
+    +---------+---------+----------+----------+-----+-----+---------+
+    |        2|        2|  6.400 ns|  6.400 ns|    1|    1|      yes|
+    +---------+---------+----------+----------+-----+-----+---------+
+
+    + Detail: 
+        * Instance: 
+        N/A
+
+        * Loop: 
+        N/A
+
+
+
+================================================================
+== Utilization Estimates
+================================================================
+* Summary: 
++---------------------+---------+------+---------+---------+-----+
+|         Name        | BRAM_18K|  DSP |    FF   |   LUT   | URAM|
++---------------------+---------+------+---------+---------+-----+
+|DSP                  |        -|     -|        -|        -|    -|
+|Expression           |        -|     -|        0|       43|    -|
+|FIFO                 |        -|     -|        -|        -|    -|
+|Instance             |        -|     -|        -|        -|    -|
+|Memory               |        -|     -|        -|        -|    -|
+|Multiplexer          |        -|     -|        -|       65|    -|
+|Register             |        -|     -|     1036|        -|    -|
++---------------------+---------+------+---------+---------+-----+
+|Total                |        0|     0|     1036|      108|    0|
++---------------------+---------+------+---------+---------+-----+
+|Available SLR        |     1344|  3008|   869120|   434560|  320|
++---------------------+---------+------+---------+---------+-----+
+|Utilization SLR (%)  |        0|     0|       ~0|       ~0|    0|
++---------------------+---------+------+---------+---------+-----+
+|Available            |     4032|  9024|  2607360|  1303680|  960|
++---------------------+---------+------+---------+---------+-----+
+|Utilization (%)      |        0|     0|       ~0|       ~0|    0|
++---------------------+---------+------+---------+---------+-----+
+
++ Detail: 
+    * Instance: 
+    N/A
+
+    * DSP: 
+    N/A
+
+    * Memory: 
+    N/A
+
+    * FIFO: 
+    N/A
+
+    * Expression: 
+    +----------------------------------+----------+----+---+----+------------+------------+
+    |           Variable Name          | Operation| DSP| FF| LUT| Bitwidth P0| Bitwidth P1|
+    +----------------------------------+----------+----+---+----+------------+------------+
+    |ap_block_state2_io                |       and|   0|  0|   2|           1|           1|
+    |ap_block_state3_io                |       and|   0|  0|   2|           1|           1|
+    |ap_condition_170                  |       and|   0|  0|   2|           1|           1|
+    |ap_condition_183                  |       and|   0|  0|   2|           1|           1|
+    |ap_condition_187                  |       and|   0|  0|   2|           1|           1|
+    |ap_predicate_op22_read_state1     |       and|   0|  0|   2|           1|           1|
+    |ap_predicate_op30_read_state1     |       and|   0|  0|   2|           1|           1|
+    |ap_predicate_op37_read_state1     |       and|   0|  0|   2|           1|           1|
+    |ap_predicate_op46_read_state1     |       and|   0|  0|   2|           1|           1|
+    |ap_predicate_op51_write_state2    |       and|   0|  0|   2|           1|           1|
+    |ap_predicate_op52_write_state3    |       and|   0|  0|   2|           1|           1|
+    |grp_nbreadreq_fu_50_p3            |       and|   0|  0|   2|           1|           0|
+    |tmp_i_246_nbreadreq_fu_64_p3      |       and|   0|  0|   2|           1|           0|
+    |tmp_i_nbreadreq_fu_78_p3          |       and|   0|  0|   2|           1|           0|
+    |ap_block_pp0_stage0_01001         |        or|   0|  0|   2|           1|           1|
+    |ap_block_pp0_stage0_11001         |        or|   0|  0|   2|           1|           1|
+    |ap_block_state1_pp0_stage0_iter0  |        or|   0|  0|   2|           1|           1|
+    |ap_block_state3_pp0_stage0_iter2  |        or|   0|  0|   2|           1|           1|
+    |select_ln1621_fu_137_p3           |    select|   0|  0|   2|           1|           2|
+    |select_ln1635_fu_117_p3           |    select|   0|  0|   3|           1|           2|
+    |ap_enable_pp0                     |       xor|   0|  0|   2|           1|           2|
+    +----------------------------------+----------+----+---+----+------------+------------+
+    |Total                             |          |   0|  0|  43|          21|          21|
+    +----------------------------------+----------+----+---+----+------------+------------+
+
+    * Multiplexer: 
+    +---------------------------------+----+-----------+-----+-----------+
+    |               Name              | LUT| Input Size| Bits| Total Bits|
+    +---------------------------------+----+-----------+-----+-----------+
+    |ap_done                          |   9|          2|    1|          2|
+    |m_axis_rxwrite_data_TDATA_blk_n  |   9|          2|    1|          2|
+    |rxEng_dataBuffer3_blk_n          |   9|          2|    1|          2|
+    |rxEng_fsmDropFifo_blk_n          |   9|          2|    1|          2|
+    |rxEng_metaHandlerDropFifo_blk_n  |   9|          2|    1|          2|
+    |tpf_state                        |  20|          4|    2|          8|
+    +---------------------------------+----+-----------+-----+-----------+
+    |Total                            |  65|         14|    7|         18|
+    +---------------------------------+----+-----------+-----+-----------+
+
+    * Register: 
+    +--------------------------------------+------+----+------+-----------+
+    |                 Name                 |  FF  | LUT| Bits | Const Bits|
+    +--------------------------------------+------+----+------+-----------+
+    |ap_CS_fsm                             |     1|   0|     1|          0|
+    |ap_done_reg                           |     1|   0|     1|          0|
+    |ap_enable_reg_pp0_iter1               |     1|   0|     1|          0|
+    |ap_enable_reg_pp0_iter2               |     1|   0|     1|          0|
+    |rxEng_dataBuffer3_read_1_reg_159      |  1024|   0|  1024|          0|
+    |tmp_354_i_reg_155                     |     1|   0|     1|          0|
+    |tmp_354_i_reg_155_pp0_iter1_reg       |     1|   0|     1|          0|
+    |tpf_state                             |     2|   0|     2|          0|
+    |tpf_state_load_reg_151                |     2|   0|     2|          0|
+    |tpf_state_load_reg_151_pp0_iter1_reg  |     2|   0|     2|          0|
+    +--------------------------------------+------+----+------+-----------+
+    |Total                                 |  1036|   0|  1036|          0|
+    +--------------------------------------+------+----+------+-----------+
+
+
+
+================================================================
+== Interface
+================================================================
+* Summary: 
++------------------------------------------+-----+------+------------+---------------------------+--------------+
+|                 RTL Ports                | Dir | Bits |  Protocol  |       Source Object       |    C Type    |
++------------------------------------------+-----+------+------------+---------------------------+--------------+
+|ap_clk                                    |   in|     1|  ap_ctrl_hs|      rxPackageDropper<512>|  return value|
+|ap_rst                                    |   in|     1|  ap_ctrl_hs|      rxPackageDropper<512>|  return value|
+|ap_start                                  |   in|     1|  ap_ctrl_hs|      rxPackageDropper<512>|  return value|
+|ap_done                                   |  out|     1|  ap_ctrl_hs|      rxPackageDropper<512>|  return value|
+|ap_continue                               |   in|     1|  ap_ctrl_hs|      rxPackageDropper<512>|  return value|
+|ap_idle                                   |  out|     1|  ap_ctrl_hs|      rxPackageDropper<512>|  return value|
+|ap_ready                                  |  out|     1|  ap_ctrl_hs|      rxPackageDropper<512>|  return value|
+|rxEng_dataBuffer3_dout                    |   in|  1024|     ap_fifo|          rxEng_dataBuffer3|       pointer|
+|rxEng_dataBuffer3_num_data_valid          |   in|     6|     ap_fifo|          rxEng_dataBuffer3|       pointer|
+|rxEng_dataBuffer3_fifo_cap                |   in|     6|     ap_fifo|          rxEng_dataBuffer3|       pointer|
+|rxEng_dataBuffer3_empty_n                 |   in|     1|     ap_fifo|          rxEng_dataBuffer3|       pointer|
+|rxEng_dataBuffer3_read                    |  out|     1|     ap_fifo|          rxEng_dataBuffer3|       pointer|
+|rxEng_fsmDropFifo_dout                    |   in|     1|     ap_fifo|          rxEng_fsmDropFifo|       pointer|
+|rxEng_fsmDropFifo_num_data_valid          |   in|     2|     ap_fifo|          rxEng_fsmDropFifo|       pointer|
+|rxEng_fsmDropFifo_fifo_cap                |   in|     2|     ap_fifo|          rxEng_fsmDropFifo|       pointer|
+|rxEng_fsmDropFifo_empty_n                 |   in|     1|     ap_fifo|          rxEng_fsmDropFifo|       pointer|
+|rxEng_fsmDropFifo_read                    |  out|     1|     ap_fifo|          rxEng_fsmDropFifo|       pointer|
+|rxEng_metaHandlerDropFifo_dout            |   in|     1|     ap_fifo|  rxEng_metaHandlerDropFifo|       pointer|
+|rxEng_metaHandlerDropFifo_num_data_valid  |   in|     2|     ap_fifo|  rxEng_metaHandlerDropFifo|       pointer|
+|rxEng_metaHandlerDropFifo_fifo_cap        |   in|     2|     ap_fifo|  rxEng_metaHandlerDropFifo|       pointer|
+|rxEng_metaHandlerDropFifo_empty_n         |   in|     1|     ap_fifo|  rxEng_metaHandlerDropFifo|       pointer|
+|rxEng_metaHandlerDropFifo_read            |  out|     1|     ap_fifo|  rxEng_metaHandlerDropFifo|       pointer|
+|m_axis_rxwrite_data_TREADY                |   in|     1|        axis|        m_axis_rxwrite_data|       pointer|
+|m_axis_rxwrite_data_TDATA                 |  out|  1024|        axis|        m_axis_rxwrite_data|       pointer|
+|m_axis_rxwrite_data_TVALID                |  out|     1|        axis|        m_axis_rxwrite_data|       pointer|
++------------------------------------------+-----+------+------------+---------------------------+--------------+
+

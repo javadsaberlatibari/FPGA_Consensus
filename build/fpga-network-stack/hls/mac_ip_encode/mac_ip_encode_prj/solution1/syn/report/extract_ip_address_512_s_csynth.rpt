@@ -1,0 +1,219 @@
+
+
+================================================================
+== Vitis HLS Report for 'extract_ip_address_512_s'
+================================================================
+* Date:           Tue Jul 11 09:20:39 2023
+
+* Version:        2022.1 (Build 3526262 on Mon Apr 18 15:47:01 MDT 2022)
+* Project:        mac_ip_encode_prj
+* Solution:       solution1 (Vivado IP Flow Target)
+* Product family: virtexuplus
+* Target device:  xcu280-fsvh2892-2L-e
+
+
+================================================================
+== Performance Estimates
+================================================================
++ Timing: 
+    * Summary: 
+    +--------+---------+----------+------------+
+    |  Clock |  Target | Estimated| Uncertainty|
+    +--------+---------+----------+------------+
+    |ap_clk  |  3.20 ns|  2.300 ns|     0.86 ns|
+    +--------+---------+----------+------------+
+
++ Latency: 
+    * Summary: 
+    +---------+---------+----------+----------+-----+-----+---------+
+    |  Latency (cycles) |  Latency (absolute) |  Interval | Pipeline|
+    |   min   |   max   |    min   |    max   | min | max |   Type  |
+    +---------+---------+----------+----------+-----+-----+---------+
+    |        3|        3|  9.600 ns|  9.600 ns|    2|    2|      yes|
+    +---------+---------+----------+----------+-----+-----+---------+
+
+    + Detail: 
+        * Instance: 
+        +------------------------+-------+---------+---------+----------+----------+-----+-----+---------+
+        |                        |       |  Latency (cycles) |  Latency (absolute) |  Interval | Pipeline|
+        |        Instance        | Module|   min   |   max   |    min   |    max   | min | max |   Type  |
+        +------------------------+-------+---------+---------+----------+----------+-----+-----+---------+
+        |call_ln70_clear_fu_171  |clear  |        0|        0|      0 ns|      0 ns|    1|    1|      yes|
+        +------------------------+-------+---------+---------+----------+----------+-----+-----+---------+
+
+        * Loop: 
+        N/A
+
+
+
+================================================================
+== Utilization Estimates
+================================================================
+* Summary: 
++---------------------+---------+------+---------+---------+-----+
+|         Name        | BRAM_18K|  DSP |    FF   |   LUT   | URAM|
++---------------------+---------+------+---------+---------+-----+
+|DSP                  |        -|     -|        -|        -|    -|
+|Expression           |        -|     -|        0|     1411|    -|
+|FIFO                 |        -|     -|        -|        -|    -|
+|Instance             |        -|     -|        -|        -|    -|
+|Memory               |        -|     -|        -|        -|    -|
+|Multiplexer          |        -|     -|        -|      150|    -|
+|Register             |        -|     -|      545|        -|    -|
++---------------------+---------+------+---------+---------+-----+
+|Total                |        0|     0|      545|     1561|    0|
++---------------------+---------+------+---------+---------+-----+
+|Available SLR        |     1344|  3008|   869120|   434560|  320|
++---------------------+---------+------+---------+---------+-----+
+|Utilization SLR (%)  |        0|     0|       ~0|       ~0|    0|
++---------------------+---------+------+---------+---------+-----+
+|Available            |     4032|  9024|  2607360|  1303680|  960|
++---------------------+---------+------+---------+---------+-----+
+|Utilization (%)      |        0|     0|       ~0|       ~0|    0|
++---------------------+---------+------+---------+---------+-----+
+
++ Detail: 
+    * Instance: 
+    +------------------------+-------+---------+----+---+----+-----+
+    |        Instance        | Module| BRAM_18K| DSP| FF| LUT| URAM|
+    +------------------------+-------+---------+----+---+----+-----+
+    |call_ln70_clear_fu_171  |clear  |        0|   0|  0|   0|    0|
+    +------------------------+-------+---------+----+---+----+-----+
+    |Total                   |       |        0|   0|  0|   0|    0|
+    +------------------------+-------+---------+----+---+----+-----+
+
+    * DSP: 
+    N/A
+
+    * Memory: 
+    N/A
+
+    * FIFO: 
+    N/A
+
+    * Expression: 
+    +----------------------------------+----------+----+---+-----+------------+------------+
+    |           Variable Name          | Operation| DSP| FF| LUT | Bitwidth P0| Bitwidth P1|
+    +----------------------------------+----------+----+---+-----+------------+------------+
+    |add_ln67_fu_199_p2                |         +|   0|  0|   23|          16|           1|
+    |and_ln1065_fu_341_p2              |       and|   0|  0|   32|          32|          32|
+    |and_ln414_1_fu_302_p2             |       and|   0|  0|  160|         160|         160|
+    |and_ln414_fu_297_p2               |       and|   0|  0|  160|         160|         160|
+    |ap_condition_183                  |       and|   0|  0|    2|           1|           1|
+    |ap_condition_215                  |       and|   0|  0|    2|           1|           1|
+    |ap_condition_277                  |       and|   0|  0|    2|           1|           1|
+    |ap_condition_448                  |       and|   0|  0|    2|           1|           1|
+    |ap_condition_456                  |       and|   0|  0|    2|           1|           1|
+    |ap_predicate_op42_write_state2    |       and|   0|  0|    2|           1|           1|
+    |ap_predicate_op44_write_state2    |       and|   0|  0|    2|           1|           1|
+    |ap_predicate_op56_write_state3    |       and|   0|  0|    2|           1|           1|
+    |ap_predicate_op57_write_state3    |       and|   0|  0|    2|           1|           1|
+    |ap_predicate_op65_write_state4    |       and|   0|  0|    2|           1|           1|
+    |ap_predicate_op67_write_state4    |       and|   0|  0|    2|           1|           1|
+    |tmp_i_nbreadreq_fu_84_p3          |       and|   0|  0|    2|           1|           0|
+    |icmp_ln1065_fu_347_p2             |      icmp|   0|  0|   20|          32|           1|
+    |icmp_ln414_fu_205_p2              |      icmp|   0|  0|   16|          25|           8|
+    |ap_block_pp0_stage0_01001         |        or|   0|  0|    2|           1|           1|
+    |ap_block_pp0_stage0_11001         |        or|   0|  0|    2|           1|           1|
+    |ap_block_pp0_stage1_01001         |        or|   0|  0|    2|           1|           1|
+    |ap_block_pp0_stage1_11001         |        or|   0|  0|    2|           1|           1|
+    |ap_block_state2_pp0_stage1_iter0  |        or|   0|  0|    2|           1|           1|
+    |ap_block_state3_io                |        or|   0|  0|    2|           1|           1|
+    |ap_block_state4_io                |        or|   0|  0|    2|           1|           1|
+    |ap_block_state4_pp0_stage1_iter1  |        or|   0|  0|    2|           1|           1|
+    |or_ln414_fu_285_p2                |        or|   0|  0|  160|         160|         160|
+    |p_Result_s_fu_308_p2              |        or|   0|  0|  160|         160|         160|
+    |select_ln414_1_fu_264_p3          |    select|   0|  0|  148|           1|         160|
+    |select_ln414_2_fu_271_p3          |    select|   0|  0|  147|           1|         159|
+    |select_ln414_3_fu_278_p3          |    select|   0|  0|    3|           1|           3|
+    |select_ln414_fu_247_p3            |    select|   0|  0|  148|           1|         160|
+    |ap_enable_pp0                     |       xor|   0|  0|    2|           1|           2|
+    |xor_ln1065_fu_335_p2              |       xor|   0|  0|   32|          32|          32|
+    |xor_ln414_fu_291_p2               |       xor|   0|  0|  160|         160|           2|
+    +----------------------------------+----------+----+---+-----+------------+------------+
+    |Total                             |          |   0|  0| 1411|         962|        1219|
+    +----------------------------------+----------+----+---+-----+------------+------------+
+
+    * Multiplexer: 
+    +---------------------------------------------------+----+-----------+-----+-----------+
+    |                        Name                       | LUT| Input Size| Bits| Total Bits|
+    +---------------------------------------------------+----+-----------+-----+-----------+
+    |ap_NS_fsm                                          |  14|          3|    1|          3|
+    |ap_done                                            |   9|          2|    1|          2|
+    |ap_enable_reg_pp0_iter0                            |   9|          2|    1|          2|
+    |ap_phi_mux_metaWritten_flag_1_i_phi_fu_151_p4      |   9|          2|    1|          2|
+    |ap_phi_mux_metaWritten_new_1_i_phi_fu_163_p4       |   9|          2|    1|          2|
+    |ap_phi_mux_p_Val2_6_phi_fu_128_p4                  |   9|          2|  160|        320|
+    |ap_phi_reg_pp0_iter1_metaWritten_flag_0_i_reg_134  |  14|          3|    1|          3|
+    |ap_phi_reg_pp0_iter1_metaWritten_flag_1_i_reg_147  |   9|          2|    1|          2|
+    |ap_phi_reg_pp0_iter1_metaWritten_new_1_i_reg_159   |   9|          2|    1|          2|
+    |dataStreamBuffer0_blk_n                            |   9|          2|    1|          2|
+    |header_idx                                         |   9|          2|   16|         32|
+    |header_ready                                       |   9|          2|    1|          2|
+    |m_axis_arp_lookup_request_TDATA_blk_n              |   9|          2|    1|          2|
+    |m_axis_arp_lookup_request_TDATA_int_regslice       |  14|          3|   32|         96|
+    |s_axis_ip_TDATA_blk_n                              |   9|          2|    1|          2|
+    +---------------------------------------------------+----+-----------+-----+-----------+
+    |Total                                              | 150|         33|  220|        474|
+    +---------------------------------------------------+----+-----------+-----+-----------+
+
+    * Register: 
+    +---------------------------------------------------+-----+----+-----+-----------+
+    |                        Name                       |  FF | LUT| Bits| Const Bits|
+    +---------------------------------------------------+-----+----+-----+-----------+
+    |ap_CS_fsm                                          |    2|   0|    2|          0|
+    |ap_done_reg                                        |    1|   0|    1|          0|
+    |ap_enable_reg_pp0_iter0_reg                        |    1|   0|    1|          0|
+    |ap_enable_reg_pp0_iter1                            |    1|   0|    1|          0|
+    |ap_phi_reg_pp0_iter0_p_Val2_6_reg_125              |  160|   0|  160|          0|
+    |ap_phi_reg_pp0_iter1_metaWritten_flag_0_i_reg_134  |    1|   0|    1|          0|
+    |ap_phi_reg_pp0_iter1_metaWritten_flag_1_i_reg_147  |    1|   0|    1|          0|
+    |ap_phi_reg_pp0_iter1_metaWritten_new_1_i_reg_159   |    1|   0|    1|          0|
+    |dstIpAddress_V_reg_394                             |   32|   0|   32|          0|
+    |header_header_V                                    |  160|   0|  160|          0|
+    |header_idx                                         |   16|   0|   16|          0|
+    |header_ready                                       |    1|   0|    1|          0|
+    |header_ready_load_reg_363                          |    1|   0|    1|          0|
+    |icmp_ln1065_reg_399                                |    1|   0|    1|          0|
+    |icmp_ln414_reg_373                                 |    1|   0|    1|          0|
+    |metaWritten                                        |    1|   0|    1|          0|
+    |metaWritten_load_reg_390                           |    1|   0|    1|          0|
+    |p_Val2_s_reg_367                                   |  160|   0|  160|          0|
+    |tmp_i_reg_359                                      |    1|   0|    1|          0|
+    |tmp_i_reg_359_pp0_iter1_reg                        |    1|   0|    1|          0|
+    |tmp_last_V_reg_386                                 |    1|   0|    1|          0|
+    +---------------------------------------------------+-----+----+-----+-----------+
+    |Total                                              |  545|   0|  545|          0|
+    +---------------------------------------------------+-----+----+-----+-----------+
+
+
+
+================================================================
+== Interface
+================================================================
+* Summary: 
++----------------------------------+-----+------+------------+---------------------------+--------------+
+|             RTL Ports            | Dir | Bits |  Protocol  |       Source Object       |    C Type    |
++----------------------------------+-----+------+------------+---------------------------+--------------+
+|ap_clk                            |   in|     1|  ap_ctrl_hs|    extract_ip_address<512>|  return value|
+|ap_rst                            |   in|     1|  ap_ctrl_hs|    extract_ip_address<512>|  return value|
+|ap_start                          |   in|     1|  ap_ctrl_hs|    extract_ip_address<512>|  return value|
+|ap_done                           |  out|     1|  ap_ctrl_hs|    extract_ip_address<512>|  return value|
+|ap_continue                       |   in|     1|  ap_ctrl_hs|    extract_ip_address<512>|  return value|
+|ap_idle                           |  out|     1|  ap_ctrl_hs|    extract_ip_address<512>|  return value|
+|ap_ready                          |  out|     1|  ap_ctrl_hs|    extract_ip_address<512>|  return value|
+|s_axis_ip_TVALID                  |   in|     1|        axis|                  s_axis_ip|       pointer|
+|s_axis_ip_TDATA                   |   in|  1024|        axis|                  s_axis_ip|       pointer|
+|s_axis_ip_TREADY                  |  out|     1|        axis|                  s_axis_ip|       pointer|
+|dataStreamBuffer0_din             |  out|  1024|     ap_fifo|          dataStreamBuffer0|       pointer|
+|dataStreamBuffer0_num_data_valid  |   in|     2|     ap_fifo|          dataStreamBuffer0|       pointer|
+|dataStreamBuffer0_fifo_cap        |   in|     2|     ap_fifo|          dataStreamBuffer0|       pointer|
+|dataStreamBuffer0_full_n          |   in|     1|     ap_fifo|          dataStreamBuffer0|       pointer|
+|dataStreamBuffer0_write           |  out|     1|     ap_fifo|          dataStreamBuffer0|       pointer|
+|m_axis_arp_lookup_request_TREADY  |   in|     1|        axis|  m_axis_arp_lookup_request|       pointer|
+|m_axis_arp_lookup_request_TDATA   |  out|    32|        axis|  m_axis_arp_lookup_request|       pointer|
+|m_axis_arp_lookup_request_TVALID  |  out|     1|        axis|  m_axis_arp_lookup_request|       pointer|
+|regSubNetMask                     |   in|    32|   ap_stable|              regSubNetMask|        scalar|
+|regDefaultGateway                 |   in|    32|   ap_stable|          regDefaultGateway|        scalar|
++----------------------------------+-----+------+------------+---------------------------+--------------+
+

@@ -1,0 +1,155 @@
+
+
+================================================================
+== Vitis HLS Report for 'dhcp_client'
+================================================================
+* Date:           Tue Jul 11 09:17:09 2023
+
+* Version:        2022.1 (Build 3526262 on Mon Apr 18 15:47:01 MDT 2022)
+* Project:        dhcp_client_prj
+* Solution:       solution1 (Vivado IP Flow Target)
+* Product family: virtexuplus
+* Target device:  xcu280-fsvh2892-2L-e
+
+
+================================================================
+== Performance Estimates
+================================================================
++ Timing: 
+    * Summary: 
+    +--------+---------+----------+------------+
+    |  Clock |  Target | Estimated| Uncertainty|
+    +--------+---------+----------+------------+
+    |ap_clk  |  3.20 ns|  2.602 ns|     0.86 ns|
+    +--------+---------+----------+------------+
+
++ Latency: 
+    * Summary: 
+    +---------+---------+-----------+-----------+-----+-----+----------+
+    |  Latency (cycles) |   Latency (absolute)  |  Interval | Pipeline |
+    |   min   |   max   |    min    |    max    | min | max |   Type   |
+    +---------+---------+-----------+-----------+-----+-----+----------+
+    |        7|        7|  22.400 ns|  22.400 ns|    2|    2|  dataflow|
+    +---------+---------+-----------+-----------+-----+-----+----------+
+
+    + Detail: 
+        * Instance: 
+        +--------------------+-----------------+---------+---------+----------+----------+-----+-----+---------+
+        |                    |                 |  Latency (cycles) |  Latency (absolute) |  Interval | Pipeline|
+        |      Instance      |      Module     |   min   |   max   |    min   |    max   | min | max |   Type  |
+        +--------------------+-----------------+---------+---------+----------+----------+-----+-----+---------+
+        |open_dhcp_port_U0   |open_dhcp_port   |        2|        2|  6.400 ns|  6.400 ns|    2|    2|      yes|
+        |receive_message_U0  |receive_message  |        1|        1|  3.200 ns|  3.200 ns|    1|    1|      yes|
+        |dhcp_fsm_U0         |dhcp_fsm         |        1|        1|  3.200 ns|  3.200 ns|    1|    1|      yes|
+        |send_message_U0     |send_message     |        2|        2|  6.400 ns|  6.400 ns|    1|    1|      yes|
+        +--------------------+-----------------+---------+---------+----------+----------+-----+-----+---------+
+
+        * Loop: 
+        N/A
+
+
+
+================================================================
+== Utilization Estimates
+================================================================
+* Summary: 
++---------------------+---------+------+---------+---------+-----+
+|         Name        | BRAM_18K|  DSP |    FF   |   LUT   | URAM|
++---------------------+---------+------+---------+---------+-----+
+|DSP                  |        -|     -|        -|        -|    -|
+|Expression           |        -|     -|        -|        -|    -|
+|FIFO                 |        -|     -|       18|      162|    -|
+|Instance             |        -|     -|      635|     1164|    -|
+|Memory               |        -|     -|        -|        -|    -|
+|Multiplexer          |        -|     -|        -|        -|    -|
+|Register             |        -|     -|        -|        -|    -|
++---------------------+---------+------+---------+---------+-----+
+|Total                |        0|     0|      653|     1326|    0|
++---------------------+---------+------+---------+---------+-----+
+|Available SLR        |     1344|  3008|   869120|   434560|  320|
++---------------------+---------+------+---------+---------+-----+
+|Utilization SLR (%)  |        0|     0|       ~0|       ~0|    0|
++---------------------+---------+------+---------+---------+-----+
+|Available            |     4032|  9024|  2607360|  1303680|  960|
++---------------------+---------+------+---------+---------+-----+
+|Utilization (%)      |        0|     0|       ~0|       ~0|    0|
++---------------------+---------+------+---------+---------+-----+
+
++ Detail: 
+    * Instance: 
+    +--------------------+-----------------+---------+----+-----+-----+-----+
+    |      Instance      |      Module     | BRAM_18K| DSP|  FF | LUT | URAM|
+    +--------------------+-----------------+---------+----+-----+-----+-----+
+    |dhcp_fsm_U0         |dhcp_fsm         |        0|   0|  336|  487|    0|
+    |open_dhcp_port_U0   |open_dhcp_port   |        0|   0|   44|  159|    0|
+    |receive_message_U0  |receive_message  |        0|   0|  119|  232|    0|
+    |send_message_U0     |send_message     |        0|   0|  136|  286|    0|
+    +--------------------+-----------------+---------+----+-----+-----+-----+
+    |Total               |                 |        0|   0|  635| 1164|    0|
+    +--------------------+-----------------+---------+----+-----+-----+-----+
+
+    * DSP: 
+    N/A
+
+    * Memory: 
+    N/A
+
+    * FIFO: 
+    +------------------------+---------+---+----+-----+------+-----+---------+
+    |          Name          | BRAM_18K| FF| LUT| URAM| Depth| Bits| Size:D*B|
+    +------------------------+---------+---+----+-----+------+-----+---------+
+    |dhcp_replyMetaFifo_U    |        0|  5|   0|    -|     4|  128|      512|
+    |dhcp_requestMetaFifo_U  |        0|  5|   0|    -|     4|   96|      384|
+    |portOpen_U              |        0|  8|   0|    -|     2|    1|        2|
+    +------------------------+---------+---+----+-----+------+-----+---------+
+    |Total                   |        0| 18|   0|    0|    10|  225|      898|
+    +------------------------+---------+---+----+-----+------+-----+---------+
+
+    * Expression: 
+    N/A
+
+    * Multiplexer: 
+    N/A
+
+    * Register: 
+    N/A
+
+
+
+================================================================
+== Interface
+================================================================
+* Summary: 
++--------------------------------+-----+-----+--------------+-------------------------+--------------+
+|            RTL Ports           | Dir | Bits|   Protocol   |      Source Object      |    C Type    |
++--------------------------------+-----+-----+--------------+-------------------------+--------------+
+|m_axis_open_port_TDATA          |  out|   16|          axis|         m_axis_open_port|       pointer|
+|m_axis_open_port_TVALID         |  out|    1|          axis|         m_axis_open_port|       pointer|
+|m_axis_open_port_TREADY         |   in|    1|          axis|         m_axis_open_port|       pointer|
+|s_axis_open_port_status_TDATA   |   in|    8|          axis|  s_axis_open_port_status|       pointer|
+|s_axis_open_port_status_TVALID  |   in|    1|          axis|  s_axis_open_port_status|       pointer|
+|s_axis_open_port_status_TREADY  |  out|    1|          axis|  s_axis_open_port_status|       pointer|
+|s_axis_rx_metadata_TDATA        |   in|  128|          axis|       s_axis_rx_metadata|       pointer|
+|s_axis_rx_metadata_TVALID       |   in|    1|          axis|       s_axis_rx_metadata|       pointer|
+|s_axis_rx_metadata_TREADY       |  out|    1|          axis|       s_axis_rx_metadata|       pointer|
+|s_axis_rx_data_TDATA            |   in|  128|          axis|           s_axis_rx_data|       pointer|
+|s_axis_rx_data_TVALID           |   in|    1|          axis|           s_axis_rx_data|       pointer|
+|s_axis_rx_data_TREADY           |  out|    1|          axis|           s_axis_rx_data|       pointer|
+|m_axis_tx_metadata_TDATA        |  out|  128|          axis|       m_axis_tx_metadata|       pointer|
+|m_axis_tx_metadata_TVALID       |  out|    1|          axis|       m_axis_tx_metadata|       pointer|
+|m_axis_tx_metadata_TREADY       |   in|    1|          axis|       m_axis_tx_metadata|       pointer|
+|m_axis_tx_length_TDATA          |  out|   16|          axis|         m_axis_tx_length|       pointer|
+|m_axis_tx_length_TVALID         |  out|    1|          axis|         m_axis_tx_length|       pointer|
+|m_axis_tx_length_TREADY         |   in|    1|          axis|         m_axis_tx_length|       pointer|
+|m_axis_tx_data_TDATA            |  out|  128|          axis|           m_axis_tx_data|       pointer|
+|m_axis_tx_data_TVALID           |  out|    1|          axis|           m_axis_tx_data|       pointer|
+|m_axis_tx_data_TREADY           |   in|    1|          axis|           m_axis_tx_data|       pointer|
+|dhcpEnable                      |   in|    1|     ap_stable|               dhcpEnable|       pointer|
+|inputIpAddress                  |   in|   32|     ap_stable|           inputIpAddress|       pointer|
+|dhcpIpAddressOut                |  out|   32|        ap_vld|         dhcpIpAddressOut|       pointer|
+|dhcpIpAddressOut_ap_vld         |  out|    1|        ap_vld|         dhcpIpAddressOut|       pointer|
+|myMacAddress                    |   in|   48|     ap_stable|             myMacAddress|       pointer|
+|ap_clk                          |   in|    1|  ap_ctrl_none|              dhcp_client|  return value|
+|ap_rst_n                        |   in|    1|  ap_ctrl_none|              dhcp_client|  return value|
++--------------------------------+-----+-----+--------------+-------------------------+--------------+
+

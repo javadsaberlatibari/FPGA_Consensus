@@ -1,0 +1,162 @@
+
+
+================================================================
+== Vitis HLS Report for 'dropper'
+================================================================
+* Date:           Tue Jul 11 09:16:14 2023
+
+* Version:        2022.1 (Build 3526262 on Mon Apr 18 15:47:01 MDT 2022)
+* Project:        icmp_server_prj
+* Solution:       solution1 (Vivado IP Flow Target)
+* Product family: virtexuplus
+* Target device:  xcu280-fsvh2892-2L-e
+
+
+================================================================
+== Performance Estimates
+================================================================
++ Timing: 
+    * Summary: 
+    +--------+---------+----------+------------+
+    |  Clock |  Target | Estimated| Uncertainty|
+    +--------+---------+----------+------------+
+    |ap_clk  |  3.20 ns|  2.458 ns|     0.86 ns|
+    +--------+---------+----------+------------+
+
++ Latency: 
+    * Summary: 
+    +---------+---------+----------+----------+-----+-----+---------+
+    |  Latency (cycles) |  Latency (absolute) |  Interval | Pipeline|
+    |   min   |   max   |    min   |    max   | min | max |   Type  |
+    +---------+---------+----------+----------+-----+-----+---------+
+    |        0|        0|      0 ns|      0 ns|    0|    0|       no|
+    +---------+---------+----------+----------+-----+-----+---------+
+
+    + Detail: 
+        * Instance: 
+        N/A
+
+        * Loop: 
+        N/A
+
+
+
+================================================================
+== Utilization Estimates
+================================================================
+* Summary: 
++---------------------+---------+------+---------+---------+-----+
+|         Name        | BRAM_18K|  DSP |    FF   |   LUT   | URAM|
++---------------------+---------+------+---------+---------+-----+
+|DSP                  |        -|     -|        -|        -|    -|
+|Expression           |        -|     -|        0|       20|    -|
+|FIFO                 |        -|     -|        -|        -|    -|
+|Instance             |        -|     -|        -|        -|    -|
+|Memory               |        -|     -|        -|        -|    -|
+|Multiplexer          |        -|     -|        -|      112|    -|
+|Register             |        -|     -|        4|        -|    -|
++---------------------+---------+------+---------+---------+-----+
+|Total                |        0|     0|        4|      132|    0|
++---------------------+---------+------+---------+---------+-----+
+|Available SLR        |     1344|  3008|   869120|   434560|  320|
++---------------------+---------+------+---------+---------+-----+
+|Utilization SLR (%)  |        0|     0|       ~0|       ~0|    0|
++---------------------+---------+------+---------+---------+-----+
+|Available            |     4032|  9024|  2607360|  1303680|  960|
++---------------------+---------+------+---------+---------+-----+
+|Utilization (%)      |        0|     0|       ~0|       ~0|    0|
++---------------------+---------+------+---------+---------+-----+
+
++ Detail: 
+    * Instance: 
+    N/A
+
+    * DSP: 
+    N/A
+
+    * Memory: 
+    N/A
+
+    * FIFO: 
+    N/A
+
+    * Expression: 
+    +--------------------------------+----------+----+---+----+------------+------------+
+    |          Variable Name         | Operation| DSP| FF| LUT| Bitwidth P0| Bitwidth P1|
+    +--------------------------------+----------+----+---+----+------------+------------+
+    |ap_condition_123                |       and|   0|  0|   2|           1|           1|
+    |ap_condition_57                 |       and|   0|  0|   2|           1|           1|
+    |ap_predicate_op19_read_state1   |       and|   0|  0|   2|           1|           1|
+    |ap_predicate_op22_write_state1  |       and|   0|  0|   2|           1|           1|
+    |ap_predicate_op27_read_state1   |       and|   0|  0|   2|           1|           1|
+    |ap_predicate_op31_write_state1  |       and|   0|  0|   2|           1|           1|
+    |tmp_i_44_nbreadreq_fu_64_p3     |       and|   0|  0|   2|           1|           0|
+    |tmp_i_nbreadreq_fu_42_p3        |       and|   0|  0|   2|           1|           0|
+    |ap_block_state1                 |        or|   0|  0|   2|           1|           1|
+    |ap_condition_119                |        or|   0|  0|   2|           1|           1|
+    +--------------------------------+----------+----+---+----+------------+------------+
+    |Total                           |          |   0|  0|  20|          10|           8|
+    +--------------------------------+----------+----+---+----+------------+------------+
+
+    * Multiplexer: 
+    +---------------------------------------------------------------------+----+-----------+-----+-----------+
+    |                                 Name                                | LUT| Input Size| Bits| Total Bits|
+    +---------------------------------------------------------------------+----+-----------+-----+-----------+
+    |ap_done                                                              |   9|          2|    1|          2|
+    |ap_phi_mux_d_drop_flag_0_i_phi_fu_81_p4                              |  14|          3|    1|          3|
+    |ap_phi_mux_d_drop_flag_1_i_phi_fu_126_p8                             |  20|          4|    1|          4|
+    |ap_phi_mux_d_drop_new_1_i_phi_fu_143_p8                              |  14|          3|    1|          3|
+    |ap_phi_mux_d_isFirstWord_flag_0_i_phi_fu_92_p8                       |  14|          3|    1|          3|
+    |ap_phi_mux_d_isFirstWord_new_0_i_phi_fu_109_p8                       |  14|          3|    1|          3|
+    |icmp_server_stream_stream_stream_stream_axiWord_0_dataStreams_blk_n  |   9|          2|    1|          2|
+    |packageBuffer1_blk_n                                                 |   9|          2|    1|          2|
+    |validFifo_blk_n                                                      |   9|          2|    1|          2|
+    +---------------------------------------------------------------------+----+-----------+-----+-----------+
+    |Total                                                                | 112|         24|    9|         24|
+    +---------------------------------------------------------------------+----+-----------+-----+-----------+
+
+    * Register: 
+    +---------------+---+----+-----+-----------+
+    |      Name     | FF| LUT| Bits| Const Bits|
+    +---------------+---+----+-----+-----------+
+    |ap_CS_fsm      |  1|   0|    1|          0|
+    |ap_done_reg    |  1|   0|    1|          0|
+    |d_drop         |  1|   0|    1|          0|
+    |d_isFirstWord  |  1|   0|    1|          0|
+    +---------------+---+----+-----+-----------+
+    |Total          |  4|   0|    4|          0|
+    +---------------+---+----+-----+-----------+
+
+
+
+================================================================
+== Interface
+================================================================
+* Summary: 
++------------------------------------------------------------------------------+-----+-----+------------+---------------------------------------------------------------+--------------+
+|                                   RTL Ports                                  | Dir | Bits|  Protocol  |                         Source Object                         |    C Type    |
++------------------------------------------------------------------------------+-----+-----+------------+---------------------------------------------------------------+--------------+
+|ap_clk                                                                        |   in|    1|  ap_ctrl_hs|                                                        dropper|  return value|
+|ap_rst                                                                        |   in|    1|  ap_ctrl_hs|                                                        dropper|  return value|
+|ap_start                                                                      |   in|    1|  ap_ctrl_hs|                                                        dropper|  return value|
+|ap_done                                                                       |  out|    1|  ap_ctrl_hs|                                                        dropper|  return value|
+|ap_continue                                                                   |   in|    1|  ap_ctrl_hs|                                                        dropper|  return value|
+|ap_idle                                                                       |  out|    1|  ap_ctrl_hs|                                                        dropper|  return value|
+|ap_ready                                                                      |  out|    1|  ap_ctrl_hs|                                                        dropper|  return value|
+|packageBuffer1_dout                                                           |   in|  128|     ap_fifo|                                                 packageBuffer1|       pointer|
+|packageBuffer1_num_data_valid                                                 |   in|    7|     ap_fifo|                                                 packageBuffer1|       pointer|
+|packageBuffer1_fifo_cap                                                       |   in|    7|     ap_fifo|                                                 packageBuffer1|       pointer|
+|packageBuffer1_empty_n                                                        |   in|    1|     ap_fifo|                                                 packageBuffer1|       pointer|
+|packageBuffer1_read                                                           |  out|    1|     ap_fifo|                                                 packageBuffer1|       pointer|
+|validFifo_dout                                                                |   in|    1|     ap_fifo|                                                      validFifo|       pointer|
+|validFifo_num_data_valid                                                      |   in|    4|     ap_fifo|                                                      validFifo|       pointer|
+|validFifo_fifo_cap                                                            |   in|    4|     ap_fifo|                                                      validFifo|       pointer|
+|validFifo_empty_n                                                             |   in|    1|     ap_fifo|                                                      validFifo|       pointer|
+|validFifo_read                                                                |  out|    1|     ap_fifo|                                                      validFifo|       pointer|
+|icmp_server_stream_stream_stream_stream_axiWord_0_dataStreams_din             |  out|  128|     ap_fifo|  icmp_server_stream_stream_stream_stream_axiWord_0_dataStreams|       pointer|
+|icmp_server_stream_stream_stream_stream_axiWord_0_dataStreams_num_data_valid  |   in|    5|     ap_fifo|  icmp_server_stream_stream_stream_stream_axiWord_0_dataStreams|       pointer|
+|icmp_server_stream_stream_stream_stream_axiWord_0_dataStreams_fifo_cap        |   in|    5|     ap_fifo|  icmp_server_stream_stream_stream_stream_axiWord_0_dataStreams|       pointer|
+|icmp_server_stream_stream_stream_stream_axiWord_0_dataStreams_full_n          |   in|    1|     ap_fifo|  icmp_server_stream_stream_stream_stream_axiWord_0_dataStreams|       pointer|
+|icmp_server_stream_stream_stream_stream_axiWord_0_dataStreams_write           |  out|    1|     ap_fifo|  icmp_server_stream_stream_stream_stream_axiWord_0_dataStreams|       pointer|
++------------------------------------------------------------------------------+-----+-----+------------+---------------------------------------------------------------+--------------+
+

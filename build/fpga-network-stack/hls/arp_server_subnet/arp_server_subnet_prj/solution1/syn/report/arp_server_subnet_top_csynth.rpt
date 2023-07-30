@@ -1,0 +1,151 @@
+
+
+================================================================
+== Vitis HLS Report for 'arp_server_subnet_top'
+================================================================
+* Date:           Tue Jul 11 09:15:10 2023
+
+* Version:        2022.1 (Build 3526262 on Mon Apr 18 15:47:01 MDT 2022)
+* Project:        arp_server_subnet_prj
+* Solution:       solution1 (Vivado IP Flow Target)
+* Product family: virtexuplus
+* Target device:  xcu280-fsvh2892-2L-e
+
+
+================================================================
+== Performance Estimates
+================================================================
++ Timing: 
+    * Summary: 
+    +--------+---------+----------+------------+
+    |  Clock |  Target | Estimated| Uncertainty|
+    +--------+---------+----------+------------+
+    |ap_clk  |  3.20 ns|  2.188 ns|     0.86 ns|
+    +--------+---------+----------+------------+
+
++ Latency: 
+    * Summary: 
+    +---------+---------+-----------+-----------+-----+-----+----------+
+    |  Latency (cycles) |   Latency (absolute)  |  Interval | Pipeline |
+    |   min   |   max   |    min    |    max    | min | max |   Type   |
+    +---------+---------+-----------+-----------+-----+-----+----------+
+    |        5|        5|  16.000 ns|  16.000 ns|    1|    1|  dataflow|
+    +---------+---------+-----------+-----------+-----+-----+----------+
+
+    + Detail: 
+        * Instance: 
+        +-------------------------+------------------------+---------+---------+----------+----------+-----+-----+---------+
+        |                         |                        |  Latency (cycles) |  Latency (absolute) |  Interval | Pipeline|
+        |         Instance        |         Module         |   min   |   max   |    min   |    max   | min | max |   Type  |
+        +-------------------------+------------------------+---------+---------+----------+----------+-----+-----+---------+
+        |process_arp_pkg_512_U0   |process_arp_pkg_512_s   |        2|        2|  6.400 ns|  6.400 ns|    1|    1|      yes|
+        |generate_arp_pkg_512_U0  |generate_arp_pkg_512_s  |        2|        2|  6.400 ns|  6.400 ns|    1|    1|      yes|
+        |arp_table_U0             |arp_table               |        2|        2|  6.400 ns|  6.400 ns|    1|    1|      yes|
+        +-------------------------+------------------------+---------+---------+----------+----------+-----+-----+---------+
+
+        * Loop: 
+        N/A
+
+
+
+================================================================
+== Utilization Estimates
+================================================================
+* Summary: 
++---------------------+---------+------+---------+---------+-----+
+|         Name        | BRAM_18K|  DSP |    FF   |   LUT   | URAM|
++---------------------+---------+------+---------+---------+-----+
+|DSP                  |        -|     -|        -|        -|    -|
+|Expression           |        -|     -|        -|        -|    -|
+|FIFO                 |        -|     -|       15|      306|    -|
+|Instance             |        3|     -|     1741|     3097|    -|
+|Memory               |        -|     -|        -|        -|    -|
+|Multiplexer          |        -|     -|        -|        -|    -|
+|Register             |        -|     -|        -|        -|    -|
++---------------------+---------+------+---------+---------+-----+
+|Total                |        3|     0|     1756|     3403|    0|
++---------------------+---------+------+---------+---------+-----+
+|Available SLR        |     1344|  3008|   869120|   434560|  320|
++---------------------+---------+------+---------+---------+-----+
+|Utilization SLR (%)  |       ~0|     0|       ~0|       ~0|    0|
++---------------------+---------+------+---------+---------+-----+
+|Available            |     4032|  9024|  2607360|  1303680|  960|
++---------------------+---------+------+---------+---------+-----+
+|Utilization (%)      |       ~0|     0|       ~0|       ~0|    0|
++---------------------+---------+------+---------+---------+-----+
+
++ Detail: 
+    * Instance: 
+    +-------------------------+------------------------+---------+----+-----+------+-----+
+    |         Instance        |         Module         | BRAM_18K| DSP|  FF |  LUT | URAM|
+    +-------------------------+------------------------+---------+----+-----+------+-----+
+    |arp_table_U0             |arp_table               |        3|   0|  140|   161|    0|
+    |generate_arp_pkg_512_U0  |generate_arp_pkg_512_s  |        0|   0|  695|   133|    0|
+    |process_arp_pkg_512_U0   |process_arp_pkg_512_s   |        0|   0|  906|  2803|    0|
+    +-------------------------+------------------------+---------+----+-----+------+-----+
+    |Total                    |                        |        3|   0| 1741|  3097|    0|
+    +-------------------------+------------------------+---------+----+-----+------+-----+
+
+    * DSP: 
+    N/A
+
+    * Memory: 
+    N/A
+
+    * FIFO: 
+    +----------------------+---------+---+----+-----+------+-----+---------+
+    |         Name         | BRAM_18K| FF| LUT| URAM| Depth| Bits| Size:D*B|
+    +----------------------+---------+---+----+-----+------+-----+---------+
+    |arpReplyMetaFifo_U    |        0|  5|   0|    -|     4|  192|      768|
+    |arpRequestMetaFifo_U  |        0|  5|   0|    -|     4|   32|      128|
+    |arpTableInsertFifo_U  |        0|  5|   0|    -|     4|  192|      768|
+    +----------------------+---------+---+----+-----+------+-----+---------+
+    |Total                 |        0| 15|   0|    0|    12|  416|     1664|
+    +----------------------+---------+---+----+-----+------+-----+---------+
+
+    * Expression: 
+    N/A
+
+    * Multiplexer: 
+    N/A
+
+    * Register: 
+    N/A
+
+
+
+================================================================
+== Interface
+================================================================
+* Summary: 
++---------------------------------------+-----+------+--------------+--------------------------------+--------------+
+|               RTL Ports               | Dir | Bits |   Protocol   |          Source Object         |    C Type    |
++---------------------------------------+-----+------+--------------+--------------------------------+--------------+
+|s_axis_TDATA                           |   in|  1024|          axis|                          s_axis|       pointer|
+|s_axis_TVALID                          |   in|     1|          axis|                          s_axis|       pointer|
+|s_axis_TREADY                          |  out|     1|          axis|                          s_axis|       pointer|
+|s_axis_arp_lookup_request_TDATA        |   in|    32|          axis|       s_axis_arp_lookup_request|       pointer|
+|s_axis_arp_lookup_request_TVALID       |   in|     1|          axis|       s_axis_arp_lookup_request|       pointer|
+|s_axis_arp_lookup_request_TREADY       |  out|     1|          axis|       s_axis_arp_lookup_request|       pointer|
+|s_axis_host_arp_lookup_request_TDATA   |   in|    32|          axis|  s_axis_host_arp_lookup_request|       pointer|
+|s_axis_host_arp_lookup_request_TVALID  |   in|     1|          axis|  s_axis_host_arp_lookup_request|       pointer|
+|s_axis_host_arp_lookup_request_TREADY  |  out|     1|          axis|  s_axis_host_arp_lookup_request|       pointer|
+|m_axis_TDATA                           |  out|  1024|          axis|                          m_axis|       pointer|
+|m_axis_TVALID                          |  out|     1|          axis|                          m_axis|       pointer|
+|m_axis_TREADY                          |   in|     1|          axis|                          m_axis|       pointer|
+|m_axis_arp_lookup_reply_TDATA          |  out|   128|          axis|         m_axis_arp_lookup_reply|       pointer|
+|m_axis_arp_lookup_reply_TVALID         |  out|     1|          axis|         m_axis_arp_lookup_reply|       pointer|
+|m_axis_arp_lookup_reply_TREADY         |   in|     1|          axis|         m_axis_arp_lookup_reply|       pointer|
+|m_axis_host_arp_lookup_reply_TDATA     |  out|   128|          axis|    m_axis_host_arp_lookup_reply|       pointer|
+|m_axis_host_arp_lookup_reply_TVALID    |  out|     1|          axis|    m_axis_host_arp_lookup_reply|       pointer|
+|m_axis_host_arp_lookup_reply_TREADY    |   in|     1|          axis|    m_axis_host_arp_lookup_reply|       pointer|
+|myMacAddress                           |   in|    48|     ap_stable|                    myMacAddress|        scalar|
+|myIpAddress                            |   in|    32|     ap_stable|                     myIpAddress|        scalar|
+|regRequestCount                        |  out|    16|        ap_vld|                 regRequestCount|       pointer|
+|regRequestCount_ap_vld                 |  out|     1|        ap_vld|                 regRequestCount|       pointer|
+|regReplyCount                          |  out|    16|        ap_vld|                   regReplyCount|       pointer|
+|regReplyCount_ap_vld                   |  out|     1|        ap_vld|                   regReplyCount|       pointer|
+|ap_clk                                 |   in|     1|  ap_ctrl_none|           arp_server_subnet_top|  return value|
+|ap_rst_n                               |   in|     1|  ap_ctrl_none|           arp_server_subnet_top|  return value|
++---------------------------------------+-----+------+--------------+--------------------------------+--------------+
+

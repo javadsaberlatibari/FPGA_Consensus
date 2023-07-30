@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xd:acceleratorMap xmlns:xd="http://www.xilinx.com/xidane" xd:functionName="ipv4_top" xd:componentRef="ipv4" xd:initiationInterval="1" xd:clockPeriod="3.2" xd:sequential="true" xd:hostMachine="64" xd:reset="control">
+  <xd:controlReg xd:name="control" xd:interfaceRef="ap_ctrl" xd:busTypeRef="acc_handshake" xd:type="acc_handshake"/>
+  <xd:arg xd:name="s_axis_rx_data" xd:originalName="s_axis_rx_data" xd:direction="in" xd:interfaceRef="s_axis_rx_data" xd:busTypeRef="axis" xd:dataWidth="1024"/>
+  <xd:arg xd:name="m_axis_rx_meta" xd:originalName="m_axis_rx_meta" xd:direction="out" xd:interfaceRef="m_axis_rx_meta" xd:busTypeRef="axis" xd:dataWidth="64"/>
+  <xd:arg xd:name="m_axis_rx_data" xd:originalName="m_axis_rx_data" xd:direction="out" xd:interfaceRef="m_axis_rx_data" xd:busTypeRef="axis" xd:dataWidth="1024"/>
+  <xd:arg xd:name="s_axis_tx_meta" xd:originalName="s_axis_tx_meta" xd:direction="in" xd:interfaceRef="s_axis_tx_meta" xd:busTypeRef="axis" xd:dataWidth="64"/>
+  <xd:arg xd:name="s_axis_tx_data" xd:originalName="s_axis_tx_data" xd:direction="in" xd:interfaceRef="s_axis_tx_data" xd:busTypeRef="axis" xd:dataWidth="1024"/>
+  <xd:arg xd:name="m_axis_tx_data" xd:originalName="m_axis_tx_data" xd:direction="out" xd:interfaceRef="m_axis_tx_data" xd:busTypeRef="axis" xd:dataWidth="1024"/>
+  <xd:arg xd:name="local_ipv4_address" xd:originalName="local_ipv4_address" xd:direction="in" xd:interfaceRef="local_ipv4_address" xd:busTypeRef="register" xd:dataWidth="32"/>
+  <xd:arg xd:name="protocol" xd:originalName="protocol" xd:direction="in" xd:interfaceRef="protocol" xd:busTypeRef="register" xd:dataWidth="8"/>
+  <xd:latencyEstimates xd:best-case="4" xd:worst-case="4" xd:average-case="4"/>
+  <xd:resourceEstimates xd:LUT="5814" xd:FF="14987" xd:BRAM="0" xd:DSP="0"/>
+</xd:acceleratorMap>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xd:acceleratorMap xmlns:xd="http://www.xilinx.com/xidane" xd:functionName="rocev2_top" xd:componentRef="rocev2" xd:initiationInterval="1" xd:clockPeriod="3.2" xd:sequential="true" xd:hostMachine="64" xd:reset="control">
+  <xd:arg xd:name="s_axis_rx_data" xd:originalName="s_axis_rx_data" xd:direction="in" xd:interfaceRef="s_axis_rx_data" xd:busTypeRef="axis" xd:dataWidth="1024"/>
+  <xd:arg xd:name="s_axis_tx_meta" xd:originalName="s_axis_tx_meta" xd:direction="in" xd:interfaceRef="s_axis_tx_meta" xd:busTypeRef="axis" xd:dataWidth="256"/>
+  <xd:arg xd:name="s_axis_tx_data" xd:originalName="s_axis_tx_data" xd:direction="in" xd:interfaceRef="s_axis_tx_data" xd:busTypeRef="axis" xd:dataWidth="1024"/>
+  <xd:arg xd:name="m_axis_tx_data" xd:originalName="m_axis_tx_data" xd:direction="out" xd:interfaceRef="m_axis_tx_data" xd:busTypeRef="axis" xd:dataWidth="1024"/>
+  <xd:arg xd:name="m_axis_mem_write_cmd" xd:originalName="m_axis_mem_write_cmd" xd:direction="out" xd:interfaceRef="m_axis_mem_write_cmd" xd:busTypeRef="axis" xd:dataWidth="192"/>
+  <xd:arg xd:name="m_axis_mem_read_cmd" xd:originalName="m_axis_mem_read_cmd" xd:direction="out" xd:interfaceRef="m_axis_mem_read_cmd" xd:busTypeRef="axis" xd:dataWidth="192"/>
+  <xd:arg xd:name="m_axis_mem_write_data" xd:originalName="m_axis_mem_write_data" xd:direction="out" xd:interfaceRef="m_axis_mem_write_data" xd:busTypeRef="axis" xd:dataWidth="1024"/>
+  <xd:arg xd:name="s_axis_mem_read_data" xd:originalName="s_axis_mem_read_data" xd:direction="in" xd:interfaceRef="s_axis_mem_read_data" xd:busTypeRef="axis" xd:dataWidth="1024"/>
+  <xd:arg xd:name="s_axis_qp_interface" xd:originalName="s_axis_qp_interface" xd:direction="in" xd:interfaceRef="s_axis_qp_interface" xd:busTypeRef="axis" xd:dataWidth="256"/>
+  <xd:arg xd:name="s_axis_qp_conn_interface" xd:originalName="s_axis_qp_conn_interface" xd:direction="in" xd:interfaceRef="s_axis_qp_conn_interface" xd:busTypeRef="axis" xd:dataWidth="384"/>
+  <xd:arg xd:name="local_ip_address" xd:originalName="local_ip_address" xd:direction="in" xd:interfaceRef="local_ip_address" xd:busTypeRef="register" xd:dataWidth="128"/>
+  <xd:arg xd:name="*(regCrcDropPkgCount)" xd:originalName="regCrcDropPkgCount" xd:direction="out" xd:interfaceRef="regCrcDropPkgCount" xd:busTypeRef="register" xd:handshakeRef="ap_vld" xd:dataWidth="32"/>
+  <xd:arg xd:name="*(regInvalidPsnDropCount)" xd:originalName="regInvalidPsnDropCount" xd:direction="out" xd:interfaceRef="regInvalidPsnDropCount" xd:busTypeRef="register" xd:handshakeRef="ap_vld" xd:dataWidth="32"/>
+  <xd:latencyEstimates xd:best-case="43" xd:worst-case="43" xd:average-case="43"/>
+  <xd:resourceEstimates xd:LUT="66989" xd:FF="141361" xd:BRAM="0" xd:DSP="6"/>
+</xd:acceleratorMap>

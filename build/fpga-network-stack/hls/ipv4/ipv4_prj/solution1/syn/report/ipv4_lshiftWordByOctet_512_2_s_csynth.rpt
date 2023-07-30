@@ -1,0 +1,168 @@
+
+
+================================================================
+== Vitis HLS Report for 'ipv4_lshiftWordByOctet_512_2_s'
+================================================================
+* Date:           Tue Jul 11 09:19:32 2023
+
+* Version:        2022.1 (Build 3526262 on Mon Apr 18 15:47:01 MDT 2022)
+* Project:        ipv4_prj
+* Solution:       solution1 (Vivado IP Flow Target)
+* Product family: virtexuplus
+* Target device:  xcu280-fsvh2892-2L-e
+
+
+================================================================
+== Performance Estimates
+================================================================
++ Timing: 
+    * Summary: 
+    +--------+---------+----------+------------+
+    |  Clock |  Target | Estimated| Uncertainty|
+    +--------+---------+----------+------------+
+    |ap_clk  |  3.20 ns|  1.746 ns|     0.86 ns|
+    +--------+---------+----------+------------+
+
++ Latency: 
+    * Summary: 
+    +---------+---------+----------+----------+-----+-----+---------+
+    |  Latency (cycles) |  Latency (absolute) |  Interval | Pipeline|
+    |   min   |   max   |    min   |    max   | min | max |   Type  |
+    +---------+---------+----------+----------+-----+-----+---------+
+    |        1|        1|  3.200 ns|  3.200 ns|    1|    1|      yes|
+    +---------+---------+----------+----------+-----+-----+---------+
+
+    + Detail: 
+        * Instance: 
+        N/A
+
+        * Loop: 
+        N/A
+
+
+
+================================================================
+== Utilization Estimates
+================================================================
+* Summary: 
++---------------------+---------+------+---------+---------+-----+
+|         Name        | BRAM_18K|  DSP |    FF   |   LUT   | URAM|
++---------------------+---------+------+---------+---------+-----+
+|DSP                  |        -|     -|        -|        -|    -|
+|Expression           |        -|     -|        0|      529|    -|
+|FIFO                 |        -|     -|        -|        -|    -|
+|Instance             |        -|     -|        -|        -|    -|
+|Memory               |        -|     -|        -|        -|    -|
+|Multiplexer          |        -|     -|        -|       64|    -|
+|Register             |        -|     -|     1161|        -|    -|
++---------------------+---------+------+---------+---------+-----+
+|Total                |        0|     0|     1161|      593|    0|
++---------------------+---------+------+---------+---------+-----+
+|Available SLR        |     1344|  3008|   869120|   434560|  320|
++---------------------+---------+------+---------+---------+-----+
+|Utilization SLR (%)  |        0|     0|       ~0|       ~0|    0|
++---------------------+---------+------+---------+---------+-----+
+|Available            |     4032|  9024|  2607360|  1303680|  960|
++---------------------+---------+------+---------+---------+-----+
+|Utilization (%)      |        0|     0|       ~0|       ~0|    0|
++---------------------+---------+------+---------+---------+-----+
+
++ Detail: 
+    * Instance: 
+    N/A
+
+    * DSP: 
+    N/A
+
+    * Memory: 
+    N/A
+
+    * FIFO: 
+    N/A
+
+    * Expression: 
+    +----------------------------------+----------+----+---+-----+------------+------------+
+    |           Variable Name          | Operation| DSP| FF| LUT | Bitwidth P0| Bitwidth P1|
+    +----------------------------------+----------+----+---+-----+------------+------------+
+    |ap_condition_107                  |       and|   0|  0|    2|           1|           1|
+    |ap_condition_128                  |       and|   0|  0|    2|           1|           1|
+    |ap_condition_132                  |       and|   0|  0|    2|           1|           1|
+    |ap_condition_153                  |       and|   0|  0|    2|           1|           1|
+    |ap_predicate_op15_read_state1     |       and|   0|  0|    2|           1|           1|
+    |ap_predicate_op44_write_state2    |       and|   0|  0|    2|           1|           1|
+    |tmp_1_i_nbreadreq_fu_88_p3        |       and|   0|  0|    2|           1|           0|
+    |sendWord_last_V_fu_208_p2         |      icmp|   0|  0|   14|          20|           1|
+    |ap_block_pp0_stage0_01001         |        or|   0|  0|    2|           1|           1|
+    |ap_block_state1_pp0_stage0_iter0  |        or|   0|  0|    2|           1|           1|
+    |ap_block_state2_pp0_stage0_iter1  |        or|   0|  0|    2|           1|           1|
+    |select_ln1210_fu_284_p3           |    select|   0|  0|   63|           1|          64|
+    |sendWord_data_V_2_fu_276_p3       |    select|   0|  0|  428|           1|         512|
+    |ap_enable_pp0                     |       xor|   0|  0|    2|           1|           2|
+    |xor_ln947_fu_226_p2               |       xor|   0|  0|    2|           1|           2|
+    +----------------------------------+----------+----+---+-----+------------+------------+
+    |Total                             |          |   0|  0|  529|          34|         590|
+    +----------------------------------+----------+----+---+-----+------------+------------+
+
+    * Multiplexer: 
+    +---------------------------------------------------+----+-----------+------+-----------+
+    |                        Name                       | LUT| Input Size| Bits | Total Bits|
+    +---------------------------------------------------+----+-----------+------+-----------+
+    |ap_done                                            |   9|          2|     1|          2|
+    |ap_phi_reg_pp0_iter1_ls_firstWord_new_0_i_reg_109  |  14|          3|     1|          3|
+    |ls_writeRemainder                                  |   9|          2|     1|          2|
+    |s_axis_tx_data_TDATA_blk_n                         |   9|          2|     1|          2|
+    |tx_shift2ipv4Fifo_blk_n                            |   9|          2|     1|          2|
+    |tx_shift2ipv4Fifo_din                              |  14|          3|  1024|       3072|
+    +---------------------------------------------------+----+-----------+------+-----------+
+    |Total                                              |  64|         14|  1029|       3083|
+    +---------------------------------------------------+----+-----------+------+-----------+
+
+    * Register: 
+    +---------------------------------------------------+-----+----+-----+-----------+
+    |                        Name                       |  FF | LUT| Bits| Const Bits|
+    +---------------------------------------------------+-----+----+-----+-----------+
+    |ap_CS_fsm                                          |    1|   0|    1|          0|
+    |ap_done_reg                                        |    1|   0|    1|          0|
+    |ap_enable_reg_pp0_iter1                            |    1|   0|    1|          0|
+    |ap_phi_reg_pp0_iter1_ls_firstWord_new_0_i_reg_109  |    1|   0|    1|          0|
+    |ls_firstWord                                       |    1|   0|    1|          0|
+    |ls_writeRemainder                                  |    1|   0|    1|          0|
+    |ls_writeRemainder_load_reg_331                     |    1|   0|    1|          0|
+    |prevWord_data_V                                    |  512|   0|  512|          0|
+    |prevWord_keep_V                                    |   64|   0|   64|          0|
+    |reg_140                                            |  160|   0|  160|          0|
+    |reg_144                                            |   20|   0|   20|          0|
+    |sendWord_last_V_reg_354                            |    1|   0|    1|          0|
+    |tmp_1_i_reg_335                                    |    1|   0|    1|          0|
+    |tmp_3_i7_reg_348                                   |   44|   0|   44|          0|
+    |trunc_ln674_reg_342                                |  352|   0|  352|          0|
+    +---------------------------------------------------+-----+----+-----+-----------+
+    |Total                                              | 1161|   0| 1161|          0|
+    +---------------------------------------------------+-----+----+-----+-----------+
+
+
+
+================================================================
+== Interface
+================================================================
+* Summary: 
++----------------------------------+-----+------+------------+--------------------------------+--------------+
+|             RTL Ports            | Dir | Bits |  Protocol  |          Source Object         |    C Type    |
++----------------------------------+-----+------+------------+--------------------------------+--------------+
+|ap_clk                            |   in|     1|  ap_ctrl_hs|  ipv4_lshiftWordByOctet<512, 2>|  return value|
+|ap_rst                            |   in|     1|  ap_ctrl_hs|  ipv4_lshiftWordByOctet<512, 2>|  return value|
+|ap_start                          |   in|     1|  ap_ctrl_hs|  ipv4_lshiftWordByOctet<512, 2>|  return value|
+|ap_done                           |  out|     1|  ap_ctrl_hs|  ipv4_lshiftWordByOctet<512, 2>|  return value|
+|ap_continue                       |   in|     1|  ap_ctrl_hs|  ipv4_lshiftWordByOctet<512, 2>|  return value|
+|ap_idle                           |  out|     1|  ap_ctrl_hs|  ipv4_lshiftWordByOctet<512, 2>|  return value|
+|ap_ready                          |  out|     1|  ap_ctrl_hs|  ipv4_lshiftWordByOctet<512, 2>|  return value|
+|s_axis_tx_data_TVALID             |   in|     1|        axis|                  s_axis_tx_data|       pointer|
+|s_axis_tx_data_TDATA              |   in|  1024|        axis|                  s_axis_tx_data|       pointer|
+|s_axis_tx_data_TREADY             |  out|     1|        axis|                  s_axis_tx_data|       pointer|
+|tx_shift2ipv4Fifo_din             |  out|  1024|     ap_fifo|               tx_shift2ipv4Fifo|       pointer|
+|tx_shift2ipv4Fifo_num_data_valid  |   in|     4|     ap_fifo|               tx_shift2ipv4Fifo|       pointer|
+|tx_shift2ipv4Fifo_fifo_cap        |   in|     4|     ap_fifo|               tx_shift2ipv4Fifo|       pointer|
+|tx_shift2ipv4Fifo_full_n          |   in|     1|     ap_fifo|               tx_shift2ipv4Fifo|       pointer|
+|tx_shift2ipv4Fifo_write           |  out|     1|     ap_fifo|               tx_shift2ipv4Fifo|       pointer|
++----------------------------------+-----+------+------------+--------------------------------+--------------+
+

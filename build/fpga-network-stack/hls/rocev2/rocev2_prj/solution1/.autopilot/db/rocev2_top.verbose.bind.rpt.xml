@@ -1,0 +1,93 @@
+<profile>
+
+<section name = "Vitis HLS Report for 'rocev2_top'" level="0">
+<item name = "Date">Tue Jul 11 09:32:48 2023
+</item>
+<item name = "Version">2022.1 (Build 3526262 on Mon Apr 18 15:47:01 MDT 2022)</item>
+<item name = "Project">rocev2_prj</item>
+<item name = "Solution">solution1 (Vivado IP Flow Target)</item>
+<item name = "Product family">virtexuplus</item>
+<item name = "Target device">xcu280-fsvh2892-2L-e</item>
+</section>
+
+<section name = "Performance Estimates" level="0">
+<item name = "Timing">
+<section name = "" level="1">
+<item name = "Summary"><table name="" hasTotal="0">
+<keys size="4">Clock, Target, Estimated, Uncertainty</keys>
+<column name="ap_clk">3.20 ns, 3.114 ns, 0.86 ns</column>
+</table>
+</item>
+</section>
+</item>
+<item name = "Latency">
+<section name = "" level="1">
+<item name = "Summary"><table name="" hasTotal="0">
+<keys size="8">, min, max, min, max, min, max, Type</keys>
+<column name="">43, 43, 0.138 us, 0.138 us, 1, 1, dataflow</column>
+</table>
+</item>
+<item name = "Detail">
+<section name = "" level="1">
+<item name = "Instance"><table name="" hasTotal="0">
+<keys size="9">Instance, Module, min, max, min, max, min, max, Type</keys>
+<column name="grp_process_ipv4_512_s_fu_894">process_ipv4_512_s, 1, 1, 3.200 ns, 3.200 ns, 1, 1, yes</column>
+<column name="call_ln795_entry_proc_fu_914">entry_proc, 0, 0, 0 ns, 0 ns, 0, 0, no</column>
+<column name="grp_local_req_handler_fu_921">local_req_handler, 1, 1, 3.200 ns, 3.200 ns, 1, 1, yes</column>
+<column name="grp_tx_pkg_arbiter_512_s_fu_945">tx_pkg_arbiter_512_s, 1, 1, 3.200 ns, 3.200 ns, 1, 1, yes</column>
+<column name="grp_ipv4_drop_optional_ip_header_512_s_fu_969">ipv4_drop_optional_ip_header_512_s, 1, 1, 3.200 ns, 3.200 ns, 1, 1, yes</column>
+<column name="grp_process_udp_512_14_fu_987">process_udp_512_14, 3, 3, 9.600 ns, 9.600 ns, 1, 1, yes</column>
+<column name="grp_udp_rshiftWordByOctet_net_axis_512_512_2_s_fu_1005">udp_rshiftWordByOctet_net_axis_512_512_2_s, 1, 1, 3.200 ns, 3.200 ns, 1, 1, yes</column>
+<column name="grp_merge_rx_meta_fu_1021">merge_rx_meta, 1, 1, 3.200 ns, 3.200 ns, 1, 1, yes</column>
+<column name="grp_rx_process_ibh_512_s_fu_1031">rx_process_ibh_512_s, 2, 2, 6.400 ns, 6.400 ns, 1, 1, yes</column>
+<column name="grp_rshiftWordByOctet_net_axis_512_512_11_s_fu_1051">rshiftWordByOctet_net_axis_512_512_11_s, 1, 1, 3.200 ns, 3.200 ns, 1, 1, yes</column>
+<column name="grp_rx_process_exh_512_s_fu_1067">rx_process_exh_512_s, 5, 5, 16.000 ns, 16.000 ns, 1, 1, yes</column>
+<column name="grp_rx_ibh_fsm_fu_1099">rx_ibh_fsm, 2, 2, 6.400 ns, 6.400 ns, 1, 1, yes</column>
+<column name="grp_ipUdpMetaHandler_512_s_fu_1143">ipUdpMetaHandler_512_s, 1, 1, 3.200 ns, 3.200 ns, 1, 1, yes</column>
+<column name="grp_rx_exh_fsm_512_s_fu_1157">rx_exh_fsm_512_s, 2, 2, 6.400 ns, 6.400 ns, 1, 1, yes</column>
+<column name="grp_handle_read_requests_fu_1209">handle_read_requests, 1, 1, 3.200 ns, 3.200 ns, 1, 1, yes</column>
+<column name="grp_stream_merger_ackEvent_s_fu_1229">stream_merger_ackEvent_s, 2, 2, 6.400 ns, 6.400 ns, 1, 1, yes</column>
+<column name="grp_meta_merger_fu_1239">meta_merger, 5, 5, 16.000 ns, 16.000 ns, 1, 1, yes</column>
+<column name="grp_ipv4_lshiftWordByOctet_512_2_s_fu_1255">ipv4_lshiftWordByOctet_512_2_s, 1, 1, 3.200 ns, 3.200 ns, 1, 1, yes</column>
+<column name="grp_ipv4_generate_ipv4_512_13_fu_1271">ipv4_generate_ipv4_512_13, 1, 1, 3.200 ns, 3.200 ns, 1, 1, yes</column>
+<column name="grp_drop_ooo_ibh_512_s_fu_1288">drop_ooo_ibh_512_s, 1, 1, 3.200 ns, 3.200 ns, 1, 1, yes</column>
+<column name="grp_split_tx_meta_fu_1300">split_tx_meta, 1, 1, 3.200 ns, 3.200 ns, 1, 1, yes</column>
+<column name="grp_qp_interface_fu_1310">qp_interface, 1, 1, 3.200 ns, 3.200 ns, 1, 1, yes</column>
+<column name="grp_rx_exh_payload_512_s_fu_1334">rx_exh_payload_512_s, 1, 1, 3.200 ns, 3.200 ns, 1, 1, yes</column>
+<column name="grp_lshiftWordByOctet_512_12_s_fu_1354">lshiftWordByOctet_512_12_s, 1, 1, 3.200 ns, 3.200 ns, 1, 1, yes</column>
+<column name="grp_lshiftWordByOctet_512_13_s_fu_1370">lshiftWordByOctet_512_13_s, 1, 1, 3.200 ns, 3.200 ns, 1, 1, yes</column>
+<column name="grp_generate_exh_512_s_fu_1386">generate_exh_512_s, 1, 1, 3.200 ns, 3.200 ns, 1, 1, yes</column>
+<column name="grp_generate_ibh_512_s_fu_1430">generate_ibh_512_s, 1, 1, 3.200 ns, 3.200 ns, 1, 1, yes</column>
+<column name="grp_mq_pointer_table_500_s_fu_1454">mq_pointer_table_500_s, 4, 4, 12.800 ns, 12.800 ns, 1, 1, yes</column>
+<column name="grp_rshiftWordByOctet_routed_net_axis_512_1_512_12_s_fu_1478">rshiftWordByOctet_routed_net_axis_512_1_512_12_s, 1, 1, 3.200 ns, 3.200 ns, 1, 1, yes</column>
+<column name="grp_rshiftWordByOctet_net_axis_512_512_13_s_fu_1494">rshiftWordByOctet_net_axis_512_512_13_s, 1, 1, 3.200 ns, 3.200 ns, 1, 1, yes</column>
+<column name="grp_append_payload_512_s_fu_1510">append_payload_512_s, 1, 1, 3.200 ns, 3.200 ns, 1, 1, yes</column>
+<column name="grp_tx_ipUdpMetaMerger_fu_1536">tx_ipUdpMetaMerger, 1, 1, 3.200 ns, 3.200 ns, 1, 1, yes</column>
+<column name="grp_state_table_fu_1548">state_table, 5, 5, 16.000 ns, 16.000 ns, 1, 1, yes</column>
+<column name="grp_msn_table_fu_1576">msn_table, 5, 5, 16.000 ns, 16.000 ns, 1, 1, yes</column>
+<column name="grp_mq_meta_table_ap_uint_64_2048_s_fu_1598">mq_meta_table_ap_uint_64_2048_s, 3, 3, 9.600 ns, 9.600 ns, 1, 1, yes</column>
+<column name="grp_mem_cmd_merger_512_s_fu_1614">mem_cmd_merger_512_s, 3, 3, 9.600 ns, 9.600 ns, 1, 1, yes</column>
+<column name="grp_udp_lshiftWordByOctet_512_1_s_fu_1626">udp_lshiftWordByOctet_512_1_s, 1, 1, 3.200 ns, 3.200 ns, 1, 1, yes</column>
+<column name="grp_merge_rx_pkgs_512_s_fu_1642">merge_rx_pkgs_512_s, 2, 2, 6.400 ns, 6.400 ns, 1, 1, yes</column>
+<column name="grp_lshiftWordByOctet_512_11_s_fu_1658">lshiftWordByOctet_512_11_s, 1, 1, 3.200 ns, 3.200 ns, 1, 1, yes</column>
+<column name="grp_conn_table_fu_1674">conn_table, 3, 3, 9.600 ns, 9.600 ns, 1, 1, yes</column>
+<column name="grp_mq_freelist_handler_2048_s_fu_1690">mq_freelist_handler_2048_s, 1, 1, 3.200 ns, 3.200 ns, 1, 1, yes</column>
+<column name="grp_insert_icrc_512_s_fu_1700">insert_icrc_512_s, 2, 2, 6.400 ns, 6.400 ns, 1, 1, yes</column>
+<column name="grp_generate_udp_512_s_fu_1710">generate_udp_512_s, 1, 1, 3.200 ns, 3.200 ns, 1, 1, yes</column>
+<column name="grp_prepend_ibh_header_512_s_fu_1726">prepend_ibh_header_512_s, 1, 1, 3.200 ns, 3.200 ns, 1, 1, yes</column>
+<column name="grp_read_req_table_fu_1742">read_req_table, 1, 1, 3.200 ns, 3.200 ns, 1, 1, yes</column>
+<column name="grp_mq_process_requests_ap_uint_64_s_fu_1750">mq_process_requests_ap_uint_64_s, 1, 1, 3.200 ns, 3.200 ns, 1, 1, yes</column>
+<column name="grp_extract_icrc_512_s_fu_1792">extract_icrc_512_s, 1, 1, 3.200 ns, 3.200 ns, 1, 1, yes</column>
+<column name="call_ln0_Block_entry449_proc_fu_1808">Block_entry449_proc, 0, 0, 0 ns, 0 ns, 0, 0, no</column>
+</table>
+</item>
+<item name = "Loop"><table name="" hasTotal="0">
+<keys size="8">Loop Name, min, max, Latency, achieved, target, Count, Pipelined</keys>
+</table>
+</item>
+</section>
+</item>
+</section>
+</item>
+</section>
+</profile>

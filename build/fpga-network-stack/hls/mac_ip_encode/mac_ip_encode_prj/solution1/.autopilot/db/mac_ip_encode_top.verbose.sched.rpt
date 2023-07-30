@@ -1,0 +1,322 @@
+
+
+================================================================
+== Vitis HLS Report for 'mac_ip_encode_top'
+================================================================
+* Date:           Tue Jul 11 09:20:37 2023
+
+* Version:        2022.1 (Build 3526262 on Mon Apr 18 15:47:01 MDT 2022)
+* Project:        mac_ip_encode_prj
+* Solution:       solution1 (Vivado IP Flow Target)
+* Product family: virtexuplus
+* Target device:  xcu280-fsvh2892-2L-e
+
+
+================================================================
+== Performance Estimates
+================================================================
++ Timing: 
+    * Summary: 
+    +--------+---------+----------+------------+
+    |  Clock |  Target | Estimated| Uncertainty|
+    +--------+---------+----------+------------+
+    |ap_clk  |  3.20 ns|  2.389 ns|     0.86 ns|
+    +--------+---------+----------+------------+
+
++ Latency: 
+    * Summary: 
+    +---------+---------+-----------+-----------+-----+-----+----------+
+    |  Latency (cycles) |   Latency (absolute)  |  Interval | Pipeline |
+    |   min   |   max   |    min    |    max    | min | max |   Type   |
+    +---------+---------+-----------+-----------+-----+-----+----------+
+    |       18|       18|  57.600 ns|  57.600 ns|    2|    2|  dataflow|
+    +---------+---------+-----------+-----------+-----+-----+----------+
+
+    + Detail: 
+        * Instance: 
+        N/A
+
+        * Loop: 
+        N/A
+
+============================================================
++ Verbose Summary: Synthesis Manager
+============================================================
+InlineROM: 1
+ExposeGlobal: 0
+============================================================
++ Verbose Summary: CDFG Model
+============================================================
+IsTopModel: 1
+ResetActiveHigh: 1
+IsCombinational: 2
+IsDatapathOnly: 0
+HasWiredReturn: 1
+HasMFsm: 0
+HasVarLatency: 1
+IsPipeline: 0
+IsRtlPipelined: 0
+IsInstanceOverlapped: 0
+IsDontTouch: 0
+HasImplIP: 0
+IsGatedGlobalClock: 0
+
+
+============================================================
++ Verbose Summary: Schedule
+============================================================
+* Number of FSM states : 23
+* Pipeline : 0
+* Dataflow Pipeline: 1
+  DF-Pipeline-0: Size = 23, States = { 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 }
+
+* FSM state transitions: 
+1 --> 2 
+2 --> 3 
+3 --> 4 
+4 --> 5 
+5 --> 6 
+6 --> 7 
+7 --> 8 
+8 --> 9 
+9 --> 10 
+10 --> 11 
+11 --> 12 
+12 --> 13 
+13 --> 14 
+14 --> 15 
+15 --> 16 
+16 --> 17 
+17 --> 18 
+18 --> 19 
+19 --> 20 
+20 --> 21 
+21 --> 22 
+22 --> 23 
+23 --> 
+
+* FSM state operations: 
+
+State 1 <SV = 0> <Delay = 0.00>
+ST_1 : Operation 24 [2/2] (0.00ns)   --->   "%regDefaultGateway_read = read i32 @_ssdm_op_Read.ap_stable.i32, i32 %regDefaultGateway" [/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/mac_ip_encode/mac_ip_encode.cpp:423]   --->   Operation 24 'read' 'regDefaultGateway_read' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 25 [2/2] (0.00ns)   --->   "%regSubNetMask_read = read i32 @_ssdm_op_Read.ap_stable.i32, i32 %regSubNetMask" [/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/mac_ip_encode/mac_ip_encode.cpp:423]   --->   Operation 25 'read' 'regSubNetMask_read' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 26 [2/2] (0.00ns)   --->   "%myMacAddress_read = read i48 @_ssdm_op_Read.ap_stable.i48, i48 %myMacAddress" [/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/mac_ip_encode/mac_ip_encode.cpp:423]   --->   Operation 26 'read' 'myMacAddress_read' <Predicate = true> <Delay = 0.00>
+
+State 2 <SV = 1> <Delay = 0.85>
+ST_2 : Operation 27 [1/2] (0.00ns)   --->   "%regDefaultGateway_read = read i32 @_ssdm_op_Read.ap_stable.i32, i32 %regDefaultGateway" [/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/mac_ip_encode/mac_ip_encode.cpp:423]   --->   Operation 27 'read' 'regDefaultGateway_read' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 28 [1/2] (0.00ns)   --->   "%regSubNetMask_read = read i32 @_ssdm_op_Read.ap_stable.i32, i32 %regSubNetMask" [/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/mac_ip_encode/mac_ip_encode.cpp:423]   --->   Operation 28 'read' 'regSubNetMask_read' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 29 [1/2] (0.00ns)   --->   "%myMacAddress_read = read i48 @_ssdm_op_Read.ap_stable.i48, i48 %myMacAddress" [/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/mac_ip_encode/mac_ip_encode.cpp:423]   --->   Operation 29 'read' 'myMacAddress_read' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 30 [4/4] (0.85ns)   --->   "%call_ln404 = call void @extract_ip_address<512>, i1024 %s_axis_ip, i32 %m_axis_arp_lookup_request, i32 %regSubNetMask_read, i32 %regDefaultGateway_read, i1 %header_ready, i160 %header_header_V, i16 %header_idx, i1024 %dataStreamBuffer0, i1 %metaWritten" [/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/mac_ip_encode/mac_ip_encode.cpp:404]   --->   Operation 30 'call' 'call_ln404' <Predicate = true> <Delay = 0.85> <CoreType = "Generic">   --->   Core 0 '' <Latency = 0> <II = 1> <Delay = 1.00> <Generic> <Opcode : >
+
+State 3 <SV = 2> <Delay = 0.00>
+ST_3 : Operation 31 [3/4] (0.00ns)   --->   "%call_ln404 = call void @extract_ip_address<512>, i1024 %s_axis_ip, i32 %m_axis_arp_lookup_request, i32 %regSubNetMask_read, i32 %regDefaultGateway_read, i1 %header_ready, i160 %header_header_V, i16 %header_idx, i1024 %dataStreamBuffer0, i1 %metaWritten" [/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/mac_ip_encode/mac_ip_encode.cpp:404]   --->   Operation 31 'call' 'call_ln404' <Predicate = true> <Delay = 0.00> <CoreType = "Generic">   --->   Core 0 '' <Latency = 0> <II = 1> <Delay = 1.00> <Generic> <Opcode : >
+
+State 4 <SV = 3> <Delay = 0.00>
+ST_4 : Operation 32 [2/4] (0.00ns)   --->   "%call_ln404 = call void @extract_ip_address<512>, i1024 %s_axis_ip, i32 %m_axis_arp_lookup_request, i32 %regSubNetMask_read, i32 %regDefaultGateway_read, i1 %header_ready, i160 %header_header_V, i16 %header_idx, i1024 %dataStreamBuffer0, i1 %metaWritten" [/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/mac_ip_encode/mac_ip_encode.cpp:404]   --->   Operation 32 'call' 'call_ln404' <Predicate = true> <Delay = 0.00> <CoreType = "Generic">   --->   Core 0 '' <Latency = 0> <II = 1> <Delay = 1.00> <Generic> <Opcode : >
+
+State 5 <SV = 4> <Delay = 0.00>
+ST_5 : Operation 33 [1/4] (0.00ns)   --->   "%call_ln404 = call void @extract_ip_address<512>, i1024 %s_axis_ip, i32 %m_axis_arp_lookup_request, i32 %regSubNetMask_read, i32 %regDefaultGateway_read, i1 %header_ready, i160 %header_header_V, i16 %header_idx, i1024 %dataStreamBuffer0, i1 %metaWritten" [/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/mac_ip_encode/mac_ip_encode.cpp:404]   --->   Operation 33 'call' 'call_ln404' <Predicate = true> <Delay = 0.00> <CoreType = "Generic">   --->   Core 0 '' <Latency = 0> <II = 1> <Delay = 1.00> <Generic> <Opcode : >
+
+State 6 <SV = 5> <Delay = 0.00>
+ST_6 : Operation 34 [3/3] (0.00ns)   --->   "%call_ln406 = call void @mac_compute_ipv4_checksum, i1024 %dataStreamBuffer0, i1024 %dataStreamBuffer1, i1 %cics_firstWord, i17 %cics_ip_sums_sum_V_0, i17 %cics_ip_sums_sum_V_1, i17 %cics_ip_sums_sum_V_2, i17 %cics_ip_sums_sum_V_3, i17 %cics_ip_sums_sum_V_4, i17 %cics_ip_sums_sum_V_6, i17 %cics_ip_sums_sum_V_7, i17 %cics_ip_sums_sum_V_8, i17 %cics_ip_sums_sum_V_9, i17 %cics_ip_sums_sum_V_10, i17 %cics_ip_sums_sum_V_11, i17 %cics_ip_sums_sum_V_12, i17 %cics_ip_sums_sum_V_13, i17 %cics_ip_sums_sum_V_14, i17 %cics_ip_sums_sum_V_15, i17 %cics_ip_sums_sum_V_16, i17 %cics_ip_sums_sum_V_17, i17 %cics_ip_sums_sum_V_18, i17 %cics_ip_sums_sum_V_19, i17 %cics_ip_sums_sum_V_20, i17 %cics_ip_sums_sum_V_21, i17 %cics_ip_sums_sum_V_22, i17 %cics_ip_sums_sum_V_23, i17 %cics_ip_sums_sum_V_24, i17 %cics_ip_sums_sum_V_25, i17 %cics_ip_sums_sum_V_26, i17 %cics_ip_sums_sum_V_27, i17 %cics_ip_sums_sum_V_28, i17 %cics_ip_sums_sum_V_29, i1024 %subSumFifo" [/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/mac_ip_encode/mac_ip_encode.cpp:406]   --->   Operation 34 'call' 'call_ln406' <Predicate = true> <Delay = 0.00> <CoreType = "Generic">   --->   Core 0 '' <Latency = 0> <II = 1> <Delay = 1.00> <Generic> <Opcode : >
+
+State 7 <SV = 6> <Delay = 0.00>
+ST_7 : Operation 35 [2/3] (0.00ns)   --->   "%call_ln406 = call void @mac_compute_ipv4_checksum, i1024 %dataStreamBuffer0, i1024 %dataStreamBuffer1, i1 %cics_firstWord, i17 %cics_ip_sums_sum_V_0, i17 %cics_ip_sums_sum_V_1, i17 %cics_ip_sums_sum_V_2, i17 %cics_ip_sums_sum_V_3, i17 %cics_ip_sums_sum_V_4, i17 %cics_ip_sums_sum_V_6, i17 %cics_ip_sums_sum_V_7, i17 %cics_ip_sums_sum_V_8, i17 %cics_ip_sums_sum_V_9, i17 %cics_ip_sums_sum_V_10, i17 %cics_ip_sums_sum_V_11, i17 %cics_ip_sums_sum_V_12, i17 %cics_ip_sums_sum_V_13, i17 %cics_ip_sums_sum_V_14, i17 %cics_ip_sums_sum_V_15, i17 %cics_ip_sums_sum_V_16, i17 %cics_ip_sums_sum_V_17, i17 %cics_ip_sums_sum_V_18, i17 %cics_ip_sums_sum_V_19, i17 %cics_ip_sums_sum_V_20, i17 %cics_ip_sums_sum_V_21, i17 %cics_ip_sums_sum_V_22, i17 %cics_ip_sums_sum_V_23, i17 %cics_ip_sums_sum_V_24, i17 %cics_ip_sums_sum_V_25, i17 %cics_ip_sums_sum_V_26, i17 %cics_ip_sums_sum_V_27, i17 %cics_ip_sums_sum_V_28, i17 %cics_ip_sums_sum_V_29, i1024 %subSumFifo" [/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/mac_ip_encode/mac_ip_encode.cpp:406]   --->   Operation 35 'call' 'call_ln406' <Predicate = true> <Delay = 0.00> <CoreType = "Generic">   --->   Core 0 '' <Latency = 0> <II = 1> <Delay = 1.00> <Generic> <Opcode : >
+
+State 8 <SV = 7> <Delay = 0.00>
+ST_8 : Operation 36 [1/3] (0.00ns)   --->   "%call_ln406 = call void @mac_compute_ipv4_checksum, i1024 %dataStreamBuffer0, i1024 %dataStreamBuffer1, i1 %cics_firstWord, i17 %cics_ip_sums_sum_V_0, i17 %cics_ip_sums_sum_V_1, i17 %cics_ip_sums_sum_V_2, i17 %cics_ip_sums_sum_V_3, i17 %cics_ip_sums_sum_V_4, i17 %cics_ip_sums_sum_V_6, i17 %cics_ip_sums_sum_V_7, i17 %cics_ip_sums_sum_V_8, i17 %cics_ip_sums_sum_V_9, i17 %cics_ip_sums_sum_V_10, i17 %cics_ip_sums_sum_V_11, i17 %cics_ip_sums_sum_V_12, i17 %cics_ip_sums_sum_V_13, i17 %cics_ip_sums_sum_V_14, i17 %cics_ip_sums_sum_V_15, i17 %cics_ip_sums_sum_V_16, i17 %cics_ip_sums_sum_V_17, i17 %cics_ip_sums_sum_V_18, i17 %cics_ip_sums_sum_V_19, i17 %cics_ip_sums_sum_V_20, i17 %cics_ip_sums_sum_V_21, i17 %cics_ip_sums_sum_V_22, i17 %cics_ip_sums_sum_V_23, i17 %cics_ip_sums_sum_V_24, i17 %cics_ip_sums_sum_V_25, i17 %cics_ip_sums_sum_V_26, i17 %cics_ip_sums_sum_V_27, i17 %cics_ip_sums_sum_V_28, i17 %cics_ip_sums_sum_V_29, i1024 %subSumFifo" [/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/mac_ip_encode/mac_ip_encode.cpp:406]   --->   Operation 36 'call' 'call_ln406' <Predicate = true> <Delay = 0.00> <CoreType = "Generic">   --->   Core 0 '' <Latency = 0> <II = 1> <Delay = 1.00> <Generic> <Opcode : >
+
+State 9 <SV = 8> <Delay = 0.00>
+ST_9 : Operation 37 [5/5] (0.00ns)   --->   "%call_ln407 = call void @mac_finalize_ipv4_checksum<32>, i1024 %subSumFifo, i16 %checksumFifo" [/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/mac_ip_encode/mac_ip_encode.cpp:407]   --->   Operation 37 'call' 'call_ln407' <Predicate = true> <Delay = 0.00> <CoreType = "Generic">   --->   Core 0 '' <Latency = 0> <II = 1> <Delay = 1.00> <Generic> <Opcode : >
+
+State 10 <SV = 9> <Delay = 0.00>
+ST_10 : Operation 38 [4/5] (0.00ns)   --->   "%call_ln407 = call void @mac_finalize_ipv4_checksum<32>, i1024 %subSumFifo, i16 %checksumFifo" [/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/mac_ip_encode/mac_ip_encode.cpp:407]   --->   Operation 38 'call' 'call_ln407' <Predicate = true> <Delay = 0.00> <CoreType = "Generic">   --->   Core 0 '' <Latency = 0> <II = 1> <Delay = 1.00> <Generic> <Opcode : >
+
+State 11 <SV = 10> <Delay = 0.00>
+ST_11 : Operation 39 [3/5] (0.00ns)   --->   "%call_ln407 = call void @mac_finalize_ipv4_checksum<32>, i1024 %subSumFifo, i16 %checksumFifo" [/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/mac_ip_encode/mac_ip_encode.cpp:407]   --->   Operation 39 'call' 'call_ln407' <Predicate = true> <Delay = 0.00> <CoreType = "Generic">   --->   Core 0 '' <Latency = 0> <II = 1> <Delay = 1.00> <Generic> <Opcode : >
+
+State 12 <SV = 11> <Delay = 0.00>
+ST_12 : Operation 40 [2/5] (0.00ns)   --->   "%call_ln407 = call void @mac_finalize_ipv4_checksum<32>, i1024 %subSumFifo, i16 %checksumFifo" [/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/mac_ip_encode/mac_ip_encode.cpp:407]   --->   Operation 40 'call' 'call_ln407' <Predicate = true> <Delay = 0.00> <CoreType = "Generic">   --->   Core 0 '' <Latency = 0> <II = 1> <Delay = 1.00> <Generic> <Opcode : >
+
+State 13 <SV = 12> <Delay = 0.00>
+ST_13 : Operation 41 [1/5] (0.00ns)   --->   "%call_ln407 = call void @mac_finalize_ipv4_checksum<32>, i1024 %subSumFifo, i16 %checksumFifo" [/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/mac_ip_encode/mac_ip_encode.cpp:407]   --->   Operation 41 'call' 'call_ln407' <Predicate = true> <Delay = 0.00> <CoreType = "Generic">   --->   Core 0 '' <Latency = 0> <II = 1> <Delay = 1.00> <Generic> <Opcode : >
+
+State 14 <SV = 13> <Delay = 0.00>
+ST_14 : Operation 42 [2/2] (0.00ns)   --->   "%call_ln409 = call void @insert_ip_checksum<512>, i2 %wordCount_V, i1024 %dataStreamBuffer1, i16 %checksumFifo, i1024 %dataStreamBuffer2" [/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/mac_ip_encode/mac_ip_encode.cpp:409]   --->   Operation 42 'call' 'call_ln409' <Predicate = true> <Delay = 0.00> <CoreType = "Generic">   --->   Core 0 '' <Latency = 0> <II = 1> <Delay = 1.00> <Generic> <Opcode : >
+
+State 15 <SV = 14> <Delay = 0.00>
+ST_15 : Operation 43 [1/2] (0.00ns)   --->   "%call_ln409 = call void @insert_ip_checksum<512>, i2 %wordCount_V, i1024 %dataStreamBuffer1, i16 %checksumFifo, i1024 %dataStreamBuffer2" [/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/mac_ip_encode/mac_ip_encode.cpp:409]   --->   Operation 43 'call' 'call_ln409' <Predicate = true> <Delay = 0.00> <CoreType = "Generic">   --->   Core 0 '' <Latency = 0> <II = 1> <Delay = 1.00> <Generic> <Opcode : >
+
+State 16 <SV = 15> <Delay = 0.00>
+ST_16 : Operation 44 [2/2] (0.00ns)   --->   "%call_ln412 = call void @handle_arp_reply<512>, i128 %s_axis_arp_lookup_reply, i48 %myMacAddress_read, i2 %har_state, i1024 %dataStreamBuffer2, i256 %headerFifo, i1024 %dataStreamBuffer3" [/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/mac_ip_encode/mac_ip_encode.cpp:412]   --->   Operation 44 'call' 'call_ln412' <Predicate = true> <Delay = 0.00> <CoreType = "Generic">   --->   Core 0 '' <Latency = 0> <II = 1> <Delay = 1.00> <Generic> <Opcode : >
+
+State 17 <SV = 16> <Delay = 0.00>
+ST_17 : Operation 45 [1/2] (0.00ns)   --->   "%call_ln412 = call void @handle_arp_reply<512>, i128 %s_axis_arp_lookup_reply, i48 %myMacAddress_read, i2 %har_state, i1024 %dataStreamBuffer2, i256 %headerFifo, i1024 %dataStreamBuffer3" [/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/mac_ip_encode/mac_ip_encode.cpp:412]   --->   Operation 45 'call' 'call_ln412' <Predicate = true> <Delay = 0.00> <CoreType = "Generic">   --->   Core 0 '' <Latency = 0> <II = 1> <Delay = 1.00> <Generic> <Opcode : >
+
+State 18 <SV = 17> <Delay = 0.00>
+ST_18 : Operation 46 [2/2] (0.00ns)   --->   "%call_ln413 = call void @mac_lshiftWordByOctet<512, 1>, i1 %ls_writeRemainder, i512 %prevWord_data_V, i64 %prevWord_keep_V, i1024 %dataStreamBuffer4, i1024 %dataStreamBuffer3, i1 %ls_firstWord" [/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/mac_ip_encode/mac_ip_encode.cpp:413]   --->   Operation 46 'call' 'call_ln413' <Predicate = true> <Delay = 0.00> <CoreType = "Generic">   --->   Core 0 '' <Latency = 0> <II = 1> <Delay = 1.00> <Generic> <Opcode : >
+
+State 19 <SV = 18> <Delay = 0.00>
+ST_19 : Operation 47 [1/2] (0.00ns)   --->   "%call_ln413 = call void @mac_lshiftWordByOctet<512, 1>, i1 %ls_writeRemainder, i512 %prevWord_data_V, i64 %prevWord_keep_V, i1024 %dataStreamBuffer4, i1024 %dataStreamBuffer3, i1 %ls_firstWord" [/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/mac_ip_encode/mac_ip_encode.cpp:413]   --->   Operation 47 'call' 'call_ln413' <Predicate = true> <Delay = 0.00> <CoreType = "Generic">   --->   Core 0 '' <Latency = 0> <II = 1> <Delay = 1.00> <Generic> <Opcode : >
+
+State 20 <SV = 19> <Delay = 0.00>
+ST_20 : Operation 48 [3/3] (0.00ns)   --->   "%call_ln414 = call void @insert_ethernet_header<512>, i1024 %m_axis_ip, i2 %ge_state, i256 %headerFifo, i1024 %dataStreamBuffer4" [/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/mac_ip_encode/mac_ip_encode.cpp:414]   --->   Operation 48 'call' 'call_ln414' <Predicate = true> <Delay = 0.00> <CoreType = "Generic">   --->   Core 0 '' <Latency = 0> <II = 1> <Delay = 1.00> <Generic> <Opcode : >
+
+State 21 <SV = 20> <Delay = 1.94>
+ST_21 : Operation 49 [2/3] (1.94ns)   --->   "%call_ln414 = call void @insert_ethernet_header<512>, i1024 %m_axis_ip, i2 %ge_state, i256 %headerFifo, i1024 %dataStreamBuffer4" [/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/mac_ip_encode/mac_ip_encode.cpp:414]   --->   Operation 49 'call' 'call_ln414' <Predicate = true> <Delay = 1.94> <CoreType = "Generic">   --->   Core 0 '' <Latency = 0> <II = 1> <Delay = 1.00> <Generic> <Opcode : >
+
+State 22 <SV = 21> <Delay = 0.00>
+ST_22 : Operation 50 [1/3] (0.00ns)   --->   "%call_ln414 = call void @insert_ethernet_header<512>, i1024 %m_axis_ip, i2 %ge_state, i256 %headerFifo, i1024 %dataStreamBuffer4" [/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/mac_ip_encode/mac_ip_encode.cpp:414]   --->   Operation 50 'call' 'call_ln414' <Predicate = true> <Delay = 0.00> <CoreType = "Generic">   --->   Core 0 '' <Latency = 0> <II = 1> <Delay = 1.00> <Generic> <Opcode : >
+
+State 23 <SV = 22> <Delay = 0.00>
+ST_23 : Operation 51 [1/1] (0.00ns)   --->   "%specdataflowpipeline_ln427 = specdataflowpipeline void @_ssdm_op_SpecDataflowPipeline, i32 4294967295, i32 1, void @empty_1" [/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/mac_ip_encode/mac_ip_encode.cpp:427]   --->   Operation 51 'specdataflowpipeline' 'specdataflowpipeline_ln427' <Predicate = true> <Delay = 0.00>
+ST_23 : Operation 52 [1/1] (0.00ns)   --->   "%empty = specchannel i32 @_ssdm_op_SpecChannel, void @checksumFifo_str, i32 1, void @p_str, void @p_str, i32 16, i32 16, i16 %checksumFifo, i16 %checksumFifo"   --->   Operation 52 'specchannel' 'empty' <Predicate = true> <Delay = 0.00>
+ST_23 : Operation 53 [1/1] (0.00ns)   --->   "%empty_33 = specchannel i32 @_ssdm_op_SpecChannel, void @dataStreamBuffer0_str, i32 1, void @p_str, void @p_str, i32 2, i32 2, i1024 %dataStreamBuffer0, i1024 %dataStreamBuffer0"   --->   Operation 53 'specchannel' 'empty_33' <Predicate = true> <Delay = 0.00>
+ST_23 : Operation 54 [1/1] (0.00ns)   --->   "%empty_34 = specchannel i32 @_ssdm_op_SpecChannel, void @dataStreamBuffer1_str, i32 1, void @p_str, void @p_str, i32 32, i32 32, i1024 %dataStreamBuffer1, i1024 %dataStreamBuffer1"   --->   Operation 54 'specchannel' 'empty_34' <Predicate = true> <Delay = 0.00>
+ST_23 : Operation 55 [1/1] (0.00ns)   --->   "%empty_35 = specchannel i32 @_ssdm_op_SpecChannel, void @dataStreamBuffer2_str, i32 1, void @p_str, void @p_str, i32 2, i32 2, i1024 %dataStreamBuffer2, i1024 %dataStreamBuffer2"   --->   Operation 55 'specchannel' 'empty_35' <Predicate = true> <Delay = 0.00>
+ST_23 : Operation 56 [1/1] (0.00ns)   --->   "%empty_36 = specchannel i32 @_ssdm_op_SpecChannel, void @dataStreamBuffer3_str, i32 1, void @p_str, void @p_str, i32 2, i32 2, i1024 %dataStreamBuffer3, i1024 %dataStreamBuffer3"   --->   Operation 56 'specchannel' 'empty_36' <Predicate = true> <Delay = 0.00>
+ST_23 : Operation 57 [1/1] (0.00ns)   --->   "%empty_37 = specchannel i32 @_ssdm_op_SpecChannel, void @dataStreamBuffer4_str, i32 1, void @p_str, void @p_str, i32 2, i32 2, i1024 %dataStreamBuffer4, i1024 %dataStreamBuffer4"   --->   Operation 57 'specchannel' 'empty_37' <Predicate = true> <Delay = 0.00>
+ST_23 : Operation 58 [1/1] (0.00ns)   --->   "%empty_38 = specchannel i32 @_ssdm_op_SpecChannel, void @headerFifo_str, i32 1, void @p_str, void @p_str, i32 2, i32 2, i256 %headerFifo, i256 %headerFifo"   --->   Operation 58 'specchannel' 'empty_38' <Predicate = true> <Delay = 0.00>
+ST_23 : Operation 59 [1/1] (0.00ns)   --->   "%empty_39 = specchannel i32 @_ssdm_op_SpecChannel, void @subSumFifo_str, i32 1, void @p_str, void @p_str, i32 2, i32 2, i1024 %subSumFifo, i1024 %subSumFifo"   --->   Operation 59 'specchannel' 'empty_39' <Predicate = true> <Delay = 0.00>
+ST_23 : Operation 60 [1/1] (0.00ns)   --->   "%spectopmodule_ln419 = spectopmodule void @_ssdm_op_SpecTopModule, void @empty_4" [/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/mac_ip_encode/mac_ip_encode.cpp:419]   --->   Operation 60 'spectopmodule' 'spectopmodule_ln419' <Predicate = true> <Delay = 0.00>
+ST_23 : Operation 61 [1/1] (0.00ns)   --->   "%specinterface_ln419 = specinterface void @_ssdm_op_SpecInterface, i32 0, void @empty_5, i32 0, i32 0, void @empty_1, i32 0, i32 0, void @empty_1, void @empty_1, void @empty_1, i32 0, i32 0, i32 0, i32 0, void @empty_1, void @empty_1, i32 4294967295, i32 0" [/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/mac_ip_encode/mac_ip_encode.cpp:419]   --->   Operation 61 'specinterface' 'specinterface_ln419' <Predicate = true> <Delay = 0.00>
+ST_23 : Operation 62 [1/1] (0.00ns)   --->   "%specinterface_ln0 = specinterface void @_ssdm_op_SpecInterface, i1024 %s_axis_ip, void @empty_0, i32 1, i32 1, void @empty, i32 0, i32 0, void @empty_1, void @empty_1, void @empty_1, i32 0, i32 0, i32 0, i32 0, void @empty_1, void @empty_1, i32 4294967295, i32 0"   --->   Operation 62 'specinterface' 'specinterface_ln0' <Predicate = true> <Delay = 0.00>
+ST_23 : Operation 63 [1/1] (0.00ns)   --->   "%specbitsmap_ln0 = specbitsmap void @_ssdm_op_SpecBitsMap, i1024 %s_axis_ip"   --->   Operation 63 'specbitsmap' 'specbitsmap_ln0' <Predicate = true> <Delay = 0.00>
+ST_23 : Operation 64 [1/1] (0.00ns)   --->   "%specinterface_ln0 = specinterface void @_ssdm_op_SpecInterface, i128 %s_axis_arp_lookup_reply, void @empty_0, i32 1, i32 1, void @empty, i32 0, i32 0, void @empty_1, void @empty_1, void @empty_1, i32 0, i32 0, i32 0, i32 0, void @empty_1, void @empty_1, i32 4294967295, i32 0"   --->   Operation 64 'specinterface' 'specinterface_ln0' <Predicate = true> <Delay = 0.00>
+ST_23 : Operation 65 [1/1] (0.00ns)   --->   "%specbitsmap_ln0 = specbitsmap void @_ssdm_op_SpecBitsMap, i128 %s_axis_arp_lookup_reply"   --->   Operation 65 'specbitsmap' 'specbitsmap_ln0' <Predicate = true> <Delay = 0.00>
+ST_23 : Operation 66 [1/1] (0.00ns)   --->   "%specinterface_ln0 = specinterface void @_ssdm_op_SpecInterface, i1024 %m_axis_ip, void @empty_0, i32 1, i32 1, void @empty, i32 0, i32 0, void @empty_1, void @empty_1, void @empty_1, i32 0, i32 0, i32 0, i32 0, void @empty_1, void @empty_1, i32 4294967295, i32 0"   --->   Operation 66 'specinterface' 'specinterface_ln0' <Predicate = true> <Delay = 0.00>
+ST_23 : Operation 67 [1/1] (0.00ns)   --->   "%specbitsmap_ln0 = specbitsmap void @_ssdm_op_SpecBitsMap, i1024 %m_axis_ip"   --->   Operation 67 'specbitsmap' 'specbitsmap_ln0' <Predicate = true> <Delay = 0.00>
+ST_23 : Operation 68 [1/1] (0.00ns)   --->   "%specinterface_ln0 = specinterface void @_ssdm_op_SpecInterface, i32 %m_axis_arp_lookup_request, void @empty_0, i32 1, i32 1, void @empty, i32 0, i32 0, void @empty_1, void @empty_1, void @empty_1, i32 0, i32 0, i32 0, i32 0, void @empty_1, void @empty_1, i32 4294967295, i32 0"   --->   Operation 68 'specinterface' 'specinterface_ln0' <Predicate = true> <Delay = 0.00>
+ST_23 : Operation 69 [1/1] (0.00ns)   --->   "%specbitsmap_ln0 = specbitsmap void @_ssdm_op_SpecBitsMap, i32 %m_axis_arp_lookup_request"   --->   Operation 69 'specbitsmap' 'specbitsmap_ln0' <Predicate = true> <Delay = 0.00>
+ST_23 : Operation 70 [1/1] (0.00ns)   --->   "%specbitsmap_ln0 = specbitsmap void @_ssdm_op_SpecBitsMap, i48 %myMacAddress"   --->   Operation 70 'specbitsmap' 'specbitsmap_ln0' <Predicate = true> <Delay = 0.00>
+ST_23 : Operation 71 [1/1] (0.00ns)   --->   "%specinterface_ln0 = specinterface void @_ssdm_op_SpecInterface, i48 %myMacAddress, void @empty_2, i32 1, i32 1, void @empty_1, i32 0, i32 0, void @empty_1, void @empty_1, void @empty_1, i32 0, i32 0, i32 0, i32 0, void @empty_1, void @empty_1, i32 4294967295, i32 0"   --->   Operation 71 'specinterface' 'specinterface_ln0' <Predicate = true> <Delay = 0.00>
+ST_23 : Operation 72 [1/1] (0.00ns)   --->   "%specbitsmap_ln0 = specbitsmap void @_ssdm_op_SpecBitsMap, i32 %regSubNetMask"   --->   Operation 72 'specbitsmap' 'specbitsmap_ln0' <Predicate = true> <Delay = 0.00>
+ST_23 : Operation 73 [1/1] (0.00ns)   --->   "%specinterface_ln0 = specinterface void @_ssdm_op_SpecInterface, i32 %regSubNetMask, void @empty_2, i32 1, i32 1, void @empty_1, i32 0, i32 0, void @empty_1, void @empty_1, void @empty_1, i32 0, i32 0, i32 0, i32 0, void @empty_1, void @empty_1, i32 4294967295, i32 0"   --->   Operation 73 'specinterface' 'specinterface_ln0' <Predicate = true> <Delay = 0.00>
+ST_23 : Operation 74 [1/1] (0.00ns)   --->   "%specbitsmap_ln0 = specbitsmap void @_ssdm_op_SpecBitsMap, i32 %regDefaultGateway"   --->   Operation 74 'specbitsmap' 'specbitsmap_ln0' <Predicate = true> <Delay = 0.00>
+ST_23 : Operation 75 [1/1] (0.00ns)   --->   "%specinterface_ln0 = specinterface void @_ssdm_op_SpecInterface, i32 %regDefaultGateway, void @empty_2, i32 1, i32 1, void @empty_1, i32 0, i32 0, void @empty_1, void @empty_1, void @empty_1, i32 0, i32 0, i32 0, i32 0, void @empty_1, void @empty_1, i32 4294967295, i32 0"   --->   Operation 75 'specinterface' 'specinterface_ln0' <Predicate = true> <Delay = 0.00>
+ST_23 : Operation 76 [1/1] (0.00ns)   --->   "%specinterface_ln0 = specinterface void @_ssdm_op_SpecInterface, i1024 %dataStreamBuffer0, void @empty_3, i32 0, i32 0, void @empty_1, i32 0, i32 0, void @empty_1, void @empty_1, void @empty_1, i32 0, i32 0, i32 0, i32 0, void @empty_1, void @empty_1, i32 4294967295, i32 0"   --->   Operation 76 'specinterface' 'specinterface_ln0' <Predicate = true> <Delay = 0.00>
+ST_23 : Operation 77 [1/1] (0.00ns)   --->   "%specinterface_ln0 = specinterface void @_ssdm_op_SpecInterface, i1024 %dataStreamBuffer1, void @empty_3, i32 0, i32 0, void @empty_1, i32 0, i32 0, void @empty_1, void @empty_1, void @empty_1, i32 0, i32 0, i32 0, i32 0, void @empty_1, void @empty_1, i32 4294967295, i32 0"   --->   Operation 77 'specinterface' 'specinterface_ln0' <Predicate = true> <Delay = 0.00>
+ST_23 : Operation 78 [1/1] (0.00ns)   --->   "%specinterface_ln0 = specinterface void @_ssdm_op_SpecInterface, i1024 %subSumFifo, void @empty_3, i32 0, i32 0, void @empty_1, i32 0, i32 0, void @empty_1, void @empty_1, void @empty_1, i32 0, i32 0, i32 0, i32 0, void @empty_1, void @empty_1, i32 4294967295, i32 0"   --->   Operation 78 'specinterface' 'specinterface_ln0' <Predicate = true> <Delay = 0.00>
+ST_23 : Operation 79 [1/1] (0.00ns)   --->   "%specinterface_ln0 = specinterface void @_ssdm_op_SpecInterface, i16 %checksumFifo, void @empty_3, i32 0, i32 0, void @empty_1, i32 0, i32 0, void @empty_1, void @empty_1, void @empty_1, i32 0, i32 0, i32 0, i32 0, void @empty_1, void @empty_1, i32 4294967295, i32 0"   --->   Operation 79 'specinterface' 'specinterface_ln0' <Predicate = true> <Delay = 0.00>
+ST_23 : Operation 80 [1/1] (0.00ns)   --->   "%specinterface_ln0 = specinterface void @_ssdm_op_SpecInterface, i1024 %dataStreamBuffer2, void @empty_3, i32 0, i32 0, void @empty_1, i32 0, i32 0, void @empty_1, void @empty_1, void @empty_1, i32 0, i32 0, i32 0, i32 0, void @empty_1, void @empty_1, i32 4294967295, i32 0"   --->   Operation 80 'specinterface' 'specinterface_ln0' <Predicate = true> <Delay = 0.00>
+ST_23 : Operation 81 [1/1] (0.00ns)   --->   "%specinterface_ln0 = specinterface void @_ssdm_op_SpecInterface, i256 %headerFifo, void @empty_3, i32 0, i32 0, void @empty_1, i32 0, i32 0, void @empty_1, void @empty_1, void @empty_1, i32 0, i32 0, i32 0, i32 0, void @empty_1, void @empty_1, i32 4294967295, i32 0"   --->   Operation 81 'specinterface' 'specinterface_ln0' <Predicate = true> <Delay = 0.00>
+ST_23 : Operation 82 [1/1] (0.00ns)   --->   "%specinterface_ln0 = specinterface void @_ssdm_op_SpecInterface, i1024 %dataStreamBuffer3, void @empty_3, i32 0, i32 0, void @empty_1, i32 0, i32 0, void @empty_1, void @empty_1, void @empty_1, i32 0, i32 0, i32 0, i32 0, void @empty_1, void @empty_1, i32 4294967295, i32 0"   --->   Operation 82 'specinterface' 'specinterface_ln0' <Predicate = true> <Delay = 0.00>
+ST_23 : Operation 83 [1/1] (0.00ns)   --->   "%specinterface_ln0 = specinterface void @_ssdm_op_SpecInterface, i1024 %dataStreamBuffer4, void @empty_3, i32 0, i32 0, void @empty_1, i32 0, i32 0, void @empty_1, void @empty_1, void @empty_1, i32 0, i32 0, i32 0, i32 0, void @empty_1, void @empty_1, i32 4294967295, i32 0"   --->   Operation 83 'specinterface' 'specinterface_ln0' <Predicate = true> <Delay = 0.00>
+ST_23 : Operation 84 [1/1] (0.00ns)   --->   "%ret_ln449 = ret" [/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/mac_ip_encode/mac_ip_encode.cpp:449]   --->   Operation 84 'ret' 'ret_ln449' <Predicate = true> <Delay = 0.00>
+
+
+============================================================
++ Verbose Summary: Timing violations
+============================================================
+Target clock period: 3.2ns, clock uncertainty: 0.864ns.
+
+ <State 1>: 0ns
+The critical path consists of the following:
+
+ <State 2>: 0.859ns
+The critical path consists of the following:
+	register read operation ('regDefaultGateway', /mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/mac_ip_encode/mac_ip_encode.cpp:423) on port 'regDefaultGateway' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/mac_ip_encode/mac_ip_encode.cpp:423) [90]  (0 ns)
+	'call' operation ('call_ln404', /mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/mac_ip_encode/mac_ip_encode.cpp:404) to 'extract_ip_address<512>' [93]  (0.859 ns)
+
+ <State 3>: 0ns
+The critical path consists of the following:
+
+ <State 4>: 0ns
+The critical path consists of the following:
+
+ <State 5>: 0ns
+The critical path consists of the following:
+
+ <State 6>: 0ns
+The critical path consists of the following:
+
+ <State 7>: 0ns
+The critical path consists of the following:
+
+ <State 8>: 0ns
+The critical path consists of the following:
+
+ <State 9>: 0ns
+The critical path consists of the following:
+
+ <State 10>: 0ns
+The critical path consists of the following:
+
+ <State 11>: 0ns
+The critical path consists of the following:
+
+ <State 12>: 0ns
+The critical path consists of the following:
+
+ <State 13>: 0ns
+The critical path consists of the following:
+
+ <State 14>: 0ns
+The critical path consists of the following:
+
+ <State 15>: 0ns
+The critical path consists of the following:
+
+ <State 16>: 0ns
+The critical path consists of the following:
+
+ <State 17>: 0ns
+The critical path consists of the following:
+
+ <State 18>: 0ns
+The critical path consists of the following:
+
+ <State 19>: 0ns
+The critical path consists of the following:
+
+ <State 20>: 0ns
+The critical path consists of the following:
+
+ <State 21>: 1.95ns
+The critical path consists of the following:
+	'call' operation ('call_ln414', /mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/mac_ip_encode/mac_ip_encode.cpp:414) to 'insert_ethernet_header<512>' [99]  (1.95 ns)
+
+ <State 22>: 0ns
+The critical path consists of the following:
+
+ <State 23>: 0ns
+The critical path consists of the following:
+
+
+============================================================
++ Verbose Summary: Binding
+============================================================
+N/A
+* FSMD analyzer results:
+  - Output states:
+ - Input state : 
+  - Chain level:
+	State 1
+	State 2
+	State 3
+	State 4
+	State 5
+	State 6
+	State 7
+	State 8
+	State 9
+	State 10
+	State 11
+	State 12
+	State 13
+	State 14
+	State 15
+	State 16
+	State 17
+	State 18
+	State 19
+	State 20
+	State 21
+	State 22
+	State 23
+
+
+============================================================
++ Verbose Summary: Datapath Resource usage 
+============================================================
+N/A

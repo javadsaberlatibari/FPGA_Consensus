@@ -1,0 +1,238 @@
+
+
+================================================================
+== Vitis HLS Report for 'probe_timer'
+================================================================
+* Date:           Tue Jul 11 09:25:03 2023
+
+* Version:        2022.1 (Build 3526262 on Mon Apr 18 15:47:01 MDT 2022)
+* Project:        toe_prj
+* Solution:       solution1 (Vivado IP Flow Target)
+* Product family: virtexuplus
+* Target device:  xcu280-fsvh2892-2L-e
+
+
+================================================================
+== Performance Estimates
+================================================================
++ Timing: 
+    * Summary: 
+    +--------+---------+----------+------------+
+    |  Clock |  Target | Estimated| Uncertainty|
+    +--------+---------+----------+------------+
+    |ap_clk  |  3.20 ns|  3.349 ns|     0.86 ns|
+    +--------+---------+----------+------------+
+
++ Latency: 
+    * Summary: 
+    +---------+---------+-----------+-----------+-----+-----+---------+
+    |  Latency (cycles) |   Latency (absolute)  |  Interval | Pipeline|
+    |   min   |   max   |    min    |    max    | min | max |   Type  |
+    +---------+---------+-----------+-----------+-----+-----+---------+
+    |        5|        5|  16.745 ns|  16.745 ns|    2|    2|      yes|
+    +---------+---------+-----------+-----------+-----+-----+---------+
+
+    + Detail: 
+        * Instance: 
+        N/A
+
+        * Loop: 
+        N/A
+
+============================================================
++ Verbose Summary: Synthesis Manager
+============================================================
+InlineROM: 1
+ExposeGlobal: 0
+============================================================
++ Verbose Summary: CDFG Model
+============================================================
+IsTopModel: 0
+ResetActiveHigh: 1
+IsCombinational: 2
+IsDatapathOnly: 0
+HasWiredReturn: 1
+HasMFsm: 2
+HasVarLatency: 0
+IsPipeline: 1
+IsRtlPipelined: 1
+IsInstanceOverlapped: 0
+IsDontTouch: 0
+HasImplIP: 0
+IsGatedGlobalClock: 0
+
++ Individual pipeline summary: 
+  * Pipeline-0: initiation interval (II) = 2, depth = 6
+
+
+============================================================
++ Verbose Summary: Schedule
+============================================================
+* Number of FSM states : 6
+* Pipeline : 1
+  Pipeline-0 : II = 2, D = 6, States = { 1 2 3 4 6 5 }
+* Dataflow Pipeline: 0
+
+* FSM state transitions: 
+1 --> 2 
+2 --> 3 
+3 --> 4 
+4 --> 6 
+5 --> 
+6 --> 5 
+
+* FSM state operations: 
+
+State 1 <SV = 0> <Delay = 1.99>
+ST_1 : Operation 7 [1/1] (0.00ns)   --->   "%specinterface_ln0 = specinterface void @_ssdm_op_SpecInterface, i128 %probeTimer2eventEng_setEvent, void @empty, i32 0, i32 0, void @empty_1, i32 0, i32 0, void @empty_1, void @empty_1, void @empty_1, i32 0, i32 0, i32 0, i32 0, void @empty_1, void @empty_1, i32 4294967295, i32 0"   --->   Operation 7 'specinterface' 'specinterface_ln0' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 8 [1/1] (0.00ns)   --->   "%specinterface_ln0 = specinterface void @_ssdm_op_SpecInterface, i128 %probeTimer2eventEng_setEvent, void @empty, i32 0, i32 0, void @empty_1, i32 0, i32 0, void @empty_1, void @empty_1, void @empty_1, i32 0, i32 0, i32 0, i32 0, void @empty_1, void @empty_1, i32 4294967295, i32 0"   --->   Operation 8 'specinterface' 'specinterface_ln0' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 9 [1/1] (0.00ns)   --->   "%specinterface_ln0 = specinterface void @_ssdm_op_SpecInterface, i128 %probeTimer2eventEng_setEvent, void @empty, i32 0, i32 0, void @empty_1, i32 0, i32 0, void @empty_1, void @empty_1, void @empty_1, i32 0, i32 0, i32 0, i32 0, void @empty_1, void @empty_1, i32 4294967295, i32 0"   --->   Operation 9 'specinterface' 'specinterface_ln0' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 10 [1/1] (0.00ns)   --->   "%specinterface_ln0 = specinterface void @_ssdm_op_SpecInterface, i16 %rxEng2timer_clearProbeTimer, void @empty, i32 0, i32 0, void @empty_1, i32 0, i32 0, void @empty_1, void @empty_1, void @empty_1, i32 0, i32 0, i32 0, i32 0, void @empty_1, void @empty_1, i32 4294967295, i32 0"   --->   Operation 10 'specinterface' 'specinterface_ln0' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 11 [1/1] (0.00ns)   --->   "%specinterface_ln0 = specinterface void @_ssdm_op_SpecInterface, i16 %rxEng2timer_clearProbeTimer, void @empty, i32 0, i32 0, void @empty_1, i32 0, i32 0, void @empty_1, void @empty_1, void @empty_1, i32 0, i32 0, i32 0, i32 0, void @empty_1, void @empty_1, i32 4294967295, i32 0"   --->   Operation 11 'specinterface' 'specinterface_ln0' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 12 [1/1] (0.00ns)   --->   "%specinterface_ln0 = specinterface void @_ssdm_op_SpecInterface, i16 %rxEng2timer_clearProbeTimer, void @empty, i32 0, i32 0, void @empty_1, i32 0, i32 0, void @empty_1, void @empty_1, void @empty_1, i32 0, i32 0, i32 0, i32 0, void @empty_1, void @empty_1, i32 4294967295, i32 0"   --->   Operation 12 'specinterface' 'specinterface_ln0' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 13 [1/1] (0.00ns)   --->   "%specinterface_ln0 = specinterface void @_ssdm_op_SpecInterface, i16 %txEng2timer_setProbeTimer, void @empty, i32 0, i32 0, void @empty_1, i32 0, i32 0, void @empty_1, void @empty_1, void @empty_1, i32 0, i32 0, i32 0, i32 0, void @empty_1, void @empty_1, i32 4294967295, i32 0"   --->   Operation 13 'specinterface' 'specinterface_ln0' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 14 [1/1] (0.00ns)   --->   "%specinterface_ln0 = specinterface void @_ssdm_op_SpecInterface, i16 %txEng2timer_setProbeTimer, void @empty, i32 0, i32 0, void @empty_1, i32 0, i32 0, void @empty_1, void @empty_1, void @empty_1, i32 0, i32 0, i32 0, i32 0, void @empty_1, void @empty_1, i32 4294967295, i32 0"   --->   Operation 14 'specinterface' 'specinterface_ln0' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 15 [1/1] (0.00ns)   --->   "%specinterface_ln0 = specinterface void @_ssdm_op_SpecInterface, i16 %txEng2timer_setProbeTimer, void @empty, i32 0, i32 0, void @empty_1, i32 0, i32 0, void @empty_1, void @empty_1, void @empty_1, i32 0, i32 0, i32 0, i32 0, void @empty_1, void @empty_1, i32 4294967295, i32 0"   --->   Operation 15 'specinterface' 'specinterface_ln0' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 16 [1/1] (0.00ns)   --->   "%specinterface_ln0 = specinterface void @_ssdm_op_SpecInterface, i16 %rxEng2timer_clearProbeTimer, void @empty, i32 0, i32 0, void @empty_1, i32 0, i32 0, void @empty_1, void @empty_1, void @empty_1, i32 0, i32 0, i32 0, i32 0, void @empty_1, void @empty_1, i32 4294967295, i32 0"   --->   Operation 16 'specinterface' 'specinterface_ln0' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 17 [1/1] (0.00ns)   --->   "%specinterface_ln0 = specinterface void @_ssdm_op_SpecInterface, i16 %txEng2timer_setProbeTimer, void @empty, i32 0, i32 0, void @empty_1, i32 0, i32 0, void @empty_1, void @empty_1, void @empty_1, i32 0, i32 0, i32 0, i32 0, void @empty_1, void @empty_1, i32 4294967295, i32 0"   --->   Operation 17 'specinterface' 'specinterface_ln0' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 18 [1/1] (0.00ns)   --->   "%specinterface_ln0 = specinterface void @_ssdm_op_SpecInterface, i128 %probeTimer2eventEng_setEvent, void @empty, i32 0, i32 0, void @empty_1, i32 0, i32 0, void @empty_1, void @empty_1, void @empty_1, i32 0, i32 0, i32 0, i32 0, void @empty_1, void @empty_1, i32 4294967295, i32 0"   --->   Operation 18 'specinterface' 'specinterface_ln0' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 19 [1/1] (0.00ns)   --->   "%specpipeline_ln41 = specpipeline void @_ssdm_op_SpecPipeline, i32 1, i32 0, i32 0, i32 0, void @empty_1" [/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/toe/probe_timer/probe_timer.cpp:41]   --->   Operation 19 'specpipeline' 'specpipeline_ln41' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 20 [1/1] (0.00ns)   --->   "%specmemcore_ln51 = specmemcore void @_ssdm_op_SpecMemCore, i32 %probeTimerTable_time_V, i64 666, i64 30, i64 18446744073709551615" [/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/toe/probe_timer/probe_timer.cpp:51]   --->   Operation 20 'specmemcore' 'specmemcore_ln51' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 21 [1/1] (0.00ns)   --->   "%specmemcore_ln51 = specmemcore void @_ssdm_op_SpecMemCore, i1 %probeTimerTable_active, i64 666, i64 30, i64 18446744073709551615" [/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/toe/probe_timer/probe_timer.cpp:51]   --->   Operation 21 'specmemcore' 'specmemcore_ln51' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 22 [1/1] (0.00ns)   --->   "%pt_WaitForWrite_load = load i1 %pt_WaitForWrite" [/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/toe/probe_timer/probe_timer.cpp:63]   --->   Operation 22 'load' 'pt_WaitForWrite_load' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 23 [1/1] (0.00ns)   --->   "%pt_updSessionID_V_load = load i16 %pt_updSessionID_V"   --->   Operation 23 'load' 'pt_updSessionID_V_load' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 24 [1/1] (0.00ns)   --->   "%pt_prevSessionID_V_load = load i16 %pt_prevSessionID_V"   --->   Operation 24 'load' 'pt_prevSessionID_V_load' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 25 [1/1] (0.00ns)   --->   "%br_ln63 = br i1 %pt_WaitForWrite_load, void %if.else.i, void %if.then.i" [/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/toe/probe_timer/probe_timer.cpp:63]   --->   Operation 25 'br' 'br_ln63' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 26 [1/1] (0.00ns)   --->   "%tmp_i = nbreadreq i1 @_ssdm_op_NbReadReq.ap_fifo.i16P0A, i16 %txEng2timer_setProbeTimer, i32 1" [/tools/Xilinx/Vitis_HLS/2022.1/common/technology/autopilot/hls_stream_39.h:136]   --->   Operation 26 'nbreadreq' 'tmp_i' <Predicate = (!pt_WaitForWrite_load)> <Delay = 0.00> <CoreInst = "FIFO_SRL">   --->   Core 81 'FIFO_SRL' <Latency = 0> <II = 1> <Delay = 1.34> <Storage> <Opcode : 'read' 'write' 'nbread' 'nbwrite'> <Ports = 0> <Width = 16> <Depth = 2> <FIFO>
+ST_1 : Operation 27 [1/1] (0.00ns)   --->   "%br_ln73 = br i1 %tmp_i, void %if.else18.i, void %if.then17.i" [/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/toe/probe_timer/probe_timer.cpp:73]   --->   Operation 27 'br' 'br_ln73' <Predicate = (!pt_WaitForWrite_load)> <Delay = 0.00>
+ST_1 : Operation 28 [1/1] (0.00ns)   --->   "%checkID_V = load i16 %pt_currSessionID_V" [/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/toe/probe_timer/probe_timer.cpp:82]   --->   Operation 28 'load' 'checkID_V' <Predicate = (!pt_WaitForWrite_load & !tmp_i)> <Delay = 0.00>
+ST_1 : Operation 29 [1/1] (0.00ns)   --->   "%tmp_i_256 = nbreadreq i1 @_ssdm_op_NbReadReq.ap_fifo.i16P0A, i16 %rxEng2timer_clearProbeTimer, i32 1" [/tools/Xilinx/Vitis_HLS/2022.1/common/technology/autopilot/hls_stream_39.h:136]   --->   Operation 29 'nbreadreq' 'tmp_i_256' <Predicate = (!pt_WaitForWrite_load & !tmp_i)> <Delay = 0.00> <CoreInst = "FIFO_SRL">   --->   Core 81 'FIFO_SRL' <Latency = 0> <II = 1> <Delay = 1.34> <Storage> <Opcode : 'read' 'write' 'nbread' 'nbwrite'> <Ports = 0> <Width = 16> <Depth = 2> <FIFO>
+ST_1 : Operation 30 [1/1] (0.00ns)   --->   "%br_ln84 = br i1 %tmp_i_256, void %if.else21.i, void %if.then20.i" [/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/toe/probe_timer/probe_timer.cpp:84]   --->   Operation 30 'br' 'br_ln84' <Predicate = (!pt_WaitForWrite_load & !tmp_i)> <Delay = 0.00>
+ST_1 : Operation 31 [1/1] (0.78ns)   --->   "%add_ln886 = add i16 %checkID_V, i16 1"   --->   Operation 31 'add' 'add_ln886' <Predicate = (!pt_WaitForWrite_load & !tmp_i & !tmp_i_256)> <Delay = 0.78> <CoreInst = "Adder">   --->   Core 1 'Adder' <Latency = 0> <II = 1> <Delay = 0.78> <FuncUnit> <Opcode : 'add' 'sub'> <InPorts = 2> <OutPorts = 1>
+ST_1 : Operation 32 [1/1] (0.67ns)   --->   "%icmp_ln1065 = icmp_eq  i16 %add_ln886, i16 1000"   --->   Operation 32 'icmp' 'icmp_ln1065' <Predicate = (!pt_WaitForWrite_load & !tmp_i & !tmp_i_256)> <Delay = 0.67> <CoreInst = "Cmp">   --->   Core 9 'Cmp' <Latency = 0> <II = 1> <Delay = 0.67> <FuncUnit> <Opcode : 'icmp'> <InPorts = 2> <OutPorts = 1>
+ST_1 : Operation 33 [1/1] (0.24ns)   --->   "%select_ln92 = select i1 %icmp_ln1065, i16 0, i16 %add_ln886" [/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/toe/probe_timer/probe_timer.cpp:92]   --->   Operation 33 'select' 'select_ln92' <Predicate = (!pt_WaitForWrite_load & !tmp_i & !tmp_i_256)> <Delay = 0.24> <CoreInst = "Sel">   --->   Core 73 'Sel' <Latency = 0> <II = 1> <Delay = 0.24> <FuncUnit> <Opcode : 'select'> <InPorts = 3> <OutPorts = 1>
+ST_1 : Operation 34 [1/1] (0.00ns)   --->   "%store_ln92 = store i16 %select_ln92, i16 %pt_currSessionID_V" [/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/toe/probe_timer/probe_timer.cpp:92]   --->   Operation 34 'store' 'store_ln92' <Predicate = (!pt_WaitForWrite_load & !tmp_i & !tmp_i_256)> <Delay = 0.00>
+ST_1 : Operation 35 [1/1] (0.38ns)   --->   "%br_ln0 = br void %if.end26.i"   --->   Operation 35 'br' 'br_ln0' <Predicate = (!pt_WaitForWrite_load & !tmp_i & !tmp_i_256)> <Delay = 0.38>
+ST_1 : Operation 36 [1/1] (0.67ns)   --->   "%icmp_ln1069 = icmp_eq  i16 %pt_updSessionID_V_load, i16 %pt_prevSessionID_V_load"   --->   Operation 36 'icmp' 'icmp_ln1069' <Predicate = (pt_WaitForWrite_load)> <Delay = 0.67> <CoreInst = "Cmp">   --->   Core 9 'Cmp' <Latency = 0> <II = 1> <Delay = 0.67> <FuncUnit> <Opcode : 'icmp'> <InPorts = 2> <OutPorts = 1>
+ST_1 : Operation 37 [1/1] (0.00ns)   --->   "%br_ln65 = br i1 %icmp_ln1069, void %if.then12.i, void %if.end.i" [/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/toe/probe_timer/probe_timer.cpp:65]   --->   Operation 37 'br' 'br_ln65' <Predicate = (pt_WaitForWrite_load)> <Delay = 0.00>
+ST_1 : Operation 38 [1/1] (0.00ns)   --->   "%zext_ln587 = zext i16 %pt_updSessionID_V_load"   --->   Operation 38 'zext' 'zext_ln587' <Predicate = (pt_WaitForWrite_load & !icmp_ln1069)> <Delay = 0.00>
+ST_1 : Operation 39 [1/1] (0.00ns)   --->   "%probeTimerTable_time_V_addr = getelementptr i32 %probeTimerTable_time_V, i64 0, i64 %zext_ln587" [/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/toe/probe_timer/probe_timer.cpp:67]   --->   Operation 39 'getelementptr' 'probeTimerTable_time_V_addr' <Predicate = (pt_WaitForWrite_load & !icmp_ln1069)> <Delay = 0.00>
+ST_1 : Operation 40 [1/1] (1.20ns)   --->   "%store_ln67 = store i32 7813, i10 %probeTimerTable_time_V_addr" [/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/toe/probe_timer/probe_timer.cpp:67]   --->   Operation 40 'store' 'store_ln67' <Predicate = (pt_WaitForWrite_load & !icmp_ln1069)> <Delay = 1.20> <CoreInst = "RAM_T2P_BRAM">   --->   Core 99 'RAM_T2P_BRAM' <Latency = 1> <II = 1> <Delay = 1.20> <Storage> <Opcode : 'load' 'store'> <Ports = 2> <Width = 32> <Depth = 1000> <RAM>
+ST_1 : Operation 41 [1/1] (0.00ns)   --->   "%probeTimerTable_active_addr = getelementptr i1 %probeTimerTable_active, i64 0, i64 %zext_ln587" [/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/toe/probe_timer/probe_timer.cpp:68]   --->   Operation 41 'getelementptr' 'probeTimerTable_active_addr' <Predicate = (pt_WaitForWrite_load & !icmp_ln1069)> <Delay = 0.00>
+ST_1 : Operation 42 [1/1] (1.17ns)   --->   "%store_ln68 = store i1 1, i10 %probeTimerTable_active_addr" [/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/toe/probe_timer/probe_timer.cpp:68]   --->   Operation 42 'store' 'store_ln68' <Predicate = (pt_WaitForWrite_load & !icmp_ln1069)> <Delay = 1.17> <CoreInst = "RAM_T2P_BRAM">   --->   Core 99 'RAM_T2P_BRAM' <Latency = 1> <II = 1> <Delay = 1.17> <Storage> <Opcode : 'load' 'store'> <Ports = 2> <Width = 1> <Depth = 1000> <RAM>
+ST_1 : Operation 43 [1/1] (0.38ns)   --->   "%store_ln69 = store i1 0, i1 %pt_WaitForWrite" [/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/toe/probe_timer/probe_timer.cpp:69]   --->   Operation 43 'store' 'store_ln69' <Predicate = (pt_WaitForWrite_load & !icmp_ln1069)> <Delay = 0.38>
+ST_1 : Operation 44 [1/1] (0.00ns)   --->   "%br_ln70 = br void %if.end.i" [/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/toe/probe_timer/probe_timer.cpp:70]   --->   Operation 44 'br' 'br_ln70' <Predicate = (pt_WaitForWrite_load & !icmp_ln1069)> <Delay = 0.00>
+ST_1 : Operation 45 [1/1] (0.78ns)   --->   "%add_ln887 = add i16 %pt_prevSessionID_V_load, i16 65535"   --->   Operation 45 'add' 'add_ln887' <Predicate = (pt_WaitForWrite_load)> <Delay = 0.78> <CoreInst = "Adder">   --->   Core 1 'Adder' <Latency = 0> <II = 1> <Delay = 0.78> <FuncUnit> <Opcode : 'add' 'sub'> <InPorts = 2> <OutPorts = 1>
+ST_1 : Operation 46 [1/1] (0.38ns)   --->   "%store_ln887 = store i16 %add_ln887, i16 %pt_prevSessionID_V"   --->   Operation 46 'store' 'store_ln887' <Predicate = (pt_WaitForWrite_load)> <Delay = 0.38>
+ST_1 : Operation 47 [1/1] (0.00ns)   --->   "%br_ln72 = br void %probe_timer.exit" [/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/toe/probe_timer/probe_timer.cpp:72]   --->   Operation 47 'br' 'br_ln72' <Predicate = (pt_WaitForWrite_load)> <Delay = 0.00>
+
+State 2 <SV = 1> <Delay = 2.72>
+ST_2 : Operation 48 [1/1] (1.16ns)   --->   "%checkID_V_1 = read i16 @_ssdm_op_Read.ap_fifo.volatile.i16P0A, i16 %rxEng2timer_clearProbeTimer" [/tools/Xilinx/Vitis_HLS/2022.1/common/technology/autopilot/hls_stream_39.h:145]   --->   Operation 48 'read' 'checkID_V_1' <Predicate = (!pt_WaitForWrite_load & !tmp_i & tmp_i_256)> <Delay = 1.16> <CoreInst = "FIFO_SRL">   --->   Core 81 'FIFO_SRL' <Latency = 0> <II = 1> <Delay = 1.34> <Storage> <Opcode : 'read' 'write' 'nbread' 'nbwrite'> <Ports = 0> <Width = 16> <Depth = 2> <FIFO>
+ST_2 : Operation 49 [1/1] (0.38ns)   --->   "%br_ln88 = br void %if.end26.i" [/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/toe/probe_timer/probe_timer.cpp:88]   --->   Operation 49 'br' 'br_ln88' <Predicate = (!pt_WaitForWrite_load & !tmp_i & tmp_i_256)> <Delay = 0.38>
+ST_2 : Operation 50 [1/1] (0.00ns)   --->   "%checkID_V_2 = phi i16 %checkID_V, void %if.else21.i, i16 %checkID_V_1, void %if.then20.i"   --->   Operation 50 'phi' 'checkID_V_2' <Predicate = (!pt_WaitForWrite_load & !tmp_i)> <Delay = 0.00>
+ST_2 : Operation 51 [1/1] (0.00ns)   --->   "%zext_ln587_16 = zext i16 %checkID_V_2"   --->   Operation 51 'zext' 'zext_ln587_16' <Predicate = (!pt_WaitForWrite_load & !tmp_i)> <Delay = 0.00>
+ST_2 : Operation 52 [1/1] (0.00ns)   --->   "%probeTimerTable_active_addr_1 = getelementptr i1 %probeTimerTable_active, i64 0, i64 %zext_ln587_16" [/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/toe/probe_timer/probe_timer.cpp:99]   --->   Operation 52 'getelementptr' 'probeTimerTable_active_addr_1' <Predicate = (!pt_WaitForWrite_load & !tmp_i)> <Delay = 0.00>
+ST_2 : Operation 53 [2/2] (1.17ns)   --->   "%probeTimerTable_active_load = load i10 %probeTimerTable_active_addr_1" [/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/toe/probe_timer/probe_timer.cpp:99]   --->   Operation 53 'load' 'probeTimerTable_active_load' <Predicate = (!pt_WaitForWrite_load & !tmp_i)> <Delay = 1.17> <CoreInst = "RAM_T2P_BRAM">   --->   Core 99 'RAM_T2P_BRAM' <Latency = 1> <II = 1> <Delay = 1.17> <Storage> <Opcode : 'load' 'store'> <Ports = 2> <Width = 1> <Depth = 1000> <RAM>
+ST_2 : Operation 54 [1/1] (0.38ns)   --->   "%store_ln118 = store i16 %checkID_V_2, i16 %pt_prevSessionID_V" [/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/toe/probe_timer/probe_timer.cpp:118]   --->   Operation 54 'store' 'store_ln118' <Predicate = (!pt_WaitForWrite_load & !tmp_i)> <Delay = 0.38>
+ST_2 : Operation 55 [1/1] (0.00ns)   --->   "%br_ln0 = br void %if.end52.i"   --->   Operation 55 'br' 'br_ln0' <Predicate = (!pt_WaitForWrite_load & !tmp_i)> <Delay = 0.00>
+ST_2 : Operation 56 [1/1] (1.16ns)   --->   "%txEng2timer_setProbeTimer_read = read i16 @_ssdm_op_Read.ap_fifo.volatile.i16P0A, i16 %txEng2timer_setProbeTimer" [/tools/Xilinx/Vitis_HLS/2022.1/common/technology/autopilot/hls_stream_39.h:145]   --->   Operation 56 'read' 'txEng2timer_setProbeTimer_read' <Predicate = (!pt_WaitForWrite_load & tmp_i)> <Delay = 1.16> <CoreInst = "FIFO_SRL">   --->   Core 81 'FIFO_SRL' <Latency = 0> <II = 1> <Delay = 1.34> <Storage> <Opcode : 'read' 'write' 'nbread' 'nbwrite'> <Ports = 0> <Width = 16> <Depth = 2> <FIFO>
+ST_2 : Operation 57 [1/1] (0.00ns)   --->   "%store_ln145 = store i16 %txEng2timer_setProbeTimer_read, i16 %pt_updSessionID_V" [/tools/Xilinx/Vitis_HLS/2022.1/common/technology/autopilot/hls_stream_39.h:145]   --->   Operation 57 'store' 'store_ln145' <Predicate = (!pt_WaitForWrite_load & tmp_i)> <Delay = 0.00>
+ST_2 : Operation 58 [1/1] (0.38ns)   --->   "%store_ln76 = store i1 1, i1 %pt_WaitForWrite" [/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/toe/probe_timer/probe_timer.cpp:76]   --->   Operation 58 'store' 'store_ln76' <Predicate = (!pt_WaitForWrite_load & tmp_i)> <Delay = 0.38>
+ST_2 : Operation 59 [1/1] (0.00ns)   --->   "%br_ln77 = br void %if.end52.i" [/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/toe/probe_timer/probe_timer.cpp:77]   --->   Operation 59 'br' 'br_ln77' <Predicate = (!pt_WaitForWrite_load & tmp_i)> <Delay = 0.00>
+
+State 3 <SV = 2> <Delay = 1.20>
+ST_3 : Operation 60 [1/2] (1.17ns)   --->   "%probeTimerTable_active_load = load i10 %probeTimerTable_active_addr_1" [/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/toe/probe_timer/probe_timer.cpp:99]   --->   Operation 60 'load' 'probeTimerTable_active_load' <Predicate = (!pt_WaitForWrite_load & !tmp_i)> <Delay = 1.17> <CoreInst = "RAM_T2P_BRAM">   --->   Core 99 'RAM_T2P_BRAM' <Latency = 1> <II = 1> <Delay = 1.17> <Storage> <Opcode : 'load' 'store'> <Ports = 2> <Width = 1> <Depth = 1000> <RAM>
+ST_3 : Operation 61 [1/1] (0.00ns)   --->   "%br_ln99 = br i1 %probeTimerTable_active_load, void %if.end51.i, void %land.lhs.true.i" [/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/toe/probe_timer/probe_timer.cpp:99]   --->   Operation 61 'br' 'br_ln99' <Predicate = (!pt_WaitForWrite_load & !tmp_i)> <Delay = 0.00>
+ST_3 : Operation 62 [1/1] (0.00ns)   --->   "%tmp_436_i = nbwritereq i1 @_ssdm_op_NbWriteReq.ap_fifo.i128P0A, i128 %probeTimer2eventEng_setEvent, i32 1" [/tools/Xilinx/Vitis_HLS/2022.1/common/technology/autopilot/hls_stream_39.h:140]   --->   Operation 62 'nbwritereq' 'tmp_436_i' <Predicate = (!pt_WaitForWrite_load & !tmp_i & probeTimerTable_active_load)> <Delay = 0.00> <CoreInst = "FIFO_SRL">   --->   Core 81 'FIFO_SRL' <Latency = 0> <II = 1> <Delay = 1.40> <Storage> <Opcode : 'read' 'write' 'nbread' 'nbwrite'> <Ports = 0> <Width = 128> <Depth = 2> <FIFO>
+ST_3 : Operation 63 [1/1] (0.00ns)   --->   "%br_ln99 = br i1 %tmp_436_i, void %if.end51.i, void %if.then31.i" [/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/toe/probe_timer/probe_timer.cpp:99]   --->   Operation 63 'br' 'br_ln99' <Predicate = (!pt_WaitForWrite_load & !tmp_i & probeTimerTable_active_load)> <Delay = 0.00>
+ST_3 : Operation 64 [1/1] (0.00ns)   --->   "%probeTimerTable_time_V_addr_1 = getelementptr i32 %probeTimerTable_time_V, i64 0, i64 %zext_ln587_16"   --->   Operation 64 'getelementptr' 'probeTimerTable_time_V_addr_1' <Predicate = (!pt_WaitForWrite_load & !tmp_i & probeTimerTable_active_load & tmp_436_i)> <Delay = 0.00>
+ST_3 : Operation 65 [2/2] (1.20ns)   --->   "%probeTimerTable_time_V_load = load i10 %probeTimerTable_time_V_addr_1"   --->   Operation 65 'load' 'probeTimerTable_time_V_load' <Predicate = (!pt_WaitForWrite_load & !tmp_i & probeTimerTable_active_load & tmp_436_i)> <Delay = 1.20> <CoreInst = "RAM_T2P_BRAM">   --->   Core 99 'RAM_T2P_BRAM' <Latency = 1> <II = 1> <Delay = 1.20> <Storage> <Opcode : 'load' 'store'> <Ports = 2> <Width = 32> <Depth = 1000> <RAM>
+
+State 4 <SV = 3> <Delay = 3.34>
+ST_4 : Operation 66 [1/1] (0.00ns)   --->   "%fastResume = phi i1 0, void %if.else21.i, i1 1, void %if.then20.i"   --->   Operation 66 'phi' 'fastResume' <Predicate = (!pt_WaitForWrite_load & !tmp_i)> <Delay = 0.00>
+ST_4 : Operation 67 [1/2] (1.20ns)   --->   "%probeTimerTable_time_V_load = load i10 %probeTimerTable_time_V_addr_1"   --->   Operation 67 'load' 'probeTimerTable_time_V_load' <Predicate = (!pt_WaitForWrite_load & !tmp_i & probeTimerTable_active_load & tmp_436_i)> <Delay = 1.20> <CoreInst = "RAM_T2P_BRAM">   --->   Core 99 'RAM_T2P_BRAM' <Latency = 1> <II = 1> <Delay = 1.20> <Storage> <Opcode : 'load' 'store'> <Ports = 2> <Width = 32> <Depth = 1000> <RAM>
+ST_4 : Operation 68 [1/1] (0.85ns)   --->   "%icmp_ln1065_75 = icmp_eq  i32 %probeTimerTable_time_V_load, i32 0"   --->   Operation 68 'icmp' 'icmp_ln1065_75' <Predicate = (!pt_WaitForWrite_load & !tmp_i & probeTimerTable_active_load & tmp_436_i)> <Delay = 0.85> <CoreInst = "Cmp">   --->   Core 9 'Cmp' <Latency = 0> <II = 1> <Delay = 0.85> <FuncUnit> <Opcode : 'icmp'> <InPorts = 2> <OutPorts = 1>
+ST_4 : Operation 69 [1/1] (0.12ns)   --->   "%or_ln101 = or i1 %icmp_ln1065_75, i1 %fastResume" [/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/toe/probe_timer/probe_timer.cpp:101]   --->   Operation 69 'or' 'or_ln101' <Predicate = (!pt_WaitForWrite_load & !tmp_i & probeTimerTable_active_load & tmp_436_i)> <Delay = 0.12> <CoreInst = "LogicGate">   --->   Core 74 'LogicGate' <Latency = 0> <II = 1> <Delay = 0.12> <FuncUnit> <Opcode : 'and' 'or' 'xor'> <InPorts = 2> <OutPorts = 1>
+ST_4 : Operation 70 [1/1] (0.00ns)   --->   "%br_ln101 = br i1 %or_ln101, void %if.else45.i, void %if.then36.i" [/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/toe/probe_timer/probe_timer.cpp:101]   --->   Operation 70 'br' 'br_ln101' <Predicate = (!pt_WaitForWrite_load & !tmp_i & probeTimerTable_active_load & tmp_436_i)> <Delay = 0.00>
+ST_4 : Operation 71 [1/1] (0.00ns)   --->   "%shl_ln = bitconcatenate i48 @_ssdm_op_BitConcatenate.i48.i16.i32, i16 %checkID_V_2, i32 0" [/tools/Xilinx/Vitis_HLS/2022.1/common/technology/autopilot/hls_stream_39.h:174]   --->   Operation 71 'bitconcatenate' 'shl_ln' <Predicate = (!pt_WaitForWrite_load & !tmp_i & probeTimerTable_active_load & tmp_436_i & or_ln101)> <Delay = 0.00>
+ST_4 : Operation 72 [1/1] (0.00ns)   --->   "%or_ln174 = or i48 %shl_ln, i48 1" [/tools/Xilinx/Vitis_HLS/2022.1/common/technology/autopilot/hls_stream_39.h:174]   --->   Operation 72 'or' 'or_ln174' <Predicate = (!pt_WaitForWrite_load & !tmp_i & probeTimerTable_active_load & tmp_436_i & or_ln101)> <Delay = 0.00>
+ST_4 : Operation 73 [1/1] (0.00ns)   --->   "%zext_ln174 = zext i48 %or_ln174" [/tools/Xilinx/Vitis_HLS/2022.1/common/technology/autopilot/hls_stream_39.h:174]   --->   Operation 73 'zext' 'zext_ln174' <Predicate = (!pt_WaitForWrite_load & !tmp_i & probeTimerTable_active_load & tmp_436_i & or_ln101)> <Delay = 0.00>
+ST_4 : Operation 74 [1/1] (1.16ns)   --->   "%write_ln174 = write void @_ssdm_op_Write.ap_fifo.volatile.i128P0A, i128 %probeTimer2eventEng_setEvent, i128 %zext_ln174" [/tools/Xilinx/Vitis_HLS/2022.1/common/technology/autopilot/hls_stream_39.h:174]   --->   Operation 74 'write' 'write_ln174' <Predicate = (!pt_WaitForWrite_load & !tmp_i & probeTimerTable_active_load & tmp_436_i & or_ln101)> <Delay = 1.16> <CoreInst = "FIFO_SRL">   --->   Core 81 'FIFO_SRL' <Latency = 0> <II = 1> <Delay = 1.40> <Storage> <Opcode : 'read' 'write' 'nbread' 'nbwrite'> <Ports = 0> <Width = 128> <Depth = 2> <FIFO>
+
+State 5 <SV = 5> <Delay = 2.08>
+ST_5 : Operation 75 [1/1] (0.88ns)   --->   "%add_ln887_1 = add i32 %probeTimerTable_time_V_load, i32 4294967295"   --->   Operation 75 'add' 'add_ln887_1' <Predicate = (!pt_WaitForWrite_load & !tmp_i & probeTimerTable_active_load & tmp_436_i & !or_ln101)> <Delay = 0.88> <CoreInst = "Adder">   --->   Core 1 'Adder' <Latency = 0> <II = 1> <Delay = 0.88> <FuncUnit> <Opcode : 'add' 'sub'> <InPorts = 2> <OutPorts = 1>
+ST_5 : Operation 76 [1/1] (1.20ns)   --->   "%store_ln887 = store i32 %add_ln887_1, i10 %probeTimerTable_time_V_addr_1"   --->   Operation 76 'store' 'store_ln887' <Predicate = (!pt_WaitForWrite_load & !tmp_i & probeTimerTable_active_load & tmp_436_i & !or_ln101)> <Delay = 1.20> <CoreInst = "RAM_T2P_BRAM">   --->   Core 99 'RAM_T2P_BRAM' <Latency = 1> <II = 1> <Delay = 1.20> <Storage> <Opcode : 'load' 'store'> <Ports = 2> <Width = 32> <Depth = 1000> <RAM>
+ST_5 : Operation 77 [1/1] (0.00ns)   --->   "%br_ln0 = br void %if.end50.i"   --->   Operation 77 'br' 'br_ln0' <Predicate = (!pt_WaitForWrite_load & !tmp_i & probeTimerTable_active_load & tmp_436_i & !or_ln101)> <Delay = 0.00>
+ST_5 : Operation 78 [1/1] (1.20ns)   --->   "%store_ln103 = store i32 0, i10 %probeTimerTable_time_V_addr_1" [/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/toe/probe_timer/probe_timer.cpp:103]   --->   Operation 78 'store' 'store_ln103' <Predicate = (!pt_WaitForWrite_load & !tmp_i & probeTimerTable_active_load & tmp_436_i & or_ln101)> <Delay = 1.20> <CoreInst = "RAM_T2P_BRAM">   --->   Core 99 'RAM_T2P_BRAM' <Latency = 1> <II = 1> <Delay = 1.20> <Storage> <Opcode : 'load' 'store'> <Ports = 2> <Width = 32> <Depth = 1000> <RAM>
+ST_5 : Operation 79 [1/1] (0.00ns)   --->   "%br_ln112 = br void %if.end50.i" [/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/toe/probe_timer/probe_timer.cpp:112]   --->   Operation 79 'br' 'br_ln112' <Predicate = (!pt_WaitForWrite_load & !tmp_i & probeTimerTable_active_load & tmp_436_i & or_ln101)> <Delay = 0.00>
+ST_5 : Operation 80 [1/1] (0.00ns)   --->   "%br_ln117 = br void %if.end51.i" [/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/toe/probe_timer/probe_timer.cpp:117]   --->   Operation 80 'br' 'br_ln117' <Predicate = (!pt_WaitForWrite_load & !tmp_i & probeTimerTable_active_load & tmp_436_i)> <Delay = 0.00>
+ST_5 : Operation 81 [1/1] (0.00ns)   --->   "%br_ln0 = br void %probe_timer.exit"   --->   Operation 81 'br' 'br_ln0' <Predicate = (!pt_WaitForWrite_load)> <Delay = 0.00>
+ST_5 : Operation 82 [1/1] (0.00ns)   --->   "%ret_ln0 = ret"   --->   Operation 82 'ret' 'ret_ln0' <Predicate = true> <Delay = 0.00>
+
+State 6 <SV = 4> <Delay = 1.17>
+ST_6 : Operation 83 [1/1] (1.17ns)   --->   "%store_ln104 = store i1 0, i10 %probeTimerTable_active_addr_1" [/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/toe/probe_timer/probe_timer.cpp:104]   --->   Operation 83 'store' 'store_ln104' <Predicate = (!pt_WaitForWrite_load & !tmp_i & probeTimerTable_active_load & tmp_436_i & or_ln101)> <Delay = 1.17> <CoreInst = "RAM_T2P_BRAM">   --->   Core 99 'RAM_T2P_BRAM' <Latency = 1> <II = 1> <Delay = 1.17> <Storage> <Opcode : 'load' 'store'> <Ports = 2> <Width = 1> <Depth = 1000> <RAM>
+
+
+============================================================
++ Verbose Summary: Timing violations
+============================================================
+Target clock period: 3.2ns, clock uncertainty: 0.864ns.
+
+ <State 1>: 2ns
+The critical path consists of the following:
+	'load' operation ('checkID.V', /mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/toe/probe_timer/probe_timer.cpp:82) on static variable 'pt_currSessionID_V' [33]  (0 ns)
+	'add' operation ('add_ln886') [37]  (0.785 ns)
+	'icmp' operation ('icmp_ln1065') [38]  (0.676 ns)
+	'select' operation ('select_ln92', /mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/toe/probe_timer/probe_timer.cpp:92) [39]  (0.243 ns)
+	blocking operation 0.294 ns on control path)
+
+ <State 2>: 2.73ns
+The critical path consists of the following:
+	fifo read operation ('checkID.V', /tools/Xilinx/Vitis_HLS/2022.1/common/technology/autopilot/hls_stream_39.h:145) on port 'rxEng2timer_clearProbeTimer' (/tools/Xilinx/Vitis_HLS/2022.1/common/technology/autopilot/hls_stream_39.h:145) [43]  (1.17 ns)
+	multiplexor before 'phi' operation ('checkID.V') with incoming values : ('checkID.V', /mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/toe/probe_timer/probe_timer.cpp:82) ('checkID.V', /tools/Xilinx/Vitis_HLS/2022.1/common/technology/autopilot/hls_stream_39.h:145) [46]  (0.387 ns)
+	'phi' operation ('checkID.V') with incoming values : ('checkID.V', /mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/toe/probe_timer/probe_timer.cpp:82) ('checkID.V', /tools/Xilinx/Vitis_HLS/2022.1/common/technology/autopilot/hls_stream_39.h:145) [46]  (0 ns)
+	'getelementptr' operation ('probeTimerTable_active_addr_1', /mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/toe/probe_timer/probe_timer.cpp:99) [49]  (0 ns)
+	'load' operation ('probeTimerTable_active_load', /mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/toe/probe_timer/probe_timer.cpp:99) on array 'probeTimerTable_active' [50]  (1.17 ns)
+
+ <State 3>: 1.2ns
+The critical path consists of the following:
+	'getelementptr' operation ('probeTimerTable_time_V_addr_1') [56]  (0 ns)
+	'load' operation ('probeTimerTable_time_V_load') on array 'probeTimerTable_time_V' [57]  (1.2 ns)
+
+ <State 4>: 3.35ns
+The critical path consists of the following:
+	'load' operation ('probeTimerTable_time_V_load') on array 'probeTimerTable_time_V' [57]  (1.2 ns)
+	'icmp' operation ('icmp_ln1065_75') [58]  (0.859 ns)
+	'or' operation ('or_ln101', /mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/toe/probe_timer/probe_timer.cpp:101) [59]  (0.122 ns)
+	blocking operation 1.17 ns on control path)
+
+ <State 5>: 2.08ns
+The critical path consists of the following:
+	'add' operation ('add_ln887_1') [62]  (0.88 ns)
+	'store' operation ('store_ln887') of variable 'add_ln887_1' on array 'probeTimerTable_time_V' [63]  (1.2 ns)
+
+ <State 6>: 1.17ns
+The critical path consists of the following:
+	'store' operation ('store_ln104', /mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/toe/probe_timer/probe_timer.cpp:104) of constant 0 on array 'probeTimerTable_active' [67]  (1.17 ns)
+
+
+============================================================
++ Verbose Summary: Binding
+============================================================
+N/A
+* FSMD analyzer results:
+  - Output states:
+ - Input state : 
+  - Chain level:
+	State 1
+	State 2
+	State 3
+	State 4
+	State 5
+	State 6
+
+
+============================================================
++ Verbose Summary: Datapath Resource usage 
+============================================================
+N/A

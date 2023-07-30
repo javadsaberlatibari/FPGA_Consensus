@@ -1,0 +1,316 @@
+==============================================================
+Vitis HLS - High-Level Synthesis from C, C++ and OpenCL v2022.1 (64-bit)
+Tool Version Limit: 2022.04
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+==============================================================
+INFO: [HLS 200-1505] Using default flow_target 'vivado'
+INFO: [HLS 200-435] Setting 'open_solution -flow_target vivado' configuration: config_interface -m_axi_latency=0
+INFO: [HLS 200-1510] Running: set_part xcu280-fsvh2892-2L-e 
+INFO: [HLS 200-1611] Setting target device to 'xcu280-fsvh2892-2L-e'
+INFO: [HLS 200-1510] Running: create_clock -period 3.2 -name default 
+INFO: [SYN 201-201] Setting up clock 'default' with a period of 3.2ns.
+INFO: [HLS 200-1510] Running: set_top scatter 
+INFO: [HLS 200-1510] Running: add_files /mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/kernel/user_krnl/scatter_krnl/src/hls/scatter.cpp -cflags -I/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/build/kernel/user_krnl/scatter_krnl/src/hls 
+INFO: [HLS 200-10] Adding design file '/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/kernel/user_krnl/scatter_krnl/src/hls/scatter.cpp' to the project
+INFO: [HLS 200-1510] Running: add_files -tb /mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/kernel/user_krnl/scatter_krnl/src/hls/test_scatter.cpp 
+INFO: [HLS 200-10] Adding test bench file '/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/kernel/user_krnl/scatter_krnl/src/hls/test_scatter.cpp' to the project
+INFO: [HLS 200-1510] Running: csynth_design 
+INFO: [HLS 200-111] Finished File checks and directory preparation: CPU user time: 0.05 seconds. CPU system time: 0 seconds. Elapsed time: 0.03 seconds; current allocated memory: 1.624 GB.
+INFO: [HLS 200-10] Analyzing design file '/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/kernel/user_krnl/scatter_krnl/src/hls/scatter.cpp' ... 
+WARNING: [HLS 207-997] '/*' within block comment (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/kernel/user_krnl/scatter_krnl/src/hls/../../../../common/include/packet.hpp:97:4)
+WARNING: [HLS 207-997] '/*' within block comment (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/kernel/user_krnl/scatter_krnl/src/hls/../../../../common/include/packet.hpp:123:2)
+WARNING: [HLS 207-5505] the pragma is not supported and will be ignored (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/kernel/user_krnl/scatter_krnl/src/hls/scatter.cpp:495:9)
+WARNING: [HLS 207-5505] the pragma is not supported and will be ignored (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/kernel/user_krnl/scatter_krnl/src/hls/scatter.cpp:496:9)
+WARNING: [HLS 207-5505] the pragma is not supported and will be ignored (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/kernel/user_krnl/scatter_krnl/src/hls/scatter.cpp:503:9)
+WARNING: [HLS 207-5505] the pragma is not supported and will be ignored (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/kernel/user_krnl/scatter_krnl/src/hls/scatter.cpp:504:9)
+WARNING: [HLS 207-5505] the pragma is not supported and will be ignored (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/kernel/user_krnl/scatter_krnl/src/hls/scatter.cpp:511:9)
+WARNING: [HLS 207-5505] the pragma is not supported and will be ignored (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/kernel/user_krnl/scatter_krnl/src/hls/scatter.cpp:512:9)
+WARNING: [HLS 207-5292] unused parameter 'output' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/kernel/user_krnl/scatter_krnl/src/hls/../../../../common/include/axi_utils.hpp:205:26)
+WARNING: [HLS 207-5292] unused parameter 'word' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/kernel/user_krnl/scatter_krnl/src/hls/../../../../common/include/axi_utils.hpp:205:47)
+WARNING: [HLS 207-5292] unused parameter 'output' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/kernel/user_krnl/scatter_krnl/src/hls/../../../../common/include/axi_utils.hpp:220:28)
+WARNING: [HLS 207-5292] unused parameter 'data' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/kernel/user_krnl/scatter_krnl/src/hls/../../../../common/include/axi_utils.hpp:220:48)
+WARNING: [HLS 207-5292] unused parameter 'output' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/kernel/user_krnl/scatter_krnl/src/hls/../../../../common/include/axi_utils.hpp:233:28)
+WARNING: [HLS 207-5292] unused parameter 'word' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/kernel/user_krnl/scatter_krnl/src/hls/../../../../common/include/axi_utils.hpp:233:49)
+WARNING: [HLS 207-5292] unused parameter 'output' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/kernel/user_krnl/scatter_krnl/src/hls/../../../../common/include/axi_utils.hpp:248:28)
+WARNING: [HLS 207-5292] unused parameter 'word' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/kernel/user_krnl/scatter_krnl/src/hls/../../../../common/include/axi_utils.hpp:248:59)
+WARNING: [HLS 207-5292] unused parameter 'd' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/kernel/user_krnl/scatter_krnl/src/hls/../../../../common/include/axi_utils.hpp:368:20)
+WARNING: [HLS 207-5292] unused parameter 's' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/kernel/user_krnl/scatter_krnl/src/hls/../../../../common/include/axi_utils.hpp:368:26)
+WARNING: [HLS 207-5292] unused parameter 'finishExperiment' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/kernel/user_krnl/scatter_krnl/src/hls/scatter.cpp:78:20)
+WARNING: [HLS 207-5292] unused parameter 'useConn' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/kernel/user_krnl/scatter_krnl/src/hls/scatter.cpp:79:21)
+INFO: [HLS 200-111] Finished Source Code Analysis and Preprocessing: CPU user time: 5.52 seconds. CPU system time: 0.92 seconds. Elapsed time: 6.28 seconds; current allocated memory: 633.441 MB.
+INFO: [HLS 200-777] Using interface defaults for 'Vivado' flow target.
+INFO: [HLS 214-291] Loop 'VITIS_LOOP_297_1' is marked as complete unroll implied by the pipeline pragma (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/kernel/user_krnl/scatter_krnl/src/hls/scatter.cpp:297:21)
+INFO: [HLS 214-291] Loop 'anonymous' is marked as complete unroll implied by the pipeline pragma (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/kernel/user_krnl/scatter_krnl/src/hls/scatter.cpp:161:14)
+INFO: [HLS 214-186] Unrolling loop 'VITIS_LOOP_297_1' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/kernel/user_krnl/scatter_krnl/src/hls/scatter.cpp:297:21) in function 'client<512>' completely with a factor of 8 (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/kernel/user_krnl/scatter_krnl/src/hls/scatter.cpp:142:0)
+INFO: [HLS 214-186] Unrolling loop 'anonymous' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/kernel/user_krnl/scatter_krnl/src/hls/scatter.cpp:161:14) in function 'client<512>' completely with a factor of 128 (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/kernel/user_krnl/scatter_krnl/src/hls/scatter.cpp:142:0)
+INFO: [HLS 214-178] Inlining function 'appTxMeta::appTxMeta(ap_uint<16>, ap_uint<16>)' into 'void client<512>(hls::stream<ipTuple, 0>&, hls::stream<openStatus, 0>&, hls::stream<ap_uint<16>, 0>&, hls::stream<appTxMeta, 0>&, hls::stream<net_axis<512>, 0>&, hls::stream<appTxRsp, 0>&, ap_uint<1>, ap_uint<16>, ap_uint<16>, ap_uint<16>, ap_uint<16>, ap_uint<16>, ap_uint<32>, ap_uint<32>, ap_uint<32>, ap_uint<32>, ap_uint<32>, ap_uint<32>, ap_uint<32>, ap_uint<32>, ap_uint<32>, ap_uint<32>, ap_uint<32>, ap_uint<32>)' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/kernel/user_krnl/scatter_krnl/src/hls/scatter.cpp:142:0)
+INFO: [HLS 214-178] Inlining function 'appReadRequest::appReadRequest(ap_uint<16>, ap_uint<16>)' into 'void server<512>(hls::stream<ap_uint<16>, 0>&, hls::stream<bool, 0>&, hls::stream<appNotification, 0>&, hls::stream<appReadRequest, 0>&, hls::stream<ap_uint<16>, 0>&, hls::stream<net_axis<512>, 0>&, ap_uint<1>, ap_uint<16>, ap_uint<16>)' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/kernel/user_krnl/scatter_krnl/src/hls/scatter.cpp:354:0)
+INFO: [HLS 214-131] Inlining function '_llvm.fpga.pack.none.i64.s_struct.ipTuples' into 'void client<512>(hls::stream<ipTuple, 0>&, hls::stream<openStatus, 0>&, hls::stream<ap_uint<16>, 0>&, hls::stream<appTxMeta, 0>&, hls::stream<net_axis<512>, 0>&, hls::stream<appTxRsp, 0>&, ap_uint<1>, ap_uint<16>, ap_uint<16>, ap_uint<16>, ap_uint<16>, ap_uint<16>, ap_uint<32>, ap_uint<32>, ap_uint<32>, ap_uint<32>, ap_uint<32>, ap_uint<32>, ap_uint<32>, ap_uint<32>, ap_uint<32>, ap_uint<32>, ap_uint<32>, ap_uint<32>) (.1)' (/tools/Xilinx/Vitis_HLS/2022.1/common/technology/autopilot/hls_stream_39.h:174:9)
+INFO: [HLS 214-131] Inlining function '_llvm.fpga.pack.none.i16.s_struct.ap_uint<16>s' into 'void client<512>(hls::stream<ipTuple, 0>&, hls::stream<openStatus, 0>&, hls::stream<ap_uint<16>, 0>&, hls::stream<appTxMeta, 0>&, hls::stream<net_axis<512>, 0>&, hls::stream<appTxRsp, 0>&, ap_uint<1>, ap_uint<16>, ap_uint<16>, ap_uint<16>, ap_uint<16>, ap_uint<16>, ap_uint<32>, ap_uint<32>, ap_uint<32>, ap_uint<32>, ap_uint<32>, ap_uint<32>, ap_uint<32>, ap_uint<32>, ap_uint<32>, ap_uint<32>, ap_uint<32>, ap_uint<32>) (.1)' (/tools/Xilinx/Vitis_HLS/2022.1/common/technology/autopilot/hls_stream_39.h:174:9)
+INFO: [HLS 214-131] Inlining function '_llvm.fpga.pack.none.i1024.s_struct.net_axis<512>s' into 'void client<512>(hls::stream<ipTuple, 0>&, hls::stream<openStatus, 0>&, hls::stream<ap_uint<16>, 0>&, hls::stream<appTxMeta, 0>&, hls::stream<net_axis<512>, 0>&, hls::stream<appTxRsp, 0>&, ap_uint<1>, ap_uint<16>, ap_uint<16>, ap_uint<16>, ap_uint<16>, ap_uint<16>, ap_uint<32>, ap_uint<32>, ap_uint<32>, ap_uint<32>, ap_uint<32>, ap_uint<32>, ap_uint<32>, ap_uint<32>, ap_uint<32>, ap_uint<32>, ap_uint<32>, ap_uint<32>) (.1)' (/tools/Xilinx/Vitis_HLS/2022.1/common/technology/autopilot/hls_stream_39.h:174:9)
+INFO: [HLS 214-131] Inlining function '_llvm.fpga.pack.none.i32.s_struct.appTxMetas' into 'void client<512>(hls::stream<ipTuple, 0>&, hls::stream<openStatus, 0>&, hls::stream<ap_uint<16>, 0>&, hls::stream<appTxMeta, 0>&, hls::stream<net_axis<512>, 0>&, hls::stream<appTxRsp, 0>&, ap_uint<1>, ap_uint<16>, ap_uint<16>, ap_uint<16>, ap_uint<16>, ap_uint<16>, ap_uint<32>, ap_uint<32>, ap_uint<32>, ap_uint<32>, ap_uint<32>, ap_uint<32>, ap_uint<32>, ap_uint<32>, ap_uint<32>, ap_uint<32>, ap_uint<32>, ap_uint<32>) (.1)' (/tools/Xilinx/Vitis_HLS/2022.1/common/technology/autopilot/hls_stream_39.h:174:9)
+INFO: [HLS 214-131] Inlining function '_llvm.fpga.pack.none.i16.s_struct.ap_uint<16>s' into 'void server<512>(hls::stream<ap_uint<16>, 0>&, hls::stream<bool, 0>&, hls::stream<appNotification, 0>&, hls::stream<appReadRequest, 0>&, hls::stream<ap_uint<16>, 0>&, hls::stream<net_axis<512>, 0>&, ap_uint<1>, ap_uint<16>, ap_uint<16>) (.1)' (/tools/Xilinx/Vitis_HLS/2022.1/common/technology/autopilot/hls_stream_39.h:174:9)
+INFO: [HLS 214-131] Inlining function '_llvm.fpga.pack.none.i32.s_struct.appTxMetas' into 'void server<512>(hls::stream<ap_uint<16>, 0>&, hls::stream<bool, 0>&, hls::stream<appNotification, 0>&, hls::stream<appReadRequest, 0>&, hls::stream<ap_uint<16>, 0>&, hls::stream<net_axis<512>, 0>&, ap_uint<1>, ap_uint<16>, ap_uint<16>) (.1)' (/tools/Xilinx/Vitis_HLS/2022.1/common/technology/autopilot/hls_stream_39.h:174:9)
+INFO: [HLS 200-111] Finished Compiling Optimization and Transform: CPU user time: 3.82 seconds. CPU system time: 0.74 seconds. Elapsed time: 5.71 seconds; current allocated memory: 634.094 MB.
+INFO: [HLS 200-111] Finished Checking Pragmas: CPU user time: 0 seconds. CPU system time: 0 seconds. Elapsed time: 0 seconds; current allocated memory: 634.094 MB.
+INFO: [HLS 200-10] Starting code transformations ...
+INFO: [HLS 200-111] Finished Standard Transforms: CPU user time: 0.09 seconds. CPU system time: 0.02 seconds. Elapsed time: 0.2 seconds; current allocated memory: 645.098 MB.
+INFO: [HLS 200-10] Checking synthesizability ...
+INFO: [HLS 200-111] Finished Checking Synthesizability: CPU user time: 0.13 seconds. CPU system time: 0.02 seconds. Elapsed time: 0.2 seconds; current allocated memory: 661.297 MB.
+INFO: [XFORM 203-712] Applying dataflow to function 'scatter' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/kernel/user_krnl/scatter_krnl/src/hls/scatter.cpp:464), detected/extracted 7 process function(s): 
+	 'entry_proc'
+	 'openStatus_handler'
+	 'txStatus_handler'
+	 'client<512>'
+	 'txMetaData_handler'
+	 'closeConnection_handler'
+	 'server<512>'.
+INFO: [XFORM 203-401] Performing if-conversion on hyperblock from (/tools/Xilinx/Vitis_HLS/2022.1/common/technology/autopilot/hls_stream_39.h:145:9) to (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/kernel/user_krnl/scatter_krnl/src/hls/scatter.cpp:409:3) in function 'server<512>'... converting 3 basic blocks.
+INFO: [HLS 200-111] Finished Loop, function and other optimizations: CPU user time: 0.3 seconds. CPU system time: 0.03 seconds. Elapsed time: 0.41 seconds; current allocated memory: 698.812 MB.
+WARNING: [HLS 200-631] ap_ctrl_none interface is illegal for scatter because entry_proc has non-FIFO I/O
+WARNING: [HLS 200-631] ap_ctrl_none interface is illegal for scatter because server<512> has non-FIFO I/O
+INFO: [HLS 200-111] Finished Architecture Synthesis: CPU user time: 0.23 seconds. CPU system time: 0.03 seconds. Elapsed time: 0.29 seconds; current allocated memory: 767.023 MB.
+INFO: [HLS 200-10] Starting hardware synthesis ...
+INFO: [HLS 200-10] Synthesizing 'scatter' ...
+WARNING: [SYN 201-103] Legalizing function name 'client<512>' to 'client_512_s'.
+WARNING: [SYN 201-103] Legalizing function name 'server<512>' to 'server_512_s'.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'entry_proc' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111] Finished Scheduling: CPU user time: 0.08 seconds. CPU system time: 0.08 seconds. Elapsed time: 0.23 seconds; current allocated memory: 767.023 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111] Finished Binding: CPU user time: 0.03 seconds. CPU system time: 0.01 seconds. Elapsed time: 0.06 seconds; current allocated memory: 767.992 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'openStatus_handler' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-61] Pipelining function 'openStatus_handler'.
+INFO: [HLS 200-1470] Pipelining result : Target II = 1, Final II = 1, Depth = 2, function 'openStatus_handler'
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111] Finished Scheduling: CPU user time: 0.03 seconds. CPU system time: 0 seconds. Elapsed time: 0.09 seconds; current allocated memory: 767.992 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111] Finished Binding: CPU user time: 0.03 seconds. CPU system time: 0.01 seconds. Elapsed time: 0.06 seconds; current allocated memory: 768.074 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'txStatus_handler' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-61] Pipelining function 'txStatus_handler'.
+INFO: [HLS 200-1470] Pipelining result : Target II = 1, Final II = 1, Depth = 2, function 'txStatus_handler'
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111] Finished Scheduling: CPU user time: 0.04 seconds. CPU system time: 0 seconds. Elapsed time: 0.09 seconds; current allocated memory: 768.078 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111] Finished Binding: CPU user time: 0.02 seconds. CPU system time: 0 seconds. Elapsed time: 0.06 seconds; current allocated memory: 768.258 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'client_512_s' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-61] Pipelining function 'client<512>'.
+INFO: [HLS 200-1470] Pipelining result : Target II = 1, Final II = 1, Depth = 4, function 'client<512>'
+WARNING: [HLS 200-871] Estimated clock period (3.07998ns) exceeds the target (target clock period: 3.2ns, clock uncertainty: 0.864ns, effective delay budget: 2.336ns).
+WARNING: [HLS 200-1016] The critical path in module 'client_512_s' consists of the following:	'add' operation ('ret.V') [104]  (0.88 ns)
+	'icmp' operation ('icmp_ln1073_1') [106]  (0.884 ns)
+	'and' operation ('and_ln292', /mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/kernel/user_krnl/scatter_krnl/src/hls/scatter.cpp:292) [107]  (0.122 ns)
+	multiplexor before 'phi' operation ('sentFirstWord_flag_0_i') [116]  (0.387 ns)
+	'phi' operation ('sentFirstWord_flag_0_i') [116]  (0 ns)
+	multiplexor before 'phi' operation ('sentFirstWord_flag_1_i') [134]  (0.387 ns)
+	'phi' operation ('sentFirstWord_flag_1_i') [134]  (0 ns)
+	multiplexor before 'phi' operation ('sentFirstWord_flag_2_i') [271]  (0.42 ns)
+	'phi' operation ('sentFirstWord_flag_2_i') [271]  (0 ns)
+
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111] Finished Scheduling: CPU user time: 0.16 seconds. CPU system time: 0 seconds. Elapsed time: 0.23 seconds; current allocated memory: 770.973 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111] Finished Binding: CPU user time: 0.1 seconds. CPU system time: 0.01 seconds. Elapsed time: 0.16 seconds; current allocated memory: 770.973 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'txMetaData_handler' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-61] Pipelining function 'txMetaData_handler'.
+INFO: [HLS 200-1470] Pipelining result : Target II = 1, Final II = 1, Depth = 3, function 'txMetaData_handler'
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111] Finished Scheduling: CPU user time: 0.13 seconds. CPU system time: 0 seconds. Elapsed time: 0.29 seconds; current allocated memory: 770.973 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111] Finished Binding: CPU user time: 0.03 seconds. CPU system time: 0.01 seconds. Elapsed time: 0.08 seconds; current allocated memory: 770.973 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'closeConnection_handler' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-61] Pipelining function 'closeConnection_handler'.
+INFO: [HLS 200-1470] Pipelining result : Target II = 1, Final II = 1, Depth = 3, function 'closeConnection_handler'
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111] Finished Scheduling: CPU user time: 0.04 seconds. CPU system time: 0 seconds. Elapsed time: 0.11 seconds; current allocated memory: 770.973 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111] Finished Binding: CPU user time: 0.03 seconds. CPU system time: 0.01 seconds. Elapsed time: 0.08 seconds; current allocated memory: 770.973 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'server_512_s' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-61] Pipelining function 'server<512>'.
+INFO: [HLS 200-1470] Pipelining result : Target II = 1, Final II = 1, Depth = 3, function 'server<512>'
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111] Finished Scheduling: CPU user time: 0.08 seconds. CPU system time: 0.01 seconds. Elapsed time: 0.14 seconds; current allocated memory: 771.543 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111] Finished Binding: CPU user time: 0.07 seconds. CPU system time: 0 seconds. Elapsed time: 0.34 seconds; current allocated memory: 771.543 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'scatter' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111] Finished Scheduling: CPU user time: 0.11 seconds. CPU system time: 0.01 seconds. Elapsed time: 0.18 seconds; current allocated memory: 771.930 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111] Finished Binding: CPU user time: 0.1 seconds. CPU system time: 0 seconds. Elapsed time: 0.15 seconds; current allocated memory: 772.336 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'entry_proc' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [RTGEN 206-100] Finished creating RTL model for 'entry_proc'.
+INFO: [HLS 200-111] Finished Creating RTL model: CPU user time: 0.12 seconds. CPU system time: 0.01 seconds. Elapsed time: 0.2 seconds; current allocated memory: 772.879 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'openStatus_handler' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-1030] Apply Unified Pipeline Control on module 'openStatus_handler' pipeline 'openStatus_handler' pipeline type 'function pipeline'
+INFO: [RTGEN 206-100] Finished creating RTL model for 'openStatus_handler'.
+INFO: [HLS 200-111] Finished Creating RTL model: CPU user time: 0.08 seconds. CPU system time: 0.01 seconds. Elapsed time: 0.36 seconds; current allocated memory: 774.094 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'txStatus_handler' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-1030] Apply Unified Pipeline Control on module 'txStatus_handler' pipeline 'txStatus_handler' pipeline type 'function pipeline'
+INFO: [RTGEN 206-100] Finished creating RTL model for 'txStatus_handler'.
+INFO: [HLS 200-111] Finished Creating RTL model: CPU user time: 0.08 seconds. CPU system time: 0.01 seconds. Elapsed time: 0.16 seconds; current allocated memory: 774.305 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'client_512_s' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+WARNING: [RTGEN 206-101] Register 'scatterFsmState' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'sessionIt_V' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'closeIt_V' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'numConnections_V' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'ipAddressIdx_V' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'currentPort_V_1' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'clientPkgCnt_V' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'sentFirstWord' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'currentSessionID_V' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'wordCount_V' is power-on initialization.
+INFO: [HLS 200-1030] Apply Unified Pipeline Control on module 'client_512_s' pipeline 'client<512>' pipeline type 'function pipeline'
+INFO: [RTGEN 206-100] Finished creating RTL model for 'client_512_s'.
+INFO: [HLS 200-111] Finished Creating RTL model: CPU user time: 0.15 seconds. CPU system time: 0.03 seconds. Elapsed time: 0.33 seconds; current allocated memory: 775.785 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'txMetaData_handler' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-1030] Apply Unified Pipeline Control on module 'txMetaData_handler' pipeline 'txMetaData_handler' pipeline type 'function pipeline'
+INFO: [RTGEN 206-100] Finished creating RTL model for 'txMetaData_handler'.
+INFO: [HLS 200-111] Finished Creating RTL model: CPU user time: 0.42 seconds. CPU system time: 0.02 seconds. Elapsed time: 0.57 seconds; current allocated memory: 779.820 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'closeConnection_handler' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-1030] Apply Unified Pipeline Control on module 'closeConnection_handler' pipeline 'closeConnection_handler' pipeline type 'function pipeline'
+INFO: [RTGEN 206-100] Finished creating RTL model for 'closeConnection_handler'.
+INFO: [HLS 200-111] Finished Creating RTL model: CPU user time: 0.08 seconds. CPU system time: 0.02 seconds. Elapsed time: 0.18 seconds; current allocated memory: 780.820 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'server_512_s' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+WARNING: [RTGEN 206-101] Register 'listenState' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'currentPort_V' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'openedPort_V' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'serverFsmState' is power-on initialization.
+INFO: [HLS 200-1030] Apply Unified Pipeline Control on module 'server_512_s' pipeline 'server<512>' pipeline type 'function pipeline'
+INFO: [RTGEN 206-100] Finished creating RTL model for 'server_512_s'.
+INFO: [HLS 200-111] Finished Creating RTL model: CPU user time: 0.12 seconds. CPU system time: 0.01 seconds. Elapsed time: 0.25 seconds; current allocated memory: 781.105 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'scatter' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+WARNING: [RTGEN 206-101] Design contains AXI ports. Reset is fixed to synchronous and active low.
+INFO: [RTGEN 206-500] Setting interface mode on port 'scatter/m_axis_listen_port' to 'axis' (register, both mode).
+INFO: [RTGEN 206-500] Setting interface mode on port 'scatter/s_axis_listen_port_status' to 'axis' (register, both mode).
+INFO: [RTGEN 206-500] Setting interface mode on port 'scatter/s_axis_notifications' to 'axis' (register, both mode).
+INFO: [RTGEN 206-500] Setting interface mode on port 'scatter/m_axis_read_package' to 'axis' (register, both mode).
+INFO: [RTGEN 206-500] Setting interface mode on port 'scatter/s_axis_rx_metadata' to 'axis' (register, both mode).
+INFO: [RTGEN 206-500] Setting interface mode on port 'scatter/s_axis_rx_data' to 'axis' (register, both mode).
+INFO: [RTGEN 206-500] Setting interface mode on port 'scatter/m_axis_open_connection' to 'axis' (register, both mode).
+INFO: [RTGEN 206-500] Setting interface mode on port 'scatter/s_axis_open_status' to 'axis' (register, both mode).
+INFO: [RTGEN 206-500] Setting interface mode on port 'scatter/m_axis_close_connection' to 'axis' (register, both mode).
+INFO: [RTGEN 206-500] Setting interface mode on port 'scatter/m_axis_tx_metadata' to 'axis' (register, both mode).
+INFO: [RTGEN 206-500] Setting interface mode on port 'scatter/m_axis_tx_data' to 'axis' (register, both mode).
+INFO: [RTGEN 206-500] Setting interface mode on port 'scatter/s_axis_tx_status' to 'axis' (register, both mode).
+INFO: [RTGEN 206-500] Setting interface mode on port 'scatter/runExperiment' to 'ap_none' (register).
+INFO: [RTGEN 206-500] Setting interface mode on port 'scatter/useConn' to 'ap_none' (register).
+INFO: [RTGEN 206-500] Setting interface mode on port 'scatter/useIpAddr' to 'ap_none' (register).
+INFO: [RTGEN 206-500] Setting interface mode on port 'scatter/pkgWordCount' to 'ap_none' (register).
+INFO: [RTGEN 206-500] Setting interface mode on port 'scatter/regBasePort' to 'ap_none' (register).
+INFO: [RTGEN 206-500] Setting interface mode on port 'scatter/usePort' to 'ap_none' (register).
+INFO: [RTGEN 206-500] Setting interface mode on port 'scatter/expectedRespInKB' to 'ap_none' (register).
+INFO: [RTGEN 206-500] Setting interface mode on port 'scatter/finishExperiment' to 'ap_none' (register).
+INFO: [RTGEN 206-500] Setting interface mode on port 'scatter/clientPkgNum' to 'ap_none' (register).
+INFO: [RTGEN 206-500] Setting interface mode on port 'scatter/regIpAddress0' to 'ap_none' (register).
+INFO: [RTGEN 206-500] Setting interface mode on port 'scatter/regIpAddress1' to 'ap_none' (register).
+INFO: [RTGEN 206-500] Setting interface mode on port 'scatter/regIpAddress2' to 'ap_none' (register).
+INFO: [RTGEN 206-500] Setting interface mode on port 'scatter/regIpAddress3' to 'ap_none' (register).
+INFO: [RTGEN 206-500] Setting interface mode on port 'scatter/regIpAddress4' to 'ap_none' (register).
+INFO: [RTGEN 206-500] Setting interface mode on port 'scatter/regIpAddress5' to 'ap_none' (register).
+INFO: [RTGEN 206-500] Setting interface mode on port 'scatter/regIpAddress6' to 'ap_none' (register).
+INFO: [RTGEN 206-500] Setting interface mode on port 'scatter/regIpAddress7' to 'ap_none' (register).
+INFO: [RTGEN 206-500] Setting interface mode on port 'scatter/regIpAddress8' to 'ap_none' (register).
+INFO: [RTGEN 206-500] Setting interface mode on port 'scatter/regIpAddress9' to 'ap_none' (register).
+INFO: [RTGEN 206-500] Setting interface mode on port 'scatter/regIpAddress10' to 'ap_none' (register).
+INFO: [RTGEN 206-500] Setting interface mode on function 'scatter' to 'ap_ctrl_none'.
+WARNING: [HLS 200-656] Deadlocks can occur since process openStatus_handler is instantiated in a dataflow region with ap_ctrl_none or without start propagation and contains an auto-rewind pipeline.
+WARNING: [HLS 200-656] Deadlocks can occur since process txStatus_handler is instantiated in a dataflow region with ap_ctrl_none or without start propagation and contains an auto-rewind pipeline.
+WARNING: [HLS 200-656] Deadlocks can occur since process client<512> is instantiated in a dataflow region with ap_ctrl_none or without start propagation and contains an auto-rewind pipeline.
+WARNING: [HLS 200-656] Deadlocks can occur since process txMetaData_handler is instantiated in a dataflow region with ap_ctrl_none or without start propagation and contains an auto-rewind pipeline.
+WARNING: [HLS 200-656] Deadlocks can occur since process closeConnection_handler is instantiated in a dataflow region with ap_ctrl_none or without start propagation and contains an auto-rewind pipeline.
+WARNING: [HLS 200-656] Deadlocks can occur since process server<512> is instantiated in a dataflow region with ap_ctrl_none or without start propagation and contains an auto-rewind pipeline.
+WARNING: [RTGEN 206-101] Port 'scatter/finishExperiment' has no fanin or fanout and is left dangling.
+               Please use C simulation to confirm this function argument can be read from or written to.
+INFO: [RTGEN 206-100] Finished creating RTL model for 'scatter'.
+INFO: [HLS 200-111] Finished Creating RTL model: CPU user time: 0.42 seconds. CPU system time: 0.03 seconds. Elapsed time: 0.9 seconds; current allocated memory: 784.273 MB.
+INFO: [RTMG 210-285] Implementing FIFO 'runExperiment_c_U(scatter_fifo_w1_d3_S)' using Shift Registers.
+INFO: [RTMG 210-285] Implementing FIFO 'useConn_c_U(scatter_fifo_w16_d3_S)' using Shift Registers.
+INFO: [RTMG 210-285] Implementing FIFO 'useIpAddr_c_U(scatter_fifo_w16_d3_S)' using Shift Registers.
+INFO: [RTMG 210-285] Implementing FIFO 'pkgWordCount_c_U(scatter_fifo_w16_d3_S)' using Shift Registers.
+INFO: [RTMG 210-285] Implementing FIFO 'regBasePort_c_U(scatter_fifo_w16_d3_S)' using Shift Registers.
+INFO: [RTMG 210-285] Implementing FIFO 'expectedRespInKB_c_U(scatter_fifo_w16_d3_S)' using Shift Registers.
+INFO: [RTMG 210-285] Implementing FIFO 'clientPkgNum_c_U(scatter_fifo_w32_d3_S)' using Shift Registers.
+INFO: [RTMG 210-285] Implementing FIFO 'regIpAddress0_c_U(scatter_fifo_w32_d3_S)' using Shift Registers.
+INFO: [RTMG 210-285] Implementing FIFO 'regIpAddress1_c_U(scatter_fifo_w32_d3_S)' using Shift Registers.
+==============================================================
+Vitis HLS - High-Level Synthesis from C, C++ and OpenCL v2022.1 (64-bit)
+Tool Version Limit: 2022.04
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+==============================================================
+==============================================================
+Vitis HLS - High-Level Synthesis from C, C++ and OpenCL v2022.1 (64-bit)
+Tool Version Limit: 2022.04
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+==============================================================

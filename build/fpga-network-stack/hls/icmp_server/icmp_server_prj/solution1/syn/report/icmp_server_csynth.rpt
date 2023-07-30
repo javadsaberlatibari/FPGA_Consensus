@@ -1,0 +1,148 @@
+
+
+================================================================
+== Vitis HLS Report for 'icmp_server'
+================================================================
+* Date:           Tue Jul 11 09:16:15 2023
+
+* Version:        2022.1 (Build 3526262 on Mon Apr 18 15:47:01 MDT 2022)
+* Project:        icmp_server_prj
+* Solution:       solution1 (Vivado IP Flow Target)
+* Product family: virtexuplus
+* Target device:  xcu280-fsvh2892-2L-e
+
+
+================================================================
+== Performance Estimates
+================================================================
++ Timing: 
+    * Summary: 
+    +--------+---------+----------+------------+
+    |  Clock |  Target | Estimated| Uncertainty|
+    +--------+---------+----------+------------+
+    |ap_clk  |  3.20 ns|  3.224 ns|     0.86 ns|
+    +--------+---------+----------+------------+
+
++ Latency: 
+    * Summary: 
+    +---------+---------+-----------+-----------+-----+-----+----------+
+    |  Latency (cycles) |   Latency (absolute)  |  Interval | Pipeline |
+    |   min   |   max   |    min    |    max    | min | max |   Type   |
+    +---------+---------+-----------+-----------+-----+-----+----------+
+    |        5|        5|  16.122 ns|  16.122 ns|    1|    1|  dataflow|
+    +---------+---------+-----------+-----------+-----+-----+----------+
+
+    + Detail: 
+        * Instance: 
+        +------------------------+---------------------+---------+---------+----------+----------+-----+-----+---------+
+        |                        |                     |  Latency (cycles) |  Latency (absolute) |  Interval | Pipeline|
+        |        Instance        |        Module       |   min   |   max   |    min   |    max   | min | max |   Type  |
+        +------------------------+---------------------+---------+---------+----------+----------+-----+-----+---------+
+        |check_icmp_checksum_U0  |check_icmp_checksum  |        1|        1|  3.200 ns|  3.200 ns|    1|    1|      yes|
+        |udpPortUnreachable_U0   |udpPortUnreachable   |        0|        0|      0 ns|      0 ns|    1|    1|      yes|
+        |udpAddIpHeader_U0       |udpAddIpHeader       |        0|        0|      0 ns|      0 ns|    1|    1|      yes|
+        |dropper_U0              |dropper              |        0|        0|      0 ns|      0 ns|    0|    0|       no|
+        |insertChecksum_U0       |insertChecksum       |        2|        2|  6.400 ns|  6.400 ns|    1|    1|      yes|
+        +------------------------+---------------------+---------+---------+----------+----------+-----+-----+---------+
+
+        * Loop: 
+        N/A
+
+
+
+================================================================
+== Utilization Estimates
+================================================================
+* Summary: 
++---------------------+---------+------+---------+---------+-----+
+|         Name        | BRAM_18K|  DSP |    FF   |   LUT   | URAM|
++---------------------+---------+------+---------+---------+-----+
+|DSP                  |        -|     -|        -|        -|    -|
+|Expression           |        -|     -|        -|        -|    -|
+|FIFO                 |        4|     -|     1730|     1166|    -|
+|Instance             |        -|     -|     1012|     2473|    -|
+|Memory               |        -|     -|        -|        -|    -|
+|Multiplexer          |        -|     -|        -|        -|    -|
+|Register             |        -|     -|        -|        -|    -|
++---------------------+---------+------+---------+---------+-----+
+|Total                |        4|     0|     2742|     3639|    0|
++---------------------+---------+------+---------+---------+-----+
+|Available SLR        |     1344|  3008|   869120|   434560|  320|
++---------------------+---------+------+---------+---------+-----+
+|Utilization SLR (%)  |       ~0|     0|       ~0|       ~0|    0|
++---------------------+---------+------+---------+---------+-----+
+|Available            |     4032|  9024|  2607360|  1303680|  960|
++---------------------+---------+------+---------+---------+-----+
+|Utilization (%)      |       ~0|     0|       ~0|       ~0|    0|
++---------------------+---------+------+---------+---------+-----+
+
++ Detail: 
+    * Instance: 
+    +------------------------+---------------------+---------+----+-----+------+-----+
+    |        Instance        |        Module       | BRAM_18K| DSP|  FF |  LUT | URAM|
+    +------------------------+---------------------+---------+----+-----+------+-----+
+    |check_icmp_checksum_U0  |check_icmp_checksum  |        0|   0|  401|  1159|    0|
+    |dropper_U0              |dropper              |        0|   0|    4|   132|    0|
+    |insertChecksum_U0       |insertChecksum       |        0|   0|  470|   375|    0|
+    |udpAddIpHeader_U0       |udpAddIpHeader       |        0|   0|  109|   215|    0|
+    |udpPortUnreachable_U0   |udpPortUnreachable   |        0|   0|   28|   592|    0|
+    +------------------------+---------------------+---------+----+-----+------+-----+
+    |Total                   |                     |        0|   0| 1012|  2473|    0|
+    +------------------------+---------------------+---------+----+-----+------+-----+
+
+    * DSP: 
+    N/A
+
+    * Memory: 
+    N/A
+
+    * FIFO: 
+    +-----------------------------------------------------------------------+---------+-----+----+-----+------+-----+---------+
+    |                                  Name                                 | BRAM_18K|  FF | LUT| URAM| Depth| Bits| Size:D*B|
+    +-----------------------------------------------------------------------+---------+-----+----+-----+------+-----+---------+
+    |icmp_server_stream_stream_stream_stream_axiWord_0_checksumStreams_1_U  |        0|    7|   0|    -|    16|   16|      256|
+    |icmp_server_stream_stream_stream_stream_axiWord_0_checksumStreams_U    |        0|    7|   0|    -|    16|   16|      256|
+    |icmp_server_stream_stream_stream_stream_axiWord_0_dataStreams_1_U      |        0|  401|   0|    -|    16|  128|     2048|
+    |icmp_server_stream_stream_stream_stream_axiWord_0_dataStreams_U        |        0|  401|   0|    -|    16|  128|     2048|
+    |packageBuffer1_U                                                       |        0|  406|   0|    -|    64|  128|     8192|
+    |udpPort2addIpHeader_data_U                                             |        4|  284|   0|    -|   192|  128|    24576|
+    |udpPort2addIpHeader_header_U                                           |        0|  218|   0|    -|    64|   64|     4096|
+    |validFifo_U                                                            |        0|    6|   0|    -|     8|    1|        8|
+    +-----------------------------------------------------------------------+---------+-----+----+-----+------+-----+---------+
+    |Total                                                                  |        4| 1730|   0|    0|   392|  609|    41480|
+    +-----------------------------------------------------------------------+---------+-----+----+-----+------+-----+---------+
+
+    * Expression: 
+    N/A
+
+    * Multiplexer: 
+    N/A
+
+    * Register: 
+    N/A
+
+
+
+================================================================
+== Interface
+================================================================
+* Summary: 
++---------------+-----+-----+--------------+--------------+--------------+
+|   RTL Ports   | Dir | Bits|   Protocol   | Source Object|    C Type    |
++---------------+-----+-----+--------------+--------------+--------------+
+|s_axis_TDATA   |   in|  128|          axis|        s_axis|       pointer|
+|s_axis_TVALID  |   in|    1|          axis|        s_axis|       pointer|
+|s_axis_TREADY  |  out|    1|          axis|        s_axis|       pointer|
+|udpIn_TDATA    |   in|  128|          axis|         udpIn|       pointer|
+|udpIn_TVALID   |   in|    1|          axis|         udpIn|       pointer|
+|udpIn_TREADY   |  out|    1|          axis|         udpIn|       pointer|
+|ttlIn_TDATA    |   in|  128|          axis|         ttlIn|       pointer|
+|ttlIn_TVALID   |   in|    1|          axis|         ttlIn|       pointer|
+|ttlIn_TREADY   |  out|    1|          axis|         ttlIn|       pointer|
+|m_axis_TDATA   |  out|  128|          axis|        m_axis|       pointer|
+|m_axis_TVALID  |  out|    1|          axis|        m_axis|       pointer|
+|m_axis_TREADY  |   in|    1|          axis|        m_axis|       pointer|
+|ap_clk         |   in|    1|  ap_ctrl_none|   icmp_server|  return value|
+|ap_rst_n       |   in|    1|  ap_ctrl_none|   icmp_server|  return value|
++---------------+-----+-----+--------------+--------------+--------------+
+

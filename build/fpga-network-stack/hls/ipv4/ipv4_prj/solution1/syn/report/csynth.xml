@@ -1,0 +1,1027 @@
+<profile>
+    <ReportVersion>
+        <Version>2022.1</Version>
+    </ReportVersion>
+    <UserAssignments>
+        <unit>ns</unit>
+        <ProductFamily>virtexuplus</ProductFamily>
+        <Part>xcu280-fsvh2892-2L-e</Part>
+        <TopModelName>ipv4_top</TopModelName>
+        <TargetClockPeriod>3.20</TargetClockPeriod>
+        <ClockUncertainty>0.86</ClockUncertainty>
+        <FlowTarget>vivado</FlowTarget>
+    </UserAssignments>
+    <PerformanceEstimates>
+        <PipelineType>dataflow</PipelineType>
+        <SummaryOfTimingAnalysis>
+            <unit>ns</unit>
+            <EstimatedClockPeriod>3.114</EstimatedClockPeriod>
+        </SummaryOfTimingAnalysis>
+        <SummaryOfOverallLatency>
+            <unit>clock cycles</unit>
+            <Best-caseLatency>4</Best-caseLatency>
+            <Average-caseLatency>4</Average-caseLatency>
+            <Worst-caseLatency>4</Worst-caseLatency>
+            <Best-caseRealTimeLatency>12.800 ns</Best-caseRealTimeLatency>
+            <Average-caseRealTimeLatency>12.800 ns</Average-caseRealTimeLatency>
+            <Worst-caseRealTimeLatency>12.800 ns</Worst-caseRealTimeLatency>
+            <DataflowPipelineThroughput>1</DataflowPipelineThroughput>
+            <Interval-min>1</Interval-min>
+            <Interval-max>1</Interval-max>
+        </SummaryOfOverallLatency>
+    </PerformanceEstimates>
+    <AreaEstimates>
+        <Resources>
+            <BRAM_18K>0</BRAM_18K>
+            <FF>14987</FF>
+            <LUT>5814</LUT>
+            <DSP>0</DSP>
+            <URAM>0</URAM>
+        </Resources>
+        <AvailableResources>
+            <BRAM_18K>4032</BRAM_18K>
+            <DSP>9024</DSP>
+            <FF>2607360</FF>
+            <LUT>1303680</LUT>
+            <URAM>960</URAM>
+        </AvailableResources>
+    </AreaEstimates>
+    <InterfaceSummary>
+        <RtlPorts>
+            <name>s_axis_rx_data_TDATA</name>
+            <Object>s_axis_rx_data</Object>
+            <Type>pointer</Type>
+            <Scope/>
+            <IOProtocol>axis</IOProtocol>
+            <IOConfig>register, both mode</IOConfig>
+            <Dir>in</Dir>
+            <Bits>1024</Bits>
+            <Attribute>data</Attribute>
+            <CType>int</CType>
+        </RtlPorts>
+        <RtlPorts>
+            <name>s_axis_rx_data_TVALID</name>
+            <Object>s_axis_rx_data</Object>
+            <Type>pointer</Type>
+            <Scope/>
+            <IOProtocol>axis</IOProtocol>
+            <IOConfig>register, both mode</IOConfig>
+            <Dir>in</Dir>
+            <Bits>1</Bits>
+            <Attribute>control</Attribute>
+            <CType>int</CType>
+        </RtlPorts>
+        <RtlPorts>
+            <name>s_axis_rx_data_TREADY</name>
+            <Object>s_axis_rx_data</Object>
+            <Type>pointer</Type>
+            <Scope/>
+            <IOProtocol>axis</IOProtocol>
+            <IOConfig>register, both mode</IOConfig>
+            <Dir>out</Dir>
+            <Bits>1</Bits>
+            <Attribute>control</Attribute>
+            <CType>int</CType>
+        </RtlPorts>
+        <RtlPorts>
+            <name>m_axis_rx_meta_TDATA</name>
+            <Object>m_axis_rx_meta</Object>
+            <Type>pointer</Type>
+            <Scope/>
+            <IOProtocol>axis</IOProtocol>
+            <IOConfig>register, both mode</IOConfig>
+            <Dir>out</Dir>
+            <Bits>64</Bits>
+            <Attribute>data</Attribute>
+            <CType>int</CType>
+        </RtlPorts>
+        <RtlPorts>
+            <name>m_axis_rx_meta_TVALID</name>
+            <Object>m_axis_rx_meta</Object>
+            <Type>pointer</Type>
+            <Scope/>
+            <IOProtocol>axis</IOProtocol>
+            <IOConfig>register, both mode</IOConfig>
+            <Dir>out</Dir>
+            <Bits>1</Bits>
+            <Attribute>control</Attribute>
+            <CType>int</CType>
+        </RtlPorts>
+        <RtlPorts>
+            <name>m_axis_rx_meta_TREADY</name>
+            <Object>m_axis_rx_meta</Object>
+            <Type>pointer</Type>
+            <Scope/>
+            <IOProtocol>axis</IOProtocol>
+            <IOConfig>register, both mode</IOConfig>
+            <Dir>in</Dir>
+            <Bits>1</Bits>
+            <Attribute>control</Attribute>
+            <CType>int</CType>
+        </RtlPorts>
+        <RtlPorts>
+            <name>m_axis_rx_data_TDATA</name>
+            <Object>m_axis_rx_data</Object>
+            <Type>pointer</Type>
+            <Scope/>
+            <IOProtocol>axis</IOProtocol>
+            <IOConfig>register, both mode</IOConfig>
+            <Dir>out</Dir>
+            <Bits>1024</Bits>
+            <Attribute>data</Attribute>
+            <CType>int</CType>
+        </RtlPorts>
+        <RtlPorts>
+            <name>m_axis_rx_data_TVALID</name>
+            <Object>m_axis_rx_data</Object>
+            <Type>pointer</Type>
+            <Scope/>
+            <IOProtocol>axis</IOProtocol>
+            <IOConfig>register, both mode</IOConfig>
+            <Dir>out</Dir>
+            <Bits>1</Bits>
+            <Attribute>control</Attribute>
+            <CType>int</CType>
+        </RtlPorts>
+        <RtlPorts>
+            <name>m_axis_rx_data_TREADY</name>
+            <Object>m_axis_rx_data</Object>
+            <Type>pointer</Type>
+            <Scope/>
+            <IOProtocol>axis</IOProtocol>
+            <IOConfig>register, both mode</IOConfig>
+            <Dir>in</Dir>
+            <Bits>1</Bits>
+            <Attribute>control</Attribute>
+            <CType>int</CType>
+        </RtlPorts>
+        <RtlPorts>
+            <name>s_axis_tx_meta_TDATA</name>
+            <Object>s_axis_tx_meta</Object>
+            <Type>pointer</Type>
+            <Scope/>
+            <IOProtocol>axis</IOProtocol>
+            <IOConfig>register, both mode</IOConfig>
+            <Dir>in</Dir>
+            <Bits>64</Bits>
+            <Attribute>data</Attribute>
+            <CType>int</CType>
+        </RtlPorts>
+        <RtlPorts>
+            <name>s_axis_tx_meta_TVALID</name>
+            <Object>s_axis_tx_meta</Object>
+            <Type>pointer</Type>
+            <Scope/>
+            <IOProtocol>axis</IOProtocol>
+            <IOConfig>register, both mode</IOConfig>
+            <Dir>in</Dir>
+            <Bits>1</Bits>
+            <Attribute>control</Attribute>
+            <CType>int</CType>
+        </RtlPorts>
+        <RtlPorts>
+            <name>s_axis_tx_meta_TREADY</name>
+            <Object>s_axis_tx_meta</Object>
+            <Type>pointer</Type>
+            <Scope/>
+            <IOProtocol>axis</IOProtocol>
+            <IOConfig>register, both mode</IOConfig>
+            <Dir>out</Dir>
+            <Bits>1</Bits>
+            <Attribute>control</Attribute>
+            <CType>int</CType>
+        </RtlPorts>
+        <RtlPorts>
+            <name>s_axis_tx_data_TDATA</name>
+            <Object>s_axis_tx_data</Object>
+            <Type>pointer</Type>
+            <Scope/>
+            <IOProtocol>axis</IOProtocol>
+            <IOConfig>register, both mode</IOConfig>
+            <Dir>in</Dir>
+            <Bits>1024</Bits>
+            <Attribute>data</Attribute>
+            <CType>int</CType>
+        </RtlPorts>
+        <RtlPorts>
+            <name>s_axis_tx_data_TVALID</name>
+            <Object>s_axis_tx_data</Object>
+            <Type>pointer</Type>
+            <Scope/>
+            <IOProtocol>axis</IOProtocol>
+            <IOConfig>register, both mode</IOConfig>
+            <Dir>in</Dir>
+            <Bits>1</Bits>
+            <Attribute>control</Attribute>
+            <CType>int</CType>
+        </RtlPorts>
+        <RtlPorts>
+            <name>s_axis_tx_data_TREADY</name>
+            <Object>s_axis_tx_data</Object>
+            <Type>pointer</Type>
+            <Scope/>
+            <IOProtocol>axis</IOProtocol>
+            <IOConfig>register, both mode</IOConfig>
+            <Dir>out</Dir>
+            <Bits>1</Bits>
+            <Attribute>control</Attribute>
+            <CType>int</CType>
+        </RtlPorts>
+        <RtlPorts>
+            <name>m_axis_tx_data_TDATA</name>
+            <Object>m_axis_tx_data</Object>
+            <Type>pointer</Type>
+            <Scope/>
+            <IOProtocol>axis</IOProtocol>
+            <IOConfig>register, both mode</IOConfig>
+            <Dir>out</Dir>
+            <Bits>1024</Bits>
+            <Attribute>data</Attribute>
+            <CType>int</CType>
+        </RtlPorts>
+        <RtlPorts>
+            <name>m_axis_tx_data_TVALID</name>
+            <Object>m_axis_tx_data</Object>
+            <Type>pointer</Type>
+            <Scope/>
+            <IOProtocol>axis</IOProtocol>
+            <IOConfig>register, both mode</IOConfig>
+            <Dir>out</Dir>
+            <Bits>1</Bits>
+            <Attribute>control</Attribute>
+            <CType>int</CType>
+        </RtlPorts>
+        <RtlPorts>
+            <name>m_axis_tx_data_TREADY</name>
+            <Object>m_axis_tx_data</Object>
+            <Type>pointer</Type>
+            <Scope/>
+            <IOProtocol>axis</IOProtocol>
+            <IOConfig>register, both mode</IOConfig>
+            <Dir>in</Dir>
+            <Bits>1</Bits>
+            <Attribute>control</Attribute>
+            <CType>int</CType>
+        </RtlPorts>
+        <RtlPorts>
+            <name>local_ipv4_address</name>
+            <Object>local_ipv4_address</Object>
+            <Type>scalar</Type>
+            <Scope/>
+            <IOProtocol>ap_stable</IOProtocol>
+            <IOConfig>register</IOConfig>
+            <Dir>in</Dir>
+            <Bits>32</Bits>
+            <Attribute>data</Attribute>
+            <CType>int</CType>
+        </RtlPorts>
+        <RtlPorts>
+            <name>protocol</name>
+            <Object>protocol</Object>
+            <Type>scalar</Type>
+            <Scope/>
+            <IOProtocol>ap_stable</IOProtocol>
+            <IOConfig>register</IOConfig>
+            <Dir>in</Dir>
+            <Bits>8</Bits>
+            <Attribute>data</Attribute>
+            <CType>int</CType>
+        </RtlPorts>
+        <RtlPorts>
+            <name>ap_clk</name>
+            <Object>ipv4_top</Object>
+            <Type>return value</Type>
+            <Scope/>
+            <IOProtocol>ap_ctrl_hs</IOProtocol>
+            <IOConfig/>
+            <Dir>in</Dir>
+            <Bits>1</Bits>
+            <Attribute>control</Attribute>
+        </RtlPorts>
+        <RtlPorts>
+            <name>ap_rst_n</name>
+            <Object>ipv4_top</Object>
+            <Type>return value</Type>
+            <Scope/>
+            <IOProtocol>ap_ctrl_hs</IOProtocol>
+            <IOConfig/>
+            <Dir>in</Dir>
+            <Bits>1</Bits>
+            <Attribute>control</Attribute>
+        </RtlPorts>
+        <RtlPorts>
+            <name>ap_start</name>
+            <Object>ipv4_top</Object>
+            <Type>return value</Type>
+            <Scope/>
+            <IOProtocol>ap_ctrl_hs</IOProtocol>
+            <IOConfig/>
+            <Dir>in</Dir>
+            <Bits>1</Bits>
+            <Attribute>control</Attribute>
+        </RtlPorts>
+        <RtlPorts>
+            <name>ap_done</name>
+            <Object>ipv4_top</Object>
+            <Type>return value</Type>
+            <Scope/>
+            <IOProtocol>ap_ctrl_hs</IOProtocol>
+            <IOConfig/>
+            <Dir>out</Dir>
+            <Bits>1</Bits>
+            <Attribute>control</Attribute>
+        </RtlPorts>
+        <RtlPorts>
+            <name>ap_ready</name>
+            <Object>ipv4_top</Object>
+            <Type>return value</Type>
+            <Scope/>
+            <IOProtocol>ap_ctrl_hs</IOProtocol>
+            <IOConfig/>
+            <Dir>out</Dir>
+            <Bits>1</Bits>
+            <Attribute>control</Attribute>
+        </RtlPorts>
+        <RtlPorts>
+            <name>ap_idle</name>
+            <Object>ipv4_top</Object>
+            <Type>return value</Type>
+            <Scope/>
+            <IOProtocol>ap_ctrl_hs</IOProtocol>
+            <IOConfig/>
+            <Dir>out</Dir>
+            <Bits>1</Bits>
+            <Attribute>control</Attribute>
+        </RtlPorts>
+    </InterfaceSummary>
+    <RTLDesignHierarchy>
+        <TopModule MAX_DEPTH="3">
+            <ModuleName>ipv4_top</ModuleName>
+            <InstancesList>
+                <Instance>
+                    <InstName>process_ipv4_512_U0</InstName>
+                    <ModuleName>process_ipv4_512_s</ModuleName>
+                    <IsCompInst>true</IsCompInst>
+                    <ID>116</ID>
+                    <BindInstances>add_ln67_fu_206_p2</BindInstances>
+                </Instance>
+                <Instance>
+                    <InstName>ipv4_lshiftWordByOctet_512_2_U0</InstName>
+                    <ModuleName>ipv4_lshiftWordByOctet_512_2_s</ModuleName>
+                    <IsCompInst>true</IsCompInst>
+                    <ID>136</ID>
+                </Instance>
+                <Instance>
+                    <InstName>ipv4_generate_ipv4_512_U0</InstName>
+                    <ModuleName>ipv4_generate_ipv4_512_s</ModuleName>
+                    <IsCompInst>true</IsCompInst>
+                    <ID>152</ID>
+                    <BindInstances>grp_fu_199_p2 grp_fu_199_p2 len_V_fu_347_p2</BindInstances>
+                </Instance>
+                <Instance>
+                    <InstName>ipv4_drop_optional_ip_header_512_U0</InstName>
+                    <ModuleName>ipv4_drop_optional_ip_header_512_s</ModuleName>
+                    <IsCompInst>true</IsCompInst>
+                    <ID>170</ID>
+                    <BindInstances>add_ln887_fu_341_p2</BindInstances>
+                </Instance>
+            </InstancesList>
+        </TopModule>
+    </RTLDesignHierarchy>
+    <ModuleInformation>
+        <Module>
+            <Name>process_ipv4_512_s</Name>
+            <PerformanceEstimates>
+                <SummaryOfTimingAnalysis>
+                    <TargetClockPeriod>3.20</TargetClockPeriod>
+                    <ClockUncertainty>0.86</ClockUncertainty>
+                    <TargetInitiationInterval>1</TargetInitiationInterval>
+                    <EstimatedClockPeriod>1.833</EstimatedClockPeriod>
+                </SummaryOfTimingAnalysis>
+                <SummaryOfOverallLatency>
+                    <Best-caseLatency>2</Best-caseLatency>
+                    <Average-caseLatency>2</Average-caseLatency>
+                    <Worst-caseLatency>2</Worst-caseLatency>
+                    <Best-caseRealTimeLatency>6.400 ns</Best-caseRealTimeLatency>
+                    <Average-caseRealTimeLatency>6.400 ns</Average-caseRealTimeLatency>
+                    <Worst-caseRealTimeLatency>6.400 ns</Worst-caseRealTimeLatency>
+                    <PipelineInitiationInterval>1</PipelineInitiationInterval>
+                    <PipelineDepth>3</PipelineDepth>
+                    <PipelineType>yes</PipelineType>
+                </SummaryOfOverallLatency>
+            </PerformanceEstimates>
+            <AreaEstimates>
+                <Resources>
+                    <FF>1370</FF>
+                    <AVAIL_FF>2607360</AVAIL_FF>
+                    <UTIL_FF>~0</UTIL_FF>
+                    <LUT>1427</LUT>
+                    <AVAIL_LUT>1303680</AVAIL_LUT>
+                    <UTIL_LUT>~0</UTIL_LUT>
+                    <BRAM_18K>0</BRAM_18K>
+                    <AVAIL_BRAM>4032</AVAIL_BRAM>
+                    <UTIL_BRAM>0</UTIL_BRAM>
+                    <DSP>0</DSP>
+                    <AVAIL_DSP>9024</AVAIL_DSP>
+                    <UTIL_DSP>0</UTIL_DSP>
+                    <URAM>0</URAM>
+                    <AVAIL_URAM>960</AVAIL_URAM>
+                    <UTIL_URAM>0</UTIL_URAM>
+                </Resources>
+            </AreaEstimates>
+            <BindNodes>
+                <BindNode BINDTYPE="op" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_op add" DSP="0" ID="" IMPL="fabric" LATENCY="0" LOOP="" OPTYPE="add" PRAGMA="" RTLNAME="add_ln67_fu_206_p2" SOURCE="/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/ipv4/../packet.hpp:67" URAM="0" VARIABLE="add_ln67"/>
+            </BindNodes>
+        </Module>
+        <Module>
+            <Name>ipv4_drop_optional_ip_header_512_s</Name>
+            <PerformanceEstimates>
+                <SummaryOfTimingAnalysis>
+                    <TargetClockPeriod>3.20</TargetClockPeriod>
+                    <ClockUncertainty>0.86</ClockUncertainty>
+                    <TargetInitiationInterval>1</TargetInitiationInterval>
+                    <EstimatedClockPeriod>3.114</EstimatedClockPeriod>
+                </SummaryOfTimingAnalysis>
+                <SummaryOfOverallLatency>
+                    <Best-caseLatency>2</Best-caseLatency>
+                    <Average-caseLatency>2</Average-caseLatency>
+                    <Worst-caseLatency>2</Worst-caseLatency>
+                    <Best-caseRealTimeLatency>6.400 ns</Best-caseRealTimeLatency>
+                    <Average-caseRealTimeLatency>6.400 ns</Average-caseRealTimeLatency>
+                    <Worst-caseRealTimeLatency>6.400 ns</Worst-caseRealTimeLatency>
+                    <PipelineInitiationInterval>1</PipelineInitiationInterval>
+                    <PipelineDepth>3</PipelineDepth>
+                    <PipelineType>yes</PipelineType>
+                </SummaryOfOverallLatency>
+            </PerformanceEstimates>
+            <AreaEstimates>
+                <Resources>
+                    <FF>3957</FF>
+                    <AVAIL_FF>2607360</AVAIL_FF>
+                    <UTIL_FF>~0</UTIL_FF>
+                    <LUT>242</LUT>
+                    <AVAIL_LUT>1303680</AVAIL_LUT>
+                    <UTIL_LUT>~0</UTIL_LUT>
+                    <BRAM_18K>0</BRAM_18K>
+                    <AVAIL_BRAM>4032</AVAIL_BRAM>
+                    <UTIL_BRAM>0</UTIL_BRAM>
+                    <DSP>0</DSP>
+                    <AVAIL_DSP>9024</AVAIL_DSP>
+                    <UTIL_DSP>0</UTIL_DSP>
+                    <URAM>0</URAM>
+                    <AVAIL_URAM>960</AVAIL_URAM>
+                    <UTIL_URAM>0</UTIL_URAM>
+                </Resources>
+            </AreaEstimates>
+            <BindNodes>
+                <BindNode BINDTYPE="op" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_op add" DSP="0" ID="" IMPL="fabric" LATENCY="0" LOOP="" OPTYPE="add" PRAGMA="" RTLNAME="add_ln887_fu_341_p2" SOURCE="/tools/Xilinx/Vitis_HLS/2022.1/common/technology/autopilot/ap_int_base.h:887" URAM="0" VARIABLE="add_ln887"/>
+            </BindNodes>
+        </Module>
+        <Module>
+            <Name>ipv4_lshiftWordByOctet_512_2_s</Name>
+            <PerformanceEstimates>
+                <SummaryOfTimingAnalysis>
+                    <TargetClockPeriod>3.20</TargetClockPeriod>
+                    <ClockUncertainty>0.86</ClockUncertainty>
+                    <TargetInitiationInterval>1</TargetInitiationInterval>
+                    <EstimatedClockPeriod>1.746</EstimatedClockPeriod>
+                </SummaryOfTimingAnalysis>
+                <SummaryOfOverallLatency>
+                    <Best-caseLatency>1</Best-caseLatency>
+                    <Average-caseLatency>1</Average-caseLatency>
+                    <Worst-caseLatency>1</Worst-caseLatency>
+                    <Best-caseRealTimeLatency>3.200 ns</Best-caseRealTimeLatency>
+                    <Average-caseRealTimeLatency>3.200 ns</Average-caseRealTimeLatency>
+                    <Worst-caseRealTimeLatency>3.200 ns</Worst-caseRealTimeLatency>
+                    <PipelineInitiationInterval>1</PipelineInitiationInterval>
+                    <PipelineDepth>2</PipelineDepth>
+                    <PipelineType>yes</PipelineType>
+                </SummaryOfOverallLatency>
+            </PerformanceEstimates>
+            <AreaEstimates>
+                <Resources>
+                    <FF>1161</FF>
+                    <AVAIL_FF>2607360</AVAIL_FF>
+                    <UTIL_FF>~0</UTIL_FF>
+                    <LUT>593</LUT>
+                    <AVAIL_LUT>1303680</AVAIL_LUT>
+                    <UTIL_LUT>~0</UTIL_LUT>
+                    <BRAM_18K>0</BRAM_18K>
+                    <AVAIL_BRAM>4032</AVAIL_BRAM>
+                    <UTIL_BRAM>0</UTIL_BRAM>
+                    <DSP>0</DSP>
+                    <AVAIL_DSP>9024</AVAIL_DSP>
+                    <UTIL_DSP>0</UTIL_DSP>
+                    <URAM>0</URAM>
+                    <AVAIL_URAM>960</AVAIL_URAM>
+                    <UTIL_URAM>0</UTIL_URAM>
+                </Resources>
+            </AreaEstimates>
+        </Module>
+        <Module>
+            <Name>ipv4_generate_ipv4_512_s</Name>
+            <PerformanceEstimates>
+                <SummaryOfTimingAnalysis>
+                    <TargetClockPeriod>3.20</TargetClockPeriod>
+                    <ClockUncertainty>0.86</ClockUncertainty>
+                    <TargetInitiationInterval>1</TargetInitiationInterval>
+                    <EstimatedClockPeriod>1.866</EstimatedClockPeriod>
+                </SummaryOfTimingAnalysis>
+                <SummaryOfOverallLatency>
+                    <Best-caseLatency>2</Best-caseLatency>
+                    <Average-caseLatency>2</Average-caseLatency>
+                    <Worst-caseLatency>2</Worst-caseLatency>
+                    <Best-caseRealTimeLatency>6.400 ns</Best-caseRealTimeLatency>
+                    <Average-caseRealTimeLatency>6.400 ns</Average-caseRealTimeLatency>
+                    <Worst-caseRealTimeLatency>6.400 ns</Worst-caseRealTimeLatency>
+                    <PipelineInitiationInterval>1</PipelineInitiationInterval>
+                    <PipelineDepth>3</PipelineDepth>
+                    <PipelineType>yes</PipelineType>
+                </SummaryOfOverallLatency>
+            </PerformanceEstimates>
+            <AreaEstimates>
+                <Resources>
+                    <FF>2303</FF>
+                    <AVAIL_FF>2607360</AVAIL_FF>
+                    <UTIL_FF>~0</UTIL_FF>
+                    <LUT>232</LUT>
+                    <AVAIL_LUT>1303680</AVAIL_LUT>
+                    <UTIL_LUT>~0</UTIL_LUT>
+                    <BRAM_18K>0</BRAM_18K>
+                    <AVAIL_BRAM>4032</AVAIL_BRAM>
+                    <UTIL_BRAM>0</UTIL_BRAM>
+                    <DSP>0</DSP>
+                    <AVAIL_DSP>9024</AVAIL_DSP>
+                    <UTIL_DSP>0</UTIL_DSP>
+                    <URAM>0</URAM>
+                    <AVAIL_URAM>960</AVAIL_URAM>
+                    <UTIL_URAM>0</UTIL_URAM>
+                </Resources>
+            </AreaEstimates>
+            <BindNodes>
+                <BindNode BINDTYPE="op" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_op add" DSP="0" ID="" IMPL="fabric" LATENCY="0" LOOP="" OPTYPE="add" PRAGMA="" RTLNAME="grp_fu_199_p2" SOURCE="/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/ipv4/../packet.hpp:85" URAM="0" VARIABLE="add_ln85_1"/>
+                <BindNode BINDTYPE="op" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_op add" DSP="0" ID="" IMPL="fabric" LATENCY="0" LOOP="" OPTYPE="add" PRAGMA="" RTLNAME="grp_fu_199_p2" SOURCE="/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/ipv4/../packet.hpp:85" URAM="0" VARIABLE="add_ln85"/>
+                <BindNode BINDTYPE="op" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_op add" DSP="0" ID="" IMPL="fabric" LATENCY="0" LOOP="" OPTYPE="add" PRAGMA="" RTLNAME="len_V_fu_347_p2" SOURCE="/tools/Xilinx/Vitis_HLS/2022.1/common/technology/autopilot/ap_int_base.h:232" URAM="0" VARIABLE="len_V"/>
+            </BindNodes>
+        </Module>
+        <Module>
+            <Name>ipv4_top</Name>
+            <PerformanceEstimates>
+                <SummaryOfTimingAnalysis>
+                    <TargetClockPeriod>3.20</TargetClockPeriod>
+                    <ClockUncertainty>0.86</ClockUncertainty>
+                    <EstimatedClockPeriod>3.114</EstimatedClockPeriod>
+                </SummaryOfTimingAnalysis>
+                <SummaryOfOverallLatency>
+                    <Best-caseLatency>4</Best-caseLatency>
+                    <Average-caseLatency>4</Average-caseLatency>
+                    <Worst-caseLatency>4</Worst-caseLatency>
+                    <Best-caseRealTimeLatency>12.800 ns</Best-caseRealTimeLatency>
+                    <Average-caseRealTimeLatency>12.800 ns</Average-caseRealTimeLatency>
+                    <Worst-caseRealTimeLatency>12.800 ns</Worst-caseRealTimeLatency>
+                    <DataflowPipelineThroughput>1</DataflowPipelineThroughput>
+                    <PipelineInitiationInterval>1</PipelineInitiationInterval>
+                    <PipelineType>dataflow</PipelineType>
+                </SummaryOfOverallLatency>
+            </PerformanceEstimates>
+            <AreaEstimates>
+                <Resources>
+                    <BRAM_18K>0</BRAM_18K>
+                    <AVAIL_BRAM>4032</AVAIL_BRAM>
+                    <UTIL_BRAM>0</UTIL_BRAM>
+                    <FF>14987</FF>
+                    <AVAIL_FF>2607360</AVAIL_FF>
+                    <UTIL_FF>~0</UTIL_FF>
+                    <LUT>5814</LUT>
+                    <AVAIL_LUT>1303680</AVAIL_LUT>
+                    <UTIL_LUT>~0</UTIL_LUT>
+                    <DSP>0</DSP>
+                    <AVAIL_DSP>9024</AVAIL_DSP>
+                    <UTIL_DSP>0</UTIL_DSP>
+                    <URAM>0</URAM>
+                    <AVAIL_URAM>960</AVAIL_URAM>
+                    <UTIL_URAM>0</UTIL_URAM>
+                </Resources>
+            </AreaEstimates>
+        </Module>
+    </ModuleInformation>
+    <FIFOInformation>
+        <FIFOInst>
+            <Name>rx_process2dropFifo_U</Name>
+            <ParentInst/>
+            <StaticDepth>8</StaticDepth>
+            <RuntimeDepth>mOutPtr</RuntimeDepth>
+            <InterfaceList>
+                <Interface>clk</Interface>
+                <Interface>reset</Interface>
+                <Interface>if_write</Interface>
+                <Interface>if_din</Interface>
+                <Interface>if_full_n</Interface>
+                <Interface>if_read</Interface>
+                <Interface>if_empty_n</Interface>
+            </InterfaceList>
+        </FIFOInst>
+        <FIFOInst>
+            <Name>rx_process2dropLengthFifo_U</Name>
+            <ParentInst/>
+            <StaticDepth>2</StaticDepth>
+            <RuntimeDepth>mOutPtr</RuntimeDepth>
+            <InterfaceList>
+                <Interface>clk</Interface>
+                <Interface>reset</Interface>
+                <Interface>if_write</Interface>
+                <Interface>if_din</Interface>
+                <Interface>if_full_n</Interface>
+                <Interface>if_read</Interface>
+                <Interface>if_empty_n</Interface>
+            </InterfaceList>
+        </FIFOInst>
+        <FIFOInst>
+            <Name>tx_shift2ipv4Fifo_U</Name>
+            <ParentInst/>
+            <StaticDepth>8</StaticDepth>
+            <RuntimeDepth>mOutPtr</RuntimeDepth>
+            <InterfaceList>
+                <Interface>clk</Interface>
+                <Interface>reset</Interface>
+                <Interface>if_write</Interface>
+                <Interface>if_din</Interface>
+                <Interface>if_full_n</Interface>
+                <Interface>if_read</Interface>
+                <Interface>if_empty_n</Interface>
+            </InterfaceList>
+        </FIFOInst>
+    </FIFOInformation>
+    <UserConfigCommands>
+        <config_op>
+            <ENTRY impl="all mul" latency="-1 mul" op="mul" precision="mul standard"/>
+            <ENTRY impl="all add" latency="-1 add" op="add" precision="add standard"/>
+            <ENTRY impl="all sub" latency="-1 sub" op="sub" precision="sub standard"/>
+            <ENTRY impl="all fadd" latency="-1 fadd" op="fadd" precision="fadd standard"/>
+            <ENTRY impl="all fsub" latency="-1 fsub" op="fsub" precision="fsub standard"/>
+            <ENTRY impl="all fdiv" latency="-1 fdiv" op="fdiv" precision="fdiv standard"/>
+            <ENTRY impl="all fexp" latency="-1 fexp" op="fexp" precision="fexp standard"/>
+            <ENTRY impl="all flog" latency="-1 flog" op="flog" precision="flog standard"/>
+            <ENTRY impl="all fmul" latency="-1 fmul" op="fmul" precision="fmul standard"/>
+            <ENTRY impl="all frsqrt" latency="-1 frsqrt" op="frsqrt" precision="frsqrt standard"/>
+            <ENTRY impl="all frecip" latency="-1 frecip" op="frecip" precision="frecip standard"/>
+            <ENTRY impl="all fsqrt" latency="-1 fsqrt" op="fsqrt" precision="fsqrt standard"/>
+            <ENTRY impl="all dadd" latency="-1 dadd" op="dadd" precision="dadd standard"/>
+            <ENTRY impl="all dsub" latency="-1 dsub" op="dsub" precision="dsub standard"/>
+            <ENTRY impl="all ddiv" latency="-1 ddiv" op="ddiv" precision="ddiv standard"/>
+            <ENTRY impl="all dexp" latency="-1 dexp" op="dexp" precision="dexp standard"/>
+            <ENTRY impl="all dlog" latency="-1 dlog" op="dlog" precision="dlog standard"/>
+            <ENTRY impl="all dmul" latency="-1 dmul" op="dmul" precision="dmul standard"/>
+            <ENTRY impl="all drsqrt" latency="-1 drsqrt" op="drsqrt" precision="drsqrt standard"/>
+            <ENTRY impl="all drecip" latency="-1 drecip" op="drecip" precision="drecip standard"/>
+            <ENTRY impl="all dsqrt" latency="-1 dsqrt" op="dsqrt" precision="dsqrt standard"/>
+            <ENTRY impl="all hadd" latency="-1 hadd" op="hadd" precision="hadd standard"/>
+            <ENTRY impl="all hsub" latency="-1 hsub" op="hsub" precision="hsub standard"/>
+            <ENTRY impl="all hdiv" latency="-1 hdiv" op="hdiv" precision="hdiv standard"/>
+            <ENTRY impl="all hmul" latency="-1 hmul" op="hmul" precision="hmul standard"/>
+            <ENTRY impl="all hsqrt" latency="-1 hsqrt" op="hsqrt" precision="hsqrt standard"/>
+            <ENTRY impl="all facc" latency="-1 facc" op="facc" precision="facc standard"/>
+            <ENTRY impl="all fmacc" latency="-1 fmacc" op="fmacc" precision="fmacc standard"/>
+            <ENTRY impl="all fmadd" latency="-1 fmadd" op="fmadd" precision="fmadd standard"/>
+        </config_op>
+        <config_storage>
+            <ENTRY auto_srl_max_bits="1024 fifo" auto_srl_max_depth="2 fifo" impl="autosrl fifo" type="fifo"/>
+        </config_storage>
+    </UserConfigCommands>
+    <Args>
+        <Arg ArgName="s_axis_rx_data" index="0" direction="in" srcType="stream&lt;net_axis&lt;512&gt;, 0&gt;&amp;" srcSize="1024">
+            <hwRefs>
+                <hwRef type="interface" interface="s_axis_rx_data" name="" usage="data" direction="in"/>
+            </hwRefs>
+        </Arg>
+        <Arg ArgName="m_axis_rx_meta" index="1" direction="out" srcType="stream&lt;ipv4Meta, 0&gt;&amp;" srcSize="64">
+            <hwRefs>
+                <hwRef type="interface" interface="m_axis_rx_meta" name="" usage="data" direction="out"/>
+            </hwRefs>
+        </Arg>
+        <Arg ArgName="m_axis_rx_data" index="2" direction="out" srcType="stream&lt;net_axis&lt;512&gt;, 0&gt;&amp;" srcSize="1024">
+            <hwRefs>
+                <hwRef type="interface" interface="m_axis_rx_data" name="" usage="data" direction="out"/>
+            </hwRefs>
+        </Arg>
+        <Arg ArgName="s_axis_tx_meta" index="3" direction="in" srcType="stream&lt;ipv4Meta, 0&gt;&amp;" srcSize="64">
+            <hwRefs>
+                <hwRef type="interface" interface="s_axis_tx_meta" name="" usage="data" direction="in"/>
+            </hwRefs>
+        </Arg>
+        <Arg ArgName="s_axis_tx_data" index="4" direction="in" srcType="stream&lt;net_axis&lt;512&gt;, 0&gt;&amp;" srcSize="1024">
+            <hwRefs>
+                <hwRef type="interface" interface="s_axis_tx_data" name="" usage="data" direction="in"/>
+            </hwRefs>
+        </Arg>
+        <Arg ArgName="m_axis_tx_data" index="5" direction="out" srcType="stream&lt;net_axis&lt;512&gt;, 0&gt;&amp;" srcSize="1024">
+            <hwRefs>
+                <hwRef type="interface" interface="m_axis_tx_data" name="" usage="data" direction="out"/>
+            </hwRefs>
+        </Arg>
+        <Arg ArgName="local_ipv4_address" index="6" direction="in" srcType="ap_uint&lt;32&gt;" srcSize="32">
+            <hwRefs>
+                <hwRef type="port" interface="local_ipv4_address" name="local_ipv4_address" usage="data" direction="in"/>
+            </hwRefs>
+        </Arg>
+        <Arg ArgName="protocol" index="7" direction="in" srcType="ap_uint&lt;8&gt;" srcSize="8">
+            <hwRefs>
+                <hwRef type="port" interface="protocol" name="protocol" usage="data" direction="in"/>
+            </hwRefs>
+        </Arg>
+    </Args>
+    <Interfaces>
+        <Interface InterfaceName="s_axis_rx_data" type="axi4stream" busTypeName="axis" mode="slave" dataWidth="1024" portPrefix="s_axis_rx_data_">
+            <ports>
+                <port>s_axis_rx_data_TDATA</port>
+                <port>s_axis_rx_data_TREADY</port>
+                <port>s_axis_rx_data_TVALID</port>
+            </ports>
+            <constraints>
+                <constraint constraint_type="pragma interface" mode="axis" register_option="1" register_mode="both" argName="s_axis_rx_data"/>
+            </constraints>
+        </Interface>
+        <Interface InterfaceName="m_axis_rx_meta" type="axi4stream" busTypeName="axis" mode="master" dataWidth="64" portPrefix="m_axis_rx_meta_">
+            <ports>
+                <port>m_axis_rx_meta_TDATA</port>
+                <port>m_axis_rx_meta_TREADY</port>
+                <port>m_axis_rx_meta_TVALID</port>
+            </ports>
+            <constraints>
+                <constraint constraint_type="pragma interface" mode="axis" register_option="1" register_mode="both" argName="m_axis_rx_meta"/>
+            </constraints>
+        </Interface>
+        <Interface InterfaceName="m_axis_rx_data" type="axi4stream" busTypeName="axis" mode="master" dataWidth="1024" portPrefix="m_axis_rx_data_">
+            <ports>
+                <port>m_axis_rx_data_TDATA</port>
+                <port>m_axis_rx_data_TREADY</port>
+                <port>m_axis_rx_data_TVALID</port>
+            </ports>
+            <constraints>
+                <constraint constraint_type="pragma interface" mode="axis" register_option="1" register_mode="both" argName="m_axis_rx_data"/>
+            </constraints>
+        </Interface>
+        <Interface InterfaceName="s_axis_tx_meta" type="axi4stream" busTypeName="axis" mode="slave" dataWidth="64" portPrefix="s_axis_tx_meta_">
+            <ports>
+                <port>s_axis_tx_meta_TDATA</port>
+                <port>s_axis_tx_meta_TREADY</port>
+                <port>s_axis_tx_meta_TVALID</port>
+            </ports>
+            <constraints>
+                <constraint constraint_type="pragma interface" mode="axis" register_option="1" register_mode="both" argName="s_axis_tx_meta"/>
+            </constraints>
+        </Interface>
+        <Interface InterfaceName="s_axis_tx_data" type="axi4stream" busTypeName="axis" mode="slave" dataWidth="1024" portPrefix="s_axis_tx_data_">
+            <ports>
+                <port>s_axis_tx_data_TDATA</port>
+                <port>s_axis_tx_data_TREADY</port>
+                <port>s_axis_tx_data_TVALID</port>
+            </ports>
+            <constraints>
+                <constraint constraint_type="pragma interface" mode="axis" register_option="1" register_mode="both" argName="s_axis_tx_data"/>
+            </constraints>
+        </Interface>
+        <Interface InterfaceName="m_axis_tx_data" type="axi4stream" busTypeName="axis" mode="master" dataWidth="1024" portPrefix="m_axis_tx_data_">
+            <ports>
+                <port>m_axis_tx_data_TDATA</port>
+                <port>m_axis_tx_data_TREADY</port>
+                <port>m_axis_tx_data_TVALID</port>
+            </ports>
+            <constraints>
+                <constraint constraint_type="pragma interface" mode="axis" register_option="1" register_mode="both" argName="m_axis_tx_data"/>
+            </constraints>
+        </Interface>
+        <Interface InterfaceName="local_ipv4_address" type="data" busTypeName="data" protocol="ap_stable" mode="slave" dataWidth="32">
+            <portMaps>
+                <portMap portMapName="local_ipv4_address">DATA</portMap>
+            </portMaps>
+            <ports>
+                <port>local_ipv4_address</port>
+            </ports>
+            <constraints>
+                <constraint constraint_type="pragma interface" mode="ap_stable" register_option="1" argName="local_ipv4_address"/>
+            </constraints>
+        </Interface>
+        <Interface InterfaceName="protocol" type="data" busTypeName="data" protocol="ap_stable" mode="slave" dataWidth="8">
+            <portMaps>
+                <portMap portMapName="protocol">DATA</portMap>
+            </portMaps>
+            <ports>
+                <port>protocol</port>
+            </ports>
+            <constraints>
+                <constraint constraint_type="pragma interface" mode="ap_stable" register_option="1" argName="protocol"/>
+            </constraints>
+        </Interface>
+        <Interface InterfaceName="ap_clk" type="clock" busTypeName="clock" mode="slave">
+            <busParams>
+                <busParam busParamName="ASSOCIATED_BUSIF">s_axis_rx_data:m_axis_rx_meta:m_axis_rx_data:s_axis_tx_meta:s_axis_tx_data:m_axis_tx_data</busParam>
+                <busParam busParamName="ASSOCIATED_RESET">ap_rst_n</busParam>
+            </busParams>
+            <portMaps>
+                <portMap portMapName="ap_clk">CLK</portMap>
+            </portMaps>
+            <ports>
+                <port>ap_clk</port>
+            </ports>
+        </Interface>
+        <Interface InterfaceName="ap_rst_n" type="reset" busTypeName="reset" mode="slave">
+            <busParams>
+                <busParam busParamName="POLARITY">ACTIVE_LOW</busParam>
+            </busParams>
+            <portMaps>
+                <portMap portMapName="ap_rst_n">RST</portMap>
+            </portMaps>
+            <ports>
+                <port>ap_rst_n</port>
+            </ports>
+        </Interface>
+        <Interface InterfaceName="ap_ctrl" type="ap_ctrl" busTypeName="acc_handshake" mode="slave">
+            <portMaps>
+                <portMap portMapName="ap_start">start</portMap>
+                <portMap portMapName="ap_done">done</portMap>
+                <portMap portMapName="ap_ready">ready</portMap>
+                <portMap portMapName="ap_idle">idle</portMap>
+            </portMaps>
+            <ports>
+                <port>ap_done</port>
+                <port>ap_idle</port>
+                <port>ap_ready</port>
+                <port>ap_start</port>
+            </ports>
+        </Interface>
+    </Interfaces>
+    <ReportHWInterface>
+        <section name="HW Interfaces" level="0">
+            <item name="AXIS">
+                <table isCollapsed="0">
+                    <keys size="5">Interface, Register Mode, TDATA, TREADY, TVALID</keys>
+                    <column name="m_axis_rx_data">both, 1024, 1, 1, , , , , , , </column>
+                    <column name="m_axis_rx_meta">both, 64, 1, 1, , , , , , , </column>
+                    <column name="m_axis_tx_data">both, 1024, 1, 1, , , , , , , </column>
+                    <column name="s_axis_rx_data">both, 1024, 1, 1, , , , , , , </column>
+                    <column name="s_axis_tx_data">both, 1024, 1, 1, , , , , , , </column>
+                    <column name="s_axis_tx_meta">both, 64, 1, 1, , , , , , , </column>
+                </table>
+            </item>
+            <item name="REGISTER">
+                <table isCollapsed="0">
+                    <keys size="3">Interface, Mode, Bitwidth</keys>
+                    <column name="local_ipv4_address">ap_stable, 32, , </column>
+                    <column name="protocol">ap_stable, 8, , </column>
+                </table>
+            </item>
+            <item name="TOP LEVEL CONTROL">
+                <table isCollapsed="0">
+                    <keys size="3">Interface, Type, Ports</keys>
+                    <column name="ap_clk">clock, ap_clk, </column>
+                    <column name="ap_rst_n">reset, ap_rst_n, </column>
+                    <column name="ap_ctrl">ap_ctrl_hs, ap_done ap_idle ap_ready ap_start, </column>
+                </table>
+            </item>
+        </section>
+    </ReportHWInterface>
+    <ReportSWInterface>
+        <section name="SW I/O Information" level="0">
+            <item name="Top Function Arguments">
+                <table isCollapsed="1">
+                    <keys size="3">Argument, Direction, Datatype</keys>
+                    <column name="s_axis_rx_data">in, stream&lt;net_axis&lt;512&gt; 0&gt;&amp;</column>
+                    <column name="m_axis_rx_meta">out, stream&lt;ipv4Meta 0&gt;&amp;</column>
+                    <column name="m_axis_rx_data">out, stream&lt;net_axis&lt;512&gt; 0&gt;&amp;</column>
+                    <column name="s_axis_tx_meta">in, stream&lt;ipv4Meta 0&gt;&amp;</column>
+                    <column name="s_axis_tx_data">in, stream&lt;net_axis&lt;512&gt; 0&gt;&amp;</column>
+                    <column name="m_axis_tx_data">out, stream&lt;net_axis&lt;512&gt; 0&gt;&amp;</column>
+                    <column name="local_ipv4_address">in, ap_uint&lt;32&gt;</column>
+                    <column name="protocol">in, ap_uint&lt;8&gt;</column>
+                </table>
+            </item>
+            <item name="SW-to-HW Mapping">
+                <table isCollapsed="1">
+                    <keys size="3">Argument, HW Interface, HW Type</keys>
+                    <column name="s_axis_rx_data">s_axis_rx_data, interface, , </column>
+                    <column name="m_axis_rx_meta">m_axis_rx_meta, interface, , </column>
+                    <column name="m_axis_rx_data">m_axis_rx_data, interface, , </column>
+                    <column name="s_axis_tx_meta">s_axis_tx_meta, interface, , </column>
+                    <column name="s_axis_tx_data">s_axis_tx_data, interface, , </column>
+                    <column name="m_axis_tx_data">m_axis_tx_data, interface, , </column>
+                    <column name="local_ipv4_address">local_ipv4_address, port, , </column>
+                    <column name="protocol">protocol, port, , </column>
+                </table>
+            </item>
+        </section>
+    </ReportSWInterface>
+    <ReportBurst>
+        <section name="M_AXI Burst Information" level="0" HEADER_NOTE="Note: All burst requests might be further partitioned into multiple requests during RTL generation based on max_read_burst_length or max_write_burst_length settings."/>
+    </ReportBurst>
+    <PragmaReport>
+        <Pragma type="unroll" location="../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/axi_utils.hpp:78" status="valid" parentFunction="reverse" variable="" isDirective="0" options=""/>
+        <Pragma type="unroll" location="../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/axi_utils.hpp:90" status="valid" parentFunction="reverse_bits" variable="" isDirective="0" options=""/>
+        <Pragma type="inline" location="../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/axi_utils.hpp:259" status="valid" parentFunction="increasestreamwidth" variable="" isDirective="0" options=""/>
+        <Pragma type="inline" location="../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/axi_utils.hpp:289" status="valid" parentFunction="reducestreamwidth" variable="" isDirective="0" options=""/>
+        <Pragma type="pipeline" location="../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/axi_utils.hpp:352" status="valid" parentFunction="convertstreamwidth" variable="" isDirective="0" options="II=1"/>
+        <Pragma type="inline" location="../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/axi_utils.hpp:353" status="valid" parentFunction="convertstreamwidth" variable="" isDirective="0" options="off"/>
+        <Pragma type="pipeline" location="../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/axi_utils.hpp:364" status="valid" parentFunction="convertstreamwidth" variable="" isDirective="0" options="II=1"/>
+        <Pragma type="inline" location="../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/axi_utils.hpp:365" status="valid" parentFunction="convertstreamwidth" variable="" isDirective="0" options="off"/>
+        <Pragma type="pipeline" location="../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/axi_utils.hpp:373" status="valid" parentFunction="convertstreamwidth" variable="" isDirective="0" options="II=1"/>
+        <Pragma type="inline" location="../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/axi_utils.hpp:374" status="valid" parentFunction="convertstreamwidth" variable="" isDirective="0" options="off"/>
+        <Pragma type="pipeline" location="../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/axi_utils.hpp:382" status="valid" parentFunction="convertstreamwidth" variable="" isDirective="0" options="II=1"/>
+        <Pragma type="inline" location="../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/axi_utils.hpp:383" status="valid" parentFunction="convertstreamwidth" variable="" isDirective="0" options="off"/>
+        <Pragma type="pipeline" location="../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/axi_utils.hpp:391" status="valid" parentFunction="convertstreamwidth" variable="" isDirective="0" options="II=1"/>
+        <Pragma type="inline" location="../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/axi_utils.hpp:392" status="valid" parentFunction="convertstreamwidth" variable="" isDirective="0" options="off"/>
+        <Pragma type="pipeline" location="../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/axi_utils.hpp:400" status="valid" parentFunction="convertstreamwidth" variable="" isDirective="0" options="II=1"/>
+        <Pragma type="inline" location="../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/axi_utils.hpp:401" status="valid" parentFunction="convertstreamwidth" variable="" isDirective="0" options="off"/>
+        <Pragma type="pipeline" location="../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/axi_utils.hpp:409" status="valid" parentFunction="convertstreamwidth" variable="" isDirective="0" options="II=1"/>
+        <Pragma type="inline" location="../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/axi_utils.hpp:410" status="valid" parentFunction="convertstreamwidth" variable="" isDirective="0" options="off"/>
+        <Pragma type="inline" location="../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/axi_utils.hpp:434" status="valid" parentFunction="rshiftwordbyoctet" variable="" isDirective="0" options="off"/>
+        <Pragma type="pipeline" location="../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/axi_utils.hpp:435" status="valid" parentFunction="rshiftwordbyoctet" variable="" isDirective="0" options="II=1"/>
+        <Pragma type="inline" location="../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/axi_utils.hpp:509" status="valid" parentFunction="lshiftwordbyoctet" variable="" isDirective="0" options="off"/>
+        <Pragma type="pipeline" location="../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/axi_utils.hpp:510" status="valid" parentFunction="lshiftwordbyoctet" variable="" isDirective="0" options="II=1"/>
+        <Pragma type="pipeline" location="../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/axi_utils.hpp:578" status="valid" parentFunction="stream_merger" variable="" isDirective="0" options="II=1"/>
+        <Pragma type="inline" location="../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/axi_utils.hpp:579" status="valid" parentFunction="stream_merger" variable="" isDirective="0" options="off"/>
+        <Pragma type="pipeline" location="../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/axi_utils.hpp:597" status="valid" parentFunction="stream_merger" variable="" isDirective="0" options="II=1"/>
+        <Pragma type="inline" location="../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/axi_utils.hpp:598" status="valid" parentFunction="stream_merger" variable="" isDirective="0" options="off"/>
+        <Pragma type="pipeline" location="../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/axi_utils.hpp:659" status="valid" parentFunction="fair_merger" variable="" isDirective="0" options="II=1"/>
+        <Pragma type="inline" location="../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/axi_utils.hpp:660" status="valid" parentFunction="fair_merger" variable="" isDirective="0" options="off"/>
+        <Pragma type="pipeline" location="../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/axi_utils.hpp:693" status="valid" parentFunction="fair_pkg_merger" variable="" isDirective="0" options="II=1"/>
+        <Pragma type="inline" location="../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/axi_utils.hpp:694" status="valid" parentFunction="fair_pkg_merger" variable="" isDirective="0" options="off"/>
+        <Pragma type="pipeline" location="../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/axi_utils.hpp:775" status="valid" parentFunction="stream_pkg_merger" variable="" isDirective="0" options="II=1"/>
+        <Pragma type="inline" location="../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/axi_utils.hpp:776" status="valid" parentFunction="stream_pkg_merger" variable="" isDirective="0" options="off"/>
+        <Pragma type="pipeline" location="../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/axi_utils.hpp:854" status="valid" parentFunction="stream_pkg_splitter" variable="" isDirective="0" options="II=1"/>
+        <Pragma type="inline" location="../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/axi_utils.hpp:855" status="valid" parentFunction="stream_pkg_splitter" variable="" isDirective="0" options="off"/>
+        <Pragma type="pipeline" location="../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/axi_utils.hpp:919" status="valid" parentFunction="pass_valid_pkg" variable="" isDirective="0" options="II=1"/>
+        <Pragma type="inline" location="../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/axi_utils.hpp:920" status="valid" parentFunction="pass_valid_pkg" variable="" isDirective="0" options="off"/>
+        <Pragma type="pipeline" location="../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/axi_utils.hpp:981" status="valid" parentFunction="toe_duplicate_stream" variable="" isDirective="0" options="II=1"/>
+        <Pragma type="inline" location="../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/axi_utils.hpp:982" status="valid" parentFunction="toe_duplicate_stream" variable="" isDirective="0" options="off"/>
+        <Pragma type="pipeline" location="../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/axi_utils.hpp:997" status="valid" parentFunction="ip_handler_duplicate_stream" variable="" isDirective="0" options="II=1"/>
+        <Pragma type="inline" location="../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/axi_utils.hpp:998" status="valid" parentFunction="ip_handler_duplicate_stream" variable="" isDirective="0" options="off"/>
+        <Pragma type="inline" location="../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/axi_utils.hpp:1036" status="valid" parentFunction="udp_lshiftwordbyoctet" variable="" isDirective="0" options="off"/>
+        <Pragma type="pipeline" location="../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/axi_utils.hpp:1037" status="valid" parentFunction="udp_lshiftwordbyoctet" variable="" isDirective="0" options="II=1"/>
+        <Pragma type="inline" location="../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/axi_utils.hpp:1107" status="valid" parentFunction="mac_lshiftwordbyoctet" variable="" isDirective="0" options="off"/>
+        <Pragma type="pipeline" location="../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/axi_utils.hpp:1108" status="valid" parentFunction="mac_lshiftwordbyoctet" variable="" isDirective="0" options="II=1"/>
+        <Pragma type="inline" location="../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/axi_utils.hpp:1178" status="valid" parentFunction="ipv4_lshiftwordbyoctet" variable="" isDirective="0" options="off"/>
+        <Pragma type="pipeline" location="../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/axi_utils.hpp:1179" status="valid" parentFunction="ipv4_lshiftwordbyoctet" variable="" isDirective="0" options="II=1"/>
+        <Pragma type="inline" location="../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/axi_utils.hpp:1249" status="valid" parentFunction="ip_handler_rshiftwordbyoctet" variable="" isDirective="0" options="off"/>
+        <Pragma type="pipeline" location="../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/axi_utils.hpp:1250" status="valid" parentFunction="ip_handler_rshiftwordbyoctet" variable="" isDirective="0" options="II=1"/>
+        <Pragma type="inline" location="../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/axi_utils.hpp:1324" status="valid" parentFunction="udp_rshiftwordbyoctet" variable="" isDirective="0" options="off"/>
+        <Pragma type="pipeline" location="../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/axi_utils.hpp:1325" status="valid" parentFunction="udp_rshiftwordbyoctet" variable="" isDirective="0" options="II=1"/>
+        <Pragma type="inline" location="../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/ipv4/ipv4.cpp:36" status="valid" parentFunction="process_ipv4" variable="" isDirective="0" options="off"/>
+        <Pragma type="pipeline" location="../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/ipv4/ipv4.cpp:37" status="valid" parentFunction="process_ipv4" variable="" isDirective="0" options="II=1"/>
+        <Pragma type="inline" location="../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/ipv4/ipv4.cpp:79" status="valid" parentFunction="generate_ipv4" variable="" isDirective="0" options="off"/>
+        <Pragma type="pipeline" location="../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/ipv4/ipv4.cpp:80" status="valid" parentFunction="generate_ipv4" variable="" isDirective="0" options="II=1"/>
+        <Pragma type="inline" location="../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/ipv4/ipv4.cpp:164" status="valid" parentFunction="ipv4_generate_ipv4" variable="" isDirective="0" options="off"/>
+        <Pragma type="pipeline" location="../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/ipv4/ipv4.cpp:165" status="valid" parentFunction="ipv4_generate_ipv4" variable="" isDirective="0" options="II=1"/>
+        <Pragma type="inline" location="../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/ipv4/ipv4.cpp:253" status="valid" parentFunction="ipv4" variable="" isDirective="0" options=""/>
+        <Pragma type="stream" location="../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/ipv4/ipv4.cpp:262" status="valid" parentFunction="ipv4" variable="rx_process2dropLengthFifo" isDirective="0" options="depth=2 variable=rx_process2dropLengthFifo"/>
+        <Pragma type="stream" location="../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/ipv4/ipv4.cpp:263" status="valid" parentFunction="ipv4" variable="rx_process2dropFifo" isDirective="0" options="depth=8 variable=rx_process2dropFifo"/>
+        <Pragma type="stream" location="../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/ipv4/ipv4.cpp:264" status="valid" parentFunction="ipv4" variable="tx_shift2ipv4Fifo" isDirective="0" options="depth=8 variable=tx_shift2ipv4Fifo"/>
+        <Pragma type="dataflow" location="../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/ipv4/ipv4.cpp:289" status="valid" parentFunction="ipv4_top" variable="" isDirective="0" options="disable_start_propagation"/>
+        <Pragma type="interface" location="../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/ipv4/ipv4.cpp:290" status="invalid" parentFunction="ipv4_top" variable="return" isDirective="0" options="ap_ctrl_none register port=return">
+            <Msg msg_id="207-5552" msg_severity="WARNING" msg_body="unexpected pragma parameter 'register'"/>
+        </Pragma>
+        <Pragma type="interface" location="../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/ipv4/ipv4.cpp:292" status="valid" parentFunction="ipv4_top" variable="s_axis_rx_data" isDirective="0" options="axis register port=s_axis_rx_data"/>
+        <Pragma type="interface" location="../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/ipv4/ipv4.cpp:293" status="valid" parentFunction="ipv4_top" variable="m_axis_rx_meta" isDirective="0" options="axis register port=m_axis_rx_meta"/>
+        <Pragma type="interface" location="../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/ipv4/ipv4.cpp:294" status="valid" parentFunction="ipv4_top" variable="m_axis_rx_data" isDirective="0" options="axis register port=m_axis_rx_data"/>
+        <Pragma type="interface" location="../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/ipv4/ipv4.cpp:295" status="valid" parentFunction="ipv4_top" variable="s_axis_tx_meta" isDirective="0" options="axis register port=s_axis_tx_meta"/>
+        <Pragma type="interface" location="../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/ipv4/ipv4.cpp:296" status="valid" parentFunction="ipv4_top" variable="s_axis_tx_data" isDirective="0" options="axis register port=s_axis_tx_data"/>
+        <Pragma type="interface" location="../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/ipv4/ipv4.cpp:297" status="valid" parentFunction="ipv4_top" variable="m_axis_tx_data" isDirective="0" options="axis register port=m_axis_tx_data"/>
+        <Pragma type="data_pack" location="../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/ipv4/ipv4.cpp:298" status="invalid" parentFunction="ipv4_top" variable="" isDirective="0" options="variable">
+            <Msg msg_id="207-5505" msg_severity="WARNING" msg_body="the pragma is not supported and will be ignored"/>
+        </Pragma>
+        <Pragma type="data_pack" location="../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/ipv4/ipv4.cpp:299" status="invalid" parentFunction="ipv4_top" variable="" isDirective="0" options="variable">
+            <Msg msg_id="207-5505" msg_severity="WARNING" msg_body="the pragma is not supported and will be ignored"/>
+        </Pragma>
+        <Pragma type="interface" location="../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/ipv4/ipv4.cpp:300" status="warning" parentFunction="ipv4_top" variable="local_ipv4_address" isDirective="0" options="ap_stable register port=local_ipv4_address">
+            <Msg msg_id="207-5526" msg_severity="WARNING" msg_body="'Ap_stable' in '#pragma HLS INTERFACE' is deprecated, use 'Stable Pragma' instead"/>
+        </Pragma>
+        <Pragma type="interface" location="../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/ipv4/ipv4.cpp:301" status="warning" parentFunction="ipv4_top" variable="protocol" isDirective="0" options="ap_stable register port=protocol">
+            <Msg msg_id="207-5526" msg_severity="WARNING" msg_body="'Ap_stable' in '#pragma HLS INTERFACE' is deprecated, use 'Stable Pragma' instead"/>
+        </Pragma>
+        <Pragma type="inline" location="../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/ipv4/ipv4.hpp:58" status="valid" parentFunction="drop_optional_ip_header" variable="" isDirective="0" options="off"/>
+        <Pragma type="pipeline" location="../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/ipv4/ipv4.hpp:59" status="valid" parentFunction="drop_optional_ip_header" variable="" isDirective="0" options="II=1"/>
+        <Pragma type="inline" location="../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/ipv4/ipv4.hpp:200" status="valid" parentFunction="ipv4_drop_optional_ip_header" variable="" isDirective="0" options="off"/>
+        <Pragma type="pipeline" location="../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/ipv4/ipv4.hpp:201" status="valid" parentFunction="ipv4_drop_optional_ip_header" variable="" isDirective="0" options="II=1"/>
+        <Pragma type="pipeline" location="../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/ipv4/ipv4.hpp:372" status="valid" parentFunction="toe_check_ipv4_checksum" variable="" isDirective="0" options="II=1"/>
+        <Pragma type="inline" location="../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/ipv4/ipv4.hpp:373" status="valid" parentFunction="toe_check_ipv4_checksum" variable="" isDirective="0" options="off"/>
+        <Pragma type="unroll" location="../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/ipv4/ipv4.hpp:383" status="valid" parentFunction="toe_check_ipv4_checksum" variable="" isDirective="0" options=""/>
+        <Pragma type="unroll" location="../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/ipv4/ipv4.hpp:393" status="valid" parentFunction="toe_check_ipv4_checksum" variable="" isDirective="0" options=""/>
+        <Pragma type="unroll" location="../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/ipv4/ipv4.hpp:403" status="valid" parentFunction="toe_check_ipv4_checksum" variable="" isDirective="0" options=""/>
+        <Pragma type="pipeline" location="../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/ipv4/ipv4.hpp:429" status="valid" parentFunction="ip_handler_check_ipv4_checksum" variable="" isDirective="0" options="II=1"/>
+        <Pragma type="inline" location="../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/ipv4/ipv4.hpp:430" status="valid" parentFunction="ip_handler_check_ipv4_checksum" variable="" isDirective="0" options="off"/>
+        <Pragma type="unroll" location="../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/ipv4/ipv4.hpp:440" status="valid" parentFunction="ip_handler_check_ipv4_checksum" variable="" isDirective="0" options=""/>
+        <Pragma type="unroll" location="../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/ipv4/ipv4.hpp:450" status="valid" parentFunction="ip_handler_check_ipv4_checksum" variable="" isDirective="0" options=""/>
+        <Pragma type="unroll" location="../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/ipv4/ipv4.hpp:460" status="valid" parentFunction="ip_handler_check_ipv4_checksum" variable="" isDirective="0" options=""/>
+        <Pragma type="pipeline" location="../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/ipv4/ipv4.hpp:484" status="valid" parentFunction="finalize_ipv4_checksum" variable="" isDirective="0" options="II=1"/>
+        <Pragma type="inline" location="../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/ipv4/ipv4.hpp:485" status="valid" parentFunction="finalize_ipv4_checksum" variable="" isDirective="0" options="off"/>
+        <Pragma type="unroll" location="../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/ipv4/ipv4.hpp:495" status="valid" parentFunction="finalize_ipv4_checksum" variable="" isDirective="0" options=""/>
+        <Pragma type="unroll" location="../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/ipv4/ipv4.hpp:505" status="valid" parentFunction="finalize_ipv4_checksum" variable="" isDirective="0" options=""/>
+        <Pragma type="unroll" location="../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/ipv4/ipv4.hpp:515" status="valid" parentFunction="finalize_ipv4_checksum" variable="" isDirective="0" options=""/>
+        <Pragma type="pipeline" location="../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/ipv4/ipv4.hpp:540" status="valid" parentFunction="mac_finalize_ipv4_checksum" variable="" isDirective="0" options="II=1"/>
+        <Pragma type="inline" location="../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/ipv4/ipv4.hpp:541" status="valid" parentFunction="mac_finalize_ipv4_checksum" variable="" isDirective="0" options="off"/>
+        <Pragma type="unroll" location="../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/ipv4/ipv4.hpp:551" status="valid" parentFunction="mac_finalize_ipv4_checksum" variable="" isDirective="0" options=""/>
+        <Pragma type="unroll" location="../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/ipv4/ipv4.hpp:561" status="valid" parentFunction="mac_finalize_ipv4_checksum" variable="" isDirective="0" options=""/>
+        <Pragma type="unroll" location="../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/ipv4/ipv4.hpp:571" status="valid" parentFunction="mac_finalize_ipv4_checksum" variable="" isDirective="0" options=""/>
+        <Pragma type="pipeline" location="../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/packet.hpp:158" status="valid" parentFunction="clear" variable="" isDirective="0" options="II=1"/>
+    </PragmaReport>
+</profile>
+

@@ -1,0 +1,744 @@
+{
+  "Top": "arp_server_subnet_top",
+  "RtlTop": "arp_server_subnet_top",
+  "RtlPrefix": "",
+  "RtlSubPrefix": "arp_server_subnet_top_",
+  "SourceLanguage": "cpp",
+  "HostMachineBits": "64",
+  "FunctionProtocol": "ap_ctrl_none",
+  "ResetStyle": "control",
+  "Target": {
+    "Family": "virtexuplushbm",
+    "Device": "xcu280",
+    "Package": "-fsvh2892",
+    "Speed": "-2L-e",
+    "Triple": "fpga64-xilinx-none"
+  },
+  "Args": {
+    "arpDataIn": {
+      "index": "0",
+      "direction": "in",
+      "srcType": "stream<net_axis<512>, 0>&",
+      "srcSize": "1024",
+      "hwRefs": [{
+          "type": "interface",
+          "interface": "s_axis",
+          "name": "",
+          "usage": "data",
+          "direction": "in"
+        }]
+    },
+    "macIpEncode_req": {
+      "index": "1",
+      "direction": "in",
+      "srcType": "stream<ap_uint<32>, 0>&",
+      "srcSize": "32",
+      "hwRefs": [{
+          "type": "interface",
+          "interface": "s_axis_arp_lookup_request",
+          "name": "",
+          "usage": "data",
+          "direction": "in"
+        }]
+    },
+    "hostIpEncode_req": {
+      "index": "2",
+      "direction": "in",
+      "srcType": "stream<ap_uint<32>, 0>&",
+      "srcSize": "32",
+      "hwRefs": [{
+          "type": "interface",
+          "interface": "s_axis_host_arp_lookup_request",
+          "name": "",
+          "usage": "data",
+          "direction": "in"
+        }]
+    },
+    "arpDataOut": {
+      "index": "3",
+      "direction": "out",
+      "srcType": "stream<net_axis<512>, 0>&",
+      "srcSize": "1024",
+      "hwRefs": [{
+          "type": "interface",
+          "interface": "m_axis",
+          "name": "",
+          "usage": "data",
+          "direction": "out"
+        }]
+    },
+    "macIpEncode_rsp": {
+      "index": "4",
+      "direction": "out",
+      "srcType": "stream<arpTableReply, 0>&",
+      "srcSize": "128",
+      "hwRefs": [{
+          "type": "interface",
+          "interface": "m_axis_arp_lookup_reply",
+          "name": "",
+          "usage": "data",
+          "direction": "out"
+        }]
+    },
+    "hostIpEncode_rsp": {
+      "index": "5",
+      "direction": "out",
+      "srcType": "stream<arpTableReply, 0>&",
+      "srcSize": "128",
+      "hwRefs": [{
+          "type": "interface",
+          "interface": "m_axis_host_arp_lookup_reply",
+          "name": "",
+          "usage": "data",
+          "direction": "out"
+        }]
+    },
+    "myMacAddress": {
+      "index": "6",
+      "direction": "in",
+      "srcType": "ap_uint<48>",
+      "srcSize": "64",
+      "hwRefs": [{
+          "type": "port",
+          "interface": "myMacAddress",
+          "name": "myMacAddress",
+          "usage": "data",
+          "direction": "in"
+        }]
+    },
+    "myIpAddress": {
+      "index": "7",
+      "direction": "in",
+      "srcType": "ap_uint<32>",
+      "srcSize": "32",
+      "hwRefs": [{
+          "type": "port",
+          "interface": "myIpAddress",
+          "name": "myIpAddress",
+          "usage": "data",
+          "direction": "in"
+        }]
+    },
+    "regRequestCount": {
+      "index": "8",
+      "direction": "out",
+      "srcType": "ap_uint<16>&",
+      "srcSize": "16",
+      "hwRefs": [
+        {
+          "type": "port",
+          "interface": "regRequestCount",
+          "name": "regRequestCount",
+          "usage": "data",
+          "direction": "out"
+        },
+        {
+          "type": "port",
+          "interface": "regRequestCount_ap_vld",
+          "name": "regRequestCount_ap_vld",
+          "usage": "control",
+          "direction": "out"
+        }
+      ]
+    },
+    "regReplyCount": {
+      "index": "9",
+      "direction": "out",
+      "srcType": "ap_uint<16>&",
+      "srcSize": "16",
+      "hwRefs": [
+        {
+          "type": "port",
+          "interface": "regReplyCount",
+          "name": "regReplyCount",
+          "usage": "data",
+          "direction": "out"
+        },
+        {
+          "type": "port",
+          "interface": "regReplyCount_ap_vld",
+          "name": "regReplyCount_ap_vld",
+          "usage": "control",
+          "direction": "out"
+        }
+      ]
+    }
+  },
+  "HlsSolution": {
+    "FlowTarget": "vivado",
+    "ConfigTcl": [
+      "config_interface -m_axi_latency=0",
+      "config_export -description {Replies to ARP queries and resolves IP addresses.}",
+      "config_export -display_name {ARP Subnet Server}",
+      "config_export -format=ip_catalog",
+      "config_export -ipname=arp_server_subnet",
+      "config_export -vendor=ethz.systems.fpga",
+      "config_export -version=1.1"
+    ],
+    "ProfileOption": "0",
+    "ProfileType": "none",
+    "KernelName": "arp_server_subnet_top"
+  },
+  "ClockInfo": {
+    "ClockName": "ap_clk",
+    "ClockPeriod": "3.2",
+    "Uncertainty": "0.864",
+    "IsCombinational": "0",
+    "II": "1",
+    "Latency": "5"
+  },
+  "Xdc": {
+    "OocClocks": ["create_clock -name ap_clk -period 3.200 [get_ports ap_clk]"],
+    "FalsePaths": [
+      "set_false_path -through [get_ports myMacAddress[*]]",
+      "set_false_path -through [get_ports myIpAddress[*]]"
+    ]
+  },
+  "Ipx": {
+    "Vendor": "ethz.systems.fpga",
+    "Library": "hls",
+    "Name": "arp_server_subnet",
+    "Version": "1.1",
+    "DisplayName": "ARP Subnet Server",
+    "Revision": "2113113495",
+    "Description": "Replies to ARP queries and resolves IP addresses.",
+    "Taxonomy": "\/VITIS_HLS_IP",
+    "AutoFamilySupport": "",
+    "ZipFile": "ethz_systems_fpga_hls_arp_server_subnet_1_1.zip"
+  },
+  "Files": {
+    "CSource": [
+      "\/mnt\/scratch\/pyuvaraj\/Vitis_RoCE_W\/Vitis_RoCE\/fpga-network-stack\/hls\/arp_server_subnet\/arp_server_subnet.cpp",
+      "\/mnt\/scratch\/pyuvaraj\/Vitis_RoCE_W\/Vitis_RoCE\/fpga-network-stack\/hls\/arp_server_subnet\/..\/axi_utils.cpp"
+    ],
+    "Vhdl": [
+      "impl\/vhdl\/arp_server_subnet_top_arp_table.vhd",
+      "impl\/vhdl\/arp_server_subnet_top_arp_table_arpTable_macAddress_V_RAM_1P_BRAM_1R1W.vhd",
+      "impl\/vhdl\/arp_server_subnet_top_arp_table_arpTable_valid_RAM_1P_BRAM_1R1W.vhd",
+      "impl\/vhdl\/arp_server_subnet_top_fifo_w32_d4_S.vhd",
+      "impl\/vhdl\/arp_server_subnet_top_fifo_w192_d4_S.vhd",
+      "impl\/vhdl\/arp_server_subnet_top_generate_arp_pkg_512_s.vhd",
+      "impl\/vhdl\/arp_server_subnet_top_process_arp_pkg_512_s.vhd",
+      "impl\/vhdl\/arp_server_subnet_top_regslice_both.vhd",
+      "impl\/vhdl\/arp_server_subnet_top.vhd"
+    ],
+    "Verilog": [
+      "impl\/verilog\/arp_server_subnet_top_arp_table.v",
+      "impl\/verilog\/arp_server_subnet_top_arp_table_arpTable_macAddress_V_RAM_1P_BRAM_1R1W.dat",
+      "impl\/verilog\/arp_server_subnet_top_arp_table_arpTable_macAddress_V_RAM_1P_BRAM_1R1W.v",
+      "impl\/verilog\/arp_server_subnet_top_arp_table_arpTable_valid_RAM_1P_BRAM_1R1W.dat",
+      "impl\/verilog\/arp_server_subnet_top_arp_table_arpTable_valid_RAM_1P_BRAM_1R1W.v",
+      "impl\/verilog\/arp_server_subnet_top_fifo_w32_d4_S.v",
+      "impl\/verilog\/arp_server_subnet_top_fifo_w192_d4_S.v",
+      "impl\/verilog\/arp_server_subnet_top_generate_arp_pkg_512_s.v",
+      "impl\/verilog\/arp_server_subnet_top_hls_deadlock_detection_unit.v",
+      "impl\/verilog\/arp_server_subnet_top_hls_deadlock_detector.vh",
+      "impl\/verilog\/arp_server_subnet_top_hls_deadlock_idx0_monitor.v",
+      "impl\/verilog\/arp_server_subnet_top_hls_deadlock_idx3_monitor.v",
+      "impl\/verilog\/arp_server_subnet_top_hls_deadlock_kernel_monitor_top.vh",
+      "impl\/verilog\/arp_server_subnet_top_hls_deadlock_report_unit.vh",
+      "impl\/verilog\/arp_server_subnet_top_process_arp_pkg_512_s.v",
+      "impl\/verilog\/arp_server_subnet_top_regslice_both.v",
+      "impl\/verilog\/arp_server_subnet_top.v"
+    ],
+    "IpMisc": ["impl\/misc\/logo.png"],
+    "CsynthXml": "syn\/report\/csynth.xml",
+    "DebugDir": ".debug",
+    "KernelXml": ".autopilot\/db\/kernel.internal.xml",
+    "Xo": "",
+    "XoHlsDir": "",
+    "ProtoInst": [".debug\/arp_server_subnet_top.protoinst"]
+  },
+  "SubcoreInfo": {
+    "HasXpmMemory": false,
+    "HasClockedDsp": false,
+    "Ip": []
+  },
+  "Interfaces": {
+    "s_axis": {
+      "type": "axi4stream",
+      "busTypeName": "axis",
+      "mode": "slave",
+      "dataWidth": "1024",
+      "portPrefix": "s_axis_",
+      "ports": [
+        "s_axis_TDATA",
+        "s_axis_TREADY",
+        "s_axis_TVALID"
+      ],
+      "constraints": [{
+          "constraint_type": "pragma interface",
+          "mode": "axis",
+          "register_option": "1",
+          "register_mode": "both",
+          "argName": "arpDataIn"
+        }]
+    },
+    "s_axis_arp_lookup_request": {
+      "type": "axi4stream",
+      "busTypeName": "axis",
+      "mode": "slave",
+      "dataWidth": "32",
+      "portPrefix": "s_axis_arp_lookup_request_",
+      "ports": [
+        "s_axis_arp_lookup_request_TDATA",
+        "s_axis_arp_lookup_request_TREADY",
+        "s_axis_arp_lookup_request_TVALID"
+      ],
+      "constraints": [{
+          "constraint_type": "pragma interface",
+          "mode": "axis",
+          "register_option": "1",
+          "register_mode": "both",
+          "argName": "macIpEncode_req"
+        }]
+    },
+    "s_axis_host_arp_lookup_request": {
+      "type": "axi4stream",
+      "busTypeName": "axis",
+      "mode": "slave",
+      "dataWidth": "32",
+      "portPrefix": "s_axis_host_arp_lookup_request_",
+      "ports": [
+        "s_axis_host_arp_lookup_request_TDATA",
+        "s_axis_host_arp_lookup_request_TREADY",
+        "s_axis_host_arp_lookup_request_TVALID"
+      ],
+      "constraints": [{
+          "constraint_type": "pragma interface",
+          "mode": "axis",
+          "register_option": "1",
+          "register_mode": "both",
+          "argName": "hostIpEncode_req"
+        }]
+    },
+    "m_axis": {
+      "type": "axi4stream",
+      "busTypeName": "axis",
+      "mode": "master",
+      "dataWidth": "1024",
+      "portPrefix": "m_axis_",
+      "ports": [
+        "m_axis_TDATA",
+        "m_axis_TREADY",
+        "m_axis_TVALID"
+      ],
+      "constraints": [{
+          "constraint_type": "pragma interface",
+          "mode": "axis",
+          "register_option": "1",
+          "register_mode": "both",
+          "argName": "arpDataOut"
+        }]
+    },
+    "m_axis_arp_lookup_reply": {
+      "type": "axi4stream",
+      "busTypeName": "axis",
+      "mode": "master",
+      "dataWidth": "128",
+      "portPrefix": "m_axis_arp_lookup_reply_",
+      "ports": [
+        "m_axis_arp_lookup_reply_TDATA",
+        "m_axis_arp_lookup_reply_TREADY",
+        "m_axis_arp_lookup_reply_TVALID"
+      ],
+      "constraints": [{
+          "constraint_type": "pragma interface",
+          "mode": "axis",
+          "register_option": "1",
+          "register_mode": "both",
+          "argName": "macIpEncode_rsp"
+        }]
+    },
+    "m_axis_host_arp_lookup_reply": {
+      "type": "axi4stream",
+      "busTypeName": "axis",
+      "mode": "master",
+      "dataWidth": "128",
+      "portPrefix": "m_axis_host_arp_lookup_reply_",
+      "ports": [
+        "m_axis_host_arp_lookup_reply_TDATA",
+        "m_axis_host_arp_lookup_reply_TREADY",
+        "m_axis_host_arp_lookup_reply_TVALID"
+      ],
+      "constraints": [{
+          "constraint_type": "pragma interface",
+          "mode": "axis",
+          "register_option": "1",
+          "register_mode": "both",
+          "argName": "hostIpEncode_rsp"
+        }]
+    },
+    "myMacAddress": {
+      "type": "data",
+      "busTypeName": "data",
+      "protocol": "ap_stable",
+      "mode": "slave",
+      "dataWidth": "48",
+      "portMap": {"myMacAddress": "DATA"},
+      "ports": ["myMacAddress"],
+      "constraints": [{
+          "constraint_type": "pragma interface",
+          "mode": "ap_stable",
+          "register_option": "1",
+          "argName": "myMacAddress"
+        }]
+    },
+    "myIpAddress": {
+      "type": "data",
+      "busTypeName": "data",
+      "protocol": "ap_stable",
+      "mode": "slave",
+      "dataWidth": "32",
+      "portMap": {"myIpAddress": "DATA"},
+      "ports": ["myIpAddress"],
+      "constraints": [{
+          "constraint_type": "pragma interface",
+          "mode": "ap_stable",
+          "register_option": "1",
+          "argName": "myIpAddress"
+        }]
+    },
+    "regRequestCount": {
+      "type": "data",
+      "busTypeName": "data",
+      "protocol": "ap_vld",
+      "mode": "master",
+      "dataWidth": "16",
+      "portMap": {"regRequestCount": "DATA"},
+      "ports": ["regRequestCount"],
+      "constraints": [{
+          "constraint_type": "pragma interface",
+          "mode": "ap_none",
+          "register_option": "0",
+          "argName": "regRequestCount"
+        }]
+    },
+    "regReplyCount": {
+      "type": "data",
+      "busTypeName": "data",
+      "protocol": "ap_vld",
+      "mode": "master",
+      "dataWidth": "16",
+      "portMap": {"regReplyCount": "DATA"},
+      "ports": ["regReplyCount"],
+      "constraints": [{
+          "constraint_type": "pragma interface",
+          "mode": "ap_none",
+          "register_option": "0",
+          "argName": "regReplyCount"
+        }]
+    },
+    "ap_clk": {
+      "type": "clock",
+      "busTypeName": "clock",
+      "mode": "slave",
+      "busParams": {
+        "ASSOCIATED_BUSIF": "s_axis:s_axis_arp_lookup_request:s_axis_host_arp_lookup_request:m_axis:m_axis_arp_lookup_reply:m_axis_host_arp_lookup_reply",
+        "ASSOCIATED_RESET": "ap_rst_n"
+      },
+      "portMap": {"ap_clk": "CLK"},
+      "ports": ["ap_clk"]
+    },
+    "ap_rst_n": {
+      "type": "reset",
+      "busTypeName": "reset",
+      "mode": "slave",
+      "busParams": {"POLARITY": "ACTIVE_LOW"},
+      "portMap": {"ap_rst_n": "RST"},
+      "ports": ["ap_rst_n"]
+    }
+  },
+  "RtlPorts": {
+    "s_axis_TDATA": {
+      "dir": "in",
+      "width": "1024"
+    },
+    "s_axis_TVALID": {
+      "dir": "in",
+      "width": "1"
+    },
+    "s_axis_TREADY": {
+      "dir": "out",
+      "width": "1"
+    },
+    "s_axis_arp_lookup_request_TDATA": {
+      "dir": "in",
+      "width": "32"
+    },
+    "s_axis_arp_lookup_request_TVALID": {
+      "dir": "in",
+      "width": "1"
+    },
+    "s_axis_arp_lookup_request_TREADY": {
+      "dir": "out",
+      "width": "1"
+    },
+    "s_axis_host_arp_lookup_request_TDATA": {
+      "dir": "in",
+      "width": "32"
+    },
+    "s_axis_host_arp_lookup_request_TVALID": {
+      "dir": "in",
+      "width": "1"
+    },
+    "s_axis_host_arp_lookup_request_TREADY": {
+      "dir": "out",
+      "width": "1"
+    },
+    "m_axis_TDATA": {
+      "dir": "out",
+      "width": "1024"
+    },
+    "m_axis_TVALID": {
+      "dir": "out",
+      "width": "1"
+    },
+    "m_axis_TREADY": {
+      "dir": "in",
+      "width": "1"
+    },
+    "m_axis_arp_lookup_reply_TDATA": {
+      "dir": "out",
+      "width": "128"
+    },
+    "m_axis_arp_lookup_reply_TVALID": {
+      "dir": "out",
+      "width": "1"
+    },
+    "m_axis_arp_lookup_reply_TREADY": {
+      "dir": "in",
+      "width": "1"
+    },
+    "m_axis_host_arp_lookup_reply_TDATA": {
+      "dir": "out",
+      "width": "128"
+    },
+    "m_axis_host_arp_lookup_reply_TVALID": {
+      "dir": "out",
+      "width": "1"
+    },
+    "m_axis_host_arp_lookup_reply_TREADY": {
+      "dir": "in",
+      "width": "1"
+    },
+    "myMacAddress": {
+      "dir": "in",
+      "width": "48"
+    },
+    "myIpAddress": {
+      "dir": "in",
+      "width": "32"
+    },
+    "regRequestCount": {
+      "dir": "out",
+      "width": "16"
+    },
+    "regRequestCount_ap_vld": {
+      "dir": "out",
+      "width": "1"
+    },
+    "regReplyCount": {
+      "dir": "out",
+      "width": "16"
+    },
+    "regReplyCount_ap_vld": {
+      "dir": "out",
+      "width": "1"
+    },
+    "ap_clk": {
+      "dir": "in",
+      "width": "1"
+    },
+    "ap_rst_n": {
+      "dir": "in",
+      "width": "1"
+    }
+  },
+  "ModuleInfo": {
+    "Hierarchy": {
+      "ModuleName": "arp_server_subnet_top",
+      "Instances": [
+        {
+          "ModuleName": "process_arp_pkg_512_s",
+          "InstanceName": "process_arp_pkg_512_U0"
+        },
+        {
+          "ModuleName": "generate_arp_pkg_512_s",
+          "InstanceName": "generate_arp_pkg_512_U0"
+        },
+        {
+          "ModuleName": "arp_table",
+          "InstanceName": "arp_table_U0"
+        }
+      ]
+    },
+    "Info": {
+      "process_arp_pkg_512_s": {
+        "FunctionProtocol": "ap_ctrl_hs",
+        "isTaskLevelControl": "0",
+        "isPipelined": "1",
+        "isCombinational": "0",
+        "isOneStateSeq": "0"
+      },
+      "generate_arp_pkg_512_s": {
+        "FunctionProtocol": "ap_ctrl_hs",
+        "isTaskLevelControl": "0",
+        "isPipelined": "1",
+        "isCombinational": "0",
+        "isOneStateSeq": "0"
+      },
+      "arp_table": {
+        "FunctionProtocol": "ap_ctrl_hs",
+        "isTaskLevelControl": "0",
+        "isPipelined": "1",
+        "isCombinational": "0",
+        "isOneStateSeq": "0"
+      },
+      "arp_server_subnet_top": {
+        "FunctionProtocol": "ap_ctrl_none",
+        "isTaskLevelControl": "0",
+        "isPipelined": "1",
+        "isCombinational": "0",
+        "isOneStateSeq": "0"
+      }
+    },
+    "Metrics": {
+      "process_arp_pkg_512_s": {
+        "Latency": {
+          "LatencyBest": "2",
+          "LatencyAvg": "2",
+          "LatencyWorst": "2",
+          "PipelineII": "1",
+          "PipelineDepth": "3",
+          "PipelineType": "yes"
+        },
+        "Timing": {
+          "Target": "3.20",
+          "Uncertainty": "0.86",
+          "Estimate": "1.992"
+        },
+        "Area": {
+          "FF": "906",
+          "AVAIL_FF": "2607360",
+          "UTIL_FF": "~0",
+          "LUT": "2803",
+          "AVAIL_LUT": "1303680",
+          "UTIL_LUT": "~0",
+          "BRAM_18K": "0",
+          "AVAIL_BRAM": "4032",
+          "UTIL_BRAM": "0",
+          "DSP": "0",
+          "AVAIL_DSP": "9024",
+          "UTIL_DSP": "0",
+          "URAM": "0",
+          "AVAIL_URAM": "960",
+          "UTIL_URAM": "0"
+        }
+      },
+      "generate_arp_pkg_512_s": {
+        "Latency": {
+          "LatencyBest": "2",
+          "LatencyAvg": "2",
+          "LatencyWorst": "2",
+          "PipelineII": "1",
+          "PipelineDepth": "3",
+          "PipelineType": "yes"
+        },
+        "Timing": {
+          "Target": "3.20",
+          "Uncertainty": "0.86",
+          "Estimate": "1.555"
+        },
+        "Area": {
+          "FF": "695",
+          "AVAIL_FF": "2607360",
+          "UTIL_FF": "~0",
+          "LUT": "133",
+          "AVAIL_LUT": "1303680",
+          "UTIL_LUT": "~0",
+          "BRAM_18K": "0",
+          "AVAIL_BRAM": "4032",
+          "UTIL_BRAM": "0",
+          "DSP": "0",
+          "AVAIL_DSP": "9024",
+          "UTIL_DSP": "0",
+          "URAM": "0",
+          "AVAIL_URAM": "960",
+          "UTIL_URAM": "0"
+        }
+      },
+      "arp_table": {
+        "Latency": {
+          "LatencyBest": "2",
+          "LatencyAvg": "2",
+          "LatencyWorst": "2",
+          "PipelineII": "1",
+          "PipelineDepth": "3",
+          "PipelineType": "yes"
+        },
+        "Timing": {
+          "Target": "3.20",
+          "Uncertainty": "0.86",
+          "Estimate": "2.188"
+        },
+        "Area": {
+          "BRAM_18K": "3",
+          "AVAIL_BRAM": "4032",
+          "UTIL_BRAM": "~0",
+          "FF": "140",
+          "AVAIL_FF": "2607360",
+          "UTIL_FF": "~0",
+          "LUT": "161",
+          "AVAIL_LUT": "1303680",
+          "UTIL_LUT": "~0",
+          "DSP": "0",
+          "AVAIL_DSP": "9024",
+          "UTIL_DSP": "0",
+          "URAM": "0",
+          "AVAIL_URAM": "960",
+          "UTIL_URAM": "0"
+        }
+      },
+      "arp_server_subnet_top": {
+        "Latency": {
+          "LatencyBest": "5",
+          "LatencyAvg": "5",
+          "LatencyWorst": "5",
+          "PipelineII": "1",
+          "PipelineDepth": "",
+          "PipelineType": "dataflow"
+        },
+        "Timing": {
+          "Target": "3.20",
+          "Uncertainty": "0.86",
+          "Estimate": "2.188"
+        },
+        "Area": {
+          "BRAM_18K": "3",
+          "AVAIL_BRAM": "4032",
+          "UTIL_BRAM": "~0",
+          "FF": "1756",
+          "AVAIL_FF": "2607360",
+          "UTIL_FF": "~0",
+          "LUT": "3403",
+          "AVAIL_LUT": "1303680",
+          "UTIL_LUT": "~0",
+          "DSP": "0",
+          "AVAIL_DSP": "9024",
+          "UTIL_DSP": "0",
+          "URAM": "0",
+          "AVAIL_URAM": "960",
+          "UTIL_URAM": "0"
+        }
+      }
+    }
+  },
+  "GenerateBdFiles": "0",
+  "GenData": {
+    "DataVersion": "0.2",
+    "Time": "2023-07-11 09:15:18 CEST",
+    "ToolName": "vitis_hls",
+    "ToolVersion": "2022.1"
+  }
+}

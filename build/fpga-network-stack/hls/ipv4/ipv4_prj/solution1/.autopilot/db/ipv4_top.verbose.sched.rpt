@@ -1,0 +1,195 @@
+
+
+================================================================
+== Vitis HLS Report for 'ipv4_top'
+================================================================
+* Date:           Tue Jul 11 09:19:30 2023
+
+* Version:        2022.1 (Build 3526262 on Mon Apr 18 15:47:01 MDT 2022)
+* Project:        ipv4_prj
+* Solution:       solution1 (Vivado IP Flow Target)
+* Product family: virtexuplus
+* Target device:  xcu280-fsvh2892-2L-e
+
+
+================================================================
+== Performance Estimates
+================================================================
++ Timing: 
+    * Summary: 
+    +--------+---------+----------+------------+
+    |  Clock |  Target | Estimated| Uncertainty|
+    +--------+---------+----------+------------+
+    |ap_clk  |  3.20 ns|  3.114 ns|     0.86 ns|
+    +--------+---------+----------+------------+
+
++ Latency: 
+    * Summary: 
+    +---------+---------+-----------+-----------+-----+-----+----------+
+    |  Latency (cycles) |   Latency (absolute)  |  Interval | Pipeline |
+    |   min   |   max   |    min    |    max    | min | max |   Type   |
+    +---------+---------+-----------+-----------+-----+-----+----------+
+    |        4|        4|  12.800 ns|  12.800 ns|    1|    1|  dataflow|
+    +---------+---------+-----------+-----------+-----+-----+----------+
+
+    + Detail: 
+        * Instance: 
+        N/A
+
+        * Loop: 
+        N/A
+
+============================================================
++ Verbose Summary: Synthesis Manager
+============================================================
+InlineROM: 1
+ExposeGlobal: 0
+============================================================
++ Verbose Summary: CDFG Model
+============================================================
+IsTopModel: 1
+ResetActiveHigh: 1
+IsCombinational: 2
+IsDatapathOnly: 0
+HasWiredReturn: 1
+HasMFsm: 0
+HasVarLatency: 1
+IsPipeline: 0
+IsRtlPipelined: 0
+IsInstanceOverlapped: 0
+IsDontTouch: 0
+HasImplIP: 0
+IsGatedGlobalClock: 0
+
+
+============================================================
++ Verbose Summary: Schedule
+============================================================
+* Number of FSM states : 8
+* Pipeline : 0
+* Dataflow Pipeline: 1
+  DF-Pipeline-0: Size = 8, States = { 1 2 3 4 5 6 7 8 }
+
+* FSM state transitions: 
+1 --> 2 
+2 --> 3 
+3 --> 4 
+4 --> 5 
+5 --> 6 
+6 --> 7 
+7 --> 8 
+8 --> 
+
+* FSM state operations: 
+
+State 1 <SV = 0> <Delay = 0.00>
+ST_1 : Operation 9 [2/2] (0.00ns)   --->   "%protocol_read = read i8 @_ssdm_op_Read.ap_stable.i8, i8 %protocol" [/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/ipv4/ipv4.cpp:286]   --->   Operation 9 'read' 'protocol_read' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 10 [2/2] (0.00ns)   --->   "%local_ipv4_address_read = read i32 @_ssdm_op_Read.ap_stable.i32, i32 %local_ipv4_address" [/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/ipv4/ipv4.cpp:286]   --->   Operation 10 'read' 'local_ipv4_address_read' <Predicate = true> <Delay = 0.00>
+
+State 2 <SV = 1> <Delay = 0.00>
+ST_2 : Operation 11 [1/2] (0.00ns)   --->   "%protocol_read = read i8 @_ssdm_op_Read.ap_stable.i8, i8 %protocol" [/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/ipv4/ipv4.cpp:286]   --->   Operation 11 'read' 'protocol_read' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 12 [1/2] (0.00ns)   --->   "%local_ipv4_address_read = read i32 @_ssdm_op_Read.ap_stable.i32, i32 %local_ipv4_address" [/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/ipv4/ipv4.cpp:286]   --->   Operation 12 'read' 'local_ipv4_address_read' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 13 [3/3] (0.00ns)   --->   "%call_ln269 = call void @process_ipv4<512>, i1024 %s_axis_rx_data, i64 %m_axis_rx_meta, i1 %header_ready, i16 %header_idx, i160 %header_header_V, i1024 %rx_process2dropFifo, i1 %metaWritten, i4 %rx_process2dropLengthFifo" [/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/ipv4/ipv4.cpp:269]   --->   Operation 13 'call' 'call_ln269' <Predicate = true> <Delay = 0.00> <CoreType = "Generic">   --->   Core 0 '' <Latency = 0> <II = 1> <Delay = 1.00> <Generic> <Opcode : >
+ST_2 : Operation 14 [2/2] (0.00ns)   --->   "%call_ln276 = call void @ipv4_lshiftWordByOctet<512, 2>, i1024 %s_axis_tx_data, i1 %ls_writeRemainder, i512 %prevWord_data_V, i64 %prevWord_keep_V, i1024 %tx_shift2ipv4Fifo, i1 %ls_firstWord" [/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/ipv4/ipv4.cpp:276]   --->   Operation 14 'call' 'call_ln276' <Predicate = true> <Delay = 0.00> <CoreType = "Generic">   --->   Core 0 '' <Latency = 0> <II = 1> <Delay = 1.00> <Generic> <Opcode : >
+
+State 3 <SV = 2> <Delay = 0.00>
+ST_3 : Operation 15 [2/3] (0.00ns)   --->   "%call_ln269 = call void @process_ipv4<512>, i1024 %s_axis_rx_data, i64 %m_axis_rx_meta, i1 %header_ready, i16 %header_idx, i160 %header_header_V, i1024 %rx_process2dropFifo, i1 %metaWritten, i4 %rx_process2dropLengthFifo" [/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/ipv4/ipv4.cpp:269]   --->   Operation 15 'call' 'call_ln269' <Predicate = true> <Delay = 0.00> <CoreType = "Generic">   --->   Core 0 '' <Latency = 0> <II = 1> <Delay = 1.00> <Generic> <Opcode : >
+ST_3 : Operation 16 [1/2] (0.00ns)   --->   "%call_ln276 = call void @ipv4_lshiftWordByOctet<512, 2>, i1024 %s_axis_tx_data, i1 %ls_writeRemainder, i512 %prevWord_data_V, i64 %prevWord_keep_V, i1024 %tx_shift2ipv4Fifo, i1 %ls_firstWord" [/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/ipv4/ipv4.cpp:276]   --->   Operation 16 'call' 'call_ln276' <Predicate = true> <Delay = 0.00> <CoreType = "Generic">   --->   Core 0 '' <Latency = 0> <II = 1> <Delay = 1.00> <Generic> <Opcode : >
+
+State 4 <SV = 3> <Delay = 0.00>
+ST_4 : Operation 17 [1/3] (0.00ns)   --->   "%call_ln269 = call void @process_ipv4<512>, i1024 %s_axis_rx_data, i64 %m_axis_rx_meta, i1 %header_ready, i16 %header_idx, i160 %header_header_V, i1024 %rx_process2dropFifo, i1 %metaWritten, i4 %rx_process2dropLengthFifo" [/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/ipv4/ipv4.cpp:269]   --->   Operation 17 'call' 'call_ln269' <Predicate = true> <Delay = 0.00> <CoreType = "Generic">   --->   Core 0 '' <Latency = 0> <II = 1> <Delay = 1.00> <Generic> <Opcode : >
+ST_4 : Operation 18 [3/3] (0.00ns)   --->   "%call_ln277 = call void @ipv4_generate_ipv4<512>, i64 %s_axis_tx_meta, i1024 %m_axis_tx_data, i32 %local_ipv4_address_read, i8 %protocol_read, i2 %gi_state, i16 %header_idx_1, i160 %header_header_V_1, i1024 %tx_shift2ipv4Fifo" [/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/ipv4/ipv4.cpp:277]   --->   Operation 18 'call' 'call_ln277' <Predicate = true> <Delay = 0.00> <CoreType = "Generic">   --->   Core 0 '' <Latency = 0> <II = 1> <Delay = 1.00> <Generic> <Opcode : >
+
+State 5 <SV = 4> <Delay = 1.86>
+ST_5 : Operation 19 [3/3] (0.00ns)   --->   "%call_ln271 = call void @ipv4_drop_optional_ip_header<512>, i1024 %m_axis_rx_data, i3 %doh_state, i512 %prevWord_data_V_1, i64 %prevWord_keep_V_1, i4 %rx_process2dropLengthFifo, i1024 %rx_process2dropFifo, i4 %length_V" [/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/ipv4/ipv4.cpp:271]   --->   Operation 19 'call' 'call_ln271' <Predicate = true> <Delay = 0.00> <CoreType = "Generic">   --->   Core 0 '' <Latency = 0> <II = 1> <Delay = 1.00> <Generic> <Opcode : >
+ST_5 : Operation 20 [2/3] (1.86ns)   --->   "%call_ln277 = call void @ipv4_generate_ipv4<512>, i64 %s_axis_tx_meta, i1024 %m_axis_tx_data, i32 %local_ipv4_address_read, i8 %protocol_read, i2 %gi_state, i16 %header_idx_1, i160 %header_header_V_1, i1024 %tx_shift2ipv4Fifo" [/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/ipv4/ipv4.cpp:277]   --->   Operation 20 'call' 'call_ln277' <Predicate = true> <Delay = 1.86> <CoreType = "Generic">   --->   Core 0 '' <Latency = 0> <II = 1> <Delay = 1.00> <Generic> <Opcode : >
+
+State 6 <SV = 5> <Delay = 3.11>
+ST_6 : Operation 21 [2/3] (3.11ns)   --->   "%call_ln271 = call void @ipv4_drop_optional_ip_header<512>, i1024 %m_axis_rx_data, i3 %doh_state, i512 %prevWord_data_V_1, i64 %prevWord_keep_V_1, i4 %rx_process2dropLengthFifo, i1024 %rx_process2dropFifo, i4 %length_V" [/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/ipv4/ipv4.cpp:271]   --->   Operation 21 'call' 'call_ln271' <Predicate = true> <Delay = 3.11> <CoreType = "Generic">   --->   Core 0 '' <Latency = 0> <II = 1> <Delay = 1.00> <Generic> <Opcode : >
+ST_6 : Operation 22 [1/3] (0.00ns)   --->   "%call_ln277 = call void @ipv4_generate_ipv4<512>, i64 %s_axis_tx_meta, i1024 %m_axis_tx_data, i32 %local_ipv4_address_read, i8 %protocol_read, i2 %gi_state, i16 %header_idx_1, i160 %header_header_V_1, i1024 %tx_shift2ipv4Fifo" [/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/ipv4/ipv4.cpp:277]   --->   Operation 22 'call' 'call_ln277' <Predicate = true> <Delay = 0.00> <CoreType = "Generic">   --->   Core 0 '' <Latency = 0> <II = 1> <Delay = 1.00> <Generic> <Opcode : >
+
+State 7 <SV = 6> <Delay = 0.00>
+ST_7 : Operation 23 [1/3] (0.00ns)   --->   "%call_ln271 = call void @ipv4_drop_optional_ip_header<512>, i1024 %m_axis_rx_data, i3 %doh_state, i512 %prevWord_data_V_1, i64 %prevWord_keep_V_1, i4 %rx_process2dropLengthFifo, i1024 %rx_process2dropFifo, i4 %length_V" [/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/ipv4/ipv4.cpp:271]   --->   Operation 23 'call' 'call_ln271' <Predicate = true> <Delay = 0.00> <CoreType = "Generic">   --->   Core 0 '' <Latency = 0> <II = 1> <Delay = 1.00> <Generic> <Opcode : >
+
+State 8 <SV = 7> <Delay = 0.00>
+ST_8 : Operation 24 [1/1] (0.00ns)   --->   "%specdataflowpipeline_ln289 = specdataflowpipeline void @_ssdm_op_SpecDataflowPipeline, i32 4294967295, i32 1, void @empty_1" [/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/ipv4/ipv4.cpp:289]   --->   Operation 24 'specdataflowpipeline' 'specdataflowpipeline_ln289' <Predicate = true> <Delay = 0.00>
+ST_8 : Operation 25 [1/1] (0.00ns)   --->   "%empty = specchannel i32 @_ssdm_op_SpecChannel, void @rx_process2dropFifo_str, i32 1, void @p_str, void @p_str, i32 8, i32 8, i1024 %rx_process2dropFifo, i1024 %rx_process2dropFifo"   --->   Operation 25 'specchannel' 'empty' <Predicate = true> <Delay = 0.00>
+ST_8 : Operation 26 [1/1] (0.00ns)   --->   "%empty_34 = specchannel i32 @_ssdm_op_SpecChannel, void @rx_process2dropLengthFifo_str, i32 1, void @p_str, void @p_str, i32 2, i32 2, i4 %rx_process2dropLengthFifo, i4 %rx_process2dropLengthFifo"   --->   Operation 26 'specchannel' 'empty_34' <Predicate = true> <Delay = 0.00>
+ST_8 : Operation 27 [1/1] (0.00ns)   --->   "%empty_35 = specchannel i32 @_ssdm_op_SpecChannel, void @tx_shift2ipv4Fifo_str, i32 1, void @p_str, void @p_str, i32 8, i32 8, i1024 %tx_shift2ipv4Fifo, i1024 %tx_shift2ipv4Fifo"   --->   Operation 27 'specchannel' 'empty_35' <Predicate = true> <Delay = 0.00>
+ST_8 : Operation 28 [1/1] (0.00ns)   --->   "%spectopmodule_ln280 = spectopmodule void @_ssdm_op_SpecTopModule, void @empty_4" [/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/ipv4/ipv4.cpp:280]   --->   Operation 28 'spectopmodule' 'spectopmodule_ln280' <Predicate = true> <Delay = 0.00>
+ST_8 : Operation 29 [1/1] (0.00ns)   --->   "%specinterface_ln0 = specinterface void @_ssdm_op_SpecInterface, i1024 %s_axis_rx_data, void @empty, i32 1, i32 1, void @empty_0, i32 0, i32 0, void @empty_1, void @empty_1, void @empty_1, i32 0, i32 0, i32 0, i32 0, void @empty_1, void @empty_1, i32 4294967295, i32 0"   --->   Operation 29 'specinterface' 'specinterface_ln0' <Predicate = true> <Delay = 0.00>
+ST_8 : Operation 30 [1/1] (0.00ns)   --->   "%specbitsmap_ln0 = specbitsmap void @_ssdm_op_SpecBitsMap, i1024 %s_axis_rx_data"   --->   Operation 30 'specbitsmap' 'specbitsmap_ln0' <Predicate = true> <Delay = 0.00>
+ST_8 : Operation 31 [1/1] (0.00ns)   --->   "%specinterface_ln0 = specinterface void @_ssdm_op_SpecInterface, i64 %m_axis_rx_meta, void @empty, i32 1, i32 1, void @empty_0, i32 0, i32 0, void @empty_1, void @empty_1, void @empty_1, i32 0, i32 0, i32 0, i32 0, void @empty_1, void @empty_1, i32 4294967295, i32 0"   --->   Operation 31 'specinterface' 'specinterface_ln0' <Predicate = true> <Delay = 0.00>
+ST_8 : Operation 32 [1/1] (0.00ns)   --->   "%specbitsmap_ln0 = specbitsmap void @_ssdm_op_SpecBitsMap, i64 %m_axis_rx_meta"   --->   Operation 32 'specbitsmap' 'specbitsmap_ln0' <Predicate = true> <Delay = 0.00>
+ST_8 : Operation 33 [1/1] (0.00ns)   --->   "%specinterface_ln0 = specinterface void @_ssdm_op_SpecInterface, i1024 %m_axis_rx_data, void @empty, i32 1, i32 1, void @empty_0, i32 0, i32 0, void @empty_1, void @empty_1, void @empty_1, i32 0, i32 0, i32 0, i32 0, void @empty_1, void @empty_1, i32 4294967295, i32 0"   --->   Operation 33 'specinterface' 'specinterface_ln0' <Predicate = true> <Delay = 0.00>
+ST_8 : Operation 34 [1/1] (0.00ns)   --->   "%specbitsmap_ln0 = specbitsmap void @_ssdm_op_SpecBitsMap, i1024 %m_axis_rx_data"   --->   Operation 34 'specbitsmap' 'specbitsmap_ln0' <Predicate = true> <Delay = 0.00>
+ST_8 : Operation 35 [1/1] (0.00ns)   --->   "%specinterface_ln0 = specinterface void @_ssdm_op_SpecInterface, i64 %s_axis_tx_meta, void @empty, i32 1, i32 1, void @empty_0, i32 0, i32 0, void @empty_1, void @empty_1, void @empty_1, i32 0, i32 0, i32 0, i32 0, void @empty_1, void @empty_1, i32 4294967295, i32 0"   --->   Operation 35 'specinterface' 'specinterface_ln0' <Predicate = true> <Delay = 0.00>
+ST_8 : Operation 36 [1/1] (0.00ns)   --->   "%specbitsmap_ln0 = specbitsmap void @_ssdm_op_SpecBitsMap, i64 %s_axis_tx_meta"   --->   Operation 36 'specbitsmap' 'specbitsmap_ln0' <Predicate = true> <Delay = 0.00>
+ST_8 : Operation 37 [1/1] (0.00ns)   --->   "%specinterface_ln0 = specinterface void @_ssdm_op_SpecInterface, i1024 %s_axis_tx_data, void @empty, i32 1, i32 1, void @empty_0, i32 0, i32 0, void @empty_1, void @empty_1, void @empty_1, i32 0, i32 0, i32 0, i32 0, void @empty_1, void @empty_1, i32 4294967295, i32 0"   --->   Operation 37 'specinterface' 'specinterface_ln0' <Predicate = true> <Delay = 0.00>
+ST_8 : Operation 38 [1/1] (0.00ns)   --->   "%specbitsmap_ln0 = specbitsmap void @_ssdm_op_SpecBitsMap, i1024 %s_axis_tx_data"   --->   Operation 38 'specbitsmap' 'specbitsmap_ln0' <Predicate = true> <Delay = 0.00>
+ST_8 : Operation 39 [1/1] (0.00ns)   --->   "%specinterface_ln0 = specinterface void @_ssdm_op_SpecInterface, i1024 %m_axis_tx_data, void @empty, i32 1, i32 1, void @empty_0, i32 0, i32 0, void @empty_1, void @empty_1, void @empty_1, i32 0, i32 0, i32 0, i32 0, void @empty_1, void @empty_1, i32 4294967295, i32 0"   --->   Operation 39 'specinterface' 'specinterface_ln0' <Predicate = true> <Delay = 0.00>
+ST_8 : Operation 40 [1/1] (0.00ns)   --->   "%specbitsmap_ln0 = specbitsmap void @_ssdm_op_SpecBitsMap, i1024 %m_axis_tx_data"   --->   Operation 40 'specbitsmap' 'specbitsmap_ln0' <Predicate = true> <Delay = 0.00>
+ST_8 : Operation 41 [1/1] (0.00ns)   --->   "%specbitsmap_ln0 = specbitsmap void @_ssdm_op_SpecBitsMap, i32 %local_ipv4_address"   --->   Operation 41 'specbitsmap' 'specbitsmap_ln0' <Predicate = true> <Delay = 0.00>
+ST_8 : Operation 42 [1/1] (0.00ns)   --->   "%specinterface_ln0 = specinterface void @_ssdm_op_SpecInterface, i32 %local_ipv4_address, void @empty_2, i32 1, i32 1, void @empty_1, i32 0, i32 0, void @empty_1, void @empty_1, void @empty_1, i32 0, i32 0, i32 0, i32 0, void @empty_1, void @empty_1, i32 4294967295, i32 0"   --->   Operation 42 'specinterface' 'specinterface_ln0' <Predicate = true> <Delay = 0.00>
+ST_8 : Operation 43 [1/1] (0.00ns)   --->   "%specbitsmap_ln0 = specbitsmap void @_ssdm_op_SpecBitsMap, i8 %protocol"   --->   Operation 43 'specbitsmap' 'specbitsmap_ln0' <Predicate = true> <Delay = 0.00>
+ST_8 : Operation 44 [1/1] (0.00ns)   --->   "%specinterface_ln0 = specinterface void @_ssdm_op_SpecInterface, i8 %protocol, void @empty_2, i32 1, i32 1, void @empty_1, i32 0, i32 0, void @empty_1, void @empty_1, void @empty_1, i32 0, i32 0, i32 0, i32 0, void @empty_1, void @empty_1, i32 4294967295, i32 0"   --->   Operation 44 'specinterface' 'specinterface_ln0' <Predicate = true> <Delay = 0.00>
+ST_8 : Operation 45 [1/1] (0.00ns)   --->   "%specinterface_ln0 = specinterface void @_ssdm_op_SpecInterface, i1024 %rx_process2dropFifo, void @empty_3, i32 0, i32 0, void @empty_1, i32 0, i32 0, void @empty_1, void @empty_1, void @empty_1, i32 0, i32 0, i32 0, i32 0, void @empty_1, void @empty_1, i32 4294967295, i32 0"   --->   Operation 45 'specinterface' 'specinterface_ln0' <Predicate = true> <Delay = 0.00>
+ST_8 : Operation 46 [1/1] (0.00ns)   --->   "%specinterface_ln0 = specinterface void @_ssdm_op_SpecInterface, i4 %rx_process2dropLengthFifo, void @empty_3, i32 0, i32 0, void @empty_1, i32 0, i32 0, void @empty_1, void @empty_1, void @empty_1, i32 0, i32 0, i32 0, i32 0, void @empty_1, void @empty_1, i32 4294967295, i32 0"   --->   Operation 46 'specinterface' 'specinterface_ln0' <Predicate = true> <Delay = 0.00>
+ST_8 : Operation 47 [1/1] (0.00ns)   --->   "%specinterface_ln0 = specinterface void @_ssdm_op_SpecInterface, i1024 %tx_shift2ipv4Fifo, void @empty_3, i32 0, i32 0, void @empty_1, i32 0, i32 0, void @empty_1, void @empty_1, void @empty_1, i32 0, i32 0, i32 0, i32 0, void @empty_1, void @empty_1, i32 4294967295, i32 0"   --->   Operation 47 'specinterface' 'specinterface_ln0' <Predicate = true> <Delay = 0.00>
+ST_8 : Operation 48 [1/1] (0.00ns)   --->   "%ret_ln312 = ret" [/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/ipv4/ipv4.cpp:312]   --->   Operation 48 'ret' 'ret_ln312' <Predicate = true> <Delay = 0.00>
+
+
+============================================================
++ Verbose Summary: Timing violations
+============================================================
+Target clock period: 3.2ns, clock uncertainty: 0.864ns.
+
+ <State 1>: 0ns
+The critical path consists of the following:
+
+ <State 2>: 0ns
+The critical path consists of the following:
+
+ <State 3>: 0ns
+The critical path consists of the following:
+
+ <State 4>: 0ns
+The critical path consists of the following:
+
+ <State 5>: 1.87ns
+The critical path consists of the following:
+	'call' operation ('call_ln277', /mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/ipv4/ipv4.cpp:277) to 'ipv4_generate_ipv4<512>' [56]  (1.87 ns)
+
+ <State 6>: 3.11ns
+The critical path consists of the following:
+	'call' operation ('call_ln271', /mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/ipv4/ipv4.cpp:271) to 'ipv4_drop_optional_ip_header<512>' [54]  (3.11 ns)
+
+ <State 7>: 0ns
+The critical path consists of the following:
+
+ <State 8>: 0ns
+The critical path consists of the following:
+
+
+============================================================
++ Verbose Summary: Binding
+============================================================
+N/A
+* FSMD analyzer results:
+  - Output states:
+ - Input state : 
+  - Chain level:
+	State 1
+	State 2
+	State 3
+	State 4
+	State 5
+	State 6
+	State 7
+	State 8
+
+
+============================================================
++ Verbose Summary: Datapath Resource usage 
+============================================================
+N/A

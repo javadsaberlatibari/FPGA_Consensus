@@ -1,0 +1,3006 @@
+{
+  "Top": "rocev2_top",
+  "RtlTop": "rocev2_top",
+  "RtlPrefix": "",
+  "RtlSubPrefix": "rocev2_top_",
+  "SourceLanguage": "cpp",
+  "HostMachineBits": "64",
+  "FunctionProtocol": "ap_ctrl_none",
+  "ResetStyle": "control",
+  "Target": {
+    "Family": "virtexuplushbm",
+    "Device": "xcu280",
+    "Package": "-fsvh2892",
+    "Speed": "-2L-e",
+    "Triple": "fpga64-xilinx-none"
+  },
+  "Args": {
+    "s_axis_rx_data": {
+      "index": "0",
+      "direction": "in",
+      "srcType": "stream<net_axis<512>, 0>&",
+      "srcSize": "1024",
+      "hwRefs": [{
+          "type": "interface",
+          "interface": "s_axis_rx_data",
+          "name": "",
+          "usage": "data",
+          "direction": "in"
+        }]
+    },
+    "s_axis_tx_meta": {
+      "index": "1",
+      "direction": "in",
+      "srcType": "stream<txMeta, 0>&",
+      "srcSize": "256",
+      "hwRefs": [{
+          "type": "interface",
+          "interface": "s_axis_tx_meta",
+          "name": "",
+          "usage": "data",
+          "direction": "in"
+        }]
+    },
+    "s_axis_tx_data": {
+      "index": "2",
+      "direction": "in",
+      "srcType": "stream<net_axis<512>, 0>&",
+      "srcSize": "1024",
+      "hwRefs": [{
+          "type": "interface",
+          "interface": "s_axis_tx_data",
+          "name": "",
+          "usage": "data",
+          "direction": "in"
+        }]
+    },
+    "m_axis_tx_data": {
+      "index": "3",
+      "direction": "out",
+      "srcType": "stream<net_axis<512>, 0>&",
+      "srcSize": "1024",
+      "hwRefs": [{
+          "type": "interface",
+          "interface": "m_axis_tx_data",
+          "name": "",
+          "usage": "data",
+          "direction": "out"
+        }]
+    },
+    "m_axis_mem_write_cmd": {
+      "index": "4",
+      "direction": "out",
+      "srcType": "stream<routedMemCmd, 0>&",
+      "srcSize": "192",
+      "hwRefs": [{
+          "type": "interface",
+          "interface": "m_axis_mem_write_cmd",
+          "name": "",
+          "usage": "data",
+          "direction": "out"
+        }]
+    },
+    "m_axis_mem_read_cmd": {
+      "index": "5",
+      "direction": "out",
+      "srcType": "stream<routedMemCmd, 0>&",
+      "srcSize": "192",
+      "hwRefs": [{
+          "type": "interface",
+          "interface": "m_axis_mem_read_cmd",
+          "name": "",
+          "usage": "data",
+          "direction": "out"
+        }]
+    },
+    "m_axis_mem_write_data": {
+      "index": "6",
+      "direction": "out",
+      "srcType": "stream<routed_net_axis<512, 1>, 0>&",
+      "srcSize": "1024",
+      "hwRefs": [{
+          "type": "interface",
+          "interface": "m_axis_mem_write_data",
+          "name": "",
+          "usage": "data",
+          "direction": "out"
+        }]
+    },
+    "s_axis_mem_read_data": {
+      "index": "7",
+      "direction": "in",
+      "srcType": "stream<net_axis<512>, 0>&",
+      "srcSize": "1024",
+      "hwRefs": [{
+          "type": "interface",
+          "interface": "s_axis_mem_read_data",
+          "name": "",
+          "usage": "data",
+          "direction": "in"
+        }]
+    },
+    "s_axis_qp_interface": {
+      "index": "8",
+      "direction": "in",
+      "srcType": "stream<qpContext, 0>&",
+      "srcSize": "256",
+      "hwRefs": [{
+          "type": "interface",
+          "interface": "s_axis_qp_interface",
+          "name": "",
+          "usage": "data",
+          "direction": "in"
+        }]
+    },
+    "s_axis_qp_conn_interface": {
+      "index": "9",
+      "direction": "in",
+      "srcType": "stream<ifConnReq, 0>&",
+      "srcSize": "384",
+      "hwRefs": [{
+          "type": "interface",
+          "interface": "s_axis_qp_conn_interface",
+          "name": "",
+          "usage": "data",
+          "direction": "in"
+        }]
+    },
+    "local_ip_address": {
+      "index": "10",
+      "direction": "in",
+      "srcType": "ap_uint<128>",
+      "srcSize": "128",
+      "hwRefs": [{
+          "type": "port",
+          "interface": "local_ip_address",
+          "name": "local_ip_address",
+          "usage": "data",
+          "direction": "in"
+        }]
+    },
+    "regCrcDropPkgCount": {
+      "index": "11",
+      "direction": "out",
+      "srcType": "ap_uint<32>&",
+      "srcSize": "32",
+      "hwRefs": [
+        {
+          "type": "port",
+          "interface": "regCrcDropPkgCount",
+          "name": "regCrcDropPkgCount",
+          "usage": "data",
+          "direction": "out"
+        },
+        {
+          "type": "port",
+          "interface": "regCrcDropPkgCount_ap_vld",
+          "name": "regCrcDropPkgCount_ap_vld",
+          "usage": "control",
+          "direction": "out"
+        }
+      ]
+    },
+    "regInvalidPsnDropCount": {
+      "index": "12",
+      "direction": "out",
+      "srcType": "ap_uint<32>&",
+      "srcSize": "32",
+      "hwRefs": [
+        {
+          "type": "port",
+          "interface": "regInvalidPsnDropCount",
+          "name": "regInvalidPsnDropCount",
+          "usage": "data",
+          "direction": "out"
+        },
+        {
+          "type": "port",
+          "interface": "regInvalidPsnDropCount_ap_vld",
+          "name": "regInvalidPsnDropCount_ap_vld",
+          "usage": "control",
+          "direction": "out"
+        }
+      ]
+    }
+  },
+  "HlsSolution": {
+    "FlowTarget": "vivado",
+    "ConfigTcl": [
+      "config_interface -m_axi_latency=0",
+      "config_export -description {-display_name=RoCEv2 Endpoint}",
+      "config_export -format=ip_catalog",
+      "config_export -ipname=rocev2",
+      "config_export -vendor=ethz.systems.fpga",
+      "config_export -version=0.82"
+    ],
+    "ProfileOption": "0",
+    "ProfileType": "none",
+    "KernelName": "rocev2_top"
+  },
+  "ClockInfo": {
+    "ClockName": "ap_clk",
+    "ClockPeriod": "3.2",
+    "Uncertainty": "0.864",
+    "IsCombinational": "0",
+    "II": "1",
+    "Latency": "43"
+  },
+  "Xdc": {"OocClocks": ["create_clock -name ap_clk -period 3.200 [get_ports ap_clk]"]},
+  "Ipx": {
+    "Vendor": "ethz.systems.fpga",
+    "Library": "hls",
+    "Name": "rocev2",
+    "Version": "0.82",
+    "DisplayName": "Rocev2",
+    "Revision": "2113113513",
+    "Description": "-display_name=RoCEv2 Endpoint",
+    "Taxonomy": "\/VITIS_HLS_IP",
+    "AutoFamilySupport": "",
+    "ZipFile": "ethz_systems_fpga_hls_rocev2_0_82.zip"
+  },
+  "Files": {
+    "CSource": [
+      "\/mnt\/scratch\/pyuvaraj\/Vitis_RoCE_W\/Vitis_RoCE\/fpga-network-stack\/hls\/rocev2\/rocev2.cpp",
+      "\/mnt\/scratch\/pyuvaraj\/Vitis_RoCE_W\/Vitis_RoCE\/fpga-network-stack\/hls\/rocev2\/..\/ib_transport_protocol\/msn_table.cpp",
+      "\/mnt\/scratch\/pyuvaraj\/Vitis_RoCE_W\/Vitis_RoCE\/fpga-network-stack\/hls\/rocev2\/..\/ib_transport_protocol\/conn_table.cpp",
+      "\/mnt\/scratch\/pyuvaraj\/Vitis_RoCE_W\/Vitis_RoCE\/fpga-network-stack\/hls\/rocev2\/..\/ib_transport_protocol\/state_table.cpp",
+      "\/mnt\/scratch\/pyuvaraj\/Vitis_RoCE_W\/Vitis_RoCE\/fpga-network-stack\/hls\/rocev2\/..\/ib_transport_protocol\/retransmitter\/retransmitter.cpp",
+      "\/mnt\/scratch\/pyuvaraj\/Vitis_RoCE_W\/Vitis_RoCE\/fpga-network-stack\/hls\/rocev2\/..\/ib_transport_protocol\/transport_timer.cpp",
+      "\/mnt\/scratch\/pyuvaraj\/Vitis_RoCE_W\/Vitis_RoCE\/fpga-network-stack\/hls\/rocev2\/..\/ib_transport_protocol\/read_req_table.cpp",
+      "\/mnt\/scratch\/pyuvaraj\/Vitis_RoCE_W\/Vitis_RoCE\/fpga-network-stack\/hls\/rocev2\/..\/ib_transport_protocol\/ib_transport_protocol.cpp",
+      "\/mnt\/scratch\/pyuvaraj\/Vitis_RoCE_W\/Vitis_RoCE\/fpga-network-stack\/hls\/rocev2\/..\/ib_transport_protocol\/ib_utils.cpp",
+      "\/mnt\/scratch\/pyuvaraj\/Vitis_RoCE_W\/Vitis_RoCE\/fpga-network-stack\/hls\/rocev2\/..\/udp\/udp.cpp",
+      "\/mnt\/scratch\/pyuvaraj\/Vitis_RoCE_W\/Vitis_RoCE\/fpga-network-stack\/hls\/rocev2\/..\/ipv6\/ipv6.cpp",
+      "\/mnt\/scratch\/pyuvaraj\/Vitis_RoCE_W\/Vitis_RoCE\/fpga-network-stack\/hls\/rocev2\/..\/ipv4\/ipv4.cpp",
+      "\/mnt\/scratch\/pyuvaraj\/Vitis_RoCE_W\/Vitis_RoCE\/fpga-network-stack\/hls\/rocev2\/..\/ipv4\/ipv4_utils.cpp",
+      "\/mnt\/scratch\/pyuvaraj\/Vitis_RoCE_W\/Vitis_RoCE\/fpga-network-stack\/hls\/rocev2\/..\/axi_utils.cpp"
+    ],
+    "Vhdl": [
+      "impl\/vhdl\/rocev2_top_append_payload_512_s.vhd",
+      "impl\/vhdl\/rocev2_top_Block_entry449_proc.vhd",
+      "impl\/vhdl\/rocev2_top_conn_table.vhd",
+      "impl\/vhdl\/rocev2_top_conn_table_conn_table_remote_ip_address_V_RAM_AUTO_1R1W.vhd",
+      "impl\/vhdl\/rocev2_top_conn_table_conn_table_remote_qpn_V_RAM_AUTO_1R1W.vhd",
+      "impl\/vhdl\/rocev2_top_conn_table_conn_table_remote_udp_port_V_RAM_AUTO_1R1W.vhd",
+      "impl\/vhdl\/rocev2_top_drop_ooo_ibh_512_s.vhd",
+      "impl\/vhdl\/rocev2_top_entry_proc.vhd",
+      "impl\/vhdl\/rocev2_top_extract_icrc_512_s.vhd",
+      "impl\/vhdl\/rocev2_top_fifo_w1_d2_S.vhd",
+      "impl\/vhdl\/rocev2_top_fifo_w4_d2_S.vhd",
+      "impl\/vhdl\/rocev2_top_fifo_w16_d2_S.vhd",
+      "impl\/vhdl\/rocev2_top_fifo_w16_d4_S.vhd",
+      "impl\/vhdl\/rocev2_top_fifo_w16_d2048_A.vhd",
+      "impl\/vhdl\/rocev2_top_fifo_w24_d2_S.vhd",
+      "impl\/vhdl\/rocev2_top_fifo_w32_d2_S.vhd",
+      "impl\/vhdl\/rocev2_top_fifo_w48_d2_S.vhd",
+      "impl\/vhdl\/rocev2_top_fifo_w64_d2_S.vhd",
+      "impl\/vhdl\/rocev2_top_fifo_w96_d2_S.vhd",
+      "impl\/vhdl\/rocev2_top_fifo_w96_d4_S.vhd",
+      "impl\/vhdl\/rocev2_top_fifo_w96_d128_A.vhd",
+      "impl\/vhdl\/rocev2_top_fifo_w128_d2_S.vhd",
+      "impl\/vhdl\/rocev2_top_fifo_w128_d3_S.vhd",
+      "impl\/vhdl\/rocev2_top_fifo_w160_d2_S.vhd",
+      "impl\/vhdl\/rocev2_top_fifo_w192_d2_S.vhd",
+      "impl\/vhdl\/rocev2_top_fifo_w192_d8_A.vhd",
+      "impl\/vhdl\/rocev2_top_fifo_w192_d512_A.vhd",
+      "impl\/vhdl\/rocev2_top_fifo_w256_d2_S.vhd",
+      "impl\/vhdl\/rocev2_top_fifo_w256_d4_S.vhd",
+      "impl\/vhdl\/rocev2_top_fifo_w256_d8_A.vhd",
+      "impl\/vhdl\/rocev2_top_fifo_w256_d32_A.vhd",
+      "impl\/vhdl\/rocev2_top_fifo_w256_d512_A.vhd",
+      "impl\/vhdl\/rocev2_top_fifo_w384_d8_A.vhd",
+      "impl\/vhdl\/rocev2_top_fifo_w512_d2_S.vhd",
+      "impl\/vhdl\/rocev2_top_fifo_w512_d8_A.vhd",
+      "impl\/vhdl\/rocev2_top_fifo_w1024_d2_S.vhd",
+      "impl\/vhdl\/rocev2_top_fifo_w1024_d4_A.vhd",
+      "impl\/vhdl\/rocev2_top_fifo_w1024_d8_A.vhd",
+      "impl\/vhdl\/rocev2_top_fifo_w1024_d32_A.vhd",
+      "impl\/vhdl\/rocev2_top_generate_exh_512_s.vhd",
+      "impl\/vhdl\/rocev2_top_generate_ibh_512_s.vhd",
+      "impl\/vhdl\/rocev2_top_generate_udp_512_s.vhd",
+      "impl\/vhdl\/rocev2_top_handle_read_requests.vhd",
+      "impl\/vhdl\/rocev2_top_insert_icrc_512_s.vhd",
+      "impl\/vhdl\/rocev2_top_ipUdpMetaHandler_512_s.vhd",
+      "impl\/vhdl\/rocev2_top_ipv4_drop_optional_ip_header_512_s.vhd",
+      "impl\/vhdl\/rocev2_top_ipv4_generate_ipv4_512_13.vhd",
+      "impl\/vhdl\/rocev2_top_ipv4_lshiftWordByOctet_512_2_s.vhd",
+      "impl\/vhdl\/rocev2_top_local_req_handler.vhd",
+      "impl\/vhdl\/rocev2_top_lshiftWordByOctet_512_11_s.vhd",
+      "impl\/vhdl\/rocev2_top_lshiftWordByOctet_512_12_s.vhd",
+      "impl\/vhdl\/rocev2_top_lshiftWordByOctet_512_13_s.vhd",
+      "impl\/vhdl\/rocev2_top_mem_cmd_merger_512_s.vhd",
+      "impl\/vhdl\/rocev2_top_merge_rx_meta.vhd",
+      "impl\/vhdl\/rocev2_top_merge_rx_pkgs_512_s.vhd",
+      "impl\/vhdl\/rocev2_top_meta_merger.vhd",
+      "impl\/vhdl\/rocev2_top_mq_freelist_handler_2048_s.vhd",
+      "impl\/vhdl\/rocev2_top_mq_meta_table_ap_uint_64_2048_s.vhd",
+      "impl\/vhdl\/rocev2_top_mq_meta_table_ap_uint_64_2048_s_meta_table_next_V_RAM_T2P_BRAM_1R1W.vhd",
+      "impl\/vhdl\/rocev2_top_mq_meta_table_ap_uint_64_2048_s_meta_table_valid_RAM_T2P_BRAM_1R1W.vhd",
+      "impl\/vhdl\/rocev2_top_mq_meta_table_ap_uint_64_2048_s_meta_table_value_V_RAM_T2P_BRAM_1R1W.vhd",
+      "impl\/vhdl\/rocev2_top_mq_pointer_table_500_s.vhd",
+      "impl\/vhdl\/rocev2_top_mq_pointer_table_500_s_ptr_table_head_V_RAM_T2P_BRAM_1R1W.vhd",
+      "impl\/vhdl\/rocev2_top_mq_pointer_table_500_s_ptr_table_valid_RAM_T2P_BRAM_1R1W.vhd",
+      "impl\/vhdl\/rocev2_top_mq_process_requests_ap_uint_64_s.vhd",
+      "impl\/vhdl\/rocev2_top_msn_table.vhd",
+      "impl\/vhdl\/rocev2_top_msn_table_msn_table_dma_length_V_RAM_2P_BRAM_1R1W.vhd",
+      "impl\/vhdl\/rocev2_top_msn_table_msn_table_vaddr_V_RAM_2P_BRAM_1R1W.vhd",
+      "impl\/vhdl\/rocev2_top_mul_33ns_35ns_66_2_1.vhd",
+      "impl\/vhdl\/rocev2_top_prepend_ibh_header_512_s.vhd",
+      "impl\/vhdl\/rocev2_top_process_ipv4_512_s.vhd",
+      "impl\/vhdl\/rocev2_top_process_udp_512_14.vhd",
+      "impl\/vhdl\/rocev2_top_qp_interface.vhd",
+      "impl\/vhdl\/rocev2_top_read_req_table.vhd",
+      "impl\/vhdl\/rocev2_top_regslice_both.vhd",
+      "impl\/vhdl\/rocev2_top_rshiftWordByOctet_net_axis_512_512_11_s.vhd",
+      "impl\/vhdl\/rocev2_top_rshiftWordByOctet_net_axis_512_512_13_s.vhd",
+      "impl\/vhdl\/rocev2_top_rshiftWordByOctet_routed_net_axis_512_1_512_12_s.vhd",
+      "impl\/vhdl\/rocev2_top_rx_exh_fsm_512_s.vhd",
+      "impl\/vhdl\/rocev2_top_rx_exh_payload_512_s.vhd",
+      "impl\/vhdl\/rocev2_top_rx_ibh_fsm.vhd",
+      "impl\/vhdl\/rocev2_top_rx_process_exh_512_s.vhd",
+      "impl\/vhdl\/rocev2_top_rx_process_ibh_512_s.vhd",
+      "impl\/vhdl\/rocev2_top_split_tx_meta.vhd",
+      "impl\/vhdl\/rocev2_top_state_table.vhd",
+      "impl\/vhdl\/rocev2_top_state_table_state_table_req_old_unack_V_RAM_2P_BRAM_1R1W.vhd",
+      "impl\/vhdl\/rocev2_top_state_table_state_table_retryCounter_V_RAM_2P_BRAM_1R1W.vhd",
+      "impl\/vhdl\/rocev2_top_stream_merger_ackEvent_s.vhd",
+      "impl\/vhdl\/rocev2_top_tx_ipUdpMetaMerger.vhd",
+      "impl\/vhdl\/rocev2_top_tx_pkg_arbiter_512_s.vhd",
+      "impl\/vhdl\/rocev2_top_udp_lshiftWordByOctet_512_1_s.vhd",
+      "impl\/vhdl\/rocev2_top_udp_rshiftWordByOctet_net_axis_512_512_2_s.vhd",
+      "impl\/vhdl\/rocev2_top.vhd"
+    ],
+    "Verilog": [
+      "impl\/verilog\/rocev2_top_append_payload_512_s.v",
+      "impl\/verilog\/rocev2_top_Block_entry449_proc.v",
+      "impl\/verilog\/rocev2_top_conn_table.v",
+      "impl\/verilog\/rocev2_top_conn_table_conn_table_remote_ip_address_V_RAM_AUTO_1R1W.dat",
+      "impl\/verilog\/rocev2_top_conn_table_conn_table_remote_ip_address_V_RAM_AUTO_1R1W.v",
+      "impl\/verilog\/rocev2_top_conn_table_conn_table_remote_qpn_V_RAM_AUTO_1R1W.dat",
+      "impl\/verilog\/rocev2_top_conn_table_conn_table_remote_qpn_V_RAM_AUTO_1R1W.v",
+      "impl\/verilog\/rocev2_top_conn_table_conn_table_remote_udp_port_V_RAM_AUTO_1R1W.dat",
+      "impl\/verilog\/rocev2_top_conn_table_conn_table_remote_udp_port_V_RAM_AUTO_1R1W.v",
+      "impl\/verilog\/rocev2_top_drop_ooo_ibh_512_s.v",
+      "impl\/verilog\/rocev2_top_entry_proc.v",
+      "impl\/verilog\/rocev2_top_extract_icrc_512_s.v",
+      "impl\/verilog\/rocev2_top_fifo_w1_d2_S.v",
+      "impl\/verilog\/rocev2_top_fifo_w4_d2_S.v",
+      "impl\/verilog\/rocev2_top_fifo_w16_d2_S.v",
+      "impl\/verilog\/rocev2_top_fifo_w16_d4_S.v",
+      "impl\/verilog\/rocev2_top_fifo_w16_d2048_A.v",
+      "impl\/verilog\/rocev2_top_fifo_w24_d2_S.v",
+      "impl\/verilog\/rocev2_top_fifo_w32_d2_S.v",
+      "impl\/verilog\/rocev2_top_fifo_w48_d2_S.v",
+      "impl\/verilog\/rocev2_top_fifo_w64_d2_S.v",
+      "impl\/verilog\/rocev2_top_fifo_w96_d2_S.v",
+      "impl\/verilog\/rocev2_top_fifo_w96_d4_S.v",
+      "impl\/verilog\/rocev2_top_fifo_w96_d128_A.v",
+      "impl\/verilog\/rocev2_top_fifo_w128_d2_S.v",
+      "impl\/verilog\/rocev2_top_fifo_w128_d3_S.v",
+      "impl\/verilog\/rocev2_top_fifo_w160_d2_S.v",
+      "impl\/verilog\/rocev2_top_fifo_w192_d2_S.v",
+      "impl\/verilog\/rocev2_top_fifo_w192_d8_A.v",
+      "impl\/verilog\/rocev2_top_fifo_w192_d512_A.v",
+      "impl\/verilog\/rocev2_top_fifo_w256_d2_S.v",
+      "impl\/verilog\/rocev2_top_fifo_w256_d4_S.v",
+      "impl\/verilog\/rocev2_top_fifo_w256_d8_A.v",
+      "impl\/verilog\/rocev2_top_fifo_w256_d32_A.v",
+      "impl\/verilog\/rocev2_top_fifo_w256_d512_A.v",
+      "impl\/verilog\/rocev2_top_fifo_w384_d8_A.v",
+      "impl\/verilog\/rocev2_top_fifo_w512_d2_S.v",
+      "impl\/verilog\/rocev2_top_fifo_w512_d8_A.v",
+      "impl\/verilog\/rocev2_top_fifo_w1024_d2_S.v",
+      "impl\/verilog\/rocev2_top_fifo_w1024_d4_A.v",
+      "impl\/verilog\/rocev2_top_fifo_w1024_d8_A.v",
+      "impl\/verilog\/rocev2_top_fifo_w1024_d32_A.v",
+      "impl\/verilog\/rocev2_top_generate_exh_512_s.v",
+      "impl\/verilog\/rocev2_top_generate_ibh_512_s.v",
+      "impl\/verilog\/rocev2_top_generate_udp_512_s.v",
+      "impl\/verilog\/rocev2_top_handle_read_requests.v",
+      "impl\/verilog\/rocev2_top_hls_deadlock_detection_unit.v",
+      "impl\/verilog\/rocev2_top_hls_deadlock_detector.vh",
+      "impl\/verilog\/rocev2_top_hls_deadlock_idx0_monitor.v",
+      "impl\/verilog\/rocev2_top_hls_deadlock_idx5_monitor.v",
+      "impl\/verilog\/rocev2_top_hls_deadlock_kernel_monitor_top.vh",
+      "impl\/verilog\/rocev2_top_hls_deadlock_report_unit.vh",
+      "impl\/verilog\/rocev2_top_insert_icrc_512_s.v",
+      "impl\/verilog\/rocev2_top_ipUdpMetaHandler_512_s.v",
+      "impl\/verilog\/rocev2_top_ipv4_drop_optional_ip_header_512_s.v",
+      "impl\/verilog\/rocev2_top_ipv4_generate_ipv4_512_13.v",
+      "impl\/verilog\/rocev2_top_ipv4_lshiftWordByOctet_512_2_s.v",
+      "impl\/verilog\/rocev2_top_local_req_handler.v",
+      "impl\/verilog\/rocev2_top_lshiftWordByOctet_512_11_s.v",
+      "impl\/verilog\/rocev2_top_lshiftWordByOctet_512_12_s.v",
+      "impl\/verilog\/rocev2_top_lshiftWordByOctet_512_13_s.v",
+      "impl\/verilog\/rocev2_top_mem_cmd_merger_512_s.v",
+      "impl\/verilog\/rocev2_top_merge_rx_meta.v",
+      "impl\/verilog\/rocev2_top_merge_rx_pkgs_512_s.v",
+      "impl\/verilog\/rocev2_top_meta_merger.v",
+      "impl\/verilog\/rocev2_top_mq_freelist_handler_2048_s.v",
+      "impl\/verilog\/rocev2_top_mq_meta_table_ap_uint_64_2048_s.v",
+      "impl\/verilog\/rocev2_top_mq_meta_table_ap_uint_64_2048_s_meta_table_next_V_RAM_T2P_BRAM_1R1W.dat",
+      "impl\/verilog\/rocev2_top_mq_meta_table_ap_uint_64_2048_s_meta_table_next_V_RAM_T2P_BRAM_1R1W.v",
+      "impl\/verilog\/rocev2_top_mq_meta_table_ap_uint_64_2048_s_meta_table_valid_RAM_T2P_BRAM_1R1W.dat",
+      "impl\/verilog\/rocev2_top_mq_meta_table_ap_uint_64_2048_s_meta_table_valid_RAM_T2P_BRAM_1R1W.v",
+      "impl\/verilog\/rocev2_top_mq_meta_table_ap_uint_64_2048_s_meta_table_value_V_RAM_T2P_BRAM_1R1W.dat",
+      "impl\/verilog\/rocev2_top_mq_meta_table_ap_uint_64_2048_s_meta_table_value_V_RAM_T2P_BRAM_1R1W.v",
+      "impl\/verilog\/rocev2_top_mq_pointer_table_500_s.v",
+      "impl\/verilog\/rocev2_top_mq_pointer_table_500_s_ptr_table_head_V_RAM_T2P_BRAM_1R1W.dat",
+      "impl\/verilog\/rocev2_top_mq_pointer_table_500_s_ptr_table_head_V_RAM_T2P_BRAM_1R1W.v",
+      "impl\/verilog\/rocev2_top_mq_pointer_table_500_s_ptr_table_valid_RAM_T2P_BRAM_1R1W.dat",
+      "impl\/verilog\/rocev2_top_mq_pointer_table_500_s_ptr_table_valid_RAM_T2P_BRAM_1R1W.v",
+      "impl\/verilog\/rocev2_top_mq_process_requests_ap_uint_64_s.v",
+      "impl\/verilog\/rocev2_top_msn_table.v",
+      "impl\/verilog\/rocev2_top_msn_table_msn_table_dma_length_V_RAM_2P_BRAM_1R1W.dat",
+      "impl\/verilog\/rocev2_top_msn_table_msn_table_dma_length_V_RAM_2P_BRAM_1R1W.v",
+      "impl\/verilog\/rocev2_top_msn_table_msn_table_vaddr_V_RAM_2P_BRAM_1R1W.dat",
+      "impl\/verilog\/rocev2_top_msn_table_msn_table_vaddr_V_RAM_2P_BRAM_1R1W.v",
+      "impl\/verilog\/rocev2_top_mul_33ns_35ns_66_2_1.v",
+      "impl\/verilog\/rocev2_top_prepend_ibh_header_512_s.v",
+      "impl\/verilog\/rocev2_top_process_ipv4_512_s.v",
+      "impl\/verilog\/rocev2_top_process_udp_512_14.v",
+      "impl\/verilog\/rocev2_top_qp_interface.v",
+      "impl\/verilog\/rocev2_top_read_req_table.v",
+      "impl\/verilog\/rocev2_top_regslice_both.v",
+      "impl\/verilog\/rocev2_top_rshiftWordByOctet_net_axis_512_512_11_s.v",
+      "impl\/verilog\/rocev2_top_rshiftWordByOctet_net_axis_512_512_13_s.v",
+      "impl\/verilog\/rocev2_top_rshiftWordByOctet_routed_net_axis_512_1_512_12_s.v",
+      "impl\/verilog\/rocev2_top_rx_exh_fsm_512_s.v",
+      "impl\/verilog\/rocev2_top_rx_exh_payload_512_s.v",
+      "impl\/verilog\/rocev2_top_rx_ibh_fsm.v",
+      "impl\/verilog\/rocev2_top_rx_process_exh_512_s.v",
+      "impl\/verilog\/rocev2_top_rx_process_ibh_512_s.v",
+      "impl\/verilog\/rocev2_top_split_tx_meta.v",
+      "impl\/verilog\/rocev2_top_state_table.v",
+      "impl\/verilog\/rocev2_top_state_table_state_table_req_old_unack_V_RAM_2P_BRAM_1R1W.dat",
+      "impl\/verilog\/rocev2_top_state_table_state_table_req_old_unack_V_RAM_2P_BRAM_1R1W.v",
+      "impl\/verilog\/rocev2_top_state_table_state_table_retryCounter_V_RAM_2P_BRAM_1R1W.dat",
+      "impl\/verilog\/rocev2_top_state_table_state_table_retryCounter_V_RAM_2P_BRAM_1R1W.v",
+      "impl\/verilog\/rocev2_top_stream_merger_ackEvent_s.v",
+      "impl\/verilog\/rocev2_top_tx_ipUdpMetaMerger.v",
+      "impl\/verilog\/rocev2_top_tx_pkg_arbiter_512_s.v",
+      "impl\/verilog\/rocev2_top_udp_lshiftWordByOctet_512_1_s.v",
+      "impl\/verilog\/rocev2_top_udp_rshiftWordByOctet_net_axis_512_512_2_s.v",
+      "impl\/verilog\/rocev2_top.v"
+    ],
+    "IpMisc": ["impl\/misc\/logo.png"],
+    "CsynthXml": "syn\/report\/csynth.xml",
+    "DebugDir": ".debug",
+    "KernelXml": ".autopilot\/db\/kernel.internal.xml",
+    "Xo": "",
+    "XoHlsDir": "",
+    "ProtoInst": [".debug\/rocev2_top.protoinst"]
+  },
+  "SubcoreInfo": {
+    "HasXpmMemory": false,
+    "HasClockedDsp": false,
+    "Ip": []
+  },
+  "Interfaces": {
+    "s_axis_rx_data": {
+      "type": "axi4stream",
+      "busTypeName": "axis",
+      "mode": "slave",
+      "dataWidth": "1024",
+      "portPrefix": "s_axis_rx_data_",
+      "ports": [
+        "s_axis_rx_data_TDATA",
+        "s_axis_rx_data_TREADY",
+        "s_axis_rx_data_TVALID"
+      ],
+      "constraints": [{
+          "constraint_type": "pragma interface",
+          "mode": "axis",
+          "register_option": "1",
+          "register_mode": "both",
+          "argName": "s_axis_rx_data"
+        }]
+    },
+    "s_axis_tx_meta": {
+      "type": "axi4stream",
+      "busTypeName": "axis",
+      "mode": "slave",
+      "dataWidth": "256",
+      "portPrefix": "s_axis_tx_meta_",
+      "ports": [
+        "s_axis_tx_meta_TDATA",
+        "s_axis_tx_meta_TREADY",
+        "s_axis_tx_meta_TVALID"
+      ],
+      "constraints": [{
+          "constraint_type": "pragma interface",
+          "mode": "axis",
+          "register_option": "1",
+          "register_mode": "both",
+          "argName": "s_axis_tx_meta"
+        }]
+    },
+    "s_axis_tx_data": {
+      "type": "axi4stream",
+      "busTypeName": "axis",
+      "mode": "slave",
+      "dataWidth": "1024",
+      "portPrefix": "s_axis_tx_data_",
+      "ports": [
+        "s_axis_tx_data_TDATA",
+        "s_axis_tx_data_TREADY",
+        "s_axis_tx_data_TVALID"
+      ],
+      "constraints": [{
+          "constraint_type": "pragma interface",
+          "mode": "axis",
+          "register_option": "1",
+          "register_mode": "both",
+          "argName": "s_axis_tx_data"
+        }]
+    },
+    "m_axis_tx_data": {
+      "type": "axi4stream",
+      "busTypeName": "axis",
+      "mode": "master",
+      "dataWidth": "1024",
+      "portPrefix": "m_axis_tx_data_",
+      "ports": [
+        "m_axis_tx_data_TDATA",
+        "m_axis_tx_data_TREADY",
+        "m_axis_tx_data_TVALID"
+      ],
+      "constraints": [{
+          "constraint_type": "pragma interface",
+          "mode": "axis",
+          "register_option": "1",
+          "register_mode": "both",
+          "argName": "m_axis_tx_data"
+        }]
+    },
+    "m_axis_mem_write_cmd": {
+      "type": "axi4stream",
+      "busTypeName": "axis",
+      "mode": "master",
+      "dataWidth": "192",
+      "portPrefix": "m_axis_mem_write_cmd_",
+      "ports": [
+        "m_axis_mem_write_cmd_TDATA",
+        "m_axis_mem_write_cmd_TREADY",
+        "m_axis_mem_write_cmd_TVALID"
+      ],
+      "constraints": [{
+          "constraint_type": "pragma interface",
+          "mode": "axis",
+          "register_option": "1",
+          "register_mode": "both",
+          "argName": "m_axis_mem_write_cmd"
+        }]
+    },
+    "m_axis_mem_read_cmd": {
+      "type": "axi4stream",
+      "busTypeName": "axis",
+      "mode": "master",
+      "dataWidth": "192",
+      "portPrefix": "m_axis_mem_read_cmd_",
+      "ports": [
+        "m_axis_mem_read_cmd_TDATA",
+        "m_axis_mem_read_cmd_TREADY",
+        "m_axis_mem_read_cmd_TVALID"
+      ],
+      "constraints": [{
+          "constraint_type": "pragma interface",
+          "mode": "axis",
+          "register_option": "1",
+          "register_mode": "both",
+          "argName": "m_axis_mem_read_cmd"
+        }]
+    },
+    "m_axis_mem_write_data": {
+      "type": "axi4stream",
+      "busTypeName": "axis",
+      "mode": "master",
+      "dataWidth": "1024",
+      "portPrefix": "m_axis_mem_write_data_",
+      "ports": [
+        "m_axis_mem_write_data_TDATA",
+        "m_axis_mem_write_data_TREADY",
+        "m_axis_mem_write_data_TVALID"
+      ],
+      "constraints": [{
+          "constraint_type": "pragma interface",
+          "mode": "axis",
+          "register_option": "1",
+          "register_mode": "both",
+          "argName": "m_axis_mem_write_data"
+        }]
+    },
+    "s_axis_mem_read_data": {
+      "type": "axi4stream",
+      "busTypeName": "axis",
+      "mode": "slave",
+      "dataWidth": "1024",
+      "portPrefix": "s_axis_mem_read_data_",
+      "ports": [
+        "s_axis_mem_read_data_TDATA",
+        "s_axis_mem_read_data_TREADY",
+        "s_axis_mem_read_data_TVALID"
+      ],
+      "constraints": [{
+          "constraint_type": "pragma interface",
+          "mode": "axis",
+          "register_option": "1",
+          "register_mode": "both",
+          "argName": "s_axis_mem_read_data"
+        }]
+    },
+    "s_axis_qp_interface": {
+      "type": "axi4stream",
+      "busTypeName": "axis",
+      "mode": "slave",
+      "dataWidth": "256",
+      "portPrefix": "s_axis_qp_interface_",
+      "ports": [
+        "s_axis_qp_interface_TDATA",
+        "s_axis_qp_interface_TREADY",
+        "s_axis_qp_interface_TVALID"
+      ],
+      "constraints": [{
+          "constraint_type": "pragma interface",
+          "mode": "axis",
+          "register_option": "1",
+          "register_mode": "both",
+          "argName": "s_axis_qp_interface"
+        }]
+    },
+    "s_axis_qp_conn_interface": {
+      "type": "axi4stream",
+      "busTypeName": "axis",
+      "mode": "slave",
+      "dataWidth": "384",
+      "portPrefix": "s_axis_qp_conn_interface_",
+      "ports": [
+        "s_axis_qp_conn_interface_TDATA",
+        "s_axis_qp_conn_interface_TREADY",
+        "s_axis_qp_conn_interface_TVALID"
+      ],
+      "constraints": [{
+          "constraint_type": "pragma interface",
+          "mode": "axis",
+          "register_option": "1",
+          "register_mode": "both",
+          "argName": "s_axis_qp_conn_interface"
+        }]
+    },
+    "local_ip_address": {
+      "type": "data",
+      "busTypeName": "data",
+      "protocol": "ap_none",
+      "mode": "slave",
+      "dataWidth": "128",
+      "portMap": {"local_ip_address": "DATA"},
+      "ports": ["local_ip_address"],
+      "constraints": [{
+          "constraint_type": "pragma interface",
+          "mode": "ap_none",
+          "register_option": "1",
+          "argName": "local_ip_address"
+        }]
+    },
+    "regCrcDropPkgCount": {
+      "type": "data",
+      "busTypeName": "data",
+      "protocol": "ap_vld",
+      "mode": "master",
+      "dataWidth": "32",
+      "portMap": {"regCrcDropPkgCount": "DATA"},
+      "ports": ["regCrcDropPkgCount"],
+      "constraints": [{
+          "constraint_type": "pragma interface",
+          "mode": "ap_vld",
+          "register_option": "0",
+          "argName": "regCrcDropPkgCount"
+        }]
+    },
+    "regInvalidPsnDropCount": {
+      "type": "data",
+      "busTypeName": "data",
+      "protocol": "ap_vld",
+      "mode": "master",
+      "dataWidth": "32",
+      "portMap": {"regInvalidPsnDropCount": "DATA"},
+      "ports": ["regInvalidPsnDropCount"],
+      "constraints": [{
+          "constraint_type": "pragma interface",
+          "mode": "ap_none",
+          "register_option": "0",
+          "argName": "regInvalidPsnDropCount"
+        }]
+    },
+    "ap_clk": {
+      "type": "clock",
+      "busTypeName": "clock",
+      "mode": "slave",
+      "busParams": {
+        "ASSOCIATED_BUSIF": "s_axis_rx_data:s_axis_tx_meta:s_axis_tx_data:m_axis_tx_data:m_axis_mem_write_cmd:m_axis_mem_read_cmd:m_axis_mem_write_data:s_axis_mem_read_data:s_axis_qp_interface:s_axis_qp_conn_interface",
+        "ASSOCIATED_RESET": "ap_rst_n"
+      },
+      "portMap": {"ap_clk": "CLK"},
+      "ports": ["ap_clk"]
+    },
+    "ap_rst_n": {
+      "type": "reset",
+      "busTypeName": "reset",
+      "mode": "slave",
+      "busParams": {"POLARITY": "ACTIVE_LOW"},
+      "portMap": {"ap_rst_n": "RST"},
+      "ports": ["ap_rst_n"]
+    }
+  },
+  "RtlPorts": {
+    "s_axis_rx_data_TDATA": {
+      "dir": "in",
+      "width": "1024"
+    },
+    "s_axis_rx_data_TVALID": {
+      "dir": "in",
+      "width": "1"
+    },
+    "s_axis_rx_data_TREADY": {
+      "dir": "out",
+      "width": "1"
+    },
+    "s_axis_tx_meta_TDATA": {
+      "dir": "in",
+      "width": "256"
+    },
+    "s_axis_tx_meta_TVALID": {
+      "dir": "in",
+      "width": "1"
+    },
+    "s_axis_tx_meta_TREADY": {
+      "dir": "out",
+      "width": "1"
+    },
+    "s_axis_tx_data_TDATA": {
+      "dir": "in",
+      "width": "1024"
+    },
+    "s_axis_tx_data_TVALID": {
+      "dir": "in",
+      "width": "1"
+    },
+    "s_axis_tx_data_TREADY": {
+      "dir": "out",
+      "width": "1"
+    },
+    "m_axis_tx_data_TDATA": {
+      "dir": "out",
+      "width": "1024"
+    },
+    "m_axis_tx_data_TVALID": {
+      "dir": "out",
+      "width": "1"
+    },
+    "m_axis_tx_data_TREADY": {
+      "dir": "in",
+      "width": "1"
+    },
+    "m_axis_mem_write_cmd_TDATA": {
+      "dir": "out",
+      "width": "192"
+    },
+    "m_axis_mem_write_cmd_TVALID": {
+      "dir": "out",
+      "width": "1"
+    },
+    "m_axis_mem_write_cmd_TREADY": {
+      "dir": "in",
+      "width": "1"
+    },
+    "m_axis_mem_read_cmd_TDATA": {
+      "dir": "out",
+      "width": "192"
+    },
+    "m_axis_mem_read_cmd_TVALID": {
+      "dir": "out",
+      "width": "1"
+    },
+    "m_axis_mem_read_cmd_TREADY": {
+      "dir": "in",
+      "width": "1"
+    },
+    "m_axis_mem_write_data_TDATA": {
+      "dir": "out",
+      "width": "1024"
+    },
+    "m_axis_mem_write_data_TVALID": {
+      "dir": "out",
+      "width": "1"
+    },
+    "m_axis_mem_write_data_TREADY": {
+      "dir": "in",
+      "width": "1"
+    },
+    "s_axis_mem_read_data_TDATA": {
+      "dir": "in",
+      "width": "1024"
+    },
+    "s_axis_mem_read_data_TVALID": {
+      "dir": "in",
+      "width": "1"
+    },
+    "s_axis_mem_read_data_TREADY": {
+      "dir": "out",
+      "width": "1"
+    },
+    "s_axis_qp_interface_TDATA": {
+      "dir": "in",
+      "width": "256"
+    },
+    "s_axis_qp_interface_TVALID": {
+      "dir": "in",
+      "width": "1"
+    },
+    "s_axis_qp_interface_TREADY": {
+      "dir": "out",
+      "width": "1"
+    },
+    "s_axis_qp_conn_interface_TDATA": {
+      "dir": "in",
+      "width": "384"
+    },
+    "s_axis_qp_conn_interface_TVALID": {
+      "dir": "in",
+      "width": "1"
+    },
+    "s_axis_qp_conn_interface_TREADY": {
+      "dir": "out",
+      "width": "1"
+    },
+    "local_ip_address": {
+      "dir": "in",
+      "width": "128"
+    },
+    "regCrcDropPkgCount": {
+      "dir": "out",
+      "width": "32"
+    },
+    "regCrcDropPkgCount_ap_vld": {
+      "dir": "out",
+      "width": "1"
+    },
+    "regInvalidPsnDropCount": {
+      "dir": "out",
+      "width": "32"
+    },
+    "regInvalidPsnDropCount_ap_vld": {
+      "dir": "out",
+      "width": "1"
+    },
+    "ap_clk": {
+      "dir": "in",
+      "width": "1"
+    },
+    "ap_rst_n": {
+      "dir": "in",
+      "width": "1"
+    }
+  },
+  "ModuleInfo": {
+    "Hierarchy": {
+      "ModuleName": "rocev2_top",
+      "Instances": [
+        {
+          "ModuleName": "process_ipv4_512_s",
+          "InstanceName": "process_ipv4_512_U0"
+        },
+        {
+          "ModuleName": "entry_proc",
+          "InstanceName": "entry_proc_U0"
+        },
+        {
+          "ModuleName": "local_req_handler",
+          "InstanceName": "local_req_handler_U0"
+        },
+        {
+          "ModuleName": "tx_pkg_arbiter_512_s",
+          "InstanceName": "tx_pkg_arbiter_512_U0"
+        },
+        {
+          "ModuleName": "ipv4_drop_optional_ip_header_512_s",
+          "InstanceName": "ipv4_drop_optional_ip_header_512_U0"
+        },
+        {
+          "ModuleName": "process_udp_512_14",
+          "InstanceName": "process_udp_512_14_U0"
+        },
+        {
+          "ModuleName": "udp_rshiftWordByOctet_net_axis_512_512_2_s",
+          "InstanceName": "udp_rshiftWordByOctet_net_axis_512_512_2_U0"
+        },
+        {
+          "ModuleName": "merge_rx_meta",
+          "InstanceName": "merge_rx_meta_U0"
+        },
+        {
+          "ModuleName": "rx_process_ibh_512_s",
+          "InstanceName": "rx_process_ibh_512_U0"
+        },
+        {
+          "ModuleName": "rshiftWordByOctet_net_axis_512_512_11_s",
+          "InstanceName": "rshiftWordByOctet_net_axis_512_512_11_U0"
+        },
+        {
+          "ModuleName": "rx_process_exh_512_s",
+          "InstanceName": "rx_process_exh_512_U0"
+        },
+        {
+          "ModuleName": "rx_ibh_fsm",
+          "InstanceName": "rx_ibh_fsm_U0"
+        },
+        {
+          "ModuleName": "ipUdpMetaHandler_512_s",
+          "InstanceName": "ipUdpMetaHandler_512_U0"
+        },
+        {
+          "ModuleName": "rx_exh_fsm_512_s",
+          "InstanceName": "rx_exh_fsm_512_U0"
+        },
+        {
+          "ModuleName": "handle_read_requests",
+          "InstanceName": "handle_read_requests_U0"
+        },
+        {
+          "ModuleName": "stream_merger_ackEvent_s",
+          "InstanceName": "stream_merger_ackEvent_U0"
+        },
+        {
+          "ModuleName": "meta_merger",
+          "InstanceName": "meta_merger_U0"
+        },
+        {
+          "ModuleName": "ipv4_lshiftWordByOctet_512_2_s",
+          "InstanceName": "ipv4_lshiftWordByOctet_512_2_U0"
+        },
+        {
+          "ModuleName": "ipv4_generate_ipv4_512_13",
+          "InstanceName": "ipv4_generate_ipv4_512_13_U0"
+        },
+        {
+          "ModuleName": "drop_ooo_ibh_512_s",
+          "InstanceName": "drop_ooo_ibh_512_U0"
+        },
+        {
+          "ModuleName": "split_tx_meta",
+          "InstanceName": "split_tx_meta_U0"
+        },
+        {
+          "ModuleName": "qp_interface",
+          "InstanceName": "qp_interface_U0"
+        },
+        {
+          "ModuleName": "rx_exh_payload_512_s",
+          "InstanceName": "rx_exh_payload_512_U0"
+        },
+        {
+          "ModuleName": "lshiftWordByOctet_512_12_s",
+          "InstanceName": "lshiftWordByOctet_512_12_U0"
+        },
+        {
+          "ModuleName": "lshiftWordByOctet_512_13_s",
+          "InstanceName": "lshiftWordByOctet_512_13_U0"
+        },
+        {
+          "ModuleName": "generate_exh_512_s",
+          "InstanceName": "generate_exh_512_U0"
+        },
+        {
+          "ModuleName": "generate_ibh_512_s",
+          "InstanceName": "generate_ibh_512_U0"
+        },
+        {
+          "ModuleName": "mq_pointer_table_500_s",
+          "InstanceName": "mq_pointer_table_500_U0"
+        },
+        {
+          "ModuleName": "rshiftWordByOctet_routed_net_axis_512_1_512_12_s",
+          "InstanceName": "rshiftWordByOctet_routed_net_axis_512_1_512_12_U0"
+        },
+        {
+          "ModuleName": "rshiftWordByOctet_net_axis_512_512_13_s",
+          "InstanceName": "rshiftWordByOctet_net_axis_512_512_13_U0"
+        },
+        {
+          "ModuleName": "append_payload_512_s",
+          "InstanceName": "append_payload_512_U0"
+        },
+        {
+          "ModuleName": "tx_ipUdpMetaMerger",
+          "InstanceName": "tx_ipUdpMetaMerger_U0"
+        },
+        {
+          "ModuleName": "state_table",
+          "InstanceName": "state_table_U0"
+        },
+        {
+          "ModuleName": "msn_table",
+          "InstanceName": "msn_table_U0"
+        },
+        {
+          "ModuleName": "mq_meta_table_ap_uint_64_2048_s",
+          "InstanceName": "mq_meta_table_ap_uint_64_2048_U0"
+        },
+        {
+          "ModuleName": "mem_cmd_merger_512_s",
+          "InstanceName": "mem_cmd_merger_512_U0"
+        },
+        {
+          "ModuleName": "udp_lshiftWordByOctet_512_1_s",
+          "InstanceName": "udp_lshiftWordByOctet_512_1_U0"
+        },
+        {
+          "ModuleName": "merge_rx_pkgs_512_s",
+          "InstanceName": "merge_rx_pkgs_512_U0"
+        },
+        {
+          "ModuleName": "lshiftWordByOctet_512_11_s",
+          "InstanceName": "lshiftWordByOctet_512_11_U0"
+        },
+        {
+          "ModuleName": "conn_table",
+          "InstanceName": "conn_table_U0"
+        },
+        {
+          "ModuleName": "mq_freelist_handler_2048_s",
+          "InstanceName": "mq_freelist_handler_2048_U0"
+        },
+        {
+          "ModuleName": "insert_icrc_512_s",
+          "InstanceName": "insert_icrc_512_U0"
+        },
+        {
+          "ModuleName": "generate_udp_512_s",
+          "InstanceName": "generate_udp_512_U0"
+        },
+        {
+          "ModuleName": "prepend_ibh_header_512_s",
+          "InstanceName": "prepend_ibh_header_512_U0"
+        },
+        {
+          "ModuleName": "read_req_table",
+          "InstanceName": "read_req_table_U0"
+        },
+        {
+          "ModuleName": "mq_process_requests_ap_uint_64_s",
+          "InstanceName": "mq_process_requests_ap_uint_64_U0"
+        },
+        {
+          "ModuleName": "extract_icrc_512_s",
+          "InstanceName": "extract_icrc_512_U0"
+        },
+        {
+          "ModuleName": "Block_entry449_proc",
+          "InstanceName": "Block_entry449_proc_U0"
+        }
+      ]
+    },
+    "Info": {
+      "entry_proc": {
+        "FunctionProtocol": "ap_ctrl_hs",
+        "isTaskLevelControl": "0",
+        "isPipelined": "0",
+        "isCombinational": "0",
+        "isOneStateSeq": "1"
+      },
+      "process_ipv4_512_s": {
+        "FunctionProtocol": "ap_ctrl_hs",
+        "isTaskLevelControl": "0",
+        "isPipelined": "1",
+        "isCombinational": "0",
+        "isOneStateSeq": "0"
+      },
+      "ipv4_drop_optional_ip_header_512_s": {
+        "FunctionProtocol": "ap_ctrl_hs",
+        "isTaskLevelControl": "0",
+        "isPipelined": "1",
+        "isCombinational": "0",
+        "isOneStateSeq": "0"
+      },
+      "ipv4_lshiftWordByOctet_512_2_s": {
+        "FunctionProtocol": "ap_ctrl_hs",
+        "isTaskLevelControl": "0",
+        "isPipelined": "1",
+        "isCombinational": "0",
+        "isOneStateSeq": "0"
+      },
+      "ipv4_generate_ipv4_512_13": {
+        "FunctionProtocol": "ap_ctrl_hs",
+        "isTaskLevelControl": "0",
+        "isPipelined": "1",
+        "isCombinational": "0",
+        "isOneStateSeq": "0"
+      },
+      "process_udp_512_14": {
+        "FunctionProtocol": "ap_ctrl_hs",
+        "isTaskLevelControl": "0",
+        "isPipelined": "1",
+        "isCombinational": "0",
+        "isOneStateSeq": "0"
+      },
+      "udp_rshiftWordByOctet_net_axis_512_512_2_s": {
+        "FunctionProtocol": "ap_ctrl_hs",
+        "isTaskLevelControl": "0",
+        "isPipelined": "1",
+        "isCombinational": "0",
+        "isOneStateSeq": "0"
+      },
+      "merge_rx_meta": {
+        "FunctionProtocol": "ap_ctrl_hs",
+        "isTaskLevelControl": "0",
+        "isPipelined": "1",
+        "isCombinational": "0",
+        "isOneStateSeq": "0"
+      },
+      "split_tx_meta": {
+        "FunctionProtocol": "ap_ctrl_hs",
+        "isTaskLevelControl": "0",
+        "isPipelined": "1",
+        "isCombinational": "0",
+        "isOneStateSeq": "0"
+      },
+      "udp_lshiftWordByOctet_512_1_s": {
+        "FunctionProtocol": "ap_ctrl_hs",
+        "isTaskLevelControl": "0",
+        "isPipelined": "1",
+        "isCombinational": "0",
+        "isOneStateSeq": "0"
+      },
+      "generate_udp_512_s": {
+        "FunctionProtocol": "ap_ctrl_hs",
+        "isTaskLevelControl": "0",
+        "isPipelined": "1",
+        "isCombinational": "0",
+        "isOneStateSeq": "0"
+      },
+      "qp_interface": {
+        "FunctionProtocol": "ap_ctrl_hs",
+        "isTaskLevelControl": "0",
+        "isPipelined": "1",
+        "isCombinational": "0",
+        "isOneStateSeq": "0"
+      },
+      "rx_process_ibh_512_s": {
+        "FunctionProtocol": "ap_ctrl_hs",
+        "isTaskLevelControl": "0",
+        "isPipelined": "1",
+        "isCombinational": "0",
+        "isOneStateSeq": "0"
+      },
+      "rshiftWordByOctet_net_axis_512_512_11_s": {
+        "FunctionProtocol": "ap_ctrl_hs",
+        "isTaskLevelControl": "0",
+        "isPipelined": "1",
+        "isCombinational": "0",
+        "isOneStateSeq": "0"
+      },
+      "rx_process_exh_512_s": {
+        "FunctionProtocol": "ap_ctrl_hs",
+        "isTaskLevelControl": "0",
+        "isPipelined": "1",
+        "isCombinational": "0",
+        "isOneStateSeq": "0"
+      },
+      "rx_ibh_fsm": {
+        "FunctionProtocol": "ap_ctrl_hs",
+        "isTaskLevelControl": "0",
+        "isPipelined": "1",
+        "isCombinational": "0",
+        "isOneStateSeq": "0"
+      },
+      "drop_ooo_ibh_512_s": {
+        "FunctionProtocol": "ap_ctrl_hs",
+        "isTaskLevelControl": "0",
+        "isPipelined": "1",
+        "isCombinational": "0",
+        "isOneStateSeq": "0"
+      },
+      "ipUdpMetaHandler_512_s": {
+        "FunctionProtocol": "ap_ctrl_hs",
+        "isTaskLevelControl": "0",
+        "isPipelined": "1",
+        "isCombinational": "0",
+        "isOneStateSeq": "0"
+      },
+      "rx_exh_fsm_512_s": {
+        "FunctionProtocol": "ap_ctrl_hs",
+        "isTaskLevelControl": "0",
+        "isPipelined": "1",
+        "isCombinational": "0",
+        "isOneStateSeq": "0"
+      },
+      "rx_exh_payload_512_s": {
+        "FunctionProtocol": "ap_ctrl_hs",
+        "isTaskLevelControl": "0",
+        "isPipelined": "1",
+        "isCombinational": "0",
+        "isOneStateSeq": "0"
+      },
+      "handle_read_requests": {
+        "FunctionProtocol": "ap_ctrl_hs",
+        "isTaskLevelControl": "0",
+        "isPipelined": "1",
+        "isCombinational": "0",
+        "isOneStateSeq": "0"
+      },
+      "stream_merger_ackEvent_s": {
+        "FunctionProtocol": "ap_ctrl_hs",
+        "isTaskLevelControl": "0",
+        "isPipelined": "1",
+        "isCombinational": "0",
+        "isOneStateSeq": "0"
+      },
+      "rshiftWordByOctet_routed_net_axis_512_1_512_12_s": {
+        "FunctionProtocol": "ap_ctrl_hs",
+        "isTaskLevelControl": "0",
+        "isPipelined": "1",
+        "isCombinational": "0",
+        "isOneStateSeq": "0"
+      },
+      "rshiftWordByOctet_net_axis_512_512_13_s": {
+        "FunctionProtocol": "ap_ctrl_hs",
+        "isTaskLevelControl": "0",
+        "isPipelined": "1",
+        "isCombinational": "0",
+        "isOneStateSeq": "0"
+      },
+      "merge_rx_pkgs_512_s": {
+        "FunctionProtocol": "ap_ctrl_hs",
+        "isTaskLevelControl": "0",
+        "isPipelined": "1",
+        "isCombinational": "0",
+        "isOneStateSeq": "0"
+      },
+      "local_req_handler": {
+        "FunctionProtocol": "ap_ctrl_hs",
+        "isTaskLevelControl": "0",
+        "isPipelined": "1",
+        "isCombinational": "0",
+        "isOneStateSeq": "0"
+      },
+      "tx_pkg_arbiter_512_s": {
+        "FunctionProtocol": "ap_ctrl_hs",
+        "isTaskLevelControl": "0",
+        "isPipelined": "1",
+        "isCombinational": "0",
+        "isOneStateSeq": "0"
+      },
+      "meta_merger": {
+        "FunctionProtocol": "ap_ctrl_hs",
+        "isTaskLevelControl": "0",
+        "isPipelined": "1",
+        "isCombinational": "0",
+        "isOneStateSeq": "0"
+      },
+      "lshiftWordByOctet_512_12_s": {
+        "FunctionProtocol": "ap_ctrl_hs",
+        "isTaskLevelControl": "0",
+        "isPipelined": "1",
+        "isCombinational": "0",
+        "isOneStateSeq": "0"
+      },
+      "lshiftWordByOctet_512_13_s": {
+        "FunctionProtocol": "ap_ctrl_hs",
+        "isTaskLevelControl": "0",
+        "isPipelined": "1",
+        "isCombinational": "0",
+        "isOneStateSeq": "0"
+      },
+      "generate_exh_512_s": {
+        "FunctionProtocol": "ap_ctrl_hs",
+        "isTaskLevelControl": "0",
+        "isPipelined": "1",
+        "isCombinational": "0",
+        "isOneStateSeq": "0"
+      },
+      "append_payload_512_s": {
+        "FunctionProtocol": "ap_ctrl_hs",
+        "isTaskLevelControl": "0",
+        "isPipelined": "1",
+        "isCombinational": "0",
+        "isOneStateSeq": "0"
+      },
+      "lshiftWordByOctet_512_11_s": {
+        "FunctionProtocol": "ap_ctrl_hs",
+        "isTaskLevelControl": "0",
+        "isPipelined": "1",
+        "isCombinational": "0",
+        "isOneStateSeq": "0"
+      },
+      "generate_ibh_512_s": {
+        "FunctionProtocol": "ap_ctrl_hs",
+        "isTaskLevelControl": "0",
+        "isPipelined": "1",
+        "isCombinational": "0",
+        "isOneStateSeq": "0"
+      },
+      "prepend_ibh_header_512_s": {
+        "FunctionProtocol": "ap_ctrl_hs",
+        "isTaskLevelControl": "0",
+        "isPipelined": "1",
+        "isCombinational": "0",
+        "isOneStateSeq": "0"
+      },
+      "tx_ipUdpMetaMerger": {
+        "FunctionProtocol": "ap_ctrl_hs",
+        "isTaskLevelControl": "0",
+        "isPipelined": "1",
+        "isCombinational": "0",
+        "isOneStateSeq": "0"
+      },
+      "mem_cmd_merger_512_s": {
+        "FunctionProtocol": "ap_ctrl_hs",
+        "isTaskLevelControl": "0",
+        "isPipelined": "1",
+        "isCombinational": "0",
+        "isOneStateSeq": "0"
+      },
+      "conn_table": {
+        "FunctionProtocol": "ap_ctrl_hs",
+        "isTaskLevelControl": "0",
+        "isPipelined": "1",
+        "isCombinational": "0",
+        "isOneStateSeq": "0"
+      },
+      "state_table": {
+        "FunctionProtocol": "ap_ctrl_hs",
+        "isTaskLevelControl": "0",
+        "isPipelined": "1",
+        "isCombinational": "0",
+        "isOneStateSeq": "0"
+      },
+      "msn_table": {
+        "FunctionProtocol": "ap_ctrl_hs",
+        "isTaskLevelControl": "0",
+        "isPipelined": "1",
+        "isCombinational": "0",
+        "isOneStateSeq": "0"
+      },
+      "read_req_table": {
+        "FunctionProtocol": "ap_ctrl_hs",
+        "isTaskLevelControl": "0",
+        "isPipelined": "1",
+        "isCombinational": "0",
+        "isOneStateSeq": "0"
+      },
+      "mq_freelist_handler_2048_s": {
+        "FunctionProtocol": "ap_ctrl_hs",
+        "isTaskLevelControl": "0",
+        "isPipelined": "1",
+        "isCombinational": "0",
+        "isOneStateSeq": "0"
+      },
+      "mq_pointer_table_500_s": {
+        "FunctionProtocol": "ap_ctrl_hs",
+        "isTaskLevelControl": "0",
+        "isPipelined": "1",
+        "isCombinational": "0",
+        "isOneStateSeq": "0"
+      },
+      "mq_meta_table_ap_uint_64_2048_s": {
+        "FunctionProtocol": "ap_ctrl_hs",
+        "isTaskLevelControl": "0",
+        "isPipelined": "1",
+        "isCombinational": "0",
+        "isOneStateSeq": "0"
+      },
+      "mq_process_requests_ap_uint_64_s": {
+        "FunctionProtocol": "ap_ctrl_hs",
+        "isTaskLevelControl": "0",
+        "isPipelined": "1",
+        "isCombinational": "0",
+        "isOneStateSeq": "0"
+      },
+      "Block_entry449_proc": {
+        "FunctionProtocol": "ap_ctrl_hs",
+        "isTaskLevelControl": "0",
+        "isPipelined": "0",
+        "isCombinational": "0",
+        "isOneStateSeq": "1"
+      },
+      "extract_icrc_512_s": {
+        "FunctionProtocol": "ap_ctrl_hs",
+        "isTaskLevelControl": "0",
+        "isPipelined": "1",
+        "isCombinational": "0",
+        "isOneStateSeq": "0"
+      },
+      "insert_icrc_512_s": {
+        "FunctionProtocol": "ap_ctrl_hs",
+        "isTaskLevelControl": "0",
+        "isPipelined": "1",
+        "isCombinational": "0",
+        "isOneStateSeq": "0"
+      },
+      "rocev2_top": {
+        "FunctionProtocol": "ap_ctrl_none",
+        "isTaskLevelControl": "0",
+        "isPipelined": "1",
+        "isCombinational": "0",
+        "isOneStateSeq": "0"
+      }
+    },
+    "Metrics": {
+      "entry_proc": {
+        "Latency": {
+          "LatencyBest": "0",
+          "LatencyAvg": "0",
+          "LatencyWorst": "0",
+          "PipelineII": "0",
+          "PipelineDepth": "",
+          "PipelineType": "no"
+        },
+        "Timing": {
+          "Target": "3.20",
+          "Uncertainty": "0.86",
+          "Estimate": "1.168"
+        },
+        "Area": {
+          "FF": "2",
+          "AVAIL_FF": "2607360",
+          "UTIL_FF": "~0",
+          "LUT": "20",
+          "AVAIL_LUT": "1303680",
+          "UTIL_LUT": "~0",
+          "BRAM_18K": "0",
+          "AVAIL_BRAM": "4032",
+          "UTIL_BRAM": "0",
+          "DSP": "0",
+          "AVAIL_DSP": "9024",
+          "UTIL_DSP": "0",
+          "URAM": "0",
+          "AVAIL_URAM": "960",
+          "UTIL_URAM": "0"
+        }
+      },
+      "process_ipv4_512_s": {
+        "Latency": {
+          "LatencyBest": "1",
+          "LatencyAvg": "1",
+          "LatencyWorst": "1",
+          "PipelineII": "1",
+          "PipelineDepth": "2",
+          "PipelineType": "yes"
+        },
+        "Timing": {
+          "Target": "3.20",
+          "Uncertainty": "0.86",
+          "Estimate": "1.833"
+        },
+        "Area": {
+          "FF": "1367",
+          "AVAIL_FF": "2607360",
+          "UTIL_FF": "~0",
+          "LUT": "1417",
+          "AVAIL_LUT": "1303680",
+          "UTIL_LUT": "~0",
+          "BRAM_18K": "0",
+          "AVAIL_BRAM": "4032",
+          "UTIL_BRAM": "0",
+          "DSP": "0",
+          "AVAIL_DSP": "9024",
+          "UTIL_DSP": "0",
+          "URAM": "0",
+          "AVAIL_URAM": "960",
+          "UTIL_URAM": "0"
+        }
+      },
+      "ipv4_drop_optional_ip_header_512_s": {
+        "Latency": {
+          "LatencyBest": "1",
+          "LatencyAvg": "1",
+          "LatencyWorst": "1",
+          "PipelineII": "1",
+          "PipelineDepth": "2",
+          "PipelineType": "yes"
+        },
+        "Timing": {
+          "Target": "3.20",
+          "Uncertainty": "0.86",
+          "Estimate": "3.114"
+        },
+        "Area": {
+          "FF": "3950",
+          "AVAIL_FF": "2607360",
+          "UTIL_FF": "~0",
+          "LUT": "230",
+          "AVAIL_LUT": "1303680",
+          "UTIL_LUT": "~0",
+          "BRAM_18K": "0",
+          "AVAIL_BRAM": "4032",
+          "UTIL_BRAM": "0",
+          "DSP": "0",
+          "AVAIL_DSP": "9024",
+          "UTIL_DSP": "0",
+          "URAM": "0",
+          "AVAIL_URAM": "960",
+          "UTIL_URAM": "0"
+        }
+      },
+      "ipv4_lshiftWordByOctet_512_2_s": {
+        "Latency": {
+          "LatencyBest": "1",
+          "LatencyAvg": "1",
+          "LatencyWorst": "1",
+          "PipelineII": "1",
+          "PipelineDepth": "2",
+          "PipelineType": "yes"
+        },
+        "Timing": {
+          "Target": "3.20",
+          "Uncertainty": "0.86",
+          "Estimate": "2.399"
+        },
+        "Area": {
+          "FF": "1161",
+          "AVAIL_FF": "2607360",
+          "UTIL_FF": "~0",
+          "LUT": "593",
+          "AVAIL_LUT": "1303680",
+          "UTIL_LUT": "~0",
+          "BRAM_18K": "0",
+          "AVAIL_BRAM": "4032",
+          "UTIL_BRAM": "0",
+          "DSP": "0",
+          "AVAIL_DSP": "9024",
+          "UTIL_DSP": "0",
+          "URAM": "0",
+          "AVAIL_URAM": "960",
+          "UTIL_URAM": "0"
+        }
+      },
+      "ipv4_generate_ipv4_512_13": {
+        "Latency": {
+          "LatencyBest": "1",
+          "LatencyAvg": "1",
+          "LatencyWorst": "1",
+          "PipelineII": "1",
+          "PipelineDepth": "2",
+          "PipelineType": "yes"
+        },
+        "Timing": {
+          "Target": "3.20",
+          "Uncertainty": "0.86",
+          "Estimate": "1.953"
+        },
+        "Area": {
+          "FF": "2298",
+          "AVAIL_FF": "2607360",
+          "UTIL_FF": "~0",
+          "LUT": "231",
+          "AVAIL_LUT": "1303680",
+          "UTIL_LUT": "~0",
+          "BRAM_18K": "0",
+          "AVAIL_BRAM": "4032",
+          "UTIL_BRAM": "0",
+          "DSP": "0",
+          "AVAIL_DSP": "9024",
+          "UTIL_DSP": "0",
+          "URAM": "0",
+          "AVAIL_URAM": "960",
+          "UTIL_URAM": "0"
+        }
+      },
+      "process_udp_512_14": {
+        "Latency": {
+          "LatencyBest": "3",
+          "LatencyAvg": "3",
+          "LatencyWorst": "3",
+          "PipelineII": "1",
+          "PipelineDepth": "4",
+          "PipelineType": "yes"
+        },
+        "Timing": {
+          "Target": "3.20",
+          "Uncertainty": "0.86",
+          "Estimate": "1.844"
+        },
+        "Area": {
+          "FF": "1371",
+          "AVAIL_FF": "2607360",
+          "UTIL_FF": "~0",
+          "LUT": "755",
+          "AVAIL_LUT": "1303680",
+          "UTIL_LUT": "~0",
+          "BRAM_18K": "0",
+          "AVAIL_BRAM": "4032",
+          "UTIL_BRAM": "0",
+          "DSP": "0",
+          "AVAIL_DSP": "9024",
+          "UTIL_DSP": "0",
+          "URAM": "0",
+          "AVAIL_URAM": "960",
+          "UTIL_URAM": "0"
+        }
+      },
+      "udp_rshiftWordByOctet_net_axis_512_512_2_s": {
+        "Latency": {
+          "LatencyBest": "1",
+          "LatencyAvg": "1",
+          "LatencyWorst": "1",
+          "PipelineII": "1",
+          "PipelineDepth": "2",
+          "PipelineType": "yes"
+        },
+        "Timing": {
+          "Target": "3.20",
+          "Uncertainty": "0.86",
+          "Estimate": "2.686"
+        },
+        "Area": {
+          "FF": "1233",
+          "AVAIL_FF": "2607360",
+          "UTIL_FF": "~0",
+          "LUT": "115",
+          "AVAIL_LUT": "1303680",
+          "UTIL_LUT": "~0",
+          "BRAM_18K": "0",
+          "AVAIL_BRAM": "4032",
+          "UTIL_BRAM": "0",
+          "DSP": "0",
+          "AVAIL_DSP": "9024",
+          "UTIL_DSP": "0",
+          "URAM": "0",
+          "AVAIL_URAM": "960",
+          "UTIL_URAM": "0"
+        }
+      },
+      "merge_rx_meta": {
+        "Latency": {
+          "LatencyBest": "1",
+          "LatencyAvg": "1",
+          "LatencyWorst": "1",
+          "PipelineII": "1",
+          "PipelineDepth": "2",
+          "PipelineType": "yes"
+        },
+        "Timing": {
+          "Target": "3.20",
+          "Uncertainty": "0.86",
+          "Estimate": "1.290"
+        },
+        "Area": {
+          "FF": "86",
+          "AVAIL_FF": "2607360",
+          "UTIL_FF": "~0",
+          "LUT": "52",
+          "AVAIL_LUT": "1303680",
+          "UTIL_LUT": "~0",
+          "BRAM_18K": "0",
+          "AVAIL_BRAM": "4032",
+          "UTIL_BRAM": "0",
+          "DSP": "0",
+          "AVAIL_DSP": "9024",
+          "UTIL_DSP": "0",
+          "URAM": "0",
+          "AVAIL_URAM": "960",
+          "UTIL_URAM": "0"
+        }
+      },
+      "split_tx_meta": {
+        "Latency": {
+          "LatencyBest": "1",
+          "LatencyAvg": "1",
+          "LatencyWorst": "1",
+          "PipelineII": "1",
+          "PipelineDepth": "2",
+          "PipelineType": "yes"
+        },
+        "Timing": {
+          "Target": "3.20",
+          "Uncertainty": "0.86",
+          "Estimate": "1.953"
+        },
+        "Area": {
+          "FF": "84",
+          "AVAIL_FF": "2607360",
+          "UTIL_FF": "~0",
+          "LUT": "69",
+          "AVAIL_LUT": "1303680",
+          "UTIL_LUT": "~0",
+          "BRAM_18K": "0",
+          "AVAIL_BRAM": "4032",
+          "UTIL_BRAM": "0",
+          "DSP": "0",
+          "AVAIL_DSP": "9024",
+          "UTIL_DSP": "0",
+          "URAM": "0",
+          "AVAIL_URAM": "960",
+          "UTIL_URAM": "0"
+        }
+      },
+      "udp_lshiftWordByOctet_512_1_s": {
+        "Latency": {
+          "LatencyBest": "1",
+          "LatencyAvg": "1",
+          "LatencyWorst": "1",
+          "PipelineII": "1",
+          "PipelineDepth": "2",
+          "PipelineType": "yes"
+        },
+        "Timing": {
+          "Target": "3.20",
+          "Uncertainty": "0.86",
+          "Estimate": "2.258"
+        },
+        "Area": {
+          "FF": "1161",
+          "AVAIL_FF": "2607360",
+          "UTIL_FF": "~0",
+          "LUT": "590",
+          "AVAIL_LUT": "1303680",
+          "UTIL_LUT": "~0",
+          "BRAM_18K": "0",
+          "AVAIL_BRAM": "4032",
+          "UTIL_BRAM": "0",
+          "DSP": "0",
+          "AVAIL_DSP": "9024",
+          "UTIL_DSP": "0",
+          "URAM": "0",
+          "AVAIL_URAM": "960",
+          "UTIL_URAM": "0"
+        }
+      },
+      "generate_udp_512_s": {
+        "Latency": {
+          "LatencyBest": "1",
+          "LatencyAvg": "1",
+          "LatencyWorst": "1",
+          "PipelineII": "1",
+          "PipelineDepth": "2",
+          "PipelineType": "yes"
+        },
+        "Timing": {
+          "Target": "3.20",
+          "Uncertainty": "0.86",
+          "Estimate": "1.866"
+        },
+        "Area": {
+          "FF": "2202",
+          "AVAIL_FF": "2607360",
+          "UTIL_FF": "~0",
+          "LUT": "195",
+          "AVAIL_LUT": "1303680",
+          "UTIL_LUT": "~0",
+          "BRAM_18K": "0",
+          "AVAIL_BRAM": "4032",
+          "UTIL_BRAM": "0",
+          "DSP": "0",
+          "AVAIL_DSP": "9024",
+          "UTIL_DSP": "0",
+          "URAM": "0",
+          "AVAIL_URAM": "960",
+          "UTIL_URAM": "0"
+        }
+      },
+      "qp_interface": {
+        "Latency": {
+          "LatencyBest": "1",
+          "LatencyAvg": "1",
+          "LatencyWorst": "1",
+          "PipelineII": "1",
+          "PipelineDepth": "2",
+          "PipelineType": "yes"
+        },
+        "Timing": {
+          "Target": "3.20",
+          "Uncertainty": "0.86",
+          "Estimate": "1.290"
+        },
+        "Area": {
+          "FF": "135",
+          "AVAIL_FF": "2607360",
+          "UTIL_FF": "~0",
+          "LUT": "83",
+          "AVAIL_LUT": "1303680",
+          "UTIL_LUT": "~0",
+          "BRAM_18K": "0",
+          "AVAIL_BRAM": "4032",
+          "UTIL_BRAM": "0",
+          "DSP": "0",
+          "AVAIL_DSP": "9024",
+          "UTIL_DSP": "0",
+          "URAM": "0",
+          "AVAIL_URAM": "960",
+          "UTIL_URAM": "0"
+        }
+      },
+      "rx_process_ibh_512_s": {
+        "Latency": {
+          "LatencyBest": "2",
+          "LatencyAvg": "2",
+          "LatencyWorst": "2",
+          "PipelineII": "1",
+          "PipelineDepth": "3",
+          "PipelineType": "yes"
+        },
+        "Timing": {
+          "Target": "3.20",
+          "Uncertainty": "0.86",
+          "Estimate": "1.768"
+        },
+        "Area": {
+          "FF": "1338",
+          "AVAIL_FF": "2607360",
+          "UTIL_FF": "~0",
+          "LUT": "925",
+          "AVAIL_LUT": "1303680",
+          "UTIL_LUT": "~0",
+          "BRAM_18K": "0",
+          "AVAIL_BRAM": "4032",
+          "UTIL_BRAM": "0",
+          "DSP": "0",
+          "AVAIL_DSP": "9024",
+          "UTIL_DSP": "0",
+          "URAM": "0",
+          "AVAIL_URAM": "960",
+          "UTIL_URAM": "0"
+        }
+      },
+      "rshiftWordByOctet_net_axis_512_512_11_s": {
+        "Latency": {
+          "LatencyBest": "1",
+          "LatencyAvg": "1",
+          "LatencyWorst": "1",
+          "PipelineII": "1",
+          "PipelineDepth": "2",
+          "PipelineType": "yes"
+        },
+        "Timing": {
+          "Target": "3.20",
+          "Uncertainty": "0.86",
+          "Estimate": "2.658"
+        },
+        "Area": {
+          "FF": "1269",
+          "AVAIL_FF": "2607360",
+          "UTIL_FF": "~0",
+          "LUT": "113",
+          "AVAIL_LUT": "1303680",
+          "UTIL_LUT": "~0",
+          "BRAM_18K": "0",
+          "AVAIL_BRAM": "4032",
+          "UTIL_BRAM": "0",
+          "DSP": "0",
+          "AVAIL_DSP": "9024",
+          "UTIL_DSP": "0",
+          "URAM": "0",
+          "AVAIL_URAM": "960",
+          "UTIL_URAM": "0"
+        }
+      },
+      "rx_process_exh_512_s": {
+        "Latency": {
+          "LatencyBest": "5",
+          "LatencyAvg": "5",
+          "LatencyWorst": "5",
+          "PipelineII": "1",
+          "PipelineDepth": "6",
+          "PipelineType": "yes"
+        },
+        "Timing": {
+          "Target": "3.20",
+          "Uncertainty": "0.86",
+          "Estimate": "2.288"
+        },
+        "Area": {
+          "DSP": "3",
+          "AVAIL_DSP": "9024",
+          "UTIL_DSP": "~0",
+          "FF": "2541",
+          "AVAIL_FF": "2607360",
+          "UTIL_FF": "~0",
+          "LUT": "2315",
+          "AVAIL_LUT": "1303680",
+          "UTIL_LUT": "~0",
+          "BRAM_18K": "0",
+          "AVAIL_BRAM": "4032",
+          "UTIL_BRAM": "0",
+          "URAM": "0",
+          "AVAIL_URAM": "960",
+          "UTIL_URAM": "0"
+        }
+      },
+      "rx_ibh_fsm": {
+        "Latency": {
+          "LatencyBest": "2",
+          "LatencyAvg": "2",
+          "LatencyWorst": "2",
+          "PipelineII": "1",
+          "PipelineDepth": "3",
+          "PipelineType": "yes"
+        },
+        "Timing": {
+          "Target": "3.20",
+          "Uncertainty": "0.86",
+          "Estimate": "2.301"
+        },
+        "Area": {
+          "FF": "573",
+          "AVAIL_FF": "2607360",
+          "UTIL_FF": "~0",
+          "LUT": "711",
+          "AVAIL_LUT": "1303680",
+          "UTIL_LUT": "~0",
+          "BRAM_18K": "0",
+          "AVAIL_BRAM": "4032",
+          "UTIL_BRAM": "0",
+          "DSP": "0",
+          "AVAIL_DSP": "9024",
+          "UTIL_DSP": "0",
+          "URAM": "0",
+          "AVAIL_URAM": "960",
+          "UTIL_URAM": "0"
+        }
+      },
+      "drop_ooo_ibh_512_s": {
+        "Latency": {
+          "LatencyBest": "1",
+          "LatencyAvg": "1",
+          "LatencyWorst": "1",
+          "PipelineII": "1",
+          "PipelineDepth": "2",
+          "PipelineType": "yes"
+        },
+        "Timing": {
+          "Target": "3.20",
+          "Uncertainty": "0.86",
+          "Estimate": "1.833"
+        },
+        "Area": {
+          "FF": "1032",
+          "AVAIL_FF": "2607360",
+          "UTIL_FF": "~0",
+          "LUT": "68",
+          "AVAIL_LUT": "1303680",
+          "UTIL_LUT": "~0",
+          "BRAM_18K": "0",
+          "AVAIL_BRAM": "4032",
+          "UTIL_BRAM": "0",
+          "DSP": "0",
+          "AVAIL_DSP": "9024",
+          "UTIL_DSP": "0",
+          "URAM": "0",
+          "AVAIL_URAM": "960",
+          "UTIL_URAM": "0"
+        }
+      },
+      "ipUdpMetaHandler_512_s": {
+        "Latency": {
+          "LatencyBest": "1",
+          "LatencyAvg": "1",
+          "LatencyWorst": "1",
+          "PipelineII": "1",
+          "PipelineDepth": "2",
+          "PipelineType": "yes"
+        },
+        "Timing": {
+          "Target": "3.20",
+          "Uncertainty": "0.86",
+          "Estimate": "1.184"
+        },
+        "Area": {
+          "FF": "536",
+          "AVAIL_FF": "2607360",
+          "UTIL_FF": "~0",
+          "LUT": "72",
+          "AVAIL_LUT": "1303680",
+          "UTIL_LUT": "~0",
+          "BRAM_18K": "0",
+          "AVAIL_BRAM": "4032",
+          "UTIL_BRAM": "0",
+          "DSP": "0",
+          "AVAIL_DSP": "9024",
+          "UTIL_DSP": "0",
+          "URAM": "0",
+          "AVAIL_URAM": "960",
+          "UTIL_URAM": "0"
+        }
+      },
+      "rx_exh_fsm_512_s": {
+        "Latency": {
+          "LatencyBest": "2",
+          "LatencyAvg": "2",
+          "LatencyWorst": "2",
+          "PipelineII": "1",
+          "PipelineDepth": "3",
+          "PipelineType": "yes"
+        },
+        "Timing": {
+          "Target": "3.20",
+          "Uncertainty": "0.86",
+          "Estimate": "2.536"
+        },
+        "Area": {
+          "FF": "906",
+          "AVAIL_FF": "2607360",
+          "UTIL_FF": "~0",
+          "LUT": "1257",
+          "AVAIL_LUT": "1303680",
+          "UTIL_LUT": "~0",
+          "BRAM_18K": "0",
+          "AVAIL_BRAM": "4032",
+          "UTIL_BRAM": "0",
+          "DSP": "0",
+          "AVAIL_DSP": "9024",
+          "UTIL_DSP": "0",
+          "URAM": "0",
+          "AVAIL_URAM": "960",
+          "UTIL_URAM": "0"
+        }
+      },
+      "rx_exh_payload_512_s": {
+        "Latency": {
+          "LatencyBest": "1",
+          "LatencyAvg": "1",
+          "LatencyWorst": "1",
+          "PipelineII": "1",
+          "PipelineDepth": "2",
+          "PipelineType": "yes"
+        },
+        "Timing": {
+          "Target": "3.20",
+          "Uncertainty": "0.86",
+          "Estimate": "1.677"
+        },
+        "Area": {
+          "FF": "1096",
+          "AVAIL_FF": "2607360",
+          "UTIL_FF": "~0",
+          "LUT": "80",
+          "AVAIL_LUT": "1303680",
+          "UTIL_LUT": "~0",
+          "BRAM_18K": "0",
+          "AVAIL_BRAM": "4032",
+          "UTIL_BRAM": "0",
+          "DSP": "0",
+          "AVAIL_DSP": "9024",
+          "UTIL_DSP": "0",
+          "URAM": "0",
+          "AVAIL_URAM": "960",
+          "UTIL_URAM": "0"
+        }
+      },
+      "handle_read_requests": {
+        "Latency": {
+          "LatencyBest": "1",
+          "LatencyAvg": "1",
+          "LatencyWorst": "1",
+          "PipelineII": "1",
+          "PipelineDepth": "2",
+          "PipelineType": "yes"
+        },
+        "Timing": {
+          "Target": "3.20",
+          "Uncertainty": "0.86",
+          "Estimate": "2.827"
+        },
+        "Area": {
+          "FF": "349",
+          "AVAIL_FF": "2607360",
+          "UTIL_FF": "~0",
+          "LUT": "506",
+          "AVAIL_LUT": "1303680",
+          "UTIL_LUT": "~0",
+          "BRAM_18K": "0",
+          "AVAIL_BRAM": "4032",
+          "UTIL_BRAM": "0",
+          "DSP": "0",
+          "AVAIL_DSP": "9024",
+          "UTIL_DSP": "0",
+          "URAM": "0",
+          "AVAIL_URAM": "960",
+          "UTIL_URAM": "0"
+        }
+      },
+      "stream_merger_ackEvent_s": {
+        "Latency": {
+          "LatencyBest": "2",
+          "LatencyAvg": "2",
+          "LatencyWorst": "2",
+          "PipelineII": "1",
+          "PipelineDepth": "3",
+          "PipelineType": "yes"
+        },
+        "Timing": {
+          "Target": "3.20",
+          "Uncertainty": "0.86",
+          "Estimate": "1.168"
+        },
+        "Area": {
+          "FF": "295",
+          "AVAIL_FF": "2607360",
+          "UTIL_FF": "~0",
+          "LUT": "68",
+          "AVAIL_LUT": "1303680",
+          "UTIL_LUT": "~0",
+          "BRAM_18K": "0",
+          "AVAIL_BRAM": "4032",
+          "UTIL_BRAM": "0",
+          "DSP": "0",
+          "AVAIL_DSP": "9024",
+          "UTIL_DSP": "0",
+          "URAM": "0",
+          "AVAIL_URAM": "960",
+          "UTIL_URAM": "0"
+        }
+      },
+      "rshiftWordByOctet_routed_net_axis_512_1_512_12_s": {
+        "Latency": {
+          "LatencyBest": "1",
+          "LatencyAvg": "1",
+          "LatencyWorst": "1",
+          "PipelineII": "1",
+          "PipelineDepth": "2",
+          "PipelineType": "yes"
+        },
+        "Timing": {
+          "Target": "3.20",
+          "Uncertainty": "0.86",
+          "Estimate": "2.663"
+        },
+        "Area": {
+          "FF": "1306",
+          "AVAIL_FF": "2607360",
+          "UTIL_FF": "~0",
+          "LUT": "112",
+          "AVAIL_LUT": "1303680",
+          "UTIL_LUT": "~0",
+          "BRAM_18K": "0",
+          "AVAIL_BRAM": "4032",
+          "UTIL_BRAM": "0",
+          "DSP": "0",
+          "AVAIL_DSP": "9024",
+          "UTIL_DSP": "0",
+          "URAM": "0",
+          "AVAIL_URAM": "960",
+          "UTIL_URAM": "0"
+        }
+      },
+      "rshiftWordByOctet_net_axis_512_512_13_s": {
+        "Latency": {
+          "LatencyBest": "1",
+          "LatencyAvg": "1",
+          "LatencyWorst": "1",
+          "PipelineII": "1",
+          "PipelineDepth": "2",
+          "PipelineType": "yes"
+        },
+        "Timing": {
+          "Target": "3.20",
+          "Uncertainty": "0.86",
+          "Estimate": "2.714"
+        },
+        "Area": {
+          "FF": "1197",
+          "AVAIL_FF": "2607360",
+          "UTIL_FF": "~0",
+          "LUT": "116",
+          "AVAIL_LUT": "1303680",
+          "UTIL_LUT": "~0",
+          "BRAM_18K": "0",
+          "AVAIL_BRAM": "4032",
+          "UTIL_BRAM": "0",
+          "DSP": "0",
+          "AVAIL_DSP": "9024",
+          "UTIL_DSP": "0",
+          "URAM": "0",
+          "AVAIL_URAM": "960",
+          "UTIL_URAM": "0"
+        }
+      },
+      "merge_rx_pkgs_512_s": {
+        "Latency": {
+          "LatencyBest": "2",
+          "LatencyAvg": "2",
+          "LatencyWorst": "2",
+          "PipelineII": "1",
+          "PipelineDepth": "3",
+          "PipelineType": "yes"
+        },
+        "Timing": {
+          "Target": "3.20",
+          "Uncertainty": "0.86",
+          "Estimate": "2.692"
+        },
+        "Area": {
+          "FF": "2641",
+          "AVAIL_FF": "2607360",
+          "UTIL_FF": "~0",
+          "LUT": "174",
+          "AVAIL_LUT": "1303680",
+          "UTIL_LUT": "~0",
+          "BRAM_18K": "0",
+          "AVAIL_BRAM": "4032",
+          "UTIL_BRAM": "0",
+          "DSP": "0",
+          "AVAIL_DSP": "9024",
+          "UTIL_DSP": "0",
+          "URAM": "0",
+          "AVAIL_URAM": "960",
+          "UTIL_URAM": "0"
+        }
+      },
+      "local_req_handler": {
+        "Latency": {
+          "LatencyBest": "1",
+          "LatencyAvg": "1",
+          "LatencyWorst": "1",
+          "PipelineII": "1",
+          "PipelineDepth": "2",
+          "PipelineType": "yes"
+        },
+        "Timing": {
+          "Target": "3.20",
+          "Uncertainty": "0.86",
+          "Estimate": "1.765"
+        },
+        "Area": {
+          "FF": "568",
+          "AVAIL_FF": "2607360",
+          "UTIL_FF": "~0",
+          "LUT": "1021",
+          "AVAIL_LUT": "1303680",
+          "UTIL_LUT": "~0",
+          "BRAM_18K": "0",
+          "AVAIL_BRAM": "4032",
+          "UTIL_BRAM": "0",
+          "DSP": "0",
+          "AVAIL_DSP": "9024",
+          "UTIL_DSP": "0",
+          "URAM": "0",
+          "AVAIL_URAM": "960",
+          "UTIL_URAM": "0"
+        }
+      },
+      "tx_pkg_arbiter_512_s": {
+        "Latency": {
+          "LatencyBest": "1",
+          "LatencyAvg": "1",
+          "LatencyWorst": "1",
+          "PipelineII": "1",
+          "PipelineDepth": "2",
+          "PipelineType": "yes"
+        },
+        "Timing": {
+          "Target": "3.20",
+          "Uncertainty": "0.86",
+          "Estimate": "3.058"
+        },
+        "Area": {
+          "FF": "4184",
+          "AVAIL_FF": "2607360",
+          "UTIL_FF": "~0",
+          "LUT": "788",
+          "AVAIL_LUT": "1303680",
+          "UTIL_LUT": "~0",
+          "BRAM_18K": "0",
+          "AVAIL_BRAM": "4032",
+          "UTIL_BRAM": "0",
+          "DSP": "0",
+          "AVAIL_DSP": "9024",
+          "UTIL_DSP": "0",
+          "URAM": "0",
+          "AVAIL_URAM": "960",
+          "UTIL_URAM": "0"
+        }
+      },
+      "meta_merger": {
+        "Latency": {
+          "LatencyBest": "5",
+          "LatencyAvg": "5",
+          "LatencyWorst": "5",
+          "PipelineII": "1",
+          "PipelineDepth": "6",
+          "PipelineType": "yes"
+        },
+        "Timing": {
+          "Target": "3.20",
+          "Uncertainty": "0.86",
+          "Estimate": "2.288"
+        },
+        "Area": {
+          "DSP": "3",
+          "AVAIL_DSP": "9024",
+          "UTIL_DSP": "~0",
+          "FF": "2223",
+          "AVAIL_FF": "2607360",
+          "UTIL_FF": "~0",
+          "LUT": "1256",
+          "AVAIL_LUT": "1303680",
+          "UTIL_LUT": "~0",
+          "BRAM_18K": "0",
+          "AVAIL_BRAM": "4032",
+          "UTIL_BRAM": "0",
+          "URAM": "0",
+          "AVAIL_URAM": "960",
+          "UTIL_URAM": "0"
+        }
+      },
+      "lshiftWordByOctet_512_12_s": {
+        "Latency": {
+          "LatencyBest": "1",
+          "LatencyAvg": "1",
+          "LatencyWorst": "1",
+          "PipelineII": "1",
+          "PipelineDepth": "2",
+          "PipelineType": "yes"
+        },
+        "Timing": {
+          "Target": "3.20",
+          "Uncertainty": "0.86",
+          "Estimate": "2.333"
+        },
+        "Area": {
+          "FF": "1161",
+          "AVAIL_FF": "2607360",
+          "UTIL_FF": "~0",
+          "LUT": "588",
+          "AVAIL_LUT": "1303680",
+          "UTIL_LUT": "~0",
+          "BRAM_18K": "0",
+          "AVAIL_BRAM": "4032",
+          "UTIL_BRAM": "0",
+          "DSP": "0",
+          "AVAIL_DSP": "9024",
+          "UTIL_DSP": "0",
+          "URAM": "0",
+          "AVAIL_URAM": "960",
+          "UTIL_URAM": "0"
+        }
+      },
+      "lshiftWordByOctet_512_13_s": {
+        "Latency": {
+          "LatencyBest": "1",
+          "LatencyAvg": "1",
+          "LatencyWorst": "1",
+          "PipelineII": "1",
+          "PipelineDepth": "2",
+          "PipelineType": "yes"
+        },
+        "Timing": {
+          "Target": "3.20",
+          "Uncertainty": "0.86",
+          "Estimate": "2.353"
+        },
+        "Area": {
+          "FF": "1161",
+          "AVAIL_FF": "2607360",
+          "UTIL_FF": "~0",
+          "LUT": "592",
+          "AVAIL_LUT": "1303680",
+          "UTIL_LUT": "~0",
+          "BRAM_18K": "0",
+          "AVAIL_BRAM": "4032",
+          "UTIL_BRAM": "0",
+          "DSP": "0",
+          "AVAIL_DSP": "9024",
+          "UTIL_DSP": "0",
+          "URAM": "0",
+          "AVAIL_URAM": "960",
+          "UTIL_URAM": "0"
+        }
+      },
+      "generate_exh_512_s": {
+        "Latency": {
+          "LatencyBest": "1",
+          "LatencyAvg": "1",
+          "LatencyWorst": "1",
+          "PipelineII": "1",
+          "PipelineDepth": "2",
+          "PipelineType": "yes"
+        },
+        "Timing": {
+          "Target": "3.20",
+          "Uncertainty": "0.86",
+          "Estimate": "2.270"
+        },
+        "Area": {
+          "FF": "2364",
+          "AVAIL_FF": "2607360",
+          "UTIL_FF": "~0",
+          "LUT": "1737",
+          "AVAIL_LUT": "1303680",
+          "UTIL_LUT": "~0",
+          "BRAM_18K": "0",
+          "AVAIL_BRAM": "4032",
+          "UTIL_BRAM": "0",
+          "DSP": "0",
+          "AVAIL_DSP": "9024",
+          "UTIL_DSP": "0",
+          "URAM": "0",
+          "AVAIL_URAM": "960",
+          "UTIL_URAM": "0"
+        }
+      },
+      "append_payload_512_s": {
+        "Latency": {
+          "LatencyBest": "1",
+          "LatencyAvg": "1",
+          "LatencyWorst": "1",
+          "PipelineII": "1",
+          "PipelineDepth": "2",
+          "PipelineType": "yes"
+        },
+        "Timing": {
+          "Target": "3.20",
+          "Uncertainty": "0.86",
+          "Estimate": "1.866"
+        },
+        "Area": {
+          "FF": "3348",
+          "AVAIL_FF": "2607360",
+          "UTIL_FF": "~0",
+          "LUT": "212",
+          "AVAIL_LUT": "1303680",
+          "UTIL_LUT": "~0",
+          "BRAM_18K": "0",
+          "AVAIL_BRAM": "4032",
+          "UTIL_BRAM": "0",
+          "DSP": "0",
+          "AVAIL_DSP": "9024",
+          "UTIL_DSP": "0",
+          "URAM": "0",
+          "AVAIL_URAM": "960",
+          "UTIL_URAM": "0"
+        }
+      },
+      "lshiftWordByOctet_512_11_s": {
+        "Latency": {
+          "LatencyBest": "1",
+          "LatencyAvg": "1",
+          "LatencyWorst": "1",
+          "PipelineII": "1",
+          "PipelineDepth": "2",
+          "PipelineType": "yes"
+        },
+        "Timing": {
+          "Target": "3.20",
+          "Uncertainty": "0.86",
+          "Estimate": "2.305"
+        },
+        "Area": {
+          "FF": "1161",
+          "AVAIL_FF": "2607360",
+          "UTIL_FF": "~0",
+          "LUT": "591",
+          "AVAIL_LUT": "1303680",
+          "UTIL_LUT": "~0",
+          "BRAM_18K": "0",
+          "AVAIL_BRAM": "4032",
+          "UTIL_BRAM": "0",
+          "DSP": "0",
+          "AVAIL_DSP": "9024",
+          "UTIL_DSP": "0",
+          "URAM": "0",
+          "AVAIL_URAM": "960",
+          "UTIL_URAM": "0"
+        }
+      },
+      "generate_ibh_512_s": {
+        "Latency": {
+          "LatencyBest": "1",
+          "LatencyAvg": "1",
+          "LatencyWorst": "1",
+          "PipelineII": "1",
+          "PipelineDepth": "2",
+          "PipelineType": "yes"
+        },
+        "Timing": {
+          "Target": "3.20",
+          "Uncertainty": "0.86",
+          "Estimate": "2.000"
+        },
+        "Area": {
+          "FF": "320",
+          "AVAIL_FF": "2607360",
+          "UTIL_FF": "~0",
+          "LUT": "230",
+          "AVAIL_LUT": "1303680",
+          "UTIL_LUT": "~0",
+          "BRAM_18K": "0",
+          "AVAIL_BRAM": "4032",
+          "UTIL_BRAM": "0",
+          "DSP": "0",
+          "AVAIL_DSP": "9024",
+          "UTIL_DSP": "0",
+          "URAM": "0",
+          "AVAIL_URAM": "960",
+          "UTIL_URAM": "0"
+        }
+      },
+      "prepend_ibh_header_512_s": {
+        "Latency": {
+          "LatencyBest": "1",
+          "LatencyAvg": "1",
+          "LatencyWorst": "1",
+          "PipelineII": "1",
+          "PipelineDepth": "2",
+          "PipelineType": "yes"
+        },
+        "Timing": {
+          "Target": "3.20",
+          "Uncertainty": "0.86",
+          "Estimate": "1.866"
+        },
+        "Area": {
+          "FF": "2234",
+          "AVAIL_FF": "2607360",
+          "UTIL_FF": "~0",
+          "LUT": "199",
+          "AVAIL_LUT": "1303680",
+          "UTIL_LUT": "~0",
+          "BRAM_18K": "0",
+          "AVAIL_BRAM": "4032",
+          "UTIL_BRAM": "0",
+          "DSP": "0",
+          "AVAIL_DSP": "9024",
+          "UTIL_DSP": "0",
+          "URAM": "0",
+          "AVAIL_URAM": "960",
+          "UTIL_URAM": "0"
+        }
+      },
+      "tx_ipUdpMetaMerger": {
+        "Latency": {
+          "LatencyBest": "1",
+          "LatencyAvg": "1",
+          "LatencyWorst": "1",
+          "PipelineII": "1",
+          "PipelineDepth": "2",
+          "PipelineType": "yes"
+        },
+        "Timing": {
+          "Target": "3.20",
+          "Uncertainty": "0.86",
+          "Estimate": "1.290"
+        },
+        "Area": {
+          "FF": "189",
+          "AVAIL_FF": "2607360",
+          "UTIL_FF": "~0",
+          "LUT": "237",
+          "AVAIL_LUT": "1303680",
+          "UTIL_LUT": "~0",
+          "BRAM_18K": "0",
+          "AVAIL_BRAM": "4032",
+          "UTIL_BRAM": "0",
+          "DSP": "0",
+          "AVAIL_DSP": "9024",
+          "UTIL_DSP": "0",
+          "URAM": "0",
+          "AVAIL_URAM": "960",
+          "UTIL_URAM": "0"
+        }
+      },
+      "mem_cmd_merger_512_s": {
+        "Latency": {
+          "LatencyBest": "3",
+          "LatencyAvg": "3",
+          "LatencyWorst": "3",
+          "PipelineII": "1",
+          "PipelineDepth": "4",
+          "PipelineType": "yes"
+        },
+        "Timing": {
+          "Target": "3.20",
+          "Uncertainty": "0.86",
+          "Estimate": "2.355"
+        },
+        "Area": {
+          "FF": "451",
+          "AVAIL_FF": "2607360",
+          "UTIL_FF": "~0",
+          "LUT": "472",
+          "AVAIL_LUT": "1303680",
+          "UTIL_LUT": "~0",
+          "BRAM_18K": "0",
+          "AVAIL_BRAM": "4032",
+          "UTIL_BRAM": "0",
+          "DSP": "0",
+          "AVAIL_DSP": "9024",
+          "UTIL_DSP": "0",
+          "URAM": "0",
+          "AVAIL_URAM": "960",
+          "UTIL_URAM": "0"
+        }
+      },
+      "conn_table": {
+        "Latency": {
+          "LatencyBest": "3",
+          "LatencyAvg": "3",
+          "LatencyWorst": "3",
+          "PipelineII": "1",
+          "PipelineDepth": "4",
+          "PipelineType": "yes"
+        },
+        "Timing": {
+          "Target": "3.20",
+          "Uncertainty": "0.86",
+          "Estimate": "1.318"
+        },
+        "Area": {
+          "BRAM_18K": "6",
+          "AVAIL_BRAM": "4032",
+          "UTIL_BRAM": "~0",
+          "FF": "254",
+          "AVAIL_FF": "2607360",
+          "UTIL_FF": "~0",
+          "LUT": "82",
+          "AVAIL_LUT": "1303680",
+          "UTIL_LUT": "~0",
+          "URAM": "0",
+          "AVAIL_URAM": "960",
+          "UTIL_URAM": "0",
+          "DSP": "0",
+          "AVAIL_DSP": "9024",
+          "UTIL_DSP": "0"
+        }
+      },
+      "state_table": {
+        "Latency": {
+          "LatencyBest": "5",
+          "LatencyAvg": "5",
+          "LatencyWorst": "5",
+          "PipelineII": "1",
+          "PipelineDepth": "6",
+          "PipelineType": "yes"
+        },
+        "Timing": {
+          "Target": "3.20",
+          "Uncertainty": "0.86",
+          "Estimate": "2.000"
+        },
+        "Area": {
+          "BRAM_18K": "6",
+          "AVAIL_BRAM": "4032",
+          "UTIL_BRAM": "~0",
+          "FF": "936",
+          "AVAIL_FF": "2607360",
+          "UTIL_FF": "~0",
+          "LUT": "694",
+          "AVAIL_LUT": "1303680",
+          "UTIL_LUT": "~0",
+          "DSP": "0",
+          "AVAIL_DSP": "9024",
+          "UTIL_DSP": "0",
+          "URAM": "0",
+          "AVAIL_URAM": "960",
+          "UTIL_URAM": "0"
+        }
+      },
+      "msn_table": {
+        "Latency": {
+          "LatencyBest": "5",
+          "LatencyAvg": "5",
+          "LatencyWorst": "5",
+          "PipelineII": "1",
+          "PipelineDepth": "6",
+          "PipelineType": "yes"
+        },
+        "Timing": {
+          "Target": "3.20",
+          "Uncertainty": "0.86",
+          "Estimate": "1.200"
+        },
+        "Area": {
+          "BRAM_18K": "5",
+          "AVAIL_BRAM": "4032",
+          "UTIL_BRAM": "~0",
+          "FF": "813",
+          "AVAIL_FF": "2607360",
+          "UTIL_FF": "~0",
+          "LUT": "416",
+          "AVAIL_LUT": "1303680",
+          "UTIL_LUT": "~0",
+          "DSP": "0",
+          "AVAIL_DSP": "9024",
+          "UTIL_DSP": "0",
+          "URAM": "0",
+          "AVAIL_URAM": "960",
+          "UTIL_URAM": "0"
+        }
+      },
+      "read_req_table": {
+        "Latency": {
+          "LatencyBest": "1",
+          "LatencyAvg": "1",
+          "LatencyWorst": "1",
+          "PipelineII": "1",
+          "PipelineDepth": "2",
+          "PipelineType": "yes"
+        },
+        "Timing": {
+          "Target": "3.20",
+          "Uncertainty": "0.86",
+          "Estimate": "1.168"
+        },
+        "Area": {
+          "FF": "4",
+          "AVAIL_FF": "2607360",
+          "UTIL_FF": "~0",
+          "LUT": "41",
+          "AVAIL_LUT": "1303680",
+          "UTIL_LUT": "~0",
+          "BRAM_18K": "0",
+          "AVAIL_BRAM": "4032",
+          "UTIL_BRAM": "0",
+          "DSP": "0",
+          "AVAIL_DSP": "9024",
+          "UTIL_DSP": "0",
+          "URAM": "0",
+          "AVAIL_URAM": "960",
+          "UTIL_URAM": "0"
+        }
+      },
+      "mq_freelist_handler_2048_s": {
+        "Latency": {
+          "LatencyBest": "1",
+          "LatencyAvg": "1",
+          "LatencyWorst": "1",
+          "PipelineII": "1",
+          "PipelineDepth": "2",
+          "PipelineType": "yes"
+        },
+        "Timing": {
+          "Target": "3.20",
+          "Uncertainty": "0.86",
+          "Estimate": "1.290"
+        },
+        "Area": {
+          "FF": "32",
+          "AVAIL_FF": "2607360",
+          "UTIL_FF": "~0",
+          "LUT": "74",
+          "AVAIL_LUT": "1303680",
+          "UTIL_LUT": "~0",
+          "BRAM_18K": "0",
+          "AVAIL_BRAM": "4032",
+          "UTIL_BRAM": "0",
+          "DSP": "0",
+          "AVAIL_DSP": "9024",
+          "UTIL_DSP": "0",
+          "URAM": "0",
+          "AVAIL_URAM": "960",
+          "UTIL_URAM": "0"
+        }
+      },
+      "mq_pointer_table_500_s": {
+        "Latency": {
+          "LatencyBest": "4",
+          "LatencyAvg": "4",
+          "LatencyWorst": "4",
+          "PipelineII": "1",
+          "PipelineDepth": "5",
+          "PipelineType": "yes"
+        },
+        "Timing": {
+          "Target": "3.20",
+          "Uncertainty": "0.86",
+          "Estimate": "1.555"
+        },
+        "Area": {
+          "BRAM_18K": "3",
+          "AVAIL_BRAM": "4032",
+          "UTIL_BRAM": "~0",
+          "FF": "481",
+          "AVAIL_FF": "2607360",
+          "UTIL_FF": "~0",
+          "LUT": "338",
+          "AVAIL_LUT": "1303680",
+          "UTIL_LUT": "~0",
+          "DSP": "0",
+          "AVAIL_DSP": "9024",
+          "UTIL_DSP": "0",
+          "URAM": "0",
+          "AVAIL_URAM": "960",
+          "UTIL_URAM": "0"
+        }
+      },
+      "mq_meta_table_ap_uint_64_2048_s": {
+        "Latency": {
+          "LatencyBest": "3",
+          "LatencyAvg": "3",
+          "LatencyWorst": "3",
+          "PipelineII": "1",
+          "PipelineDepth": "4",
+          "PipelineType": "yes"
+        },
+        "Timing": {
+          "Target": "3.20",
+          "Uncertainty": "0.86",
+          "Estimate": "1.203"
+        },
+        "Area": {
+          "BRAM_18K": "12",
+          "AVAIL_BRAM": "4032",
+          "UTIL_BRAM": "~0",
+          "FF": "375",
+          "AVAIL_FF": "2607360",
+          "UTIL_FF": "~0",
+          "LUT": "179",
+          "AVAIL_LUT": "1303680",
+          "UTIL_LUT": "~0",
+          "DSP": "0",
+          "AVAIL_DSP": "9024",
+          "UTIL_DSP": "0",
+          "URAM": "0",
+          "AVAIL_URAM": "960",
+          "UTIL_URAM": "0"
+        }
+      },
+      "mq_process_requests_ap_uint_64_s": {
+        "Latency": {
+          "LatencyBest": "1",
+          "LatencyAvg": "1",
+          "LatencyWorst": "1",
+          "PipelineII": "1",
+          "PipelineDepth": "2",
+          "PipelineType": "yes"
+        },
+        "Timing": {
+          "Target": "3.20",
+          "Uncertainty": "0.86",
+          "Estimate": "2.041"
+        },
+        "Area": {
+          "FF": "474",
+          "AVAIL_FF": "2607360",
+          "UTIL_FF": "~0",
+          "LUT": "459",
+          "AVAIL_LUT": "1303680",
+          "UTIL_LUT": "~0",
+          "BRAM_18K": "0",
+          "AVAIL_BRAM": "4032",
+          "UTIL_BRAM": "0",
+          "DSP": "0",
+          "AVAIL_DSP": "9024",
+          "UTIL_DSP": "0",
+          "URAM": "0",
+          "AVAIL_URAM": "960",
+          "UTIL_URAM": "0"
+        }
+      },
+      "Block_entry449_proc": {
+        "Latency": {
+          "LatencyBest": "0",
+          "LatencyAvg": "0",
+          "LatencyWorst": "0",
+          "PipelineII": "0",
+          "PipelineDepth": "",
+          "PipelineType": "no"
+        },
+        "Timing": {
+          "Target": "3.20",
+          "Uncertainty": "0.86",
+          "Estimate": "0.000"
+        },
+        "Area": {
+          "FF": "2",
+          "AVAIL_FF": "2607360",
+          "UTIL_FF": "~0",
+          "LUT": "11",
+          "AVAIL_LUT": "1303680",
+          "UTIL_LUT": "~0",
+          "BRAM_18K": "0",
+          "AVAIL_BRAM": "4032",
+          "UTIL_BRAM": "0",
+          "DSP": "0",
+          "AVAIL_DSP": "9024",
+          "UTIL_DSP": "0",
+          "URAM": "0",
+          "AVAIL_URAM": "960",
+          "UTIL_URAM": "0"
+        }
+      },
+      "extract_icrc_512_s": {
+        "Latency": {
+          "LatencyBest": "1",
+          "LatencyAvg": "1",
+          "LatencyWorst": "1",
+          "PipelineII": "1",
+          "PipelineDepth": "2",
+          "PipelineType": "yes"
+        },
+        "Timing": {
+          "Target": "3.20",
+          "Uncertainty": "0.86",
+          "Estimate": "1.168"
+        },
+        "Area": {
+          "FF": "1227",
+          "AVAIL_FF": "2607360",
+          "UTIL_FF": "~0",
+          "LUT": "283",
+          "AVAIL_LUT": "1303680",
+          "UTIL_LUT": "~0",
+          "BRAM_18K": "0",
+          "AVAIL_BRAM": "4032",
+          "UTIL_BRAM": "0",
+          "DSP": "0",
+          "AVAIL_DSP": "9024",
+          "UTIL_DSP": "0",
+          "URAM": "0",
+          "AVAIL_URAM": "960",
+          "UTIL_URAM": "0"
+        }
+      },
+      "insert_icrc_512_s": {
+        "Latency": {
+          "LatencyBest": "2",
+          "LatencyAvg": "2",
+          "LatencyWorst": "2",
+          "PipelineII": "1",
+          "PipelineDepth": "3",
+          "PipelineType": "yes"
+        },
+        "Timing": {
+          "Target": "3.20",
+          "Uncertainty": "0.86",
+          "Estimate": "1.677"
+        },
+        "Area": {
+          "FF": "586",
+          "AVAIL_FF": "2607360",
+          "UTIL_FF": "~0",
+          "LUT": "245",
+          "AVAIL_LUT": "1303680",
+          "UTIL_LUT": "~0",
+          "BRAM_18K": "0",
+          "AVAIL_BRAM": "4032",
+          "UTIL_BRAM": "0",
+          "DSP": "0",
+          "AVAIL_DSP": "9024",
+          "UTIL_DSP": "0",
+          "URAM": "0",
+          "AVAIL_URAM": "960",
+          "UTIL_URAM": "0"
+        }
+      },
+      "rocev2_top": {
+        "Latency": {
+          "LatencyBest": "43",
+          "LatencyAvg": "43",
+          "LatencyWorst": "43",
+          "PipelineII": "1",
+          "PipelineDepth": "",
+          "PipelineType": "dataflow"
+        },
+        "Timing": {
+          "Target": "3.20",
+          "Uncertainty": "0.86",
+          "Estimate": "3.114"
+        },
+        "Area": {
+          "BRAM_18K": "111",
+          "AVAIL_BRAM": "4032",
+          "UTIL_BRAM": "2",
+          "DSP": "6",
+          "AVAIL_DSP": "9024",
+          "UTIL_DSP": "~0",
+          "FF": "141361",
+          "AVAIL_FF": "2607360",
+          "UTIL_FF": "5",
+          "LUT": "66989",
+          "AVAIL_LUT": "1303680",
+          "UTIL_LUT": "5",
+          "URAM": "0",
+          "AVAIL_URAM": "960",
+          "UTIL_URAM": "0"
+        }
+      }
+    }
+  },
+  "GenerateBdFiles": "0",
+  "GenData": {
+    "DataVersion": "0.2",
+    "Time": "2023-07-11 09:33:59 CEST",
+    "ToolName": "vitis_hls",
+    "ToolVersion": "2022.1"
+  }
+}

@@ -1,0 +1,217 @@
+
+
+================================================================
+== Vitis HLS Report for 'append_payload_512_s'
+================================================================
+* Date:           Tue Jul 11 09:33:13 2023
+
+* Version:        2022.1 (Build 3526262 on Mon Apr 18 15:47:01 MDT 2022)
+* Project:        rocev2_prj
+* Solution:       solution1 (Vivado IP Flow Target)
+* Product family: virtexuplus
+* Target device:  xcu280-fsvh2892-2L-e
+
+
+================================================================
+== Performance Estimates
+================================================================
++ Timing: 
+    * Summary: 
+    +--------+---------+----------+------------+
+    |  Clock |  Target | Estimated| Uncertainty|
+    +--------+---------+----------+------------+
+    |ap_clk  |  3.20 ns|  1.866 ns|     0.86 ns|
+    +--------+---------+----------+------------+
+
++ Latency: 
+    * Summary: 
+    +---------+---------+----------+----------+-----+-----+---------+
+    |  Latency (cycles) |  Latency (absolute) |  Interval | Pipeline|
+    |   min   |   max   |    min   |    max   | min | max |   Type  |
+    +---------+---------+----------+----------+-----+-----+---------+
+    |        1|        1|  3.200 ns|  3.200 ns|    1|    1|      yes|
+    +---------+---------+----------+----------+-----+-----+---------+
+
+    + Detail: 
+        * Instance: 
+        N/A
+
+        * Loop: 
+        N/A
+
+
+
+================================================================
+== Utilization Estimates
+================================================================
+* Summary: 
++---------------------+---------+------+---------+---------+-----+
+|         Name        | BRAM_18K|  DSP |    FF   |   LUT   | URAM|
++---------------------+---------+------+---------+---------+-----+
+|DSP                  |        -|     -|        -|        -|    -|
+|Expression           |        -|     -|        0|       64|    -|
+|FIFO                 |        -|     -|        -|        -|    -|
+|Instance             |        -|     -|        -|        -|    -|
+|Memory               |        -|     -|        -|        -|    -|
+|Multiplexer          |        -|     -|        -|      148|    -|
+|Register             |        -|     -|     3348|        -|    -|
++---------------------+---------+------+---------+---------+-----+
+|Total                |        0|     0|     3348|      212|    0|
++---------------------+---------+------+---------+---------+-----+
+|Available SLR        |     1344|  3008|   869120|   434560|  320|
++---------------------+---------+------+---------+---------+-----+
+|Utilization SLR (%)  |        0|     0|       ~0|       ~0|    0|
++---------------------+---------+------+---------+---------+-----+
+|Available            |     4032|  9024|  2607360|  1303680|  960|
++---------------------+---------+------+---------+---------+-----+
+|Utilization (%)      |        0|     0|       ~0|       ~0|    0|
++---------------------+---------+------+---------+---------+-----+
+
++ Detail: 
+    * Instance: 
+    N/A
+
+    * DSP: 
+    N/A
+
+    * Memory: 
+    N/A
+
+    * FIFO: 
+    N/A
+
+    * Expression: 
+    +----------------------------------+----------+----+---+----+------------+------------+
+    |           Variable Name          | Operation| DSP| FF| LUT| Bitwidth P0| Bitwidth P1|
+    +----------------------------------+----------+----+---+----+------------+------------+
+    |ap_condition_111                  |       and|   0|  0|   2|           1|           1|
+    |ap_condition_242                  |       and|   0|  0|   2|           1|           1|
+    |ap_condition_253                  |       and|   0|  0|   2|           1|           1|
+    |ap_condition_270                  |       and|   0|  0|   2|           1|           1|
+    |ap_condition_274                  |       and|   0|  0|   2|           1|           1|
+    |ap_condition_281                  |       and|   0|  0|   2|           1|           1|
+    |ap_condition_288                  |       and|   0|  0|   2|           1|           1|
+    |ap_condition_293                  |       and|   0|  0|   2|           1|           1|
+    |ap_condition_299                  |       and|   0|  0|   2|           1|           1|
+    |ap_condition_302                  |       and|   0|  0|   2|           1|           1|
+    |ap_condition_307                  |       and|   0|  0|   2|           1|           1|
+    |ap_predicate_op105_write_state2   |       and|   0|  0|   2|           1|           1|
+    |ap_predicate_op109_write_state2   |       and|   0|  0|   2|           1|           1|
+    |ap_predicate_op110_write_state2   |       and|   0|  0|   2|           1|           1|
+    |ap_predicate_op112_write_state2   |       and|   0|  0|   2|           1|           1|
+    |ap_predicate_op114_write_state2   |       and|   0|  0|   2|           1|           1|
+    |ap_predicate_op36_read_state1     |       and|   0|  0|   2|           1|           1|
+    |ap_predicate_op51_read_state1     |       and|   0|  0|   2|           1|           1|
+    |ap_predicate_op67_read_state1     |       and|   0|  0|   2|           1|           1|
+    |ap_predicate_op82_read_state1     |       and|   0|  0|   2|           1|           1|
+    |tmp_269_i_nbreadreq_fu_128_p3     |       and|   0|  0|   2|           1|           0|
+    |tmp_270_i_nbreadreq_fu_100_p3     |       and|   0|  0|   2|           1|           0|
+    |tmp_271_i_nbreadreq_fu_86_p3      |       and|   0|  0|   2|           1|           0|
+    |tmp_i_242_nbreadreq_fu_114_p3     |       and|   0|  0|   2|           1|           0|
+    |tmp_i_nbreadreq_fu_142_p3         |       and|   0|  0|   2|           1|           0|
+    |ap_block_pp0_stage0_01001         |        or|   0|  0|   2|           1|           1|
+    |ap_block_state1_pp0_stage0_iter0  |        or|   0|  0|   2|           1|           1|
+    |ap_block_state2_pp0_stage0_iter1  |        or|   0|  0|   2|           1|           1|
+    |select_ln1378_fu_387_p3           |    select|   0|  0|   4|           1|           1|
+    |select_ln1412_fu_321_p3           |    select|   0|  0|   2|           1|           2|
+    |ap_enable_pp0                     |       xor|   0|  0|   2|           1|           2|
+    +----------------------------------+----------+----+---+----+------------+------------+
+    |Total                             |          |   0|  0|  64|          31|          28|
+    +----------------------------------+----------+----+---+----+------------+------------+
+
+    * Multiplexer: 
+    +-------------------------------------------------+----+-----------+------+-----------+
+    |                       Name                      | LUT| Input Size| Bits | Total Bits|
+    +-------------------------------------------------+----+-----------+------+-----------+
+    |ap_done                                          |   9|          2|     1|          2|
+    |ap_phi_reg_pp0_iter1_sendWord_data_V_19_reg_172  |  14|          3|   512|       1536|
+    |ap_phi_reg_pp0_iter1_sendWord_data_V_21_reg_163  |  14|          3|   512|       1536|
+    |state_6                                          |  31|          6|     3|         18|
+    |tx_aethShift2payFifo_blk_n                       |   9|          2|     1|          2|
+    |tx_exh2payFifo_blk_n                             |   9|          2|     1|          2|
+    |tx_exh2shiftFifo_blk_n                           |   9|          2|     1|          2|
+    |tx_exh2shiftFifo_din                             |  26|          5|  1024|       5120|
+    |tx_packetInfoFifo_blk_n                          |   9|          2|     1|          2|
+    |tx_rawPayFifo_blk_n                              |   9|          2|     1|          2|
+    |tx_rethShift2payFifo_blk_n                       |   9|          2|     1|          2|
+    +-------------------------------------------------+----+-----------+------+-----------+
+    |Total                                            | 148|         31|  2058|       8224|
+    +-------------------------------------------------+----+-----------+------+-----------+
+
+    * Register: 
+    +-------------------------------------------------+------+----+------+-----------+
+    |                       Name                      |  FF  | LUT| Bits | Const Bits|
+    +-------------------------------------------------+------+----+------+-----------+
+    |ap_CS_fsm                                        |     1|   0|     1|          0|
+    |ap_done_reg                                      |     1|   0|     1|          0|
+    |ap_enable_reg_pp0_iter1                          |     1|   0|     1|          0|
+    |ap_phi_reg_pp0_iter1_sendWord_data_V_19_reg_172  |   512|   0|   512|          0|
+    |ap_phi_reg_pp0_iter1_sendWord_data_V_21_reg_163  |   512|   0|   512|          0|
+    |firstPayload                                     |     1|   0|     1|          0|
+    |info_hasPayload                                  |     1|   0|     1|          0|
+    |info_hasPayload_load_reg_432                     |     1|   0|     1|          0|
+    |info_isAETH                                      |     1|   0|     1|          0|
+    |prevWord_data_V_7                                |   128|   0|   128|          0|
+    |state_6                                          |     3|   0|     3|          0|
+    |state_6_load_reg_425                             |     3|   0|     3|          0|
+    |tmp_269_i_reg_493                                |     1|   0|     1|          0|
+    |tmp_270_i_reg_458                                |     1|   0|     1|          0|
+    |tmp_271_i_reg_436                                |     1|   0|     1|          0|
+    |tmp_65_reg_489                                   |     1|   0|     1|          0|
+    |tmp_8_reg_453                                    |    65|   0|    65|          0|
+    |tmp_i_242_reg_480                                |     1|   0|     1|          0|
+    |tmp_reg_475                                      |    65|   0|    65|          0|
+    |tx_exh2payFifo_read_reg_484                      |  1024|   0|  1024|          0|
+    |tx_rawPayFifo_read_reg_497                       |  1024|   0|  1024|          0|
+    +-------------------------------------------------+------+----+------+-----------+
+    |Total                                            |  3348|   0|  3348|          0|
+    +-------------------------------------------------+------+----+------+-----------+
+
+
+
+================================================================
+== Interface
+================================================================
+* Summary: 
++-------------------------------------+-----+------+------------+----------------------+--------------+
+|              RTL Ports              | Dir | Bits |  Protocol  |     Source Object    |    C Type    |
++-------------------------------------+-----+------+------------+----------------------+--------------+
+|ap_clk                               |   in|     1|  ap_ctrl_hs|   append_payload<512>|  return value|
+|ap_rst                               |   in|     1|  ap_ctrl_hs|   append_payload<512>|  return value|
+|ap_start                             |   in|     1|  ap_ctrl_hs|   append_payload<512>|  return value|
+|ap_done                              |  out|     1|  ap_ctrl_hs|   append_payload<512>|  return value|
+|ap_continue                          |   in|     1|  ap_ctrl_hs|   append_payload<512>|  return value|
+|ap_idle                              |  out|     1|  ap_ctrl_hs|   append_payload<512>|  return value|
+|ap_ready                             |  out|     1|  ap_ctrl_hs|   append_payload<512>|  return value|
+|tx_rethShift2payFifo_dout            |   in|  1024|     ap_fifo|  tx_rethShift2payFifo|       pointer|
+|tx_rethShift2payFifo_num_data_valid  |   in|     2|     ap_fifo|  tx_rethShift2payFifo|       pointer|
+|tx_rethShift2payFifo_fifo_cap        |   in|     2|     ap_fifo|  tx_rethShift2payFifo|       pointer|
+|tx_rethShift2payFifo_empty_n         |   in|     1|     ap_fifo|  tx_rethShift2payFifo|       pointer|
+|tx_rethShift2payFifo_read            |  out|     1|     ap_fifo|  tx_rethShift2payFifo|       pointer|
+|tx_aethShift2payFifo_dout            |   in|  1024|     ap_fifo|  tx_aethShift2payFifo|       pointer|
+|tx_aethShift2payFifo_num_data_valid  |   in|     2|     ap_fifo|  tx_aethShift2payFifo|       pointer|
+|tx_aethShift2payFifo_fifo_cap        |   in|     2|     ap_fifo|  tx_aethShift2payFifo|       pointer|
+|tx_aethShift2payFifo_empty_n         |   in|     1|     ap_fifo|  tx_aethShift2payFifo|       pointer|
+|tx_aethShift2payFifo_read            |  out|     1|     ap_fifo|  tx_aethShift2payFifo|       pointer|
+|tx_exh2payFifo_dout                  |   in|  1024|     ap_fifo|        tx_exh2payFifo|       pointer|
+|tx_exh2payFifo_num_data_valid        |   in|     3|     ap_fifo|        tx_exh2payFifo|       pointer|
+|tx_exh2payFifo_fifo_cap              |   in|     3|     ap_fifo|        tx_exh2payFifo|       pointer|
+|tx_exh2payFifo_empty_n               |   in|     1|     ap_fifo|        tx_exh2payFifo|       pointer|
+|tx_exh2payFifo_read                  |  out|     1|     ap_fifo|        tx_exh2payFifo|       pointer|
+|tx_rawPayFifo_dout                   |   in|  1024|     ap_fifo|         tx_rawPayFifo|       pointer|
+|tx_rawPayFifo_num_data_valid         |   in|     3|     ap_fifo|         tx_rawPayFifo|       pointer|
+|tx_rawPayFifo_fifo_cap               |   in|     3|     ap_fifo|         tx_rawPayFifo|       pointer|
+|tx_rawPayFifo_empty_n                |   in|     1|     ap_fifo|         tx_rawPayFifo|       pointer|
+|tx_rawPayFifo_read                   |  out|     1|     ap_fifo|         tx_rawPayFifo|       pointer|
+|tx_packetInfoFifo_dout               |   in|    24|     ap_fifo|     tx_packetInfoFifo|       pointer|
+|tx_packetInfoFifo_num_data_valid     |   in|     2|     ap_fifo|     tx_packetInfoFifo|       pointer|
+|tx_packetInfoFifo_fifo_cap           |   in|     2|     ap_fifo|     tx_packetInfoFifo|       pointer|
+|tx_packetInfoFifo_empty_n            |   in|     1|     ap_fifo|     tx_packetInfoFifo|       pointer|
+|tx_packetInfoFifo_read               |  out|     1|     ap_fifo|     tx_packetInfoFifo|       pointer|
+|tx_exh2shiftFifo_din                 |  out|  1024|     ap_fifo|      tx_exh2shiftFifo|       pointer|
+|tx_exh2shiftFifo_num_data_valid      |   in|     2|     ap_fifo|      tx_exh2shiftFifo|       pointer|
+|tx_exh2shiftFifo_fifo_cap            |   in|     2|     ap_fifo|      tx_exh2shiftFifo|       pointer|
+|tx_exh2shiftFifo_full_n              |   in|     1|     ap_fifo|      tx_exh2shiftFifo|       pointer|
+|tx_exh2shiftFifo_write               |  out|     1|     ap_fifo|      tx_exh2shiftFifo|       pointer|
++-------------------------------------+-----+------+------------+----------------------+--------------+
+

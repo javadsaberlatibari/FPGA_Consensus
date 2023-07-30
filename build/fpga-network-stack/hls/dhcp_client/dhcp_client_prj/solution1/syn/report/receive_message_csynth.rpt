@@ -1,0 +1,177 @@
+
+
+================================================================
+== Vitis HLS Report for 'receive_message'
+================================================================
+* Date:           Tue Jul 11 09:17:07 2023
+
+* Version:        2022.1 (Build 3526262 on Mon Apr 18 15:47:01 MDT 2022)
+* Project:        dhcp_client_prj
+* Solution:       solution1 (Vivado IP Flow Target)
+* Product family: virtexuplus
+* Target device:  xcu280-fsvh2892-2L-e
+
+
+================================================================
+== Performance Estimates
+================================================================
++ Timing: 
+    * Summary: 
+    +--------+---------+----------+------------+
+    |  Clock |  Target | Estimated| Uncertainty|
+    +--------+---------+----------+------------+
+    |ap_clk  |  3.20 ns|  1.556 ns|     0.86 ns|
+    +--------+---------+----------+------------+
+
++ Latency: 
+    * Summary: 
+    +---------+---------+----------+----------+-----+-----+---------+
+    |  Latency (cycles) |  Latency (absolute) |  Interval | Pipeline|
+    |   min   |   max   |    min   |    max   | min | max |   Type  |
+    +---------+---------+----------+----------+-----+-----+---------+
+    |        1|        1|  3.200 ns|  3.200 ns|    1|    1|      yes|
+    +---------+---------+----------+----------+-----+-----+---------+
+
+    + Detail: 
+        * Instance: 
+        N/A
+
+        * Loop: 
+        N/A
+
+
+
+================================================================
+== Utilization Estimates
+================================================================
+* Summary: 
++---------------------+---------+------+---------+---------+-----+
+|         Name        | BRAM_18K|  DSP |    FF   |   LUT   | URAM|
++---------------------+---------+------+---------+---------+-----+
+|DSP                  |        -|     -|        -|        -|    -|
+|Expression           |        -|     -|        0|      114|    -|
+|FIFO                 |        -|     -|        -|        -|    -|
+|Instance             |        -|     -|        -|        -|    -|
+|Memory               |        -|     -|        -|        -|    -|
+|Multiplexer          |        -|     -|        -|      118|    -|
+|Register             |        -|     -|      119|        -|    -|
++---------------------+---------+------+---------+---------+-----+
+|Total                |        0|     0|      119|      232|    0|
++---------------------+---------+------+---------+---------+-----+
+|Available SLR        |     1344|  3008|   869120|   434560|  320|
++---------------------+---------+------+---------+---------+-----+
+|Utilization SLR (%)  |        0|     0|       ~0|       ~0|    0|
++---------------------+---------+------+---------+---------+-----+
+|Available            |     4032|  9024|  2607360|  1303680|  960|
++---------------------+---------+------+---------+---------+-----+
+|Utilization (%)      |        0|     0|       ~0|       ~0|    0|
++---------------------+---------+------+---------+---------+-----+
+
++ Detail: 
+    * Instance: 
+    N/A
+
+    * DSP: 
+    N/A
+
+    * Memory: 
+    N/A
+
+    * FIFO: 
+    N/A
+
+    * Expression: 
+    +----------------------------------+----------+----+---+----+------------+------------+
+    |           Variable Name          | Operation| DSP| FF| LUT| Bitwidth P0| Bitwidth P1|
+    +----------------------------------+----------+----+---+----+------------+------------+
+    |add_ln886_fu_393_p2               |         +|   0|  0|  13|           6|           1|
+    |and_ln121_1_fu_406_p2             |       and|   0|  0|   2|           1|           1|
+    |and_ln121_fu_400_p2               |       and|   0|  0|   2|           1|           1|
+    |and_ln93_1_fu_286_p2              |       and|   0|  0|   2|           1|           1|
+    |and_ln93_fu_309_p2                |       and|   0|  0|   2|           1|           1|
+    |ap_block_state2_pp0_stage0_iter1  |       and|   0|  0|   2|           1|           1|
+    |ap_condition_209                  |       and|   0|  0|   2|           1|           1|
+    |ap_predicate_op77_write_state2    |       and|   0|  0|   2|           1|           1|
+    |tmp_11_i_i_nbreadreq_fu_114_p3    |       and|   0|  0|   2|           1|           0|
+    |tmp_i_i_nbreadreq_fu_100_p3       |       and|   0|  0|   2|           1|           0|
+    |icmp_ln1065_2_fu_342_p2           |      icmp|   0|  0|  13|          16|           9|
+    |icmp_ln1065_3_fu_253_p2           |      icmp|   0|  0|  20|          32|          31|
+    |icmp_ln1065_4_fu_303_p2           |      icmp|   0|  0|  20|          32|          32|
+    |icmp_ln1065_5_fu_280_p2           |      icmp|   0|  0|  13|          16|          16|
+    |icmp_ln1065_fu_368_p2             |      icmp|   0|  0|  11|           8|           2|
+    |ap_block_pp0_stage0_01001         |        or|   0|  0|   2|           1|           1|
+    |ap_block_state1_pp0_stage0_iter0  |        or|   0|  0|   2|           1|           1|
+    |ap_enable_pp0                     |       xor|   0|  0|   2|           1|           2|
+    +----------------------------------+----------+----+---+----+------------+------------+
+    |Total                             |          |   0|  0| 114|         122|         102|
+    +----------------------------------+----------+----+---+----+------------+------------+
+
+    * Multiplexer: 
+    +---------------------------------------------------+----+-----------+-----+-----------+
+    |                        Name                       | LUT| Input Size| Bits| Total Bits|
+    +---------------------------------------------------+----+-----------+-----+-----------+
+    |ap_done                                            |   9|          2|    1|          2|
+    |ap_phi_mux_rm_correctMac_loc_0_i_i_phi_fu_157_p14  |  26|          5|    1|          5|
+    |ap_phi_mux_rm_isDHCP_loc_0_i_i_phi_fu_177_p14      |  14|          3|    1|          3|
+    |ap_phi_mux_rm_isReply_loc_0_i_i_phi_fu_138_p14     |  14|          3|    1|          3|
+    |ap_phi_mux_rm_wordCount_V_new_0_i_i_phi_fu_196_p4  |  14|          3|    6|         18|
+    |dhcp_replyMetaFifo_blk_n                           |   9|          2|    1|          2|
+    |rm_correctMac                                      |  14|          3|    1|          3|
+    |s_axis_rx_data_TDATA_blk_n                         |   9|          2|    1|          2|
+    |s_axis_rx_metadata_TDATA_blk_n                     |   9|          2|    1|          2|
+    +---------------------------------------------------+----+-----------+-----+-----------+
+    |Total                                              | 118|         25|   14|         40|
+    +---------------------------------------------------+----+-----------+-----+-----------+
+
+    * Register: 
+    +--------------------------+----+----+-----+-----------+
+    |           Name           | FF | LUT| Bits| Const Bits|
+    +--------------------------+----+----+-----+-----------+
+    |and_ln121_1_reg_465       |   1|   0|    1|          0|
+    |ap_CS_fsm                 |   1|   0|    1|          0|
+    |ap_done_reg               |   1|   0|    1|          0|
+    |ap_enable_reg_pp0_iter1   |   1|   0|    1|          0|
+    |currWord_last_V_reg_455   |   1|   0|    1|          0|
+    |meta_assignedIpAddress_V  |  32|   0|   32|          0|
+    |meta_identifier_V         |  32|   0|   32|          0|
+    |meta_serverAddress_V      |  32|   0|   32|          0|
+    |meta_type_V_1             |   8|   0|    8|          0|
+    |rm_correctMac             |   1|   0|    1|          0|
+    |rm_isDHCP                 |   1|   0|    1|          0|
+    |rm_isReply                |   1|   0|    1|          0|
+    |rm_wordCount_V            |   6|   0|    6|          0|
+    |tmp_i_i_reg_451           |   1|   0|    1|          0|
+    +--------------------------+----+----+-----+-----------+
+    |Total                     | 119|   0|  119|          0|
+    +--------------------------+----+----+-----+-----------+
+
+
+
+================================================================
+== Interface
+================================================================
+* Summary: 
++-----------------------------------+-----+-----+------------+--------------------+--------------+
+|             RTL Ports             | Dir | Bits|  Protocol  |    Source Object   |    C Type    |
++-----------------------------------+-----+-----+------------+--------------------+--------------+
+|ap_clk                             |   in|    1|  ap_ctrl_hs|     receive_message|  return value|
+|ap_rst                             |   in|    1|  ap_ctrl_hs|     receive_message|  return value|
+|ap_start                           |   in|    1|  ap_ctrl_hs|     receive_message|  return value|
+|ap_done                            |  out|    1|  ap_ctrl_hs|     receive_message|  return value|
+|ap_continue                        |   in|    1|  ap_ctrl_hs|     receive_message|  return value|
+|ap_idle                            |  out|    1|  ap_ctrl_hs|     receive_message|  return value|
+|ap_ready                           |  out|    1|  ap_ctrl_hs|     receive_message|  return value|
+|s_axis_rx_data_TVALID              |   in|    1|        axis|      s_axis_rx_data|       pointer|
+|s_axis_rx_data_TDATA               |   in|  128|        axis|      s_axis_rx_data|       pointer|
+|s_axis_rx_data_TREADY              |  out|    1|        axis|      s_axis_rx_data|       pointer|
+|s_axis_rx_metadata_TVALID          |   in|    1|        axis|  s_axis_rx_metadata|       pointer|
+|s_axis_rx_metadata_TDATA           |   in|  128|        axis|  s_axis_rx_metadata|       pointer|
+|s_axis_rx_metadata_TREADY          |  out|    1|        axis|  s_axis_rx_metadata|       pointer|
+|dhcp_replyMetaFifo_din             |  out|  128|     ap_fifo|  dhcp_replyMetaFifo|       pointer|
+|dhcp_replyMetaFifo_num_data_valid  |   in|    3|     ap_fifo|  dhcp_replyMetaFifo|       pointer|
+|dhcp_replyMetaFifo_fifo_cap        |   in|    3|     ap_fifo|  dhcp_replyMetaFifo|       pointer|
+|dhcp_replyMetaFifo_full_n          |   in|    1|     ap_fifo|  dhcp_replyMetaFifo|       pointer|
+|dhcp_replyMetaFifo_write           |  out|    1|     ap_fifo|  dhcp_replyMetaFifo|       pointer|
+|myMacAddress                       |   in|   48|   ap_stable|        myMacAddress|       pointer|
++-----------------------------------+-----+-----+------------+--------------------+--------------+
+

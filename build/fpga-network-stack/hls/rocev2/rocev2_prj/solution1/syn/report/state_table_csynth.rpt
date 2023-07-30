@@ -1,0 +1,246 @@
+
+
+================================================================
+== Vitis HLS Report for 'state_table'
+================================================================
+* Date:           Tue Jul 11 09:33:18 2023
+
+* Version:        2022.1 (Build 3526262 on Mon Apr 18 15:47:01 MDT 2022)
+* Project:        rocev2_prj
+* Solution:       solution1 (Vivado IP Flow Target)
+* Product family: virtexuplus
+* Target device:  xcu280-fsvh2892-2L-e
+
+
+================================================================
+== Performance Estimates
+================================================================
++ Timing: 
+    * Summary: 
+    +--------+---------+----------+------------+
+    |  Clock |  Target | Estimated| Uncertainty|
+    +--------+---------+----------+------------+
+    |ap_clk  |  3.20 ns|  2.000 ns|     0.86 ns|
+    +--------+---------+----------+------------+
+
++ Latency: 
+    * Summary: 
+    +---------+---------+-----------+-----------+-----+-----+---------+
+    |  Latency (cycles) |   Latency (absolute)  |  Interval | Pipeline|
+    |   min   |   max   |    min    |    max    | min | max |   Type  |
+    +---------+---------+-----------+-----------+-----+-----+---------+
+    |        5|        5|  16.000 ns|  16.000 ns|    1|    1|      yes|
+    +---------+---------+-----------+-----------+-----+-----+---------+
+
+    + Detail: 
+        * Instance: 
+        N/A
+
+        * Loop: 
+        N/A
+
+
+
+================================================================
+== Utilization Estimates
+================================================================
+* Summary: 
++---------------------+---------+------+---------+---------+-----+
+|         Name        | BRAM_18K|  DSP |    FF   |   LUT   | URAM|
++---------------------+---------+------+---------+---------+-----+
+|DSP                  |        -|     -|        -|        -|    -|
+|Expression           |        -|     -|        0|       75|    -|
+|FIFO                 |        -|     -|        -|        -|    -|
+|Instance             |        -|     -|        -|        -|    -|
+|Memory               |        6|     -|        0|        0|    -|
+|Multiplexer          |        -|     -|        -|      299|    -|
+|Register             |        -|     -|      936|      320|    -|
++---------------------+---------+------+---------+---------+-----+
+|Total                |        6|     0|      936|      694|    0|
++---------------------+---------+------+---------+---------+-----+
+|Available SLR        |     1344|  3008|   869120|   434560|  320|
++---------------------+---------+------+---------+---------+-----+
+|Utilization SLR (%)  |       ~0|     0|       ~0|       ~0|    0|
++---------------------+---------+------+---------+---------+-----+
+|Available            |     4032|  9024|  2607360|  1303680|  960|
++---------------------+---------+------+---------+---------+-----+
+|Utilization (%)      |       ~0|     0|       ~0|       ~0|    0|
++---------------------+---------+------+---------+---------+-----+
+
++ Detail: 
+    * Instance: 
+    N/A
+
+    * DSP: 
+    N/A
+
+    * Memory: 
+    +--------------------------------------+----------------------------------------------------------+---------+---+----+-----+------+-----+------+-------------+
+    |                Memory                |                          Module                          | BRAM_18K| FF| LUT| URAM| Words| Bits| Banks| W*Bits*Banks|
+    +--------------------------------------+----------------------------------------------------------+---------+---+----+-----+------+-----+------+-------------+
+    |state_table_req_old_unack_V_U         |state_table_state_table_req_old_unack_V_RAM_2P_BRAM_1R1W  |        1|  0|   0|    0|   500|   24|     1|        12000|
+    |state_table_resp_epsn_V_U             |state_table_state_table_req_old_unack_V_RAM_2P_BRAM_1R1W  |        1|  0|   0|    0|   500|   24|     1|        12000|
+    |state_table_resp_old_outstanding_V_U  |state_table_state_table_req_old_unack_V_RAM_2P_BRAM_1R1W  |        1|  0|   0|    0|   500|   24|     1|        12000|
+    |state_table_req_next_psn_V_U          |state_table_state_table_req_old_unack_V_RAM_2P_BRAM_1R1W  |        1|  0|   0|    0|   500|   24|     1|        12000|
+    |state_table_req_old_valid_V_U         |state_table_state_table_req_old_unack_V_RAM_2P_BRAM_1R1W  |        1|  0|   0|    0|   500|   24|     1|        12000|
+    |state_table_retryCounter_V_U          |state_table_state_table_retryCounter_V_RAM_2P_BRAM_1R1W   |        1|  0|   0|    0|   500|    3|     1|         1500|
+    +--------------------------------------+----------------------------------------------------------+---------+---+----+-----+------+-----+------+-------------+
+    |Total                                 |                                                          |        6|  0|   0|    0|  3000|  123|     6|        61500|
+    +--------------------------------------+----------------------------------------------------------+---------+---+----+-----+------+-----+------+-------------+
+
+    * FIFO: 
+    N/A
+
+    * Expression: 
+    +----------------------------------+----------+----+---+----+------------+------------+
+    |           Variable Name          | Operation| DSP| FF| LUT| Bitwidth P0| Bitwidth P1|
+    +----------------------------------+----------+----+---+----+------------+------------+
+    |add_ln232_fu_670_p2               |         +|   0|  0|  31|          24|           2|
+    |ap_block_state2_pp0_stage0_iter1  |       and|   0|  0|   2|           1|           1|
+    |ap_block_state3_pp0_stage0_iter2  |       and|   0|  0|   2|           1|           1|
+    |ap_condition_362                  |       and|   0|  0|   2|           1|           1|
+    |ap_condition_380                  |       and|   0|  0|   2|           1|           1|
+    |ap_condition_413                  |       and|   0|  0|   2|           1|           1|
+    |ap_condition_428                  |       and|   0|  0|   2|           1|           1|
+    |ap_condition_433                  |       and|   0|  0|   2|           1|           1|
+    |ap_condition_655                  |       and|   0|  0|   2|           1|           1|
+    |ap_condition_657                  |       and|   0|  0|   2|           1|           1|
+    |ap_predicate_op152_write_state6   |       and|   0|  0|   2|           1|           1|
+    |ap_predicate_op156_write_state6   |       and|   0|  0|   2|           1|           1|
+    |ap_predicate_op160_write_state6   |       and|   0|  0|   2|           1|           1|
+    |ap_predicate_op165_write_state6   |       and|   0|  0|   2|           1|           1|
+    |ap_predicate_op56_read_state2     |       and|   0|  0|   2|           1|           1|
+    |ap_predicate_op64_read_state3     |       and|   0|  0|   2|           1|           1|
+    |tmp_15_i_nbreadreq_fu_134_p3      |       and|   0|  0|   2|           1|           0|
+    |tmp_i_101_nbreadreq_fu_120_p3     |       and|   0|  0|   2|           1|           0|
+    |tmp_i_nbreadreq_fu_106_p3         |       and|   0|  0|   2|           1|           0|
+    |ap_block_pp0_stage0_01001         |        or|   0|  0|   2|           1|           1|
+    |ap_block_state1_pp0_stage0_iter0  |        or|   0|  0|   2|           1|           1|
+    |ap_block_state6_pp0_stage0_iter5  |        or|   0|  0|   2|           1|           1|
+    |ap_enable_pp0                     |       xor|   0|  0|   2|           1|           2|
+    +----------------------------------+----------+----+---+----+------------+------------+
+    |Total                             |          |   0|  0|  75|          46|          22|
+    +----------------------------------+----------+----+---+----+------------+------------+
+
+    * Multiplexer: 
+    +---------------------------------------------+----+-----------+-----+-----------+
+    |                     Name                    | LUT| Input Size| Bits| Total Bits|
+    +---------------------------------------------+----+-----------+-----+-----------+
+    |ap_done                                      |   9|          2|    1|          2|
+    |qpi2stateTable_upd_req_blk_n                 |   9|          2|    1|          2|
+    |rxIbh2stateTable_upd_req_blk_n               |   9|          2|    1|          2|
+    |stateTable2qpi_rsp_blk_n                     |   9|          2|    1|          2|
+    |stateTable2rxIbh_rsp_blk_n                   |   9|          2|    1|          2|
+    |stateTable2rxIbh_rsp_din                     |  14|          3|  128|        384|
+    |stateTable2txIbh_rsp_blk_n                   |   9|          2|    1|          2|
+    |state_table_req_next_psn_V_address1          |  26|          5|    9|         45|
+    |state_table_req_next_psn_V_d1                |  14|          3|   24|         72|
+    |state_table_req_old_unack_V_address1         |  31|          6|    9|         54|
+    |state_table_req_old_unack_V_d1               |  14|          3|   24|         72|
+    |state_table_req_old_valid_V_address1         |  26|          5|    9|         45|
+    |state_table_resp_epsn_V_address1             |  26|          5|    9|         45|
+    |state_table_resp_epsn_V_d1                   |  14|          3|   24|         72|
+    |state_table_resp_old_outstanding_V_address1  |  26|          5|    9|         45|
+    |state_table_retryCounter_V_address1          |  31|          6|    9|         54|
+    |state_table_retryCounter_V_d1                |  14|          3|    3|          9|
+    |txIbh2stateTable_upd_req_blk_n               |   9|          2|    1|          2|
+    +---------------------------------------------+----+-----------+-----+-----------+
+    |Total                                        | 299|         61|  264|        911|
+    +---------------------------------------------+----+-----------+-----+-----------+
+
+    * Register: 
+    +---------------------------------------+----+----+-----+-----------+
+    |                  Name                 | FF | LUT| Bits| Const Bits|
+    +---------------------------------------+----+----+-----+-----------+
+    |ap_CS_fsm                              |   1|   0|    1|          0|
+    |ap_done_reg                            |   1|   0|    1|          0|
+    |ap_enable_reg_pp0_iter1                |   1|   0|    1|          0|
+    |ap_enable_reg_pp0_iter2                |   1|   0|    1|          0|
+    |ap_enable_reg_pp0_iter3                |   1|   0|    1|          0|
+    |ap_enable_reg_pp0_iter4                |   1|   0|    1|          0|
+    |ap_enable_reg_pp0_iter5                |   1|   0|    1|          0|
+    |ifRequest_local_psn_V_reg_759          |  24|   0|   24|          0|
+    |ifRequest_qpn_V_reg_747                |   9|   0|    9|          0|
+    |ifRequest_remote_psn_V_reg_752         |  24|   0|   24|          0|
+    |ifRequest_write_reg_765                |   1|   0|    1|          0|
+    |reg_432                                |  24|   0|   24|          0|
+    |reg_436                                |  24|   0|   24|          0|
+    |reg_440                                |  24|   0|   24|          0|
+    |reg_444                                |  24|   0|   24|          0|
+    |reg_448                                |  24|   0|   24|          0|
+    |reg_452                                |   3|   0|    3|          0|
+    |rxRequest_epsn_V_reg_706               |  24|   0|   24|          0|
+    |rxRequest_isResponse_reg_717           |   1|   0|    1|          0|
+    |rxRequest_qpn_V_reg_701                |   9|   0|    9|          0|
+    |rxRequest_retryCounter_V_reg_712       |   3|   0|    3|          0|
+    |rxRequest_write_reg_721                |   1|   0|    1|          0|
+    |tmp_15_i_reg_743                       |   1|   0|    1|          0|
+    |tmp_i_101_reg_725                      |   1|   0|    1|          0|
+    |tmp_i_reg_697                          |   1|   0|    1|          0|
+    |txRequest_psn_V_reg_734                |  24|   0|   24|          0|
+    |txRequest_psn_V_reg_734_pp0_iter2_reg  |  24|   0|   24|          0|
+    |txRequest_qpn_V_reg_729                |   9|   0|    9|          0|
+    |txRequest_qpn_V_reg_729_pp0_iter2_reg  |   9|   0|    9|          0|
+    |txRequest_write_reg_739                |   1|   0|    1|          0|
+    |ifRequest_write_reg_765                |  64|  32|    1|          0|
+    |rxRequest_epsn_V_reg_706               |  64|  32|   24|          0|
+    |rxRequest_isResponse_reg_717           |  64|  32|    1|          0|
+    |rxRequest_qpn_V_reg_701                |  64|  32|    9|          0|
+    |rxRequest_retryCounter_V_reg_712       |  64|  32|    3|          0|
+    |rxRequest_write_reg_721                |  64|  32|    1|          0|
+    |tmp_15_i_reg_743                       |  64|  32|    1|          0|
+    |tmp_i_101_reg_725                      |  64|  32|    1|          0|
+    |tmp_i_reg_697                          |  64|  32|    1|          0|
+    |txRequest_write_reg_739                |  64|  32|    1|          0|
+    +---------------------------------------+----+----+-----+-----------+
+    |Total                                  | 936| 320|  339|          0|
+    +---------------------------------------+----+----+-----+-----------+
+
+
+
+================================================================
+== Interface
+================================================================
+* Summary: 
++-----------------------------------------+-----+-----+------------+--------------------------+--------------+
+|                RTL Ports                | Dir | Bits|  Protocol  |       Source Object      |    C Type    |
++-----------------------------------------+-----+-----+------------+--------------------------+--------------+
+|ap_clk                                   |   in|    1|  ap_ctrl_hs|               state_table|  return value|
+|ap_rst                                   |   in|    1|  ap_ctrl_hs|               state_table|  return value|
+|ap_start                                 |   in|    1|  ap_ctrl_hs|               state_table|  return value|
+|ap_done                                  |  out|    1|  ap_ctrl_hs|               state_table|  return value|
+|ap_continue                              |   in|    1|  ap_ctrl_hs|               state_table|  return value|
+|ap_idle                                  |  out|    1|  ap_ctrl_hs|               state_table|  return value|
+|ap_ready                                 |  out|    1|  ap_ctrl_hs|               state_table|  return value|
+|rxIbh2stateTable_upd_req_dout            |   in|   96|     ap_fifo|  rxIbh2stateTable_upd_req|       pointer|
+|rxIbh2stateTable_upd_req_num_data_valid  |   in|    2|     ap_fifo|  rxIbh2stateTable_upd_req|       pointer|
+|rxIbh2stateTable_upd_req_fifo_cap        |   in|    2|     ap_fifo|  rxIbh2stateTable_upd_req|       pointer|
+|rxIbh2stateTable_upd_req_empty_n         |   in|    1|     ap_fifo|  rxIbh2stateTable_upd_req|       pointer|
+|rxIbh2stateTable_upd_req_read            |  out|    1|     ap_fifo|  rxIbh2stateTable_upd_req|       pointer|
+|txIbh2stateTable_upd_req_dout            |   in|   96|     ap_fifo|  txIbh2stateTable_upd_req|       pointer|
+|txIbh2stateTable_upd_req_num_data_valid  |   in|    2|     ap_fifo|  txIbh2stateTable_upd_req|       pointer|
+|txIbh2stateTable_upd_req_fifo_cap        |   in|    2|     ap_fifo|  txIbh2stateTable_upd_req|       pointer|
+|txIbh2stateTable_upd_req_empty_n         |   in|    1|     ap_fifo|  txIbh2stateTable_upd_req|       pointer|
+|txIbh2stateTable_upd_req_read            |  out|    1|     ap_fifo|  txIbh2stateTable_upd_req|       pointer|
+|qpi2stateTable_upd_req_dout              |   in|  160|     ap_fifo|    qpi2stateTable_upd_req|       pointer|
+|qpi2stateTable_upd_req_num_data_valid    |   in|    2|     ap_fifo|    qpi2stateTable_upd_req|       pointer|
+|qpi2stateTable_upd_req_fifo_cap          |   in|    2|     ap_fifo|    qpi2stateTable_upd_req|       pointer|
+|qpi2stateTable_upd_req_empty_n           |   in|    1|     ap_fifo|    qpi2stateTable_upd_req|       pointer|
+|qpi2stateTable_upd_req_read              |  out|    1|     ap_fifo|    qpi2stateTable_upd_req|       pointer|
+|stateTable2qpi_rsp_din                   |  out|  192|     ap_fifo|        stateTable2qpi_rsp|       pointer|
+|stateTable2qpi_rsp_num_data_valid        |   in|    2|     ap_fifo|        stateTable2qpi_rsp|       pointer|
+|stateTable2qpi_rsp_fifo_cap              |   in|    2|     ap_fifo|        stateTable2qpi_rsp|       pointer|
+|stateTable2qpi_rsp_full_n                |   in|    1|     ap_fifo|        stateTable2qpi_rsp|       pointer|
+|stateTable2qpi_rsp_write                 |  out|    1|     ap_fifo|        stateTable2qpi_rsp|       pointer|
+|stateTable2txIbh_rsp_din                 |  out|  192|     ap_fifo|      stateTable2txIbh_rsp|       pointer|
+|stateTable2txIbh_rsp_num_data_valid      |   in|    2|     ap_fifo|      stateTable2txIbh_rsp|       pointer|
+|stateTable2txIbh_rsp_fifo_cap            |   in|    2|     ap_fifo|      stateTable2txIbh_rsp|       pointer|
+|stateTable2txIbh_rsp_full_n              |   in|    1|     ap_fifo|      stateTable2txIbh_rsp|       pointer|
+|stateTable2txIbh_rsp_write               |  out|    1|     ap_fifo|      stateTable2txIbh_rsp|       pointer|
+|stateTable2rxIbh_rsp_din                 |  out|  128|     ap_fifo|      stateTable2rxIbh_rsp|       pointer|
+|stateTable2rxIbh_rsp_num_data_valid      |   in|    2|     ap_fifo|      stateTable2rxIbh_rsp|       pointer|
+|stateTable2rxIbh_rsp_fifo_cap            |   in|    2|     ap_fifo|      stateTable2rxIbh_rsp|       pointer|
+|stateTable2rxIbh_rsp_full_n              |   in|    1|     ap_fifo|      stateTable2rxIbh_rsp|       pointer|
+|stateTable2rxIbh_rsp_write               |  out|    1|     ap_fifo|      stateTable2rxIbh_rsp|       pointer|
++-----------------------------------------+-----+-----+------------+--------------------------+--------------+
+

@@ -1,0 +1,246 @@
+
+
+================================================================
+== Vitis HLS Report for 'meta_merger'
+================================================================
+* Date:           Tue Jul 11 09:33:09 2023
+
+* Version:        2022.1 (Build 3526262 on Mon Apr 18 15:47:01 MDT 2022)
+* Project:        rocev2_prj
+* Solution:       solution1 (Vivado IP Flow Target)
+* Product family: virtexuplus
+* Target device:  xcu280-fsvh2892-2L-e
+
+
+================================================================
+== Performance Estimates
+================================================================
++ Timing: 
+    * Summary: 
+    +--------+---------+----------+------------+
+    |  Clock |  Target | Estimated| Uncertainty|
+    +--------+---------+----------+------------+
+    |ap_clk  |  3.20 ns|  2.288 ns|     0.86 ns|
+    +--------+---------+----------+------------+
+
++ Latency: 
+    * Summary: 
+    +---------+---------+-----------+-----------+-----+-----+---------+
+    |  Latency (cycles) |   Latency (absolute)  |  Interval | Pipeline|
+    |   min   |   max   |    min    |    max    | min | max |   Type  |
+    +---------+---------+-----------+-----------+-----+-----+---------+
+    |        5|        5|  16.000 ns|  16.000 ns|    1|    1|      yes|
+    +---------+---------+-----------+-----------+-----+-----+---------+
+
+    + Detail: 
+        * Instance: 
+        N/A
+
+        * Loop: 
+        N/A
+
+
+
+================================================================
+== Utilization Estimates
+================================================================
+* Summary: 
++---------------------+---------+------+---------+---------+-----+
+|         Name        | BRAM_18K|  DSP |    FF   |   LUT   | URAM|
++---------------------+---------+------+---------+---------+-----+
+|DSP                  |        -|     -|        -|        -|    -|
+|Expression           |        -|     -|        0|      465|    -|
+|FIFO                 |        -|     -|        -|        -|    -|
+|Instance             |        -|     3|      187|       68|    -|
+|Memory               |        -|     -|        -|        -|    -|
+|Multiplexer          |        -|     -|        -|      147|    -|
+|Register             |        -|     -|     2036|      576|    -|
++---------------------+---------+------+---------+---------+-----+
+|Total                |        0|     3|     2223|     1256|    0|
++---------------------+---------+------+---------+---------+-----+
+|Available SLR        |     1344|  3008|   869120|   434560|  320|
++---------------------+---------+------+---------+---------+-----+
+|Utilization SLR (%)  |        0|    ~0|       ~0|       ~0|    0|
++---------------------+---------+------+---------+---------+-----+
+|Available            |     4032|  9024|  2607360|  1303680|  960|
++---------------------+---------+------+---------+---------+-----+
+|Utilization (%)      |        0|    ~0|       ~0|       ~0|    0|
++---------------------+---------+------+---------+---------+-----+
+
++ Detail: 
+    * Instance: 
+    +---------------------------+----------------------+---------+----+-----+----+-----+
+    |          Instance         |        Module        | BRAM_18K| DSP|  FF | LUT| URAM|
+    +---------------------------+----------------------+---------+----+-----+----+-----+
+    |mul_33ns_35ns_66_2_1_U115  |mul_33ns_35ns_66_2_1  |        0|   3|  187|  68|    0|
+    +---------------------------+----------------------+---------+----+-----+----+-----+
+    |Total                      |                      |        0|   3|  187|  68|    0|
+    +---------------------------+----------------------+---------+----+-----+----+-----+
+
+    * DSP: 
+    N/A
+
+    * Memory: 
+    N/A
+
+    * FIFO: 
+    N/A
+
+    * Expression: 
+    +----------------------------------+----------+----+---+-----+------------+------------+
+    |           Variable Name          | Operation| DSP| FF| LUT | Bitwidth P0| Bitwidth P1|
+    +----------------------------------+----------+----+---+-----+------------+------------+
+    |ret_V_fu_326_p2                   |         +|   0|  0|   40|          33|          11|
+    |ap_block_state2_pp0_stage0_iter1  |       and|   0|  0|    2|           1|           1|
+    |ap_block_state3_pp0_stage0_iter2  |       and|   0|  0|    2|           1|           1|
+    |ap_condition_376                  |       and|   0|  0|    2|           1|           1|
+    |ap_predicate_op44_read_state2     |       and|   0|  0|    2|           1|           1|
+    |ap_predicate_op52_read_state3     |       and|   0|  0|    2|           1|           1|
+    |ap_predicate_op72_write_state6    |       and|   0|  0|    2|           1|           1|
+    |ap_predicate_op76_write_state6    |       and|   0|  0|    2|           1|           1|
+    |ap_predicate_op81_write_state6    |       and|   0|  0|    2|           1|           1|
+    |ap_predicate_op85_write_state6    |       and|   0|  0|    2|           1|           1|
+    |tmp_147_i_nbreadreq_fu_134_p3     |       and|   0|  0|    2|           1|           0|
+    |tmp_149_i_nbreadreq_fu_148_p3     |       and|   0|  0|    2|           1|           0|
+    |tmp_i_nbreadreq_fu_120_p3         |       and|   0|  0|    2|           1|           0|
+    |empty_225_fu_298_p2               |      icmp|   0|  0|   20|          32|           5|
+    |empty_227_fu_310_p2               |      icmp|   0|  0|   20|          32|           4|
+    |empty_fu_292_p2                   |      icmp|   0|  0|   20|          32|           5|
+    |ap_block_pp0_stage0_01001         |        or|   0|  0|    2|           1|           1|
+    |ap_block_state1_pp0_stage0_iter0  |        or|   0|  0|    2|           1|           1|
+    |ap_block_state6_pp0_stage0_iter5  |        or|   0|  0|    2|           1|           1|
+    |empty_226_fu_304_p2               |        or|   0|  0|    2|           1|           1|
+    |empty_228_fu_316_p2               |        or|   0|  0|    2|           1|           1|
+    |or_ln174_2_fu_451_p2              |        or|   0|  0|  129|         129|           5|
+    |or_ln174_fu_486_p2                |        or|   0|  0|  200|         201|           5|
+    |ap_enable_pp0                     |       xor|   0|  0|    2|           1|           2|
+    +----------------------------------+----------+----+---+-----+------------+------------+
+    |Total                             |          |   0|  0|  465|         477|          51|
+    +----------------------------------+----------+----+---+-----+------------+------------+
+
+    * Multiplexer: 
+    +-----------------------------------------+----+-----------+-----+-----------+
+    |                   Name                  | LUT| Input Size| Bits| Total Bits|
+    +-----------------------------------------+----+-----------+-----+-----------+
+    |ap_done                                  |   9|          2|    1|          2|
+    |ap_phi_mux_numPkg_V_1_phi_fu_187_p4      |   9|          2|   22|         44|
+    |ap_phi_reg_pp0_iter4_numPkg_V_1_reg_183  |   9|          2|   22|         44|
+    |rx_ackEventFifo_blk_n                    |   9|          2|    1|          2|
+    |rx_readEvenFifo_blk_n                    |   9|          2|    1|          2|
+    |tx_appMetaFifo_blk_n                     |   9|          2|    1|          2|
+    |tx_exhMetaFifo_blk_n                     |   9|          2|    1|          2|
+    |tx_exhMetaFifo_din                       |  20|          4|  256|       1024|
+    |tx_ibhMetaFifo_blk_n                     |   9|          2|    1|          2|
+    |tx_ibhMetaFifo_din                       |  26|          5|  192|        960|
+    |tx_ibhconnTable_req_blk_n                |   9|          2|    1|          2|
+    |tx_ibhconnTable_req_din                  |  20|          4|   16|         64|
+    +-----------------------------------------+----+-----------+-----+-----------+
+    |Total                                    | 147|         31|  515|       2150|
+    +-----------------------------------------+----+-----------+-----+-----------+
+
+    * Register: 
+    +-----------------------------------------+-----+----+-----+-----------+
+    |                   Name                  |  FF | LUT| Bits| Const Bits|
+    +-----------------------------------------+-----+----+-----+-----------+
+    |ap_CS_fsm                                |    1|   0|    1|          0|
+    |ap_done_reg                              |    1|   0|    1|          0|
+    |ap_enable_reg_pp0_iter1                  |    1|   0|    1|          0|
+    |ap_enable_reg_pp0_iter2                  |    1|   0|    1|          0|
+    |ap_enable_reg_pp0_iter3                  |    1|   0|    1|          0|
+    |ap_enable_reg_pp0_iter4                  |    1|   0|    1|          0|
+    |ap_enable_reg_pp0_iter5                  |    1|   0|    1|          0|
+    |ap_phi_reg_pp0_iter1_numPkg_V_1_reg_183  |   22|   0|   22|          0|
+    |ap_phi_reg_pp0_iter2_numPkg_V_1_reg_183  |   22|   0|   22|          0|
+    |ap_phi_reg_pp0_iter3_numPkg_V_1_reg_183  |   22|   0|   22|          0|
+    |ap_phi_reg_pp0_iter4_numPkg_V_1_reg_183  |   22|   0|   22|          0|
+    |ap_phi_reg_pp0_iter5_numPkg_V_1_reg_183  |   22|   0|   22|          0|
+    |empty_228_reg_585                        |    1|   0|    1|          0|
+    |ev_op_code_1_reg_575                     |   32|   0|   32|          0|
+    |ev_op_code_reg_538                       |   32|   0|   32|          0|
+    |ev_validPsn_reg_581                      |    1|   0|    1|          0|
+    |numPkg_V_reg_599                         |   22|   0|   22|          0|
+    |p_s_reg_543                              |   16|   0|   16|          0|
+    |ret_V_reg_589                            |   33|   0|   33|          0|
+    |rx_readEvenFifo_read_reg_533             |  256|   0|  256|          0|
+    |tmp24_reg_512                            |   24|   0|   24|          0|
+    |tmp_147_i_reg_529                        |    1|   0|    1|          0|
+    |tmp_149_i_reg_563                        |    1|   0|    1|          0|
+    |tmp_156_i_reg_548                        |   24|   0|   24|          0|
+    |tmp_157_i_reg_553                        |   24|   0|   24|          0|
+    |tmp_37_reg_524                           |    1|   0|    1|          0|
+    |tmp_38_reg_558                           |    1|   0|    1|          0|
+    |tmp_i_reg_497                            |    1|   0|    1|          0|
+    |tmp_reg_518                              |    1|   0|    1|          0|
+    |trunc_ln174_reg_506                      |   24|   0|   24|          0|
+    |trunc_ln674_reg_501                      |   16|   0|   16|          0|
+    |tx_appMetaFifo_read_reg_567              |  256|   0|  256|          0|
+    |empty_228_reg_585                        |   64|  32|    1|          0|
+    |ev_op_code_1_reg_575                     |   64|  32|   32|          0|
+    |ev_op_code_reg_538                       |   64|  32|   32|          0|
+    |ev_validPsn_reg_581                      |   64|  32|    1|          0|
+    |p_s_reg_543                              |   64|  32|   16|          0|
+    |rx_readEvenFifo_read_reg_533             |   64|  32|  256|          0|
+    |tmp24_reg_512                            |   64|  32|   24|          0|
+    |tmp_147_i_reg_529                        |   64|  32|    1|          0|
+    |tmp_149_i_reg_563                        |   64|  32|    1|          0|
+    |tmp_156_i_reg_548                        |   64|  32|   24|          0|
+    |tmp_157_i_reg_553                        |   64|  32|   24|          0|
+    |tmp_37_reg_524                           |   64|  32|    1|          0|
+    |tmp_38_reg_558                           |   64|  32|    1|          0|
+    |tmp_i_reg_497                            |   64|  32|    1|          0|
+    |tmp_reg_518                              |   64|  32|    1|          0|
+    |trunc_ln174_reg_506                      |   64|  32|   24|          0|
+    |trunc_ln674_reg_501                      |   64|  32|   16|          0|
+    |tx_appMetaFifo_read_reg_567              |   64|  32|  256|          0|
+    +-----------------------------------------+-----+----+-----+-----------+
+    |Total                                    | 2036| 576| 1596|          0|
+    +-----------------------------------------+-----+----+-----+-----------+
+
+
+
+================================================================
+== Interface
+================================================================
+* Summary: 
++------------------------------------+-----+-----+------------+---------------------+--------------+
+|              RTL Ports             | Dir | Bits|  Protocol  |    Source Object    |    C Type    |
++------------------------------------+-----+-----+------------+---------------------+--------------+
+|ap_clk                              |   in|    1|  ap_ctrl_hs|          meta_merger|  return value|
+|ap_rst                              |   in|    1|  ap_ctrl_hs|          meta_merger|  return value|
+|ap_start                            |   in|    1|  ap_ctrl_hs|          meta_merger|  return value|
+|ap_done                             |  out|    1|  ap_ctrl_hs|          meta_merger|  return value|
+|ap_continue                         |   in|    1|  ap_ctrl_hs|          meta_merger|  return value|
+|ap_idle                             |  out|    1|  ap_ctrl_hs|          meta_merger|  return value|
+|ap_ready                            |  out|    1|  ap_ctrl_hs|          meta_merger|  return value|
+|rx_ackEventFifo_dout                |   in|   96|     ap_fifo|      rx_ackEventFifo|       pointer|
+|rx_ackEventFifo_num_data_valid      |   in|    3|     ap_fifo|      rx_ackEventFifo|       pointer|
+|rx_ackEventFifo_fifo_cap            |   in|    3|     ap_fifo|      rx_ackEventFifo|       pointer|
+|rx_ackEventFifo_empty_n             |   in|    1|     ap_fifo|      rx_ackEventFifo|       pointer|
+|rx_ackEventFifo_read                |  out|    1|     ap_fifo|      rx_ackEventFifo|       pointer|
+|rx_readEvenFifo_dout                |   in|  256|     ap_fifo|      rx_readEvenFifo|       pointer|
+|rx_readEvenFifo_num_data_valid      |   in|   10|     ap_fifo|      rx_readEvenFifo|       pointer|
+|rx_readEvenFifo_fifo_cap            |   in|   10|     ap_fifo|      rx_readEvenFifo|       pointer|
+|rx_readEvenFifo_empty_n             |   in|    1|     ap_fifo|      rx_readEvenFifo|       pointer|
+|rx_readEvenFifo_read                |  out|    1|     ap_fifo|      rx_readEvenFifo|       pointer|
+|tx_appMetaFifo_dout                 |   in|  256|     ap_fifo|       tx_appMetaFifo|       pointer|
+|tx_appMetaFifo_num_data_valid       |   in|    6|     ap_fifo|       tx_appMetaFifo|       pointer|
+|tx_appMetaFifo_fifo_cap             |   in|    6|     ap_fifo|       tx_appMetaFifo|       pointer|
+|tx_appMetaFifo_empty_n              |   in|    1|     ap_fifo|       tx_appMetaFifo|       pointer|
+|tx_appMetaFifo_read                 |  out|    1|     ap_fifo|       tx_appMetaFifo|       pointer|
+|tx_ibhconnTable_req_din             |  out|   16|     ap_fifo|  tx_ibhconnTable_req|       pointer|
+|tx_ibhconnTable_req_num_data_valid  |   in|    2|     ap_fifo|  tx_ibhconnTable_req|       pointer|
+|tx_ibhconnTable_req_fifo_cap        |   in|    2|     ap_fifo|  tx_ibhconnTable_req|       pointer|
+|tx_ibhconnTable_req_full_n          |   in|    1|     ap_fifo|  tx_ibhconnTable_req|       pointer|
+|tx_ibhconnTable_req_write           |  out|    1|     ap_fifo|  tx_ibhconnTable_req|       pointer|
+|tx_ibhMetaFifo_din                  |  out|  192|     ap_fifo|       tx_ibhMetaFifo|       pointer|
+|tx_ibhMetaFifo_num_data_valid       |   in|    4|     ap_fifo|       tx_ibhMetaFifo|       pointer|
+|tx_ibhMetaFifo_fifo_cap             |   in|    4|     ap_fifo|       tx_ibhMetaFifo|       pointer|
+|tx_ibhMetaFifo_full_n               |   in|    1|     ap_fifo|       tx_ibhMetaFifo|       pointer|
+|tx_ibhMetaFifo_write                |  out|    1|     ap_fifo|       tx_ibhMetaFifo|       pointer|
+|tx_exhMetaFifo_din                  |  out|  256|     ap_fifo|       tx_exhMetaFifo|       pointer|
+|tx_exhMetaFifo_num_data_valid       |   in|    3|     ap_fifo|       tx_exhMetaFifo|       pointer|
+|tx_exhMetaFifo_fifo_cap             |   in|    3|     ap_fifo|       tx_exhMetaFifo|       pointer|
+|tx_exhMetaFifo_full_n               |   in|    1|     ap_fifo|       tx_exhMetaFifo|       pointer|
+|tx_exhMetaFifo_write                |  out|    1|     ap_fifo|       tx_exhMetaFifo|       pointer|
++------------------------------------+-----+-----+------------+---------------------+--------------+
+

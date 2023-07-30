@@ -1,0 +1,236 @@
+
+
+================================================================
+== Synthesis Summary Report of 'arp_server_subnet_top'
+================================================================
++ General Information: 
+    * Date:           Tue Jul 11 09:15:11 2023
+    * Version:        2022.1 (Build 3526262 on Mon Apr 18 15:47:01 MDT 2022)
+    * Project:        arp_server_subnet_prj
+    * Solution:       solution1 (Vivado IP Flow Target)
+    * Product family: virtexuplus
+    * Target device:  xcu280-fsvh2892-2L-e
+    
+
++ Performance & Resource Estimates: 
+    
+    PS: '+' for module; 'o' for loop; '*' for dataflow
+    +---------------------------+------+------+---------+--------+----------+---------+------+----------+---------+----+------------+------------+-----+
+    |          Modules          | Issue|      | Latency | Latency| Iteration|         | Trip |          |         |    |            |            |     |
+    |          & Loops          | Type | Slack| (cycles)|  (ns)  |  Latency | Interval| Count| Pipelined|  BRAM   | DSP|     FF     |     LUT    | URAM|
+    +---------------------------+------+------+---------+--------+----------+---------+------+----------+---------+----+------------+------------+-----+
+    |+ arp_server_subnet_top*   |     -|  0.15|        5|  16.000|         -|        1|     -|  dataflow|  3 (~0%)|   -|  1756 (~0%)|  3403 (~0%)|    -|
+    | + process_arp_pkg_512_s   |     -|  0.35|        2|   6.400|         -|        1|     -|       yes|        -|   -|   906 (~0%)|  2803 (~0%)|    -|
+    | + generate_arp_pkg_512_s  |     -|  0.79|        2|   6.400|         -|        1|     -|       yes|        -|   -|   695 (~0%)|   133 (~0%)|    -|
+    | + arp_table               |     -|  0.15|        2|   6.400|         -|        1|     -|       yes|  3 (~0%)|   -|   140 (~0%)|   161 (~0%)|    -|
+    +---------------------------+------+------+---------+--------+----------+---------+------+----------+---------+----+------------+------------+-----+
+
+
+================================================================
+== HW Interfaces
+================================================================
+* AXIS
++--------------------------------+---------------+-------+--------+--------+
+| Interface                      | Register Mode | TDATA | TREADY | TVALID |
++--------------------------------+---------------+-------+--------+--------+
+| m_axis                         | both          | 1024  | 1      | 1      |
+| m_axis_arp_lookup_reply        | both          | 128   | 1      | 1      |
+| m_axis_host_arp_lookup_reply   | both          | 128   | 1      | 1      |
+| s_axis                         | both          | 1024  | 1      | 1      |
+| s_axis_arp_lookup_request      | both          | 32    | 1      | 1      |
+| s_axis_host_arp_lookup_request | both          | 32    | 1      | 1      |
++--------------------------------+---------------+-------+--------+--------+
+
+* REGISTER
++-----------------+-----------+----------+
+| Interface       | Mode      | Bitwidth |
++-----------------+-----------+----------+
+| myIpAddress     | ap_stable | 32       |
+| myMacAddress    | ap_stable | 48       |
+| regReplyCount   | ap_none   | 16       |
+| regRequestCount | ap_none   | 16       |
++-----------------+-----------+----------+
+
+* TOP LEVEL CONTROL
++-----------+--------------+----------+
+| Interface | Type         | Ports    |
++-----------+--------------+----------+
+| ap_clk    | clock        | ap_clk   |
+| ap_rst_n  | reset        | ap_rst_n |
+| ap_ctrl   | ap_ctrl_none |          |
++-----------+--------------+----------+
+
+
+================================================================
+== SW I/O Information
+================================================================
+* Top Function Arguments
++------------------+-----------+---------------------------+
+| Argument         | Direction | Datatype                  |
++------------------+-----------+---------------------------+
+| arpDataIn        | in        | stream<net_axis<512>, 0>& |
+| macIpEncode_req  | in        | stream<ap_uint<32>, 0>&   |
+| hostIpEncode_req | in        | stream<ap_uint<32>, 0>&   |
+| arpDataOut       | out       | stream<net_axis<512>, 0>& |
+| macIpEncode_rsp  | out       | stream<arpTableReply, 0>& |
+| hostIpEncode_rsp | out       | stream<arpTableReply, 0>& |
+| myMacAddress     | in        | ap_uint<48>               |
+| myIpAddress      | in        | ap_uint<32>               |
+| regRequestCount  | out       | ap_uint<16>&              |
+| regReplyCount    | out       | ap_uint<16>&              |
++------------------+-----------+---------------------------+
+
+* SW-to-HW Mapping
++------------------+--------------------------------+-----------+
+| Argument         | HW Interface                   | HW Type   |
++------------------+--------------------------------+-----------+
+| arpDataIn        | s_axis                         | interface |
+| macIpEncode_req  | s_axis_arp_lookup_request      | interface |
+| hostIpEncode_req | s_axis_host_arp_lookup_request | interface |
+| arpDataOut       | m_axis                         | interface |
+| macIpEncode_rsp  | m_axis_arp_lookup_reply        | interface |
+| hostIpEncode_rsp | m_axis_host_arp_lookup_reply   | interface |
+| myMacAddress     | myMacAddress                   | port      |
+| myIpAddress      | myIpAddress                    | port      |
+| regRequestCount  | regRequestCount                | port      |
+| regRequestCount  | regRequestCount_ap_vld         | port      |
+| regReplyCount    | regReplyCount                  | port      |
+| regReplyCount    | regReplyCount_ap_vld           | port      |
++------------------+--------------------------------+-----------+
+
+
+================================================================
+== M_AXI Burst Information
+================================================================
+ Note: All burst requests might be further partitioned into multiple requests during RTL generation based on max_read_burst_length or max_write_burst_length settings.
+
+  No burst in design
+
+================================================================
+== Bind Op Report
+================================================================
++---------------------------+-----+--------+-------------+-----+--------+---------+
+| Name                      | DSP | Pragma | Variable    | Op  | Impl   | Latency |
++---------------------------+-----+--------+-------------+-----+--------+---------+
+| + arp_server_subnet_top   | 0   |        |             |     |        |         |
+|  + process_arp_pkg_512_s  | 0   |        |             |     |        |         |
+|    add_ln67_fu_387_p2     | -   |        | add_ln67    | add | fabric | 0       |
+|    add_ln886_1_fu_462_p2  | -   |        | add_ln886_1 | add | fabric | 0       |
+|    add_ln886_fu_497_p2    | -   |        | add_ln886   | add | fabric | 0       |
+|  + generate_arp_pkg_512_s | 0   |        |             |     |        |         |
+|    add_ln85_fu_344_p2     | -   |        | add_ln85    | add | fabric | 0       |
++---------------------------+-----+--------+-------------+-----+--------+---------+
+
+
+================================================================
+== Bind Storage Report
+================================================================
++----------------------------+------+------+--------+-----------------------+---------+------+---------+
+| Name                       | BRAM | URAM | Pragma | Variable              | Storage | Impl | Latency |
++----------------------------+------+------+--------+-----------------------+---------+------+---------+
+| + arp_server_subnet_top    | 3    | 0    |        |                       |         |      |         |
+|  + arp_table               | 3    | 0    |        |                       |         |      |         |
+|    arpTable_macAddress_V_U | 2    | -    | pragma | arpTable_macAddress_V | ram_1p  | bram | 1       |
+|    arpTable_valid_U        | 1    | -    | pragma | arpTable_valid        | ram_1p  | bram | 1       |
++----------------------------+------+------+--------+-----------------------+---------+------+---------+
+
+
+================================================================
+== Pragma Report
+================================================================
+* Ignored Pragmas
++-----------+----------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------+-------------------------------------------------+
+| Type      | Options  | Location                                                                                                                                                            | Messages                                        |
++-----------+----------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------+-------------------------------------------------+
+| data_pack | variable | ../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/arp_server_subnet/arp_server_subnet.cpp:230 in arp_server_subnet     | the pragma is not supported and will be ignored |
+| data_pack | variable | ../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/arp_server_subnet/arp_server_subnet.cpp:238 in arp_server_subnet     | the pragma is not supported and will be ignored |
+| data_pack | variable | ../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/arp_server_subnet/arp_server_subnet.cpp:281 in arp_server_subnet_top | the pragma is not supported and will be ignored |
+| data_pack | variable | ../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/arp_server_subnet/arp_server_subnet.cpp:282 in arp_server_subnet_top | the pragma is not supported and will be ignored |
++-----------+----------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------+-------------------------------------------------+
+
+* Pragmas with Warnings
++-----------+--------------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+-----------------------------------------------------------------------------------+
+| Type      | Options                              | Location                                                                                                                                                                          | Messages                                                                          |
++-----------+--------------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+-----------------------------------------------------------------------------------+
+| resource  | variable=arpTable core=RAM_1P_BRAM   | ../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/arp_server_subnet/arp_server_subnet.cpp:177 in arp_table, arpTable                 | 'Resource pragma' is deprecated, use 'bind_op/bind_storage pragma' instead        |
+| interface | ap_stable register port=myMacAddress | ../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/arp_server_subnet/arp_server_subnet.cpp:283 in arp_server_subnet_top, myMacAddress | 'Ap_stable' in '#pragma HLS INTERFACE' is deprecated, use 'Stable Pragma' instead |
+| interface | ap_stable register port=myIpAddress  | ../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/arp_server_subnet/arp_server_subnet.cpp:284 in arp_server_subnet_top, myIpAddress  | 'Ap_stable' in '#pragma HLS INTERFACE' is deprecated, use 'Stable Pragma' instead |
++-----------+--------------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+-----------------------------------------------------------------------------------+
+
+* Valid Pragma Syntax
++------------+-------------------------------------------------------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Type       | Options                                                                 | Location                                                                                                                                                                              |
++------------+-------------------------------------------------------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| pipeline   | II=1                                                                    | ../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/arp_server_subnet/arp_server_subnet.cpp:39 in process_arp_pkg                          |
+| inline     | off                                                                     | ../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/arp_server_subnet/arp_server_subnet.cpp:40 in process_arp_pkg                          |
+| pipeline   | II=1                                                                    | ../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/arp_server_subnet/arp_server_subnet.cpp:81 in generate_arp_pkg                         |
+| inline     | off                                                                     | ../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/arp_server_subnet/arp_server_subnet.cpp:82 in generate_arp_pkg                         |
+| pipeline   | II=1                                                                    | ../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/arp_server_subnet/arp_server_subnet.cpp:174 in arp_table                               |
+| dependence | variable=arpTable inter false                                           | ../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/arp_server_subnet/arp_server_subnet.cpp:178 in arp_table, arpTable                     |
+| inline     |                                                                         | ../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/arp_server_subnet/arp_server_subnet.cpp:226 in arp_server_subnet                       |
+| stream     | variable=arpReplyMetaFifo depth=4                                       | ../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/arp_server_subnet/arp_server_subnet.cpp:229 in arp_server_subnet, arpReplyMetaFifo     |
+| stream     | variable=arpRequestMetaFifo depth=4                                     | ../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/arp_server_subnet/arp_server_subnet.cpp:233 in arp_server_subnet, arpRequestMetaFifo   |
+| stream     | variable=arpTableInsertFifo depth=4                                     | ../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/arp_server_subnet/arp_server_subnet.cpp:237 in arp_server_subnet, arpTableInsertFifo   |
+| interface  | ap_ctrl_none port=return                                                | ../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/arp_server_subnet/arp_server_subnet.cpp:272 in arp_server_subnet_top, return           |
+| dataflow   | disable_start_propagation                                               | ../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/arp_server_subnet/arp_server_subnet.cpp:273 in arp_server_subnet_top                   |
+| interface  | axis register port=arpDataIn name=s_axis                                | ../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/arp_server_subnet/arp_server_subnet.cpp:275 in arp_server_subnet_top, arpDataIn        |
+| interface  | axis register port=arpDataOut name=m_axis                               | ../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/arp_server_subnet/arp_server_subnet.cpp:276 in arp_server_subnet_top, arpDataOut       |
+| interface  | axis register port=macIpEncode_req name=s_axis_arp_lookup_request       | ../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/arp_server_subnet/arp_server_subnet.cpp:277 in arp_server_subnet_top, macIpEncode_req  |
+| interface  | axis register port=macIpEncode_rsp name=m_axis_arp_lookup_reply         | ../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/arp_server_subnet/arp_server_subnet.cpp:278 in arp_server_subnet_top, macIpEncode_rsp  |
+| interface  | axis register port=hostIpEncode_req name=s_axis_host_arp_lookup_request | ../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/arp_server_subnet/arp_server_subnet.cpp:279 in arp_server_subnet_top, hostIpEncode_req |
+| interface  | axis register port=hostIpEncode_rsp name=m_axis_host_arp_lookup_reply   | ../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/arp_server_subnet/arp_server_subnet.cpp:280 in arp_server_subnet_top, hostIpEncode_rsp |
+| inline     |                                                                         | ../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/axi_utils.cpp:188 in keeptolen                                                         |
+| unroll     |                                                                         | ../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/axi_utils.hpp:78 in reverse                                                            |
+| unroll     |                                                                         | ../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/axi_utils.hpp:90 in reverse_bits                                                       |
+| inline     |                                                                         | ../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/axi_utils.hpp:259 in increasestreamwidth                                               |
+| inline     |                                                                         | ../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/axi_utils.hpp:289 in reducestreamwidth                                                 |
+| pipeline   | II=1                                                                    | ../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/axi_utils.hpp:352 in convertstreamwidth                                                |
+| inline     | off                                                                     | ../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/axi_utils.hpp:353 in convertstreamwidth                                                |
+| pipeline   | II=1                                                                    | ../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/axi_utils.hpp:364 in convertstreamwidth                                                |
+| inline     | off                                                                     | ../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/axi_utils.hpp:365 in convertstreamwidth                                                |
+| pipeline   | II=1                                                                    | ../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/axi_utils.hpp:373 in convertstreamwidth                                                |
+| inline     | off                                                                     | ../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/axi_utils.hpp:374 in convertstreamwidth                                                |
+| pipeline   | II=1                                                                    | ../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/axi_utils.hpp:382 in convertstreamwidth                                                |
+| inline     | off                                                                     | ../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/axi_utils.hpp:383 in convertstreamwidth                                                |
+| pipeline   | II=1                                                                    | ../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/axi_utils.hpp:391 in convertstreamwidth                                                |
+| inline     | off                                                                     | ../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/axi_utils.hpp:392 in convertstreamwidth                                                |
+| pipeline   | II=1                                                                    | ../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/axi_utils.hpp:400 in convertstreamwidth                                                |
+| inline     | off                                                                     | ../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/axi_utils.hpp:401 in convertstreamwidth                                                |
+| pipeline   | II=1                                                                    | ../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/axi_utils.hpp:409 in convertstreamwidth                                                |
+| inline     | off                                                                     | ../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/axi_utils.hpp:410 in convertstreamwidth                                                |
+| inline     | off                                                                     | ../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/axi_utils.hpp:434 in rshiftwordbyoctet                                                 |
+| pipeline   | II=1                                                                    | ../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/axi_utils.hpp:435 in rshiftwordbyoctet                                                 |
+| inline     | off                                                                     | ../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/axi_utils.hpp:509 in lshiftwordbyoctet                                                 |
+| pipeline   | II=1                                                                    | ../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/axi_utils.hpp:510 in lshiftwordbyoctet                                                 |
+| pipeline   | II=1                                                                    | ../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/axi_utils.hpp:578 in stream_merger                                                     |
+| inline     | off                                                                     | ../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/axi_utils.hpp:579 in stream_merger                                                     |
+| pipeline   | II=1                                                                    | ../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/axi_utils.hpp:597 in stream_merger                                                     |
+| inline     | off                                                                     | ../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/axi_utils.hpp:598 in stream_merger                                                     |
+| pipeline   | II=1                                                                    | ../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/axi_utils.hpp:659 in fair_merger                                                       |
+| inline     | off                                                                     | ../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/axi_utils.hpp:660 in fair_merger                                                       |
+| pipeline   | II=1                                                                    | ../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/axi_utils.hpp:693 in fair_pkg_merger                                                   |
+| inline     | off                                                                     | ../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/axi_utils.hpp:694 in fair_pkg_merger                                                   |
+| pipeline   | II=1                                                                    | ../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/axi_utils.hpp:775 in stream_pkg_merger                                                 |
+| inline     | off                                                                     | ../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/axi_utils.hpp:776 in stream_pkg_merger                                                 |
+| pipeline   | II=1                                                                    | ../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/axi_utils.hpp:854 in stream_pkg_splitter                                               |
+| inline     | off                                                                     | ../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/axi_utils.hpp:855 in stream_pkg_splitter                                               |
+| pipeline   | II=1                                                                    | ../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/axi_utils.hpp:919 in pass_valid_pkg                                                    |
+| inline     | off                                                                     | ../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/axi_utils.hpp:920 in pass_valid_pkg                                                    |
+| pipeline   | II=1                                                                    | ../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/axi_utils.hpp:981 in toe_duplicate_stream                                              |
+| inline     | off                                                                     | ../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/axi_utils.hpp:982 in toe_duplicate_stream                                              |
+| pipeline   | II=1                                                                    | ../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/axi_utils.hpp:997 in ip_handler_duplicate_stream                                       |
+| inline     | off                                                                     | ../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/axi_utils.hpp:998 in ip_handler_duplicate_stream                                       |
+| inline     | off                                                                     | ../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/axi_utils.hpp:1036 in udp_lshiftwordbyoctet                                            |
+| pipeline   | II=1                                                                    | ../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/axi_utils.hpp:1037 in udp_lshiftwordbyoctet                                            |
+| inline     | off                                                                     | ../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/axi_utils.hpp:1107 in mac_lshiftwordbyoctet                                            |
+| pipeline   | II=1                                                                    | ../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/axi_utils.hpp:1108 in mac_lshiftwordbyoctet                                            |
+| inline     | off                                                                     | ../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/axi_utils.hpp:1178 in ipv4_lshiftwordbyoctet                                           |
+| pipeline   | II=1                                                                    | ../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/axi_utils.hpp:1179 in ipv4_lshiftwordbyoctet                                           |
+| inline     | off                                                                     | ../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/axi_utils.hpp:1249 in ip_handler_rshiftwordbyoctet                                     |
+| pipeline   | II=1                                                                    | ../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/axi_utils.hpp:1250 in ip_handler_rshiftwordbyoctet                                     |
+| inline     | off                                                                     | ../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/axi_utils.hpp:1324 in udp_rshiftwordbyoctet                                            |
+| pipeline   | II=1                                                                    | ../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/axi_utils.hpp:1325 in udp_rshiftwordbyoctet                                            |
+| pipeline   | II=1                                                                    | ../../../../../../../../../mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/packet.hpp:158 in clear                                                                |
++------------+-------------------------------------------------------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+
+

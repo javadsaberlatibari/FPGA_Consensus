@@ -1,0 +1,176 @@
+
+
+================================================================
+== Vitis HLS Report for 'mq_meta_table_ap_uint_64_2048_s'
+================================================================
+* Date:           Tue Jul 11 09:33:22 2023
+
+* Version:        2022.1 (Build 3526262 on Mon Apr 18 15:47:01 MDT 2022)
+* Project:        rocev2_prj
+* Solution:       solution1 (Vivado IP Flow Target)
+* Product family: virtexuplus
+* Target device:  xcu280-fsvh2892-2L-e
+
+
+================================================================
+== Performance Estimates
+================================================================
++ Timing: 
+    * Summary: 
+    +--------+---------+----------+------------+
+    |  Clock |  Target | Estimated| Uncertainty|
+    +--------+---------+----------+------------+
+    |ap_clk  |  3.20 ns|  1.203 ns|     0.86 ns|
+    +--------+---------+----------+------------+
+
++ Latency: 
+    * Summary: 
+    +---------+---------+----------+----------+-----+-----+---------+
+    |  Latency (cycles) |  Latency (absolute) |  Interval | Pipeline|
+    |   min   |   max   |    min   |    max   | min | max |   Type  |
+    +---------+---------+----------+----------+-----+-----+---------+
+    |        3|        3|  9.600 ns|  9.600 ns|    1|    1|      yes|
+    +---------+---------+----------+----------+-----+-----+---------+
+
+    + Detail: 
+        * Instance: 
+        N/A
+
+        * Loop: 
+        N/A
+
+
+
+================================================================
+== Utilization Estimates
+================================================================
+* Summary: 
++---------------------+---------+------+---------+---------+-----+
+|         Name        | BRAM_18K|  DSP |    FF   |   LUT   | URAM|
++---------------------+---------+------+---------+---------+-----+
+|DSP                  |        -|     -|        -|        -|    -|
+|Expression           |        -|     -|        0|       14|    -|
+|FIFO                 |        -|     -|        -|        -|    -|
+|Instance             |        -|     -|        -|        -|    -|
+|Memory               |       12|     -|        0|        0|    -|
+|Multiplexer          |        -|     -|        -|       69|    -|
+|Register             |        -|     -|      375|       96|    -|
++---------------------+---------+------+---------+---------+-----+
+|Total                |       12|     0|      375|      179|    0|
++---------------------+---------+------+---------+---------+-----+
+|Available SLR        |     1344|  3008|   869120|   434560|  320|
++---------------------+---------+------+---------+---------+-----+
+|Utilization SLR (%)  |       ~0|     0|       ~0|       ~0|    0|
++---------------------+---------+------+---------+---------+-----+
+|Available            |     4032|  9024|  2607360|  1303680|  960|
++---------------------+---------+------+---------+---------+-----+
+|Utilization (%)      |       ~0|     0|       ~0|       ~0|    0|
++---------------------+---------+------+---------+---------+-----+
+
++ Detail: 
+    * Instance: 
+    N/A
+
+    * DSP: 
+    N/A
+
+    * Memory: 
+    +----------------------+----------------------------------------------------------------------+---------+---+----+-----+------+-----+------+-------------+
+    |        Memory        |                                Module                                | BRAM_18K| FF| LUT| URAM| Words| Bits| Banks| W*Bits*Banks|
+    +----------------------+----------------------------------------------------------------------+---------+---+----+-----+------+-----+------+-------------+
+    |meta_table_next_V_U   |mq_meta_table_ap_uint_64_2048_s_meta_table_next_V_RAM_T2P_BRAM_1R1W   |        2|  0|   0|    0|  2048|   16|     1|        32768|
+    |meta_table_valid_U    |mq_meta_table_ap_uint_64_2048_s_meta_table_valid_RAM_T2P_BRAM_1R1W    |        1|  0|   0|    0|  2048|    1|     1|         2048|
+    |meta_table_isTail_U   |mq_meta_table_ap_uint_64_2048_s_meta_table_valid_RAM_T2P_BRAM_1R1W    |        1|  0|   0|    0|  2048|    1|     1|         2048|
+    |meta_table_value_V_U  |mq_meta_table_ap_uint_64_2048_s_meta_table_value_V_RAM_T2P_BRAM_1R1W  |        8|  0|   0|    0|  2048|   64|     1|       131072|
+    +----------------------+----------------------------------------------------------------------+---------+---+----+-----+------+-----+------+-------------+
+    |Total                 |                                                                      |       12|  0|   0|    0|  8192|   82|     4|       167936|
+    +----------------------+----------------------------------------------------------------------+---------+---+----+-----+------+-----+------+-------------+
+
+    * FIFO: 
+    N/A
+
+    * Expression: 
+    +----------------------------------+----------+----+---+----+------------+------------+
+    |           Variable Name          | Operation| DSP| FF| LUT| Bitwidth P0| Bitwidth P1|
+    +----------------------------------+----------+----+---+----+------------+------------+
+    |ap_block_state4_pp0_stage0_iter3  |       and|   0|  0|   2|           1|           1|
+    |ap_condition_193                  |       and|   0|  0|   2|           1|           1|
+    |ap_predicate_op57_write_state4    |       and|   0|  0|   2|           1|           1|
+    |tmp_i_nbreadreq_fu_70_p3          |       and|   0|  0|   2|           1|           0|
+    |ap_block_pp0_stage0_01001         |        or|   0|  0|   2|           1|           1|
+    |ap_block_state1_pp0_stage0_iter0  |        or|   0|  0|   2|           1|           1|
+    |ap_enable_pp0                     |       xor|   0|  0|   2|           1|           2|
+    +----------------------------------+----------+----+---+----+------------+------------+
+    |Total                             |          |   0|  0|  14|           7|           7|
+    +----------------------------------+----------+----+---+----+------------+------------+
+
+    * Multiplexer: 
+    +-----------------------------+----+-----------+-----+-----------+
+    |             Name            | LUT| Input Size| Bits| Total Bits|
+    +-----------------------------+----+-----------+-----+-----------+
+    |ap_done                      |   9|          2|    1|          2|
+    |meta_table_isTail_d0         |  14|          3|    1|          3|
+    |meta_table_valid_address0    |  14|          3|   11|         33|
+    |meta_table_value_V_address0  |  14|          3|   11|         33|
+    |mq_metaReqFifo_blk_n         |   9|          2|    1|          2|
+    |mq_metaRspFifo_blk_n         |   9|          2|    1|          2|
+    +-----------------------------+----+-----------+-----+-----------+
+    |Total                        |  69|         15|   26|         75|
+    +-----------------------------+----+-----------+-----+-----------+
+
+    * Register: 
+    +---------------------------------+----+----+-----+-----------+
+    |               Name              | FF | LUT| Bits| Const Bits|
+    +---------------------------------+----+----+-----+-----------+
+    |ap_CS_fsm                        |   1|   0|    1|          0|
+    |ap_done_reg                      |   1|   0|    1|          0|
+    |ap_enable_reg_pp0_iter1          |   1|   0|    1|          0|
+    |ap_enable_reg_pp0_iter2          |   1|   0|    1|          0|
+    |ap_enable_reg_pp0_iter3          |   1|   0|    1|          0|
+    |meta_table_isTail_load_reg_312   |   1|   0|    1|          0|
+    |meta_table_next_V_load_reg_302   |  16|   0|   16|          0|
+    |meta_table_valid_load_reg_307    |   1|   0|    1|          0|
+    |meta_table_value_V_load_reg_297  |  64|   0|   64|          0|
+    |req_append_reg_273               |   1|   0|    1|          0|
+    |req_entry_isTail_reg_264         |   1|   0|    1|          0|
+    |req_entry_next_V_reg_254         |  16|   0|   16|          0|
+    |req_entry_valid_reg_259          |   1|   0|    1|          0|
+    |req_entry_value_V_reg_249        |  64|   0|   64|          0|
+    |req_idx_V_reg_244                |  11|   0|   11|          0|
+    |req_write_reg_269                |   1|   0|    1|          0|
+    |tmp_i_reg_240                    |   1|   0|    1|          0|
+    |req_append_reg_273               |  64|  32|    1|          0|
+    |req_write_reg_269                |  64|  32|    1|          0|
+    |tmp_i_reg_240                    |  64|  32|    1|          0|
+    +---------------------------------+----+----+-----+-----------+
+    |Total                            | 375|  96|  186|          0|
+    +---------------------------------+----+----+-----+-----------+
+
+
+
+================================================================
+== Interface
+================================================================
+* Summary: 
++-------------------------------+-----+-----+------------+----------------------------------+--------------+
+|           RTL Ports           | Dir | Bits|  Protocol  |           Source Object          |    C Type    |
++-------------------------------+-----+-----+------------+----------------------------------+--------------+
+|ap_clk                         |   in|    1|  ap_ctrl_hs|  mq_meta_table<ap_uint<64>, 2048>|  return value|
+|ap_rst                         |   in|    1|  ap_ctrl_hs|  mq_meta_table<ap_uint<64>, 2048>|  return value|
+|ap_start                       |   in|    1|  ap_ctrl_hs|  mq_meta_table<ap_uint<64>, 2048>|  return value|
+|ap_done                        |  out|    1|  ap_ctrl_hs|  mq_meta_table<ap_uint<64>, 2048>|  return value|
+|ap_continue                    |   in|    1|  ap_ctrl_hs|  mq_meta_table<ap_uint<64>, 2048>|  return value|
+|ap_idle                        |  out|    1|  ap_ctrl_hs|  mq_meta_table<ap_uint<64>, 2048>|  return value|
+|ap_ready                       |  out|    1|  ap_ctrl_hs|  mq_meta_table<ap_uint<64>, 2048>|  return value|
+|mq_metaReqFifo_dout            |   in|  256|     ap_fifo|                    mq_metaReqFifo|       pointer|
+|mq_metaReqFifo_num_data_valid  |   in|    2|     ap_fifo|                    mq_metaReqFifo|       pointer|
+|mq_metaReqFifo_fifo_cap        |   in|    2|     ap_fifo|                    mq_metaReqFifo|       pointer|
+|mq_metaReqFifo_empty_n         |   in|    1|     ap_fifo|                    mq_metaReqFifo|       pointer|
+|mq_metaReqFifo_read            |  out|    1|     ap_fifo|                    mq_metaReqFifo|       pointer|
+|mq_metaRspFifo_din             |  out|  128|     ap_fifo|                    mq_metaRspFifo|       pointer|
+|mq_metaRspFifo_num_data_valid  |   in|    2|     ap_fifo|                    mq_metaRspFifo|       pointer|
+|mq_metaRspFifo_fifo_cap        |   in|    2|     ap_fifo|                    mq_metaRspFifo|       pointer|
+|mq_metaRspFifo_full_n          |   in|    1|     ap_fifo|                    mq_metaRspFifo|       pointer|
+|mq_metaRspFifo_write           |  out|    1|     ap_fifo|                    mq_metaRspFifo|       pointer|
++-------------------------------+-----+-----+------------+----------------------------------+--------------+
+

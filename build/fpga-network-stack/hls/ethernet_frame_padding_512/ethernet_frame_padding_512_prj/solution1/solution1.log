@@ -1,0 +1,78 @@
+==============================================================
+Vitis HLS - High-Level Synthesis from C, C++ and OpenCL v2022.1 (64-bit)
+Tool Version Limit: 2022.04
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+==============================================================
+INFO: [HLS 200-1505] Using default flow_target 'vivado'
+INFO: [HLS 200-435] Setting 'open_solution -flow_target vivado' configuration: config_interface -m_axi_latency=0
+INFO: [HLS 200-1510] Running: set_part xcu280-fsvh2892-2L-e 
+INFO: [HLS 200-1611] Setting target device to 'xcu280-fsvh2892-2L-e'
+INFO: [HLS 200-1510] Running: create_clock -period 3.2 -name default 
+INFO: [SYN 201-201] Setting up clock 'default' with a period of 3.2ns.
+INFO: [HLS 200-1510] Running: set_top ethernet_frame_padding_512 
+INFO: [HLS 200-1510] Running: add_files /mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/ethernet_frame_padding_512/ethernet_frame_padding_512.cpp -cflags -I/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/build/fpga-network-stack/hls/ethernet_frame_padding_512 
+INFO: [HLS 200-10] Adding design file '/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/ethernet_frame_padding_512/ethernet_frame_padding_512.cpp' to the project
+INFO: [HLS 200-1510] Running: csynth_design 
+INFO: [HLS 200-111] Finished File checks and directory preparation: CPU user time: 0.04 seconds. CPU system time: 0.01 seconds. Elapsed time: 0.04 seconds; current allocated memory: 1.624 GB.
+INFO: [HLS 200-10] Analyzing design file '/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/ethernet_frame_padding_512/ethernet_frame_padding_512.cpp' ... 
+WARNING: [HLS 207-5292] unused parameter 'output' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/ethernet_frame_padding_512/../axi_utils.hpp:198:26)
+WARNING: [HLS 207-5292] unused parameter 'word' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/ethernet_frame_padding_512/../axi_utils.hpp:198:47)
+WARNING: [HLS 207-5292] unused parameter 'output' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/ethernet_frame_padding_512/../axi_utils.hpp:213:28)
+WARNING: [HLS 207-5292] unused parameter 'data' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/ethernet_frame_padding_512/../axi_utils.hpp:213:48)
+WARNING: [HLS 207-5292] unused parameter 'output' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/ethernet_frame_padding_512/../axi_utils.hpp:226:28)
+WARNING: [HLS 207-5292] unused parameter 'word' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/ethernet_frame_padding_512/../axi_utils.hpp:226:49)
+WARNING: [HLS 207-5292] unused parameter 'output' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/ethernet_frame_padding_512/../axi_utils.hpp:241:28)
+WARNING: [HLS 207-5292] unused parameter 'word' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/ethernet_frame_padding_512/../axi_utils.hpp:241:59)
+WARNING: [HLS 207-5292] unused parameter 'd' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/ethernet_frame_padding_512/../axi_utils.hpp:417:20)
+WARNING: [HLS 207-5292] unused parameter 's' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/ethernet_frame_padding_512/../axi_utils.hpp:417:26)
+INFO: [HLS 200-111] Finished Source Code Analysis and Preprocessing: CPU user time: 5.3 seconds. CPU system time: 0.9 seconds. Elapsed time: 5.92 seconds; current allocated memory: 632.719 MB.
+INFO: [HLS 200-777] Using interface defaults for 'Vivado' flow target.
+INFO: [HLS 214-291] Loop 'VITIS_LOOP_74_1' is marked as complete unroll implied by the pipeline pragma (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/ethernet_frame_padding_512/ethernet_frame_padding_512.cpp:74:30)
+INFO: [HLS 214-186] Unrolling loop 'VITIS_LOOP_74_1' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/ethernet_frame_padding_512/ethernet_frame_padding_512.cpp:74:30) in function 'ethernet_frame_padding_512' completely with a factor of 64 (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/ethernet_frame_padding_512/ethernet_frame_padding_512.cpp:31:0)
+INFO: [HLS 214-131] Inlining function '_llvm.fpga.pack.none.i1024.s_struct.net_axis<512>s' into 'ethernet_frame_padding_512(hls::stream<net_axis<512>, 0>&, hls::stream<net_axis<512>, 0>&)' (/tools/Xilinx/Vitis_HLS/2022.1/common/technology/autopilot/hls_stream_39.h:174:9)
+INFO: [HLS 200-111] Finished Compiling Optimization and Transform: CPU user time: 3.34 seconds. CPU system time: 0.66 seconds. Elapsed time: 4.72 seconds; current allocated memory: 633.332 MB.
+INFO: [HLS 200-111] Finished Checking Pragmas: CPU user time: 0 seconds. CPU system time: 0 seconds. Elapsed time: 0 seconds; current allocated memory: 633.332 MB.
+INFO: [HLS 200-10] Starting code transformations ...
+INFO: [HLS 200-111] Finished Standard Transforms: CPU user time: 0.07 seconds. CPU system time: 0.02 seconds. Elapsed time: 0.16 seconds; current allocated memory: 641.152 MB.
+INFO: [HLS 200-10] Checking synthesizability ...
+INFO: [HLS 200-111] Finished Checking Synthesizability: CPU user time: 0.1 seconds. CPU system time: 0 seconds. Elapsed time: 0.13 seconds; current allocated memory: 650.355 MB.
+INFO: [XFORM 203-401] Performing if-conversion on hyperblock from (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/ethernet_frame_padding_512/ethernet_frame_padding_512.cpp:71:18) to (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/ethernet_frame_padding_512/ethernet_frame_padding_512.cpp:77:6) in function 'ethernet_frame_padding_512'... converting 127 basic blocks.
+INFO: [HLS 200-111] Finished Loop, function and other optimizations: CPU user time: 0.25 seconds. CPU system time: 0.03 seconds. Elapsed time: 0.33 seconds; current allocated memory: 687.328 MB.
+INFO: [HLS 200-111] Finished Architecture Synthesis: CPU user time: 0.15 seconds. CPU system time: 0.01 seconds. Elapsed time: 0.17 seconds; current allocated memory: 684.203 MB.
+INFO: [HLS 200-10] Starting hardware synthesis ...
+INFO: [HLS 200-10] Synthesizing 'ethernet_frame_padding_512' ...
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'ethernet_frame_padding_512' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-61] Pipelining function 'ethernet_frame_padding_512'.
+INFO: [HLS 200-1470] Pipelining result : Target II = 1, Final II = 1, Depth = 17, function 'ethernet_frame_padding_512'
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111] Finished Scheduling: CPU user time: 0.28 seconds. CPU system time: 0.04 seconds. Elapsed time: 0.43 seconds; current allocated memory: 684.203 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111] Finished Binding: CPU user time: 0.23 seconds. CPU system time: 0 seconds. Elapsed time: 0.27 seconds; current allocated memory: 684.203 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'ethernet_frame_padding_512' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+WARNING: [RTGEN 206-101] Design contains AXI ports. Reset is fixed to synchronous and active low.
+INFO: [RTGEN 206-500] Setting interface mode on port 'ethernet_frame_padding_512/s_axis' to 'axis' (register, both mode).
+INFO: [RTGEN 206-500] Setting interface mode on port 'ethernet_frame_padding_512/m_axis' to 'axis' (register, both mode).
+INFO: [RTGEN 206-500] Setting interface mode on function 'ethernet_frame_padding_512' to 'ap_ctrl_none'.
+WARNING: [RTGEN 206-101] Register 'state_V' is power-on initialization.
+INFO: [HLS 200-1030] Apply Unified Pipeline Control on module 'ethernet_frame_padding_512' pipeline 'ethernet_frame_padding_512' pipeline type 'function pipeline'
+INFO: [RTGEN 206-104] Estimated max fanout for 'ethernet_frame_padding_512' is 13366 from HDL expression: (1'b0 == ap_block_pp0_stage0_11001)
+INFO: [RTGEN 206-100] Finished creating RTL model for 'ethernet_frame_padding_512'.
+==============================================================
+Vitis HLS - High-Level Synthesis from C, C++ and OpenCL v2022.1 (64-bit)
+Tool Version Limit: 2022.04
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+==============================================================
+==============================================================
+Vitis HLS - High-Level Synthesis from C, C++ and OpenCL v2022.1 (64-bit)
+Tool Version Limit: 2022.04
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+==============================================================

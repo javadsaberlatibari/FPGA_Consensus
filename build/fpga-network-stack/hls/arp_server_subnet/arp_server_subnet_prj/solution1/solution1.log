@@ -1,0 +1,230 @@
+==============================================================
+Vitis HLS - High-Level Synthesis from C, C++ and OpenCL v2022.1 (64-bit)
+Tool Version Limit: 2022.04
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+==============================================================
+INFO: [HLS 200-1505] Using default flow_target 'vivado'
+INFO: [HLS 200-435] Setting 'open_solution -flow_target vivado' configuration: config_interface -m_axi_latency=0
+INFO: [HLS 200-1510] Running: set_part xcu280-fsvh2892-2L-e 
+INFO: [HLS 200-1611] Setting target device to 'xcu280-fsvh2892-2L-e'
+INFO: [HLS 200-1510] Running: create_clock -period 3.2 -name default 
+INFO: [SYN 201-201] Setting up clock 'default' with a period of 3.2ns.
+INFO: [HLS 200-1510] Running: set_top arp_server_subnet_top 
+INFO: [HLS 200-1510] Running: add_files /mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/arp_server_subnet/../axi_utils.cpp 
+INFO: [HLS 200-10] Adding design file '/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/arp_server_subnet/../axi_utils.cpp' to the project
+INFO: [HLS 200-1510] Running: add_files /mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/arp_server_subnet/arp_server_subnet.cpp -cflags -I/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/build/fpga-network-stack/hls/arp_server_subnet 
+INFO: [HLS 200-10] Adding design file '/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/arp_server_subnet/arp_server_subnet.cpp' to the project
+INFO: [HLS 200-1510] Running: add_files -tb /mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/arp_server_subnet/test_arp_server_subnet.cpp -cflags -I/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/build/fpga-network-stack/hls/arp_server_subnet 
+INFO: [HLS 200-10] Adding test bench file '/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/arp_server_subnet/test_arp_server_subnet.cpp' to the project
+INFO: [HLS 200-1510] Running: csynth_design 
+INFO: [HLS 200-111] Finished File checks and directory preparation: CPU user time: 0.05 seconds. CPU system time: 0 seconds. Elapsed time: 0.04 seconds; current allocated memory: 1.624 GB.
+INFO: [HLS 200-10] Analyzing design file '/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/arp_server_subnet/arp_server_subnet.cpp' ... 
+WARNING: [HLS 207-997] '/*' within block comment (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/arp_server_subnet/../packet.hpp:97:4)
+WARNING: [HLS 207-997] '/*' within block comment (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/arp_server_subnet/../packet.hpp:123:2)
+WARNING: [HLS 207-5525] 'Resource pragma' is deprecated, use 'bind_op/bind_storage pragma' instead (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/arp_server_subnet/arp_server_subnet.cpp:177:9)
+WARNING: [HLS 207-5505] the pragma is not supported and will be ignored (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/arp_server_subnet/arp_server_subnet.cpp:230:9)
+WARNING: [HLS 207-5505] the pragma is not supported and will be ignored (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/arp_server_subnet/arp_server_subnet.cpp:238:9)
+WARNING: [HLS 207-5505] the pragma is not supported and will be ignored (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/arp_server_subnet/arp_server_subnet.cpp:281:9)
+WARNING: [HLS 207-5505] the pragma is not supported and will be ignored (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/arp_server_subnet/arp_server_subnet.cpp:282:9)
+WARNING: [HLS 207-5526] 'Ap_stable' in '#pragma HLS INTERFACE' is deprecated, use 'Stable Pragma' instead (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/arp_server_subnet/arp_server_subnet.cpp:283:23)
+WARNING: [HLS 207-5526] 'Ap_stable' in '#pragma HLS INTERFACE' is deprecated, use 'Stable Pragma' instead (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/arp_server_subnet/arp_server_subnet.cpp:284:23)
+WARNING: [HLS 207-5292] unused parameter 'output' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/arp_server_subnet/../axi_utils.hpp:198:26)
+WARNING: [HLS 207-5292] unused parameter 'word' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/arp_server_subnet/../axi_utils.hpp:198:47)
+WARNING: [HLS 207-5292] unused parameter 'output' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/arp_server_subnet/../axi_utils.hpp:213:28)
+WARNING: [HLS 207-5292] unused parameter 'data' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/arp_server_subnet/../axi_utils.hpp:213:48)
+WARNING: [HLS 207-5292] unused parameter 'output' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/arp_server_subnet/../axi_utils.hpp:226:28)
+WARNING: [HLS 207-5292] unused parameter 'word' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/arp_server_subnet/../axi_utils.hpp:226:49)
+WARNING: [HLS 207-5292] unused parameter 'output' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/arp_server_subnet/../axi_utils.hpp:241:28)
+WARNING: [HLS 207-5292] unused parameter 'word' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/arp_server_subnet/../axi_utils.hpp:241:59)
+WARNING: [HLS 207-5292] unused parameter 'd' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/arp_server_subnet/../axi_utils.hpp:417:20)
+WARNING: [HLS 207-5292] unused parameter 's' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/arp_server_subnet/../axi_utils.hpp:417:26)
+INFO: [HLS 200-10] Analyzing design file '/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/arp_server_subnet/../axi_utils.cpp' ... 
+WARNING: [HLS 207-5292] unused parameter 'output' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/arp_server_subnet/../axi_utils.hpp:198:26)
+WARNING: [HLS 207-5292] unused parameter 'word' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/arp_server_subnet/../axi_utils.hpp:198:47)
+WARNING: [HLS 207-5292] unused parameter 'output' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/arp_server_subnet/../axi_utils.hpp:213:28)
+WARNING: [HLS 207-5292] unused parameter 'data' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/arp_server_subnet/../axi_utils.hpp:213:48)
+WARNING: [HLS 207-5292] unused parameter 'output' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/arp_server_subnet/../axi_utils.hpp:226:28)
+WARNING: [HLS 207-5292] unused parameter 'word' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/arp_server_subnet/../axi_utils.hpp:226:49)
+WARNING: [HLS 207-5292] unused parameter 'output' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/arp_server_subnet/../axi_utils.hpp:241:28)
+WARNING: [HLS 207-5292] unused parameter 'word' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/arp_server_subnet/../axi_utils.hpp:241:59)
+WARNING: [HLS 207-5292] unused parameter 'd' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/arp_server_subnet/../axi_utils.hpp:417:20)
+WARNING: [HLS 207-5292] unused parameter 's' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/arp_server_subnet/../axi_utils.hpp:417:26)
+INFO: [HLS 200-111] Finished Source Code Analysis and Preprocessing: CPU user time: 10.55 seconds. CPU system time: 1.65 seconds. Elapsed time: 15.7 seconds; current allocated memory: 634.020 MB.
+INFO: [HLS 200-777] Using interface defaults for 'Vivado' flow target.
+WARNING: [HLS 214-273] In function 'void arp_server_subnet<512>(hls::stream<net_axis<512>, 0>&, hls::stream<ap_uint<32>, 0>&, hls::stream<ap_uint<32>, 0>&, hls::stream<net_axis<512>, 0>&, hls::stream<arpTableReply, 0>&, hls::stream<arpTableReply, 0>&, ap_uint<48>, ap_uint<32>, ap_uint<16>&, ap_uint<16>&)', Pragma conflict happens on 'INLINE' and DATAFLOW pragmas: Inline into dataflow region may break the canonical form (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/arp_server_subnet/arp_server_subnet.cpp:225:0)
+INFO: [HLS 214-131] Inlining function 'void arp_server_subnet<512>(hls::stream<net_axis<512>, 0>&, hls::stream<ap_uint<32>, 0>&, hls::stream<ap_uint<32>, 0>&, hls::stream<net_axis<512>, 0>&, hls::stream<arpTableReply, 0>&, hls::stream<arpTableReply, 0>&, ap_uint<48>, ap_uint<32>, ap_uint<16>&, ap_uint<16>&)' into 'arp_server_subnet_top(hls::stream<net_axis<512>, 0>&, hls::stream<ap_uint<32>, 0>&, hls::stream<ap_uint<32>, 0>&, hls::stream<net_axis<512>, 0>&, hls::stream<arpTableReply, 0>&, hls::stream<arpTableReply, 0>&, ap_uint<48>, ap_uint<32>, ap_uint<16>&, ap_uint<16>&)' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/arp_server_subnet/arp_server_subnet.cpp:286:2)
+INFO: [HLS 214-291] Loop 'anonymous' is marked as complete unroll implied by the pipeline pragma (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/arp_server_subnet/arp_server_subnet.cpp:176:23)
+INFO: [HLS 214-186] Unrolling loop 'anonymous' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/arp_server_subnet/arp_server_subnet.cpp:176:23) in function 'arp_table' completely with a factor of 256 (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/arp_server_subnet/arp_server_subnet.cpp:173:0)
+INFO: [HLS 214-178] Inlining function 'packetHeader<512, 336>::packetHeader() (.223.262.269.308)' into 'arpHeader<512>::arpHeader()' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/arp_server_subnet/arp_server_subnet.hpp:89:0)
+INFO: [HLS 214-178] Inlining function 'arpHeader<512>::arpHeader()' into 'void process_arp_pkg<512>(hls::stream<net_axis<512>, 0>&, hls::stream<arpReplyMeta, 0>&, hls::stream<arpTableEntry, 0>&, ap_uint<32>, ap_uint<16>&, ap_uint<16>&)' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/arp_server_subnet/arp_server_subnet.cpp:38:0)
+INFO: [HLS 214-178] Inlining function 'packetHeader<512, 336>::parseWord(ap_uint<512>&)' into 'void process_arp_pkg<512>(hls::stream<net_axis<512>, 0>&, hls::stream<arpReplyMeta, 0>&, hls::stream<arpTableEntry, 0>&, ap_uint<32>, ap_uint<16>&, ap_uint<16>&)' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/arp_server_subnet/arp_server_subnet.cpp:38:0)
+INFO: [HLS 214-178] Inlining function 'arpHeader<512>::getTargetProtoAddr()' into 'void process_arp_pkg<512>(hls::stream<net_axis<512>, 0>&, hls::stream<arpReplyMeta, 0>&, hls::stream<arpTableEntry, 0>&, ap_uint<32>, ap_uint<16>&, ap_uint<16>&)' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/arp_server_subnet/arp_server_subnet.cpp:38:0)
+INFO: [HLS 214-178] Inlining function 'arpHeader<512>::isRequest()' into 'void process_arp_pkg<512>(hls::stream<net_axis<512>, 0>&, hls::stream<arpReplyMeta, 0>&, hls::stream<arpTableEntry, 0>&, ap_uint<32>, ap_uint<16>&, ap_uint<16>&)' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/arp_server_subnet/arp_server_subnet.cpp:38:0)
+INFO: [HLS 214-178] Inlining function 'arpHeader<512>::getSrcMacAddr()' into 'void process_arp_pkg<512>(hls::stream<net_axis<512>, 0>&, hls::stream<arpReplyMeta, 0>&, hls::stream<arpTableEntry, 0>&, ap_uint<32>, ap_uint<16>&, ap_uint<16>&)' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/arp_server_subnet/arp_server_subnet.cpp:38:0)
+INFO: [HLS 214-178] Inlining function 'arpHeader<512>::getSenderHwAddr()' into 'void process_arp_pkg<512>(hls::stream<net_axis<512>, 0>&, hls::stream<arpReplyMeta, 0>&, hls::stream<arpTableEntry, 0>&, ap_uint<32>, ap_uint<16>&, ap_uint<16>&)' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/arp_server_subnet/arp_server_subnet.cpp:38:0)
+INFO: [HLS 214-178] Inlining function 'arpHeader<512>::getSenderProtoAddr()' into 'void process_arp_pkg<512>(hls::stream<net_axis<512>, 0>&, hls::stream<arpReplyMeta, 0>&, hls::stream<arpTableEntry, 0>&, ap_uint<32>, ap_uint<16>&, ap_uint<16>&)' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/arp_server_subnet/arp_server_subnet.cpp:38:0)
+INFO: [HLS 214-178] Inlining function 'arpReplyMeta::arpReplyMeta(ap_uint<48>, ap_uint<48>, ap_uint<32>)' into 'void process_arp_pkg<512>(hls::stream<net_axis<512>, 0>&, hls::stream<arpReplyMeta, 0>&, hls::stream<arpTableEntry, 0>&, ap_uint<32>, ap_uint<16>&, ap_uint<16>&)' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/arp_server_subnet/arp_server_subnet.cpp:38:0)
+INFO: [HLS 214-178] Inlining function 'arpHeader<512>::isReply()' into 'void process_arp_pkg<512>(hls::stream<net_axis<512>, 0>&, hls::stream<arpReplyMeta, 0>&, hls::stream<arpTableEntry, 0>&, ap_uint<32>, ap_uint<16>&, ap_uint<16>&)' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/arp_server_subnet/arp_server_subnet.cpp:38:0)
+INFO: [HLS 214-178] Inlining function 'arpTableEntry::arpTableEntry(ap_uint<32>, ap_uint<48>, bool)' into 'void process_arp_pkg<512>(hls::stream<net_axis<512>, 0>&, hls::stream<arpReplyMeta, 0>&, hls::stream<arpTableEntry, 0>&, ap_uint<32>, ap_uint<16>&, ap_uint<16>&)' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/arp_server_subnet/arp_server_subnet.cpp:38:0)
+INFO: [HLS 214-178] Inlining function 'arpHeader<512>::arpHeader()' into 'void generate_arp_pkg<512>(hls::stream<arpReplyMeta, 0>&, hls::stream<ap_uint<32>, 0>&, hls::stream<net_axis<512>, 0>&, ap_uint<48>, ap_uint<32>)' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/arp_server_subnet/arp_server_subnet.cpp:80:0)
+INFO: [HLS 214-178] Inlining function 'arpHeader<512>::setDstMacAddr(ap_uint<48> const&)' into 'void generate_arp_pkg<512>(hls::stream<arpReplyMeta, 0>&, hls::stream<ap_uint<32>, 0>&, hls::stream<net_axis<512>, 0>&, ap_uint<48>, ap_uint<32>)' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/arp_server_subnet/arp_server_subnet.cpp:80:0)
+INFO: [HLS 214-178] Inlining function 'arpHeader<512>::setSrcMacAddr(ap_uint<48> const&)' into 'void generate_arp_pkg<512>(hls::stream<arpReplyMeta, 0>&, hls::stream<ap_uint<32>, 0>&, hls::stream<net_axis<512>, 0>&, ap_uint<48>, ap_uint<32>)' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/arp_server_subnet/arp_server_subnet.cpp:80:0)
+INFO: [HLS 214-178] Inlining function 'arpHeader<512>::setReply()' into 'void generate_arp_pkg<512>(hls::stream<arpReplyMeta, 0>&, hls::stream<ap_uint<32>, 0>&, hls::stream<net_axis<512>, 0>&, ap_uint<48>, ap_uint<32>)' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/arp_server_subnet/arp_server_subnet.cpp:80:0)
+INFO: [HLS 214-178] Inlining function 'arpHeader<512>::setSenderHwAddr(ap_uint<48> const&)' into 'void generate_arp_pkg<512>(hls::stream<arpReplyMeta, 0>&, hls::stream<ap_uint<32>, 0>&, hls::stream<net_axis<512>, 0>&, ap_uint<48>, ap_uint<32>)' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/arp_server_subnet/arp_server_subnet.cpp:80:0)
+INFO: [HLS 214-178] Inlining function 'arpHeader<512>::setSenderProtoAddr(ap_uint<32> const&)' into 'void generate_arp_pkg<512>(hls::stream<arpReplyMeta, 0>&, hls::stream<ap_uint<32>, 0>&, hls::stream<net_axis<512>, 0>&, ap_uint<48>, ap_uint<32>)' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/arp_server_subnet/arp_server_subnet.cpp:80:0)
+INFO: [HLS 214-178] Inlining function 'arpHeader<512>::setTargetHwAddr(ap_uint<48> const&)' into 'void generate_arp_pkg<512>(hls::stream<arpReplyMeta, 0>&, hls::stream<ap_uint<32>, 0>&, hls::stream<net_axis<512>, 0>&, ap_uint<48>, ap_uint<32>)' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/arp_server_subnet/arp_server_subnet.cpp:80:0)
+INFO: [HLS 214-178] Inlining function 'arpHeader<512>::setTargetProtoAddr(ap_uint<32> const&)' into 'void generate_arp_pkg<512>(hls::stream<arpReplyMeta, 0>&, hls::stream<ap_uint<32>, 0>&, hls::stream<net_axis<512>, 0>&, ap_uint<48>, ap_uint<32>)' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/arp_server_subnet/arp_server_subnet.cpp:80:0)
+INFO: [HLS 214-178] Inlining function 'arpHeader<512>::setRequest()' into 'void generate_arp_pkg<512>(hls::stream<arpReplyMeta, 0>&, hls::stream<ap_uint<32>, 0>&, hls::stream<net_axis<512>, 0>&, ap_uint<48>, ap_uint<32>)' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/arp_server_subnet/arp_server_subnet.cpp:80:0)
+INFO: [HLS 214-178] Inlining function 'packetHeader<512, 336>::consumeWord(ap_uint<512>&)' into 'void generate_arp_pkg<512>(hls::stream<arpReplyMeta, 0>&, hls::stream<ap_uint<32>, 0>&, hls::stream<net_axis<512>, 0>&, ap_uint<48>, ap_uint<32>)' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/arp_server_subnet/arp_server_subnet.cpp:80:0)
+INFO: [HLS 214-178] Inlining function 'arpTableReply::arpTableReply(ap_uint<48>, bool)' into 'arp_table(hls::stream<arpTableEntry, 0>&, hls::stream<ap_uint<32>, 0>&, hls::stream<ap_uint<32>, 0>&, hls::stream<arpTableReply, 0>&, hls::stream<arpTableReply, 0>&, hls::stream<ap_uint<32>, 0>&)' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/arp_server_subnet/arp_server_subnet.cpp:173:0)
+INFO: [HLS 214-178] Inlining function 'std::operator&(std::_Ios_Fmtflags, std::_Ios_Fmtflags)' into 'std::operator&=(std::_Ios_Fmtflags&, std::_Ios_Fmtflags)' (/tools/Xilinx/Vitis_HLS/2022.1/tps/lnx64/gcc-8.3.0/lib/gcc/x86_64-pc-linux-gnu/8.3.0/../../../../include/c++/8.3.0/bits/ios_base.h:104:0)
+INFO: [HLS 214-178] Inlining function 'std::operator|(std::_Ios_Fmtflags, std::_Ios_Fmtflags)' into 'std::operator|=(std::_Ios_Fmtflags&, std::_Ios_Fmtflags)' (/tools/Xilinx/Vitis_HLS/2022.1/tps/lnx64/gcc-8.3.0/lib/gcc/x86_64-pc-linux-gnu/8.3.0/../../../../include/c++/8.3.0/bits/ios_base.h:100:0)
+INFO: [HLS 214-178] Inlining function 'std::operator&=(std::_Ios_Fmtflags&, std::_Ios_Fmtflags)' into 'std::ios_base::setf(std::_Ios_Fmtflags, std::_Ios_Fmtflags)' (/tools/Xilinx/Vitis_HLS/2022.1/tps/lnx64/gcc-8.3.0/lib/gcc/x86_64-pc-linux-gnu/8.3.0/../../../../include/c++/8.3.0/bits/ios_base.h:666:0)
+INFO: [HLS 214-178] Inlining function 'std::operator&(std::_Ios_Fmtflags, std::_Ios_Fmtflags)' into 'std::ios_base::setf(std::_Ios_Fmtflags, std::_Ios_Fmtflags)' (/tools/Xilinx/Vitis_HLS/2022.1/tps/lnx64/gcc-8.3.0/lib/gcc/x86_64-pc-linux-gnu/8.3.0/../../../../include/c++/8.3.0/bits/ios_base.h:666:0)
+INFO: [HLS 214-178] Inlining function 'std::operator|=(std::_Ios_Fmtflags&, std::_Ios_Fmtflags)' into 'std::ios_base::setf(std::_Ios_Fmtflags, std::_Ios_Fmtflags)' (/tools/Xilinx/Vitis_HLS/2022.1/tps/lnx64/gcc-8.3.0/lib/gcc/x86_64-pc-linux-gnu/8.3.0/../../../../include/c++/8.3.0/bits/ios_base.h:666:0)
+INFO: [HLS 214-178] Inlining function 'std::ios_base::setf(std::_Ios_Fmtflags, std::_Ios_Fmtflags)' into 'std::dec(std::ios_base&)' (/tools/Xilinx/Vitis_HLS/2022.1/tps/lnx64/gcc-8.3.0/lib/gcc/x86_64-pc-linux-gnu/8.3.0/../../../../include/c++/8.3.0/bits/ios_base.h:1019:0)
+INFO: [HLS 214-241] Aggregating scalar variable 'regReplyCount' with compact=bit mode in 16-bits (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/arp_server_subnet/arp_server_subnet.cpp:271:0)
+INFO: [HLS 214-241] Aggregating scalar variable 'regRequestCount' with compact=bit mode in 16-bits (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/arp_server_subnet/arp_server_subnet.cpp:271:0)
+INFO: [HLS 214-131] Inlining function '_llvm.fpga.pack.none.i192.s_struct.arpReplyMetas' into 'void process_arp_pkg<512>(hls::stream<net_axis<512>, 0>&, hls::stream<arpReplyMeta, 0>&, hls::stream<arpTableEntry, 0>&, ap_uint<32>, ap_uint<16>&, ap_uint<16>&) (.1)' (/tools/Xilinx/Vitis_HLS/2022.1/common/technology/autopilot/hls_stream_39.h:174:9)
+INFO: [HLS 214-131] Inlining function '_llvm.fpga.pack.none.i192.s_struct.arpTableEntrys' into 'void process_arp_pkg<512>(hls::stream<net_axis<512>, 0>&, hls::stream<arpReplyMeta, 0>&, hls::stream<arpTableEntry, 0>&, ap_uint<32>, ap_uint<16>&, ap_uint<16>&) (.1)' (/tools/Xilinx/Vitis_HLS/2022.1/common/technology/autopilot/hls_stream_39.h:174:9)
+INFO: [HLS 214-131] Inlining function '_llvm.fpga.pack.none.i1024.s_struct.net_axis<512>s' into 'void generate_arp_pkg<512>(hls::stream<arpReplyMeta, 0>&, hls::stream<ap_uint<32>, 0>&, hls::stream<net_axis<512>, 0>&, ap_uint<48>, ap_uint<32>) (.1)' (/tools/Xilinx/Vitis_HLS/2022.1/common/technology/autopilot/hls_stream_39.h:174:9)
+INFO: [HLS 214-131] Inlining function '_llvm.fpga.pack.none.i128.s_struct.arpTableReplys' into 'arp_table(hls::stream<arpTableEntry, 0>&, hls::stream<ap_uint<32>, 0>&, hls::stream<ap_uint<32>, 0>&, hls::stream<arpTableReply, 0>&, hls::stream<arpTableReply, 0>&, hls::stream<ap_uint<32>, 0>&) (.1)' (/tools/Xilinx/Vitis_HLS/2022.1/common/technology/autopilot/hls_stream_39.h:174:9)
+INFO: [HLS 200-111] Finished Compiling Optimization and Transform: CPU user time: 5.07 seconds. CPU system time: 1.18 seconds. Elapsed time: 11.02 seconds; current allocated memory: 635.145 MB.
+INFO: [HLS 200-111] Finished Checking Pragmas: CPU user time: 0 seconds. CPU system time: 0 seconds. Elapsed time: 0.01 seconds; current allocated memory: 635.145 MB.
+INFO: [HLS 200-10] Starting code transformations ...
+INFO: [HLS 200-111] Finished Standard Transforms: CPU user time: 0.11 seconds. CPU system time: 0.05 seconds. Elapsed time: 0.79 seconds; current allocated memory: 655.996 MB.
+INFO: [HLS 200-10] Checking synthesizability ...
+WARNING: [SYNCHK 200-23] /tools/Xilinx/Vitis_HLS/2022.1/common/technology/autopilot/ap_int_ref.h:414: variable-indexed range selection may cause suboptimal QoR.
+INFO: [SYNCHK 200-10] 0 error(s), 1 warning(s).
+INFO: [HLS 200-111] Finished Checking Synthesizability: CPU user time: 0.22 seconds. CPU system time: 0.04 seconds. Elapsed time: 0.62 seconds; current allocated memory: 676.449 MB.
+INFO: [XFORM 203-602] Inlining function 'lenToKeep' into 'generate_arp_pkg<512>' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/arp_server_subnet/arp_server_subnet.cpp:133) automatically.
+INFO: [XFORM 203-712] Applying dataflow to function 'arp_server_subnet_top' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/arp_server_subnet/arp_server_subnet.cpp:229:1), detected/extracted 3 process function(s): 
+	 'process_arp_pkg<512>'
+	 'generate_arp_pkg<512>'
+	 'arp_table'.
+INFO: [HLS 200-111] Finished Loop, function and other optimizations: CPU user time: 0.32 seconds. CPU system time: 0.04 seconds. Elapsed time: 0.88 seconds; current allocated memory: 721.207 MB.
+INFO: [HLS 200-472] Inferring partial write operation for 'arpTable.macAddress.V' (/mnt/scratch/pyuvaraj/Vitis_RoCE_W/Vitis_RoCE/fpga-network-stack/hls/arp_server_subnet/arp_server_subnet.cpp:187:40)
+WARNING: [ANALYSIS 214-52] Found false inter dependency for variable 'arpTable.macAddress.V'.
+WARNING: [ANALYSIS 214-52] Found false inter dependency for variable 'arpTable.valid'.
+WARNING: [ANALYSIS 214-52] Found false inter dependency for variable 'arpTable.macAddress.V'.
+WARNING: [ANALYSIS 214-52] Found false inter dependency for variable 'arpTable.valid'.
+WARNING: [HLS 200-657] Generating channel arpRequestMetaFifo that flows backwards in the dataflow region.
+WARNING: [HLS 200-1614] Cosimulation may deadlock if process arp_table has a streamed top-level array input and has predecessor processes. If a deadlock occurs, please consider converting the streamed array into an hls::stream
+INFO: [HLS 200-111] Finished Architecture Synthesis: CPU user time: 0.24 seconds. CPU system time: 0.03 seconds. Elapsed time: 0.51 seconds; current allocated memory: 749.754 MB.
+INFO: [HLS 200-10] Starting hardware synthesis ...
+INFO: [HLS 200-10] Synthesizing 'arp_server_subnet_top' ...
+WARNING: [SYN 201-103] Legalizing function name 'process_arp_pkg<512>' to 'process_arp_pkg_512_s'.
+WARNING: [SYN 201-103] Legalizing function name 'generate_arp_pkg<512>' to 'generate_arp_pkg_512_s'.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'process_arp_pkg_512_s' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-61] Pipelining function 'process_arp_pkg<512>'.
+INFO: [HLS 200-1470] Pipelining result : Target II = 1, Final II = 1, Depth = 3, function 'process_arp_pkg<512>'
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111] Finished Scheduling: CPU user time: 0.2 seconds. CPU system time: 0.08 seconds. Elapsed time: 0.81 seconds; current allocated memory: 749.754 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111] Finished Binding: CPU user time: 0.08 seconds. CPU system time: 0.01 seconds. Elapsed time: 0.26 seconds; current allocated memory: 749.754 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'generate_arp_pkg_512_s' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-61] Pipelining function 'generate_arp_pkg<512>'.
+INFO: [HLS 200-1470] Pipelining result : Target II = 1, Final II = 1, Depth = 3, function 'generate_arp_pkg<512>'
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111] Finished Scheduling: CPU user time: 0.13 seconds. CPU system time: 0.01 seconds. Elapsed time: 0.32 seconds; current allocated memory: 749.754 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111] Finished Binding: CPU user time: 0.07 seconds. CPU system time: 0.01 seconds. Elapsed time: 0.19 seconds; current allocated memory: 749.754 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'arp_table' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-61] Pipelining function 'arp_table'.
+INFO: [HLS 200-1470] Pipelining result : Target II = 1, Final II = 1, Depth = 3, function 'arp_table'
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111] Finished Scheduling: CPU user time: 0.11 seconds. CPU system time: 0 seconds. Elapsed time: 0.28 seconds; current allocated memory: 749.754 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111] Finished Binding: CPU user time: 0.07 seconds. CPU system time: 0.01 seconds. Elapsed time: 0.19 seconds; current allocated memory: 750.629 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'arp_server_subnet_top' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111] Finished Scheduling: CPU user time: 0.1 seconds. CPU system time: 0 seconds. Elapsed time: 0.24 seconds; current allocated memory: 750.629 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111] Finished Binding: CPU user time: 0.12 seconds. CPU system time: 0 seconds. Elapsed time: 0.22 seconds; current allocated memory: 750.629 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'process_arp_pkg_512_s' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+WARNING: [RTGEN 206-101] Register 'header_ready' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'header_idx' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'header_header_V' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'pag_requestCounter_V' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'pag_replyCounter_V' is power-on initialization.
+INFO: [HLS 200-1030] Apply Unified Pipeline Control on module 'process_arp_pkg_512_s' pipeline 'process_arp_pkg<512>' pipeline type 'function pipeline'
+INFO: [RTGEN 206-100] Finished creating RTL model for 'process_arp_pkg_512_s'.
+INFO: [HLS 200-111] Finished Creating RTL model: CPU user time: 0.15 seconds. CPU system time: 0.02 seconds. Elapsed time: 0.35 seconds; current allocated memory: 750.629 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'generate_arp_pkg_512_s' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+WARNING: [RTGEN 206-101] Register 'gap_state' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'header_idx_1' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'header_header_V_1' is power-on initialization.
+INFO: [HLS 200-1030] Apply Unified Pipeline Control on module 'generate_arp_pkg_512_s' pipeline 'generate_arp_pkg<512>' pipeline type 'function pipeline'
+INFO: [RTGEN 206-100] Finished creating RTL model for 'generate_arp_pkg_512_s'.
+INFO: [HLS 200-111] Finished Creating RTL model: CPU user time: 0.27 seconds. CPU system time: 0.03 seconds. Elapsed time: 0.64 seconds; current allocated memory: 752.004 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'arp_table' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-1030] Apply Unified Pipeline Control on module 'arp_table' pipeline 'arp_table' pipeline type 'function pipeline'
+INFO: [RTGEN 206-100] Finished creating RTL model for 'arp_table'.
+INFO: [HLS 200-111] Finished Creating RTL model: CPU user time: 0.19 seconds. CPU system time: 0.02 seconds. Elapsed time: 0.43 seconds; current allocated memory: 753.621 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'arp_server_subnet_top' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+WARNING: [RTGEN 206-101] Design contains AXI ports. Reset is fixed to synchronous and active low.
+INFO: [RTGEN 206-500] Setting interface mode on port 'arp_server_subnet_top/s_axis' to 'axis' (register, both mode).
+INFO: [RTGEN 206-500] Setting interface mode on port 'arp_server_subnet_top/s_axis_arp_lookup_request' to 'axis' (register, both mode).
+INFO: [RTGEN 206-500] Setting interface mode on port 'arp_server_subnet_top/s_axis_host_arp_lookup_request' to 'axis' (register, both mode).
+INFO: [RTGEN 206-500] Setting interface mode on port 'arp_server_subnet_top/m_axis' to 'axis' (register, both mode).
+INFO: [RTGEN 206-500] Setting interface mode on port 'arp_server_subnet_top/m_axis_arp_lookup_reply' to 'axis' (register, both mode).
+INFO: [RTGEN 206-500] Setting interface mode on port 'arp_server_subnet_top/m_axis_host_arp_lookup_reply' to 'axis' (register, both mode).
+INFO: [RTGEN 206-500] Setting interface mode on port 'arp_server_subnet_top/myMacAddress' to 'ap_stable' (register).
+INFO: [RTGEN 206-500] Setting interface mode on port 'arp_server_subnet_top/myIpAddress' to 'ap_stable' (register).
+INFO: [RTGEN 206-500] Setting interface mode on port 'arp_server_subnet_top/regRequestCount' to 'ap_vld'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'arp_server_subnet_top/regReplyCount' to 'ap_vld'.
+INFO: [RTGEN 206-500] Setting interface mode on function 'arp_server_subnet_top' to 'ap_ctrl_none'.
+WARNING: [HLS 200-656] Deadlocks can occur since process process_arp_pkg<512> is instantiated in a dataflow region with ap_ctrl_none or without start propagation and contains an auto-rewind pipeline.
+WARNING: [HLS 200-656] Deadlocks can occur since process generate_arp_pkg<512> is instantiated in a dataflow region with ap_ctrl_none or without start propagation and contains an auto-rewind pipeline.
+WARNING: [HLS 200-656] Deadlocks can occur since process arp_table is instantiated in a dataflow region with ap_ctrl_none or without start propagation and contains an auto-rewind pipeline.
+WARNING: [HLS 200-656] Deadlocks can occur since process process_arp_pkg<512> is instantiated in a dataflow region with ap_ctrl_none or without start propagation and contains an auto-rewind pipeline.
+INFO: [HLS 200-633] Setting ap_ctrl_none interface for arp_server_subnet_top
+INFO: [RTGEN 206-100] Finished creating RTL model for 'arp_server_subnet_top'.
+INFO: [HLS 200-111] Finished Creating RTL model: CPU user time: 0.33 seconds. CPU system time: 0.02 seconds. Elapsed time: 0.83 seconds; current allocated memory: 755.137 MB.
+INFO: [RTMG 210-278] Implementing memory 'arp_server_subnet_top_arp_table_arpTable_macAddress_V_RAM_1P_BRAM_1R1W_ram (RAM_1P_BRAM)' using block RAMs with power-on initialization.
+==============================================================
+Vitis HLS - High-Level Synthesis from C, C++ and OpenCL v2022.1 (64-bit)
+Tool Version Limit: 2022.04
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+==============================================================
+==============================================================
+Vitis HLS - High-Level Synthesis from C, C++ and OpenCL v2022.1 (64-bit)
+Tool Version Limit: 2022.04
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+==============================================================
