@@ -124,7 +124,7 @@ ap_uint<D> reverse_bits(const ap_uint<D>& w)
 	}
 	return temp;
 }
-
+/*
 template<int D>
 bool scan(std::istream& inputFile, ap_uint<D>& data)
 {
@@ -189,7 +189,7 @@ bool scanLE(std::istream& inputFile, ap_uint<D>& data)
 	}
 	return inputFile;
 }
-
+*/
 template<int D>
 void print(std::ostream& output, ap_uint<D> data)
 {
