@@ -51,11 +51,15 @@ $(info INFO: USER_KRNL_MODE is [${USER_KRNL_MODE}])
 $(info INFO: EXE_NUM is [${EXE_NUM}])
 
 ifeq ($(NET_KRNL), roce)
-  KRNL_1 := crdt_krnl
-  #KRNL_1 := rocetest_krnl
+  KRNL_1 := rocetest_krnl
 else
   KRNL_1 := network_krnl
 endif
+
+ifeq ($(NET_KRNL), crdt)
+  KRNL_1 := crdt_krnl
+endif
+
 KRNL_2 := ${USER_KRNL}
 KRNL_3 := cmac_krnl
 
@@ -110,7 +114,7 @@ endif
 
 # Kernel compiler global settings
 CLFLAGS += -t $(TARGET) --platform $(DEVICE) --save-temps #--config $(CONFIGLINKTCL)
-CLFLAGS += --kernel_frequency 250
+#CLFLAGS += --kernel_frequency 250
 CLFLAGS += --user_ip_repo_paths $(IPREPOPATH)
 ifneq ($(TARGET), hw)
   CLFLAGS += -g
