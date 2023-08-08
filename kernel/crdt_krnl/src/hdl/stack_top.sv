@@ -130,7 +130,9 @@ wire[55:0]  axis_arp_lookup_reply_TDATA;
 // tx metadata
 axis_meta #(.WIDTH(160))    axis_tx_metadata();
 axis_meta #(.WIDTH(160))    axis_host_tx_metadata();
-axi_stream #(.WIDTH(512))   axis_host_tx_data();
+
+//tx_data
+axi_stream #(.WIDTH(64))   axis_host_tx_data();
 
 axis_meta #(.WIDTH(144))  axis_qp_interface();
 axis_meta #(.WIDTH(184))  axis_qp_conn_interface();
@@ -182,6 +184,7 @@ logic[31:0] roce_tx_pkg_counter;
 
 logic[31:0] roce_data_rx_word_counter;
 logic[31:0] roce_data_rx_pkg_counter;
+logic[31:0] roce_tx_data_pkg_counter;
 logic[31:0] roce_data_tx_role_word_counter;
 logic[31:0] roce_data_tx_role_pkg_counter;
 logic[31:0] roce_data_tx_host_word_counter;
@@ -497,19 +500,21 @@ begin
             end
             WRITE_META_WRITE: begin
                 if (wait_counter == 0) begin
-                    axis_host_tx_data.data <= 512'hACACACACACACACACACACACACACACACACACACACACACACACACACACACACACACACACACACACACACACACACACACACACACACACACACACACACACACACACACACACACACACACAC;
-                    axis_host_tx_data.valid <= 1'b1;
-                    axis_host_tx_data.last <= 1'b1;
 
                     axis_tx_metadata.data[2:0]     <= 2'b01; // RDMA WRITE
                     axis_tx_metadata.data[26:3]    <= lQPN[23:0];
                     axis_tx_metadata.data[74:27]   <= 48'h000000000000;//lAddr[47:0];
-                    axis_tx_metadata.data[122:75]  <= 48'h000000000009;//rAddr[47:0];
+                    axis_tx_metadata.data[122:75]  <= 48'h000000000007;//rAddr[47:0];
                     axis_tx_metadata.data[154:123] <= len[31:0];
                     axis_tx_metadata.valid         <= 1'b1;
 
                     network_kernel_status.data <= 2'b01;
                     network_kernel_status.valid <= 1'b1;
+
+                    axis_host_tx_data.data <= 64'hACACACACACACACAC;
+                    axis_host_tx_data.keep <= 8'hFF;
+                    axis_host_tx_data.valid <= 1'b1;
+                    axis_host_tx_data.last <= 1'b1;
                 end;
                 if (axis_tx_metadata.valid && axis_tx_metadata.ready) begin
                     axis_tx_metadata.valid     <= 1'b0;
@@ -912,7 +917,9 @@ ila_stack_top_inter inst_ila_stack_top_inter (
     .probe38(m_axis_roce_write_data.ready),
     .probe39(m_axis_roce_write_data.data),//512
     .probe40(roce_data_rx_word_counter),
-    .probe41(roce_data_rx_pkg_counter)
+    .probe41(roce_data_rx_pkg_counter),
+    .probe42(roce_tx_data_pkg_counter),
+    .probe43(roce_tx_data_pkg_counter)
 );
 
 /*
@@ -928,6 +935,7 @@ always @(posedge net_clk) begin
 
         roce_data_rx_word_counter <= '0;
         roce_data_rx_pkg_counter <= '0;
+        roce_tx_data_pkg_counter <= '0;
         roce_data_tx_role_word_counter <= '0;
         roce_data_tx_role_pkg_counter <= '0;
         roce_data_tx_host_word_counter <= '0;
@@ -991,6 +999,11 @@ always @(posedge net_clk) begin
             roce_data_rx_word_counter <= roce_data_rx_word_counter + 1;
             if (m_axis_roce_write_data.last) begin
                 roce_data_rx_pkg_counter <= roce_data_rx_pkg_counter + 1;
+            end
+        end
+        if (axis_host_tx_data.valid && axis_host_tx_data.ready) begin
+            if (axis_host_tx_data.last) begin
+                roce_tx_data_pkg_counter <= roce_tx_data_pkg_counter + 1;
             end
         end
         if (s_axis_roce_read_data.valid && s_axis_roce_read_data.ready) begin
