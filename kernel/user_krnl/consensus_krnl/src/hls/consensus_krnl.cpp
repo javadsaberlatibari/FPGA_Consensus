@@ -13,29 +13,19 @@ void tx_pkg_sender(
     pkt512 tx_data
 ) {
     #pragma inline 
-    enum fsmStateType {IDLE_STATE, WRITE_META, WRITE_DATA, WAIT_READY};
+    enum fsmStateType {IDLE_STATE, WRITE_META, WAIT_READY};
     static fsmStateType state = WRITE_META;
 
     switch(state) {
 
         case WRITE_META: {
-            
-            //Don't go to data write state, if laddr is 0 or op is RDMA READ
-            if (tx_meta.data.range(74, 27) == 0 || tx_meta.data.range(2,0) == 0)
-                state = WAIT_READY; 
-            else {
-                state = WRITE_DATA;
-            }
-
             m_axis_tx_meta.write(tx_meta);
-
+            //Write data only if laddr is 0 and  op is RDMA WRITE
+            if (tx_meta.data.range(74, 27) == 0 && tx_meta.data.range(2,0) == 1) {
+                m_axis_tx_data.write(tx_data);
+            }
+            state = WAIT_READY; 
         }   
-        break; 
-
-        case WRITE_DATA: { 
-            m_axis_tx_data.write(tx_data);
-            state = WAIT_READY;
-        }
         break; 
 
         case WAIT_READY: {
@@ -51,7 +41,6 @@ void tx_pkg_sender(
             state = WRITE_META; 
         }
     } 
-    return; 
 
 }
 
@@ -71,10 +60,6 @@ extern "C" {
 
         #pragma HLS INTERFACE axis port = m_axis_tx_meta
         #pragma HLS INTERFACE axis port = m_axis_tx_data
-        //#pragma HLS INTERFACE axis port = s_axis_tx_status
-
-        //#pragma HLS INTERFACE s_axilite port = s_axi_debug
-        //#pragma HLS INTERFACE m_axi port = m_axi_status bundle = gmem1
 
         /*
             Peforms the same operation as the rtl write_role from roce_write_krnl, but increments the data.
@@ -99,8 +84,9 @@ extern "C" {
         tx_meta.data.range(154, 123) = s_axi_len;
 
         tx_data.data = counter;
-        tx_data.keep = 0x40; 
-        //counter++;  
+        tx_data.last = 1; 
+        tx_data.keep = 0xFF; 
+        counter++;  
 
         tx_pkg_sender(
                 m_axis_tx_meta,
@@ -108,20 +94,6 @@ extern "C" {
                 tx_meta,
                 tx_data
         );
-
-        /*
-            Reading from the status stream and writing to the status buffer on the host side
-            We can try to use status perform the CRDTs and Consensus
-        */
-        // if (!s_axis_tx_status.empty()) {
-        //     pkt512 temp_status;
-        //     s_axis_tx_status >> temp_status; 
-        //     *m_axi_status = temp_status.data; 
-        // } else {
-            
-        //     *m_axi_status = counter;
-        //     counter++; 
-        // }
 
     }
 

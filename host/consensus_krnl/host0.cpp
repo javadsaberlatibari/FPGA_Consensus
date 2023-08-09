@@ -66,9 +66,9 @@ int main(int argc, char **argv) {
     auto vector_size_bytes = sizeof(int) * size;
     std::vector<int, aligned_allocator<int>> network_ptr0(size);
 
-    for (int i = 0; i < size; i++) {
-        network_ptr0[i] = 0xcabcabcab;
-    }
+    // for (int i = 0; i < size; i++) {
+    //     network_ptr0[i] = 0xcabcabcab;
+    // }
 
     //OPENCL HOST CODE AREA START
     //Create Program and Kernel
@@ -170,8 +170,8 @@ int main(int argc, char **argv) {
     OCL_CHECK(err, err = network_kernel.setArg(14, buffer_r1));
 
 
-    OCL_CHECK(err, err = q.enqueueMigrateMemObjects({buffer_r1}, 0));
-    OCL_CHECK(err, err = q.finish());
+    // OCL_CHECK(err, err = q.enqueueMigrateMemObjects({buffer_r1}, 0));
+    // OCL_CHECK(err, err = q.finish());
 
     double durationUs = 0.0;
     auto start = std::chrono::high_resolution_clock::now();
@@ -197,8 +197,10 @@ int main(int argc, char **argv) {
     uint32_t ulQPN = 0x00000000;
     uint32_t uOP   = 0x00000001;
     uint64_t urAddr= 0x0000000000000000;
-    uint64_t ulAddr= 0x0000000000000200;
+    uint64_t ulAddr= 0x0000000000000000;
     uint32_t ulen  = 0x00000100;
+
+    
     OCL_CHECK(err, err = user_kernel.setArg(3, uOP));
     OCL_CHECK(err, err = user_kernel.setArg(4, ulQPN));
     OCL_CHECK(err, err = user_kernel.setArg(5, ulAddr));
