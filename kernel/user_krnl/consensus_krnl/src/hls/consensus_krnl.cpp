@@ -6,7 +6,7 @@
 #include <ap_fixed.h>
 #include "../../../../common/include/communication.hpp"
 #define WAIT_TIMER 256
-#define ITT_NUM 30
+#define ITT_NUM 20
 
 void tx_pkg_sender(
     int s_axi_op,
