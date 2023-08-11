@@ -196,7 +196,7 @@ int main(int argc, char **argv) {
     //OCL_CHECK(err, err = q.finish());
     uint32_t ulQPN = 0x00000000;
     uint32_t uOP   = 0x00000001;
-    uint64_t urAddr= 0x0000000000000000;
+    uint64_t urAddr= 0x0000000000000066;
     uint64_t ulAddr= 0x0000000000000000;
     uint32_t ulen  = 0x00000100;
 

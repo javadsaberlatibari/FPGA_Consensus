@@ -447,6 +447,12 @@ begin
                         // 00 - nothing
                         write_done <= 1'b1;
                         writeState <= WRITE_IDLE;
+
+                        m_axis_roce_role_tx_status.data <=64'h1111111111111111;
+                        m_axis_roce_role_tx_status.keep <= 8'hFF;
+                        m_axis_roce_role_tx_status.valid <= 1'b1;
+                        m_axis_roce_role_tx_status.last <= 1'b1;
+                        
                     end else if (debug[1:0] == 2'b01) begin
                         // 01 - read-write test
                         writeState <= WRITE_META_READ;
@@ -550,7 +556,7 @@ roce_stack #(
     //RX
     .s_axis_rx_data(axis_roce_slice_to_roce),
     //TX
-    .s_axis_tx_meta(axis_tx_metadata),
+    .s_axis_tx_meta(s_axis_roce_role_tx_meta),
     .s_axis_tx_data(s_axis_roce_role_tx_data), 
 
 `ifndef ENABLE_DROP 
@@ -792,9 +798,9 @@ assign axis_iph_to_udp_slice.ready = 1'b1;
 assign axis_iph_to_toe_slice.ready = 1'b1;
 
 // not used for now
-assign m_axis_roce_role_tx_status.ready = 1'b0;
+//assign m_axis_roce_role_tx_status.ready = 1'b0;
 
-
+/*
 axis_interconnect_merger_160 tx_metadata_merger (
   .ACLK(net_clk),                                  // input wire ACLK
   .ARESETN(net_aresetn),                            // input wire ARESETN
@@ -816,7 +822,7 @@ axis_interconnect_merger_160 tx_metadata_merger (
   .S00_ARB_REQ_SUPPRESS(1'b0),  // input wire S00_ARB_REQ_SUPPRESS
   .S01_ARB_REQ_SUPPRESS(1'b0)  // input wire S01_ARB_REQ_SUPPRESS
 );
-
+*/
 /*
  * ILA
  */
@@ -828,9 +834,9 @@ ila_stack_top inst_ila_stack_top (
     .probe3(s_axis_net.valid),
     .probe4(s_axis_net.ready),
     .probe5(s_axis_net.data),
-    .probe6(axis_tx_metadata.valid),
-    .probe7(axis_tx_metadata.ready),
-    .probe8(axis_tx_metadata.data),//160
+    .probe6(s_axis_roce_role_tx_meta.valid),
+    .probe7(s_axis_roce_role_tx_meta.ready),
+    .probe8(s_axis_roce_role_tx_meta.data),//160
     .probe9(roce_data_tx_role_pkg_counter),//32
     .probe10(writeState),//8
     .probe11(m_axis_roce_read_cmd.valid),
