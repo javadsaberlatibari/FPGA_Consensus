@@ -93,12 +93,15 @@ extern "C" {
     void consensus_krnl(
         hls::stream<pkt256>& m_axis_tx_meta, 
         hls::stream<pkt64>& m_axis_tx_data, 
-        hls::stream<pkt64>& s_axis_tx_status,
+        hls::stream<pkt64>& s_axis_tx_status, 
         int s_axi_op,
-        int s_axi_lqpn,
+        int s_axi_lqpn, 
         ap_uint<64> s_axi_laddr,
         ap_uint<64> s_axi_raddr,
-        int s_axi_len
+        int s_axi_len,
+        bool writer,
+        int *m_axi_reply,
+        int *network_ptr
         //ap_uint<512>* m_axi_status
     ) {
 
@@ -108,16 +111,22 @@ extern "C" {
 
         #pragma HLS dataflow
 
-        tx_pkg_sender(
-                s_axi_op,
-                s_axi_lqpn,
-                s_axi_laddr,
-                s_axi_raddr,
-                s_axi_len,
-                s_axis_tx_status,
-                m_axis_tx_meta,
-                m_axis_tx_data
-        );
+        if (writer) {
+            tx_pkg_sender(
+                    s_axi_op,
+                    s_axi_lqpn,
+                    s_axi_laddr,
+                    s_axi_raddr,
+                    s_axi_len,
+                    s_axis_tx_status,
+                    m_axis_tx_meta,
+                    m_axis_tx_data
+            );
+        }
+
+        if (!writer) {
+            *m_axi_reply = network_ptr[0];
+        }
 
     }
 

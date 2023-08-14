@@ -188,6 +188,7 @@ int main(int argc, char **argv) {
     //OCL_CHECK(err, err = user_kernel.setArg(3, debug1));
     //OCL_CHECK(err, err = user_kernel.setArg(4, StatusBuffer));
     
+    wait_for_enter("\nPress ENTER to continue after setting up ILA trigger...");
 
     //Launch the Kernel
     // auto start = std::chrono::high_resolution_clock::now();
@@ -196,27 +197,40 @@ int main(int argc, char **argv) {
     //OCL_CHECK(err, err = q.finish());
     uint32_t ulQPN = 0x00000000;
     uint32_t uOP   = 0x00000001;
-    uint64_t urAddr= 0x0000000000000066;
+    uint64_t urAddr= 0x0000000000000000;
     uint64_t ulAddr= 0x0000000000000000;
     uint32_t ulen  = 0x00000100;
 
-    
+    bool write = true; 
+
+    std::vector<int, aligned_allocator<int>> reply(1);
+    OCL_CHECK(err,
+              cl::Buffer buffer_r2(context,
+                                   CL_MEM_USE_HOST_PTR | CL_MEM_READ_WRITE,
+                                   sizeof(int),
+                                   reply.data(),
+                                   &err));
+
+
     OCL_CHECK(err, err = user_kernel.setArg(3, uOP));
     OCL_CHECK(err, err = user_kernel.setArg(4, ulQPN));
     OCL_CHECK(err, err = user_kernel.setArg(5, ulAddr));
     OCL_CHECK(err, err = user_kernel.setArg(6, urAddr));
     OCL_CHECK(err, err = user_kernel.setArg(7, ulen));
+    OCL_CHECK(err, err = user_kernel.setArg(8, write));
+    OCL_CHECK(err, err = user_kernel.setArg(9, buffer_r2));
+    OCL_CHECK(err, err = user_kernel.setArg(10, buffer_r1));
 
     printf("enqueue user kernel...\n");
     OCL_CHECK(err, err = q.enqueueTask(user_kernel));
     OCL_CHECK(err, err = q.finish());
     
     printf("Device->Host user kernel...\n");
-    //OCL_CHECK(err, err = q.enqueueMigrateMemObjects({StatusBuffer}, CL_MIGRATE_MEM_OBJECT_HOST));
-    //OCL_CHECK(err, err = q.finish());
+    OCL_CHECK(err, err = q.enqueueMigrateMemObjects({buffer_r2}, CL_MIGRATE_MEM_OBJECT_HOST));
+    OCL_CHECK(err, err = q.finish());
 
     // for (int i = 0; i < 16; i++)
-    //     printf("STATUS: %x\n", status[i]);
+    printf("STATUS: %x\n", reply[0]);
 
 
     // auto end = std::chrono::high_resolution_clock::now();
