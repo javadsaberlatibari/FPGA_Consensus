@@ -196,10 +196,10 @@ int main(int argc, char **argv) {
     uint64_t urAddr= 0x0000000000000000;
     uint64_t ulAddr= 0x0000000000000000;
     uint32_t ulen  = 0x00000100;
-    uint64_t read= 0x0000000000000001;
+    uint64_t read= 0x0000000000000000;
     
 
-    bool write = false; 
+    bool write = true; 
 
     std::vector<int, aligned_allocator<int>> reply(1);
     OCL_CHECK(err,
