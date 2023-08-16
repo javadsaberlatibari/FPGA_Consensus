@@ -122,9 +122,9 @@ int main(int argc, char **argv) {
     uint64_t lAddr= 0x0000000000000000;
     uint32_t len  = 0x00000100;
     // [15:4] time interval in cycle       0x100   256cycle
-    // [3:2]  board number                 0
+    // [3:2]  board number                 1
     // [1:0]  mode 0-nothing 1-test 2-op   0
-    uint32_t debug= 0x00001000;
+    uint32_t debug= 0x00001004;
     //void* status; 
 
     //std::vector<unsigned int, aligned_allocator<unsigned int> > status(16);
@@ -184,7 +184,7 @@ int main(int argc, char **argv) {
     //OCL_CHECK(err, err = user_kernel.setArg(3, debug1));
     //OCL_CHECK(err, err = user_kernel.setArg(4, StatusBuffer));
     
-    wait_for_enter("\nPress ENTER to continue after setting up ILA trigger...");
+    wait_for_enter("\nPausing for network kernel setup...");
 
     //Launch the Kernel
     // auto start = std::chrono::high_resolution_clock::now();
@@ -196,6 +196,8 @@ int main(int argc, char **argv) {
     uint64_t urAddr= 0x0000000000000000;
     uint64_t ulAddr= 0x0000000000000000;
     uint32_t ulen  = 0x00000100;
+    uint64_t read= 0x0000000000000001;
+    
 
     bool write = false; 
 
@@ -213,11 +215,13 @@ int main(int argc, char **argv) {
     OCL_CHECK(err, err = user_kernel.setArg(5, ulAddr));
     OCL_CHECK(err, err = user_kernel.setArg(6, urAddr));
     OCL_CHECK(err, err = user_kernel.setArg(7, ulen));
-    OCL_CHECK(err, err = user_kernel.setArg(8, write));
-    OCL_CHECK(err, err = user_kernel.setArg(9, buffer_r2));
-    OCL_CHECK(err, err = user_kernel.setArg(10, buffer_r1));
+    OCL_CHECK(err, err = user_kernel.setArg(8, read));
+    OCL_CHECK(err, err = user_kernel.setArg(9, write));
+    OCL_CHECK(err, err = user_kernel.setArg(10, buffer_r2));
+    OCL_CHECK(err, err = user_kernel.setArg(11, buffer_r1));
 
     printf("enqueue user kernel...\n");
+
     OCL_CHECK(err, err = q.enqueueTask(user_kernel));
     OCL_CHECK(err, err = q.finish());
     
@@ -225,9 +229,7 @@ int main(int argc, char **argv) {
     OCL_CHECK(err, err = q.enqueueMigrateMemObjects({buffer_r2}, CL_MIGRATE_MEM_OBJECT_HOST));
     OCL_CHECK(err, err = q.finish());
 
-    // for (int i = 0; i < 16; i++)
-    printf("STATUS: %x\n", reply[0]);
-
+    printf("STATUS: %d\n", reply[0]);
 
     // auto end = std::chrono::high_resolution_clock::now();
     // durationUs = (std::chrono::duration_cast<std::chrono::nanoseconds>(end-start).count() / 1000.0);

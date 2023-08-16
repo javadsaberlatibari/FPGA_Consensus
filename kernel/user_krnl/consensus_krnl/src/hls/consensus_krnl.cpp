@@ -33,7 +33,7 @@ void tx_pkg_sender(
     switch(state) {
 
         case IDLE_STATE: 
-            m_axis_tx_meta.write(tx_meta);
+            //m_axis_tx_meta.write(tx_meta);
             if (!s_axis_tx_status.empty()) {
                 s_axis_tx_status.read(tmp_status);
                 state = WRITE_META; 
@@ -99,6 +99,7 @@ extern "C" {
         ap_uint<64> s_axi_laddr,
         ap_uint<64> s_axi_raddr,
         int s_axi_len,
+        ap_uint<64> s_axi_raddr_read,
         bool writer,
         int *m_axi_reply,
         int *network_ptr
@@ -125,7 +126,7 @@ extern "C" {
         }
 
         if (!writer) {
-            *m_axi_reply = network_ptr[0];
+            *m_axi_reply = network_ptr[s_axi_raddr_read];
         }
 
     }
