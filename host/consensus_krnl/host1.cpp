@@ -196,10 +196,10 @@ int main(int argc, char **argv) {
     uint64_t urAddr= 0x0000000000000000;
     uint64_t ulAddr= 0x0000000000000000;
     uint32_t ulen  = 0x00000100;
-    uint64_t read= 0x0000000000000000;
+    uint64_t read= 0x0000000000000020;
     
 
-    bool write = true; 
+    bool write = false; 
 
     std::vector<int, aligned_allocator<int>> reply(1);
     OCL_CHECK(err,
@@ -220,16 +220,22 @@ int main(int argc, char **argv) {
     OCL_CHECK(err, err = user_kernel.setArg(10, buffer_r2));
     OCL_CHECK(err, err = user_kernel.setArg(11, buffer_r1));
 
+
     printf("enqueue user kernel...\n");
 
     OCL_CHECK(err, err = q.enqueueTask(user_kernel));
     OCL_CHECK(err, err = q.finish());
     
     printf("Device->Host user kernel...\n");
+    OCL_CHECK(err, err = q.enqueueMigrateMemObjects({buffer_r1}, CL_MIGRATE_MEM_OBJECT_HOST));
     OCL_CHECK(err, err = q.enqueueMigrateMemObjects({buffer_r2}, CL_MIGRATE_MEM_OBJECT_HOST));
     OCL_CHECK(err, err = q.finish());
 
     printf("STATUS: %d\n", reply[0]);
+    
+    for (int i = 0; i < 65; i++) {
+        printf("network at %d: %d\n", i, network_ptr0[i]);
+    }
 
     // auto end = std::chrono::high_resolution_clock::now();
     // durationUs = (std::chrono::duration_cast<std::chrono::nanoseconds>(end-start).count() / 1000.0);
