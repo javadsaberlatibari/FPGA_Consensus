@@ -14,6 +14,8 @@ void tx_pkg_sender(
     ap_uint<64> s_axi_laddr,
     ap_uint<64> s_axi_raddr,
     int s_axi_len,
+    bool s_axi_last_data, 
+    ap_uint<32> s_axi_keep_data, 
     hls::stream<pkt64>& s_axis_tx_status,
     hls::stream<pkt256>& m_axis_tx_meta, 
     hls::stream<pkt64>& m_axis_tx_data
@@ -27,6 +29,7 @@ void tx_pkg_sender(
     pkt64 tx_data;
     pkt64 tmp_status;
     static ap_uint<64> counter = 111; 
+    static int packet_counter = 0; 
 
     while(ITT_NUM>itt){
 
@@ -60,11 +63,13 @@ void tx_pkg_sender(
             //Write data only if laddr is 0 and  op is RDMA WRITE
 
             tx_data.data = counter;
-            tx_data.last = 1; 
-            tx_data.keep = 0xFF; 
+            tx_data.last = s_axi_last_data; 
+            tx_data.keep = s_axi_keep_data; 
             counter++;  
+            
             m_axis_tx_data.write(tx_data);
 
+            packet_counter++; 
             state = WAIT_READY; 
           
         break; 
@@ -86,6 +91,19 @@ void tx_pkg_sender(
     } 
     }
 
+    int t = 0;
+    while(t < WAIT_TIMER) t++; 
+
+    /* READ after all the writes */
+
+        tx_meta.data.range(2,0) = 0; 
+        tx_meta.data.range(26,3) = s_axi_lqpn; 
+        tx_meta.data.range(74, 27) = s_axi_laddr; 
+        tx_meta.data.range(122, 75) = s_axi_raddr; 
+        tx_meta.data.range(154, 123) = s_axi_len;
+        m_axis_tx_meta.write(tx_meta);
+
+
 }
 
 extern "C" {
@@ -99,10 +117,12 @@ extern "C" {
         ap_uint<64> s_axi_laddr,
         ap_uint<64> s_axi_raddr,
         int s_axi_len,
-        ap_uint<64> s_axi_raddr_read,
+        int s_axi_raddr_read,
+        bool s_axi_last_data, 
+        ap_uint<32> s_axi_keep_data, 
         bool writer,
-        int *m_axi_reply,
-        int *network_ptr
+        int *m_axi_reply
+        //int *network_ptr
         //ap_uint<512>* m_axi_status
     ) {
 
@@ -119,14 +139,20 @@ extern "C" {
                     s_axi_laddr,
                     s_axi_raddr,
                     s_axi_len,
+                    s_axi_last_data,
+                    s_axi_keep_data,
                     s_axis_tx_status,
                     m_axis_tx_meta,
                     m_axis_tx_data
             );
+            m_axi_reply[0] = 1; 
+        } else {
+            m_axi_reply[0] = 2; 
         }
 
         if (!writer) {
-            *m_axi_reply = network_ptr[s_axi_raddr_read];
+            for (int i = 0; i < 64; i++)
+                m_axi_reply[i] = network_ptr[i];
         }
 
     }

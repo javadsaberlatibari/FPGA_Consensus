@@ -14,8 +14,9 @@ sc=consensus_krnl_1.m_axis_tx_meta:rocetest_krnl_1.s_axis_role_tx_meta
 sc=consensus_krnl_1.m_axis_tx_data:rocetest_krnl_1.s_axis_role_tx_data
 sc=rocetest_krnl_1.m_axis_role_tx_status:consensus_krnl_1.s_axis_tx_status
 
-#sp=consensus_krnl_1.m_axi_status:HBM[1]
+#sp=consensus_krnl_1.m_axi_reply:HBM[1]
+#sp=consensus_krnl_1.network_ptr:HBM[1]
 
 [debug]
-chipscope=consensus_krnl_1:m_axis_tx_meta
-chipscope=consensus_krnl_1:m_axis_tx_data
+#chipscope=consensus_krnl_1:m_axis_tx_meta
+#chipscope=consensus_krnl_1:m_axis_tx_data
