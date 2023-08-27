@@ -6,7 +6,7 @@
 #include <ap_fixed.h>
 #include "../../../../common/include/communication.hpp"
 #define WAIT_TIMER 256
-#define ITT_NUM 20
+#define ITT_NUM 10
 
 void tx_pkg_sender(
     int s_axi_op,
@@ -14,9 +14,10 @@ void tx_pkg_sender(
     ap_uint<64> s_axi_laddr,
     ap_uint<64> s_axi_raddr,
     int s_axi_len,
-    hls::stream<pkt64>& s_axis_tx_status,
+    hls::stream<pkt512>& s_axis_tx_status,
     hls::stream<pkt256>& m_axis_tx_meta, 
-    hls::stream<pkt64>& m_axis_tx_data
+    hls::stream<pkt512>& m_axis_tx_data
+    //int wait_cyc
 ) {
     //#pragma inline 
     enum fsmStateType {IDLE_STATE, WRITE_META, WAIT_READY, DONE};
@@ -24,8 +25,8 @@ void tx_pkg_sender(
     static ap_uint<64> wait = 0; 
     static ap_uint<64> itt = 0; 
     pkt256 tx_meta;
-    pkt64 tx_data;
-    pkt64 tmp_status;
+    pkt512 tx_data;
+    pkt512 tmp_status;
     static ap_uint<64> counter = 111; 
 
     while(ITT_NUM>itt){
@@ -53,15 +54,15 @@ void tx_pkg_sender(
         */
             tx_meta.data.range(74, 27) = s_axi_laddr; 
         /*rAddr*/
-            tx_meta.data.range(122, 75) = s_axi_raddr; 
+            tx_meta.data.range(122, 75) = s_axi_raddr+(itt*4); 
         /*len*/
             tx_meta.data.range(154, 123) = s_axi_len;
             m_axis_tx_meta.write(tx_meta);
             //Write data only if laddr is 0 and  op is RDMA WRITE
 
-            tx_data.data = counter;
+            tx_data.data(63, 0) = 0x0000000000000011 + itt;
+            tx_data.keep(7, 0) = 0xff;
             tx_data.last = 1; 
-            tx_data.keep = 0xFF; 
             counter++;  
             m_axis_tx_data.write(tx_data);
 
@@ -72,7 +73,7 @@ void tx_pkg_sender(
         case WAIT_READY: 
             /* Make sure both streams are not full before returning to write state */
             wait++;
-            if (wait==WAIT_TIMER) {
+            if (wait== WAIT_TIMER) {
                 wait=0;
                 itt++;
                 if(itt>ITT_NUM)
@@ -92,8 +93,8 @@ extern "C" {
 
     void consensus_krnl(
         hls::stream<pkt256>& m_axis_tx_meta, 
-        hls::stream<pkt64>& m_axis_tx_data, 
-        hls::stream<pkt64>& s_axis_tx_status, 
+        hls::stream<pkt512>& m_axis_tx_data, 
+        hls::stream<pkt512>& s_axis_tx_status, 
         int s_axi_op,
         int s_axi_lqpn, 
         ap_uint<64> s_axi_laddr,
@@ -103,6 +104,7 @@ extern "C" {
         bool writer,
         int *m_axi_reply,
         int *network_ptr
+        //int wait_cyc
         //ap_uint<512>* m_axi_status
     ) {
 
@@ -111,6 +113,7 @@ extern "C" {
         #pragma HLS INTERFACE axis port = s_axis_tx_status
 
         #pragma HLS dataflow
+        static int remotecounter=0;
 
         if (writer) {
             tx_pkg_sender(
@@ -122,10 +125,14 @@ extern "C" {
                     s_axis_tx_status,
                     m_axis_tx_meta,
                     m_axis_tx_data
+                    //wait_cyc
             );
         }
 
         if (!writer) {
+            //for(int i=0; i<ITT_NUM;i++)
+                //remotecounter= remotecounter+ network_ptr[s_axi_raddr_read+i];
+            //*m_axi_reply = remotecounter;
             *m_axi_reply = network_ptr[s_axi_raddr_read];
         }
 

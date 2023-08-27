@@ -120,7 +120,7 @@ int main(int argc, char **argv) {
     uint32_t OP   = 0x00000000;
     uint64_t rAddr= 0x0000000000000000;
     uint64_t lAddr= 0x0000000000000000;
-    uint32_t len  = 0x00000100;
+    uint32_t len  = 0x00000008;
     // [15:4] time interval in cycle       0x100   256cycle
     // [3:2]  board number                 1
     // [1:0]  mode 0-nothing 1-test 2-op   0
@@ -195,8 +195,8 @@ int main(int argc, char **argv) {
     uint32_t uOP   = 0x00000001;
     uint64_t urAddr= 0x0000000000000000;
     uint64_t ulAddr= 0x0000000000000000;
-    uint32_t ulen  = 0x00000100;
-    uint64_t read= 0x0000000000000020;
+    uint32_t ulen  = 0x00000008;
+    uint64_t read= 0x0000000000000001;
     
 
     bool write = false; 
