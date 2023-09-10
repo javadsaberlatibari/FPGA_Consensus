@@ -32,6 +32,7 @@ EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h> 
 
 #define DATA_SIZE 62500000
 
@@ -191,13 +192,18 @@ int main(int argc, char **argv) {
     //printf("Host->Device user kernel...\n");
     //OCL_CHECK(err, err = q.enqueueMigrateMemObjects({DebugBuffer}, 0));
     //OCL_CHECK(err, err = q.finish());
+    
     uint32_t nOP   = 0x0000000A; //number of operations
-    uint32_t operations [10] = {4, 2, 1, 1, 2, 1, 3, 6, 1, 0};
+    int *operations;
+    size_t size_in_bytes = 10 * sizeof(int);
+    //uint32_t *operations = arr_ops;
     uint32_t ulQPN = 0x00100000;
     uint64_t ulAddr= 0x0000000000000000;
     uint64_t urAddr= 0x0000000000000000;
 
     uint32_t ulen  = 0x00000008;
+
+    OCL_CHECK(err, cl::Buffer buffer_op(context, CL_MEM_READ_ONLY, size_in_bytes, NULL, &err));
 
     std::vector<int, aligned_allocator<int>> reply(1);
     OCL_CHECK(err,
@@ -207,15 +213,27 @@ int main(int argc, char **argv) {
                                    reply.data(),
                                    &err));
 
-
-    OCL_CHECK(err, err = user_kernel.setArg(3, nOP));
-    OCL_CHECK(err, err = user_kernel.setArg(4, operations));
-    OCL_CHECK(err, err = user_kernel.setArg(5, ulQPN));
-    OCL_CHECK(err, err = user_kernel.setArg(6, ulAddr));
-    OCL_CHECK(err, err = user_kernel.setArg(7, urAddr));
-    OCL_CHECK(err, err = user_kernel.setArg(8, ulen));
+    OCL_CHECK(err, err = user_kernel.setArg(3, ulQPN));
+    OCL_CHECK(err, err = user_kernel.setArg(4, ulAddr));
+    OCL_CHECK(err, err = user_kernel.setArg(5, urAddr));
+    OCL_CHECK(err, err = user_kernel.setArg(6, ulen));
+    OCL_CHECK(err, err = user_kernel.setArg(7, nOP));
+    OCL_CHECK(err, err = user_kernel.setArg(8, buffer_op));
     OCL_CHECK(err, err = user_kernel.setArg(9, buffer_r2));
     OCL_CHECK(err, err = user_kernel.setArg(10, buffer_r1));
+
+
+    OCL_CHECK(err,
+              operations = (int*)q.enqueueMapBuffer(buffer_op, CL_TRUE, CL_MAP_WRITE, 0, size_in_bytes, NULL, NULL, &err));
+
+    for (int i = 0; i < 9; i++) {
+        operations[i] = 6;
+    }
+    //operations[0] = 5;
+    operations[9]=1;
+    operations[3]=0;
+
+    OCL_CHECK(err, err = q.enqueueMigrateMemObjects({buffer_op}, 0 /* 0 means from host*/));
 
 
     printf("enqueue user kernel...\n");
@@ -223,6 +241,7 @@ int main(int argc, char **argv) {
     OCL_CHECK(err, err = q.enqueueTask(user_kernel));
     OCL_CHECK(err, err = q.finish());
     
+    sleep(15);
     printf("Device->Host user kernel...\n");
     OCL_CHECK(err, err = q.enqueueMigrateMemObjects({buffer_r1}, CL_MIGRATE_MEM_OBJECT_HOST));
     OCL_CHECK(err, err = q.enqueueMigrateMemObjects({buffer_r2}, CL_MIGRATE_MEM_OBJECT_HOST));
@@ -230,7 +249,7 @@ int main(int argc, char **argv) {
 
     printf("STATUS: %d\n", reply[0]);
     
-    for (int i = 0; i < 65; i++) {
+    for (int i = 0; i < 3; i++) {
         printf("network at %d: %d\n", i, network_ptr0[i]);
     }
 
