@@ -66,7 +66,9 @@ int main(int argc, char **argv) {
     auto vector_size_bytes = sizeof(int) * size;
     std::vector<int, aligned_allocator<int>> network_ptr0(size);
 
-    
+    // for (int i = 0; i < size; i++) {
+    //     network_ptr0[i] = 0xcabcabcab;
+    // }
 
     //OPENCL HOST CODE AREA START
     //Create Program and Kernel
@@ -108,23 +110,23 @@ int main(int argc, char **argv) {
     
     wait_for_enter("\nPress ENTER to continue after setting up ILA trigger...");
 
-    uint32_t rPSN = 0x00000000;
-    uint32_t lPSN = 0x00200000;
-    uint32_t rQPN = 0x00000000;
-    uint32_t lQPN = 0x00100000;
-    uint32_t rIP  = 0x0b01d4e0;
-    uint32_t lIP  = 0x0b01d4e1;
+    uint32_t rPSN = 0x00200000;
+    uint32_t lPSN = 0x00000000;
+    uint32_t rQPN = 0x00100000;
+    uint32_t lQPN = 0x00000000;
+    uint32_t rIP  = 0x0b01d4e1;
+    uint32_t lIP  = 0x0b01d4e0;
     uint32_t rUDP = 0x000012b7;
     uint64_t vAddr= 0x0000000000000001;
     uint32_t rKey = 0x00000000;
-    uint32_t OP   = 0x00000002;
+    uint32_t OP   = 0x00000000;
     uint64_t rAddr= 0x0000000000000000;
     uint64_t lAddr= 0x0000000000000000;
-    uint32_t len  = 0x00000008;
+    uint32_t len  = 0x00000004;
     // [15:4] time interval in cycle       0x100   256cycle
-    // [3:2]  board number                 1
+    // [3:2]  board number                 0
     // [1:0]  mode 0-nothing 1-test 2-op   0
-    uint32_t debug= 0x00001004;
+    uint32_t debug= 0x00001000;
     //void* status; 
 
     //std::vector<unsigned int, aligned_allocator<unsigned int> > status(16);
@@ -168,6 +170,8 @@ int main(int argc, char **argv) {
     OCL_CHECK(err, err = network_kernel.setArg(14, buffer_r1));
 
 
+    // OCL_CHECK(err, err = q.enqueueMigrateMemObjects({buffer_r1}, 0));
+    // OCL_CHECK(err, err = q.finish());
 
     double durationUs = 0.0;
     auto start = std::chrono::high_resolution_clock::now();
@@ -191,15 +195,15 @@ int main(int argc, char **argv) {
     //printf("Host->Device user kernel...\n");
     //OCL_CHECK(err, err = q.enqueueMigrateMemObjects({DebugBuffer}, 0));
     //OCL_CHECK(err, err = q.finish());
-    uint32_t ulQPN = 0x00100000;
+    uint32_t ulQPN = 0x00000000;
     uint32_t uOP   = 0x00000000;
     uint64_t urAddr= 0x0000000000000000;
     uint64_t ulAddr= 0x0000000000000000;
-    uint32_t ulen  = 0x00000008;
+    uint32_t ulen  = 0x00000004;    
     int read= 0x0000000000000000;
-    bool last = 0; 
-    uint32_t keep = 0xFF; 
-    bool write = false; 
+    bool last = 1; 
+    uint32_t keep = 0xFFFF; 
+    bool write = true; 
 
     std::vector<int, aligned_allocator<int>> reply(64);
     OCL_CHECK(err,
@@ -222,23 +226,21 @@ int main(int argc, char **argv) {
     OCL_CHECK(err, err = user_kernel.setArg(12, buffer_r2));
     OCL_CHECK(err, err = user_kernel.setArg(13, buffer_r1));
 
-
     printf("enqueue user kernel...\n");
+    //for (int i = 0; i < 5; i++) {
+        OCL_CHECK(err, err = q.enqueueTask(user_kernel));
+        OCL_CHECK(err, err = q.finish());
+        //wait_for_enter("\nUser kernel wait...");
+    //}
 
-    OCL_CHECK(err, err = q.enqueueTask(user_kernel));
-    OCL_CHECK(err, err = q.finish());
-    
     printf("Device->Host user kernel...\n");
-    //OCL_CHECK(err, err = q.enqueueMigrateMemObjects({buffer_r1}, CL_MIGRATE_MEM_OBJECT_HOST));
     OCL_CHECK(err, err = q.enqueueMigrateMemObjects({buffer_r2}, CL_MIGRATE_MEM_OBJECT_HOST));
     OCL_CHECK(err, err = q.finish());
 
-    
-    
-    for (int i = 0; i < 64; i++) {
-        //printf("at i = %d, STATUS: %d vs NET: %d\n", i, reply[i], network_ptr0[0]);
-        printf("at i = %d, STATUS: %d\n", i, reply[i]);
-    }
+    // for (int i = 0; i < 16; i++)
+    printf("STATUS: %x\n", reply[0]);
+    printf("STATUS: %x\n", reply[1]);
+
 
     // auto end = std::chrono::high_resolution_clock::now();
     // durationUs = (std::chrono::duration_cast<std::chrono::nanoseconds>(end-start).count() / 1000.0);

@@ -110,6 +110,7 @@ int main(int argc, char **argv) {
     
     wait_for_enter("\nPress ENTER to continue after setting up ILA trigger...");
 
+
     uint32_t rPSN = 0x00200000;
     uint32_t lPSN = 0x00000000;
     uint32_t rQPN = 0x00100000;
@@ -119,7 +120,7 @@ int main(int argc, char **argv) {
     uint32_t rUDP = 0x000012b7;
     uint64_t vAddr= 0x0000000000000001;
     uint32_t rKey = 0x00000000;
-    uint32_t OP   = 0x00000000;
+    uint32_t OP   = 0x00000002;
     uint64_t rAddr= 0x0000000000000000;
     uint64_t lAddr= 0x0000000000000000;
     uint32_t len  = 0x00000008;
@@ -199,9 +200,10 @@ int main(int argc, char **argv) {
     uint32_t uOP   = 0x00000001;
     uint64_t urAddr= 0x0000000000000000;
     uint64_t ulAddr= 0x0000000000000000;
-    uint32_t ulen  = 0x00000008;
+    uint32_t ulen  = 0x00000008;    
+    
     int read= 0x0000000000000000;
-    bool last = 1; 
+    bool last = 1;  
     uint32_t keep = 0xFFFF; 
     bool write = true; 
 
@@ -224,18 +226,22 @@ int main(int argc, char **argv) {
     OCL_CHECK(err, err = user_kernel.setArg(10, keep));
     OCL_CHECK(err, err = user_kernel.setArg(11, write));
     OCL_CHECK(err, err = user_kernel.setArg(12, buffer_r2));
-    //OCL_CHECK(err, err = user_kernel.setArg(11, buffer_r1));
+    OCL_CHECK(err, err = user_kernel.setArg(13, buffer_r1));
 
     printf("enqueue user kernel...\n");
-    OCL_CHECK(err, err = q.enqueueTask(user_kernel));
-    OCL_CHECK(err, err = q.finish());
-    
+    //for (int i = 0; i < 5; i++) {
+        OCL_CHECK(err, err = q.enqueueTask(user_kernel));
+        OCL_CHECK(err, err = q.finish());
+        //wait_for_enter("\nUser kernel wait...");
+    //}
+
     printf("Device->Host user kernel...\n");
     OCL_CHECK(err, err = q.enqueueMigrateMemObjects({buffer_r2}, CL_MIGRATE_MEM_OBJECT_HOST));
     OCL_CHECK(err, err = q.finish());
 
     // for (int i = 0; i < 16; i++)
     printf("STATUS: %x\n", reply[0]);
+    printf("STATUS: %x\n", reply[1]);
 
 
     // auto end = std::chrono::high_resolution_clock::now();

@@ -28,7 +28,7 @@ void tx_pkg_sender(
     pkt64 tmp_status;
     static ap_uint<64> counter = 111; 
 
-    while(state != DONE) {
+    while(state != DONE){
 
         switch(state) {
 
@@ -97,6 +97,7 @@ extern "C" {
         #pragma HLS INTERFACE axis port = s_axis_tx_status
 
         #pragma HLS dataflow
+        int wait = 0; 
 
         if (writer) {
             tx_pkg_sender(
@@ -113,8 +114,10 @@ extern "C" {
             );
 
             m_axi_reply[0] = network_ptr[0]; 
-            m_axi_reply[1] = 1; 
-        } else {
+            m_axi_reply[1] = wait; 
+        } 
+
+        if (!writer) {
             //for (int i = 0; i < 64; i++)
             network_ptr[0] = 111;
             m_axi_reply[0] = 2; 

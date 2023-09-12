@@ -117,14 +117,14 @@ int main(int argc, char **argv) {
     uint32_t rUDP = 0x000012b7;
     uint64_t vAddr= 0x0000000000000001;
     uint32_t rKey = 0x00000000;
-    uint32_t OP   = 0x00000002;
+    uint32_t OP   = 0x00000000;
     uint64_t rAddr= 0x0000000000000000;
     uint64_t lAddr= 0x0000000000000000;
     uint32_t len  = 0x00000008;
     // [15:4] time interval in cycle       0x100   256cycle
     // [3:2]  board number                 1
     // [1:0]  mode 0-nothing 1-test 2-op   0
-    uint32_t debug= 0x00001004;
+    uint32_t debug= 0x00001000;
     //void* status; 
 
     //std::vector<unsigned int, aligned_allocator<unsigned int> > status(16);

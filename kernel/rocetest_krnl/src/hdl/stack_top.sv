@@ -390,6 +390,9 @@ localparam MODE_OP = 2;
 
 reg[0:0] write_done;
 reg[31:0] wait_counter = 0;
+reg[31:0] qp_node_counter = 0; 
+reg[31:0] qp_conn_node_counter = 0; 
+reg[31:0] qp_conn_counter = 0;
 
 always @(posedge net_clk)
 begin
@@ -401,6 +404,10 @@ begin
         axis_host_tx_metadata.valid  <= 1'b0;
         axis_host_tx_metadata.data  <= 0;
         wait_counter <= 0;
+
+        qp_node_counter <= 0; 
+        qp_conn_node_counter <= 0; 
+        qp_conn_counter <= 0;
 
         write_done <= 0; //TODO: currently not used, should used to avoid rewrite contexts
         writeState <= WRITE_IDLE;
@@ -416,33 +423,70 @@ begin
                     wait_counter <= wait_counter + 1;
                     if (wait_counter == IDLE_TIMER) begin
                         writeState                      <= WRITE_QP;
-                        wait_counter <= 0;
+                        wait_counter                    <= 0;
                     end
                 end
             end
             WRITE_QP: begin // qp 1
-                axis_qp_interface.data[2:0]     <= 3'b010; // 2 READY_RECV
-                axis_qp_interface.data[26:3]    <= rQPN[23:0];
-                axis_qp_interface.data[50:27]   <= rPSN[23:0];
-                axis_qp_interface.data[74:51]   <= lPSN[23:0];
-                axis_qp_interface.data[90:75]   <= rKey[15:0];
-                axis_qp_interface.data[138:91]  <= vAddr[47:0]; //uint<48> vAddr
-                axis_qp_interface.valid         <= 1'b1;
+
+                //If the node counter == board number, we skip adding that qp. 
+                if (qp_node_counter != debug[3:2]) begin 
+                    axis_qp_interface.data[2:0]     <= 3'b010; // 2 READY_RECV
+                    axis_qp_interface.data[26:3]    <= rQPN[23:0];
+                    axis_qp_interface.data[50:27]   <= rPSN[23:0];
+                    axis_qp_interface.data[74:51]   <= lPSN[23:0];
+                    // // rQPN 
+                    // axis_qp_interface.data[26:3]    <= {8'h00, qp_node_counter, 40'h00000};
+                    // // rPSN
+                    // axis_qp_interface.data[50:27]   <= {8'h00, 2 * qp_node_counter, 40'h00000};
+                    // // lPSN
+                    // axis_qp_interface.data[74:51]   <= {8'h00, 2 * debug[3:2], 40'h00000};
+                    axis_qp_interface.data[90:75]   <= rKey[15:0];
+                    axis_qp_interface.data[138:91]  <= vAddr[47:0]; //uint<48> vAddr
+                    axis_qp_interface.valid         <= 1'b1;
+                end else begin 
+                    qp_node_counter <= qp_node_counter + 1;
+                end  
+
                 if (axis_qp_interface.valid && axis_qp_interface.ready) begin
                     axis_qp_interface.valid     <= 1'b0;
+                    qp_node_counter <= qp_node_counter + 1; 
+                end
+
+                //If the node counter's next iter is the number of nodes in the network change states
+                if (qp_node_counter + 1 >= OP[31:0]) begin 
                     writeState                  <= WRITE_CONN;
                 end
             end
             WRITE_CONN: begin
-                axis_qp_conn_interface.data[15:0]       <= lQPN[15:0];
-                axis_qp_conn_interface.data[39:16]      <= rQPN[23:0];
-                axis_qp_conn_interface.data[135:40]     <= 0;
-                axis_qp_conn_interface.data[167:136]    <= remote_ip_address;
-                axis_qp_conn_interface.data[183:168]    <= rUDP[15:0];
-                axis_qp_conn_interface.valid         <= 1'b1;
+                if (qp_conn_node_counter != debug[3:2]) begin 
+                    //axis_qp_conn_interface.data[15:0]       <= lQPN[15:0];
+                    // starts at zero for all and iters for amount of qps 
+                    // axis_qp_conn_interface.data[15:0]       <= {8'h00, debug[3:2] + qp_node_counter, 40'h00000};
+                    // // rQPN
+                    // //remote qps are the board nums of remote nodes 
+                    // axis_qp_conn_interface.data[39:16]      <= {8'h00, qp_node_counter, 40'h00000};
+                    // axis_qp_conn_interface.data[135:40]     <= 0;
+                    // //rIP is flipped so we add the remote board nums to the top 8 bits. 
+                    // axis_qp_conn_interface.data[167:136]    <= {remote_ip_address[31:24] + qp_conn_node_counter, remote_ip_address[23:0]};
+                    axis_qp_conn_interface.data[15:0]       <= lQPN[15:0];
+                    axis_qp_conn_interface.data[39:16]      <= rQPN[23:0];
+                    axis_qp_conn_interface.data[135:40]     <= 0;
+                    axis_qp_conn_interface.data[167:136]    <= remote_ip_address;                    
+                    axis_qp_conn_interface.data[183:168]    <= rUDP[15:0];
+                    axis_qp_conn_interface.valid         <= 1'b1;
+                end else begin 
+                    qp_conn_node_counter <= qp_conn_node_counter + 1; 
+                end 
+
                 if (axis_qp_conn_interface.valid && axis_qp_conn_interface.ready) begin
                     axis_qp_conn_interface.valid        <= 1'b0;
                     // NOTE: use debug[1:0] as kernel mode
+                    qp_conn_counter <= qp_conn_counter + 1; 
+                    qp_conn_node_counter <= qp_conn_node_counter + 1; 
+                end
+
+                if (qp_conn_node_counter + 1 >= OP[31:0]) begin 
                     if (debug[1:0] == 2'b00) begin
                         // 00 - nothing
                         write_done <= 1'b1;
@@ -460,7 +504,8 @@ begin
                         // 10 - run OPcode
                         writeState <= WRITE_META;
                     end
-                end
+                end 
+
             end
             // MODE OP
             WRITE_META: begin
@@ -834,10 +879,10 @@ ila_stack_top inst_ila_stack_top (
     .probe3(s_axis_net.valid),
     .probe4(s_axis_net.ready),
     .probe5(s_axis_net.data),
-    .probe6(s_axis_roce_role_tx_meta.valid),
-    .probe7(s_axis_roce_role_tx_meta.ready),
-    .probe8(s_axis_roce_role_tx_meta.data),//160
-    .probe9(roce_data_tx_role_pkg_counter),//32
+    .probe6(axis_qp_interface.valid),
+    .probe7(axis_qp_interface.ready),
+    .probe8(axis_qp_interface.data),//160
+    .probe9(roce_data_rx_pkg_counter),//32
     .probe10(writeState),//8
     .probe11(m_axis_roce_read_cmd.valid),
     .probe12(m_axis_roce_read_cmd.ready),
@@ -895,9 +940,9 @@ ila_stack_top_inter inst_ila_stack_top_inter (
     .probe34(s_axis_roce_read_data.valid),
     .probe35(s_axis_roce_read_data.ready),
     .probe36(s_axis_roce_read_data.data),//512
-    .probe37(m_axis_roce_write_data.valid),
-    .probe38(m_axis_roce_write_data.ready),
-    .probe39(m_axis_roce_write_data.data)//512
+    .probe37(axis_qp_conn_interface.valid),
+    .probe38(axis_qp_conn_interface.ready),
+    .probe39(axis_qp_conn_interface.data)//512
 );
 
 /*
