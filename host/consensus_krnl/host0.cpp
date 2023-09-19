@@ -120,7 +120,7 @@ int main(int argc, char **argv) {
     uint32_t rUDP = 0x000012b7;
     uint64_t vAddr= 0x0000000000000001;
     uint32_t rKey = 0x00000000;
-    uint32_t OP   = 0x00000002;
+    uint32_t OP   = 0x00000001;
     uint64_t rAddr= 0x0000000000000000;
     uint64_t lAddr= 0x0000000000000000;
     uint32_t len  = 0x00000008;
