@@ -97,6 +97,14 @@ module rocetest_krnl #(
   output wire [C_M_AXIS_ROLE_TX_STATUS_TDATA_WIDTH-1:0]   m_axis_role_tx_status_tdata ,
   output wire [C_M_AXIS_ROLE_TX_STATUS_TDATA_WIDTH/8-1:0] m_axis_role_tx_status_tkeep ,
   output wire                                             m_axis_role_tx_status_tlast ,
+
+  // // AXI4-Stream (slave) interface s_axis_qp_interface
+  // input  wire                                             s_axis_qp_interface_tvalid  ,
+  // output wire                                             s_axis_qp_interface_tready  ,
+  // input  wire [C_S_AXIS_ROLE_TX_META_TDATA_WIDTH-1:0]     s_axis_qp_interface_tdata   ,
+  // input  wire [C_S_AXIS_ROLE_TX_META_TDATA_WIDTH/8-1:0]   s_axis_qp_interface_tkeep   ,
+  // input  wire                                             s_axis_qp_interface_tlast   ,
+  
   // AXI4-Lite slave interface
   input  wire                                             s_axi_control_awvalid       ,
   output wire                                             s_axi_control_awready       ,
@@ -154,6 +162,9 @@ axi_stream axis_net_tx_data_aclk();
 axis_meta #(.WIDTH(160))    s_axis_roce_role_tx_meta();
 axi_stream      s_axis_roce_role_tx_data();
 axi_stream      m_axis_roce_role_tx_status();
+
+// axis_meta       s_axis_qp_interface(); 
+
 // ROCE memory interface
 axis_meta       m_axis_roce_read_cmd();
 axis_meta       m_axis_roce_write_cmd();
@@ -245,6 +256,7 @@ stack_top #(
     .s_axis_roce_role_tx_meta   ( s_axis_roce_role_tx_meta   ),
     .s_axis_roce_role_tx_data   ( s_axis_roce_role_tx_data   ),
     .m_axis_roce_role_tx_status ( m_axis_roce_role_tx_status ),
+    //.s_axis_qp_interface ( s_axis_qp_interface ),
     // DMA
     // let route=0 : ROUTE_DMA (not ROUTE_CUSTOM)
     .m_axis_roce_read_cmd   ( m_axis_roce_read_cmd   ),
@@ -385,6 +397,10 @@ assign m_axis_role_tx_status_tdata = m_axis_roce_role_tx_status.data;
 assign m_axis_role_tx_status_tkeep = m_axis_roce_role_tx_status.keep;
 assign m_axis_role_tx_status_tlast = m_axis_roce_role_tx_status.last;
 assign m_axis_roce_role_tx_status.ready = m_axis_role_tx_status_tready;
+
+// assign s_axis_qp_interface.valid = s_axis_qp_interface_tvalid;
+// assign s_axis_qp_interface.data = s_axis_qp_interface_tdata[159:0];
+// assign s_axis_qp_interface_tready = s_axis_qp_interface.ready;
 
 endmodule
 `default_nettype wire

@@ -113,7 +113,7 @@ int main(int argc, char **argv) {
     uint32_t rQPN = 0x00000000;
     uint32_t lQPN = 0x00000000;
     uint32_t rIP  = 0x0b01d4e0;
-    uint32_t lIP  = 0x0b01d4e1;
+    uint32_t lIP  = 0x0b01d4e2;
     uint32_t rUDP = 0x000012b7;
     uint64_t vAddr= 0x0000000000000001;
     uint32_t rKey = 0x00000000;
@@ -124,7 +124,7 @@ int main(int argc, char **argv) {
     // [15:4] time interval in cycle       0x100   256cycle
     // [3:2]  board number                 1
     // [1:0]  mode 0-nothing 1-test 2-op   0
-    uint32_t debug= 0x00001004;
+    uint32_t debug= 0x00001008;
     //void* status; 
 
     //std::vector<unsigned int, aligned_allocator<unsigned int> > status(16);
@@ -191,7 +191,7 @@ int main(int argc, char **argv) {
     //printf("Host->Device user kernel...\n");
     //OCL_CHECK(err, err = q.enqueueMigrateMemObjects({DebugBuffer}, 0));
     //OCL_CHECK(err, err = q.finish());
-    uint32_t ulQPN = 0x00000000;
+    uint32_t ulQPN = 0x00100000;
     uint32_t uOP   = 0x00000001;
     uint64_t urAddr= 0x0000000000000000;
     uint64_t ulAddr= 0x0000000000000000;
@@ -209,7 +209,7 @@ int main(int argc, char **argv) {
                                    reply.data(),
                                    &err));
 
-    //uint32_t ulQPN = 0x00000000;
+
     OCL_CHECK(err, err = user_kernel.setArg(3, uOP));
     OCL_CHECK(err, err = user_kernel.setArg(4, ulQPN));
     OCL_CHECK(err, err = user_kernel.setArg(5, ulAddr));
@@ -227,12 +227,7 @@ int main(int argc, char **argv) {
 
     OCL_CHECK(err, err = q.enqueueTask(user_kernel));
     OCL_CHECK(err, err = q.finish());
-
-    ulQPN = 0x00000002;
-    OCL_CHECK(err, err = user_kernel.setArg(4, ulQPN));
-    OCL_CHECK(err, err = q.enqueueTask(user_kernel));
-    OCL_CHECK(err, err = q.finish());
-
+    
     printf("Device->Host user kernel...\n");
     //OCL_CHECK(err, err = q.enqueueMigrateMemObjects({buffer_r1}, CL_MIGRATE_MEM_OBJECT_HOST));
     OCL_CHECK(err, err = q.enqueueMigrateMemObjects({buffer_r2}, CL_MIGRATE_MEM_OBJECT_HOST));

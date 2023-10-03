@@ -111,16 +111,16 @@ int main(int argc, char **argv) {
     wait_for_enter("\nPress ENTER to continue after setting up ILA trigger...");
 
 
-    uint32_t rPSN = 0x00200000;
+    uint32_t rPSN = 0x00000000;
     uint32_t lPSN = 0x00000000;
-    uint32_t rQPN = 0x00100000;
-    uint32_t lQPN = 0x00000000;
-    uint32_t rIP  = 0x0b01d4e1;
+    uint32_t rQPN = 0x00000001;
+    uint32_t lQPN = 0x00000001;
+    uint32_t rIP  = 0x0b01d4e0;
     uint32_t lIP  = 0x0b01d4e0;
     uint32_t rUDP = 0x000012b7;
     uint64_t vAddr= 0x0000000000000001;
     uint32_t rKey = 0x00000000;
-    uint32_t OP   = 0x00000001;
+    uint32_t OP   = 0x00000002;
     uint64_t rAddr= 0x0000000000000000;
     uint64_t lAddr= 0x0000000000000000;
     uint32_t len  = 0x00000008;
@@ -196,7 +196,7 @@ int main(int argc, char **argv) {
     //printf("Host->Device user kernel...\n");
     //OCL_CHECK(err, err = q.enqueueMigrateMemObjects({DebugBuffer}, 0));
     //OCL_CHECK(err, err = q.finish());
-    uint32_t ulQPN = 0x00000000;
+    uint32_t ulQPN = 0x00000002;
     uint32_t uOP   = 0x00000001;
     uint64_t urAddr= 0x0000000000000000;
     uint64_t ulAddr= 0x0000000000000000;
@@ -240,8 +240,8 @@ int main(int argc, char **argv) {
     OCL_CHECK(err, err = q.finish());
 
     // for (int i = 0; i < 16; i++)
-    printf("STATUS: %x\n", reply[0]);
-    printf("STATUS: %x\n", reply[1]);
+    printf("STATUS: %d\n", reply[0]);
+    printf("STATUS: %d\n", reply[1]);
 
 
     // auto end = std::chrono::high_resolution_clock::now();
