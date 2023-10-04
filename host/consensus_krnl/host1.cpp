@@ -193,7 +193,7 @@ int main(int argc, char **argv) {
     //OCL_CHECK(err, err = q.finish());
     uint32_t ulQPN = 0x00000000;
     uint32_t uOP   = 0x00000001;
-    uint64_t urAddr= 0x0000000000000000;
+    uint64_t urAddr= 0x0000000000000008;
     uint64_t ulAddr= 0x0000000000000000;
     uint32_t ulen  = 0x00000008;
     int read= 0x0000000000000000;
@@ -228,10 +228,10 @@ int main(int argc, char **argv) {
     OCL_CHECK(err, err = q.enqueueTask(user_kernel));
     OCL_CHECK(err, err = q.finish());
 
-    ulQPN = 0x00000002;
-    OCL_CHECK(err, err = user_kernel.setArg(4, ulQPN));
-    OCL_CHECK(err, err = q.enqueueTask(user_kernel));
-    OCL_CHECK(err, err = q.finish());
+    // ulQPN = 0x00000002;
+    // OCL_CHECK(err, err = user_kernel.setArg(4, ulQPN));
+    // OCL_CHECK(err, err = q.enqueueTask(user_kernel));
+    // OCL_CHECK(err, err = q.finish());
 
     printf("Device->Host user kernel...\n");
     //OCL_CHECK(err, err = q.enqueueMigrateMemObjects({buffer_r1}, CL_MIGRATE_MEM_OBJECT_HOST));

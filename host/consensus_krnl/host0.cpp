@@ -196,7 +196,7 @@ int main(int argc, char **argv) {
     //printf("Host->Device user kernel...\n");
     //OCL_CHECK(err, err = q.enqueueMigrateMemObjects({DebugBuffer}, 0));
     //OCL_CHECK(err, err = q.finish());
-    uint32_t ulQPN = 0x00000002;
+    uint32_t ulQPN = 0x00000001;
     uint32_t uOP   = 0x00000001;
     uint64_t urAddr= 0x0000000000000000;
     uint64_t ulAddr= 0x0000000000000000;
@@ -229,19 +229,24 @@ int main(int argc, char **argv) {
     OCL_CHECK(err, err = user_kernel.setArg(13, buffer_r1));
 
     printf("enqueue user kernel...\n");
-    //for (int i = 0; i < 5; i++) {
-        OCL_CHECK(err, err = q.enqueueTask(user_kernel));
-        OCL_CHECK(err, err = q.finish());
-        //wait_for_enter("\nUser kernel wait...");
-    //}
+    OCL_CHECK(err, err = q.enqueueTask(user_kernel));
+    OCL_CHECK(err, err = q.finish());
+
+
+    ulQPN = 0x00000002;
+    OCL_CHECK(err, err = user_kernel.setArg(4, ulQPN));
+    OCL_CHECK(err, err = q.enqueueTask(user_kernel));
+    OCL_CHECK(err, err = q.finish());
+
+    //wait_for_enter("\nPausing for network kernel setup... for RDMA write to node 2");
 
     printf("Device->Host user kernel...\n");
     OCL_CHECK(err, err = q.enqueueMigrateMemObjects({buffer_r2}, CL_MIGRATE_MEM_OBJECT_HOST));
     OCL_CHECK(err, err = q.finish());
 
-    // for (int i = 0; i < 16; i++)
-    printf("STATUS: %d\n", reply[0]);
-    printf("STATUS: %d\n", reply[1]);
+    for (int i = 0; i < 3; i++)
+        printf("STATUS: %d\n", reply[i]);
+        //printf("STATUS: %d\n", reply[1]);
 
 
     // auto end = std::chrono::high_resolution_clock::now();

@@ -41,7 +41,6 @@ void tx_pkg_sender(
             break; 
 
             case WRITE_META: 
-
                 tx_meta.data.range(2,0) = s_axi_op; 
                 tx_meta.data.range(26,3) = s_axi_lqpn; 
                 tx_meta.data.range(74, 27) = s_axi_laddr; 
@@ -56,14 +55,8 @@ void tx_pkg_sender(
                     m_axis_tx_data.write(tx_data);
                     counter++; 
                 }
-
-                state = WAIT_READY; 
-            
-            break; 
-
-            case WAIT_READY: 
                 state = DONE; 
-            break;
+            break; 
 
         } 
     }
@@ -96,7 +89,7 @@ extern "C" {
         #pragma HLS INTERFACE axis port = m_axis_tx_data
         #pragma HLS INTERFACE axis port = s_axis_tx_status
 
-        #pragma HLS dataflow
+        //#pragma HLS dataflow
 
         if (writer) {
             tx_pkg_sender(
@@ -111,13 +104,9 @@ extern "C" {
                     m_axis_tx_meta,
                     m_axis_tx_data
             );
-
-            m_axi_reply[0] = network_ptr[0]; 
-            m_axi_reply[1] = 1; 
+            m_axi_reply[0] = 1; 
         } else {
-            //for (int i = 0; i < 64; i++)
-            network_ptr[0] = 111;
-            m_axi_reply[0] = 2; 
+            m_axi_reply[0] = network_ptr[0]; 
         }
 
     }

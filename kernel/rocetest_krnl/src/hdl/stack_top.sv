@@ -1003,9 +1003,9 @@ ila_stack_top inst_ila_stack_top (
     .probe11(m_axis_roce_read_cmd.valid),
     .probe12(m_axis_roce_read_cmd.ready),
     .probe13(m_axis_roce_read_cmd.data),//96
-    .probe14(axis_arp_lookup.valid),
-    .probe15(axis_arp_lookup.ready),
-    .probe16(axis_arp_lookup.data),//96
+    .probe14(m_axis_roce_write_cmd.valid),
+    .probe15(m_axis_roce_write_cmd.ready),
+    .probe16(m_axis_roce_write_cmd.data),//96
     .probe17(net_aresetn),
     .probe18(rx_pkg_counter),//32
     .probe19(tx_pkg_counter),//32
@@ -1053,12 +1053,12 @@ ila_stack_top_inter inst_ila_stack_top_inter (
     .probe31(m_axis_roce_write_cmd.valid),
     .probe32(m_axis_roce_write_cmd.ready),
     .probe33(m_axis_roce_write_cmd.data),//96
-    .probe34(axis_qp_conn_interface.valid),
-    .probe35(axis_qp_conn_interface.ready),
-    .probe36(axis_qp_conn_interface.data),//512
-    .probe37(axis_qp_interface.valid),
-    .probe38(axis_qp_interface.ready),
-    .probe39(axis_qp_interface.data)//512
+    .probe34(s_axis_roce_read_data.valid),
+    .probe35(s_axis_roce_read_data.ready),
+    .probe36(s_axis_roce_read_data.data),//512
+    .probe37(m_axis_roce_write_data.valid),
+    .probe38(m_axis_roce_write_data.ready),
+    .probe39(m_axis_roce_write_data.data)//512
 );
 
 /*
