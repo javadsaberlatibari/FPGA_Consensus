@@ -18,7 +18,8 @@ void tx_pkg_sender(
     ap_uint<32> s_axi_keep_data, 
     hls::stream<pkt64>& s_axis_tx_status,
     hls::stream<pkt256>& m_axis_tx_meta, 
-    hls::stream<pkt64>& m_axis_tx_data
+    hls::stream<pkt64>& m_axis_tx_data,
+    ap_uint<64> value
 ) {
 
     enum fsmStateType {IDLE_STATE, WRITE_META, WAIT_READY, DONE};
@@ -49,7 +50,7 @@ void tx_pkg_sender(
                 m_axis_tx_meta.write(tx_meta);
 
                 if (s_axi_op == 1 && s_axi_laddr == 0) {
-                    tx_data.data = counter;
+                    tx_data.data = value;
                     tx_data.last = s_axi_last_data; 
                     tx_data.keep = s_axi_keep_data;    
                     m_axis_tx_data.write(tx_data);
@@ -80,6 +81,7 @@ extern "C" {
         bool s_axi_last_data, 
         ap_uint<32> s_axi_keep_data, 
         bool writer,
+        ap_uint<64> value, 
         int *m_axi_reply,
         int *network_ptr
         //ap_uint<512>* m_axi_status
@@ -102,7 +104,8 @@ extern "C" {
                     s_axi_keep_data,
                     s_axis_tx_status,
                     m_axis_tx_meta,
-                    m_axis_tx_data
+                    m_axis_tx_data,
+                    value
             );
             m_axi_reply[0] = 1; 
         } else {

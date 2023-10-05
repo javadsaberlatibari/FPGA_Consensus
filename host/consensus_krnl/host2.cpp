@@ -117,7 +117,7 @@ int main(int argc, char **argv) {
     uint32_t rUDP = 0x000012b7;
     uint64_t vAddr= 0x0000000000000001;
     uint32_t rKey = 0x00000000;
-    uint32_t OP   = 0x00000002;
+    uint32_t OP   = 0x00000003;
     uint64_t rAddr= 0x0000000000000000;
     uint64_t lAddr= 0x0000000000000000;
     uint32_t len  = 0x00000008;
@@ -191,7 +191,7 @@ int main(int argc, char **argv) {
     //printf("Host->Device user kernel...\n");
     //OCL_CHECK(err, err = q.enqueueMigrateMemObjects({DebugBuffer}, 0));
     //OCL_CHECK(err, err = q.finish());
-    uint32_t ulQPN = 0x00100000;
+    uint32_t ulQPN = 0x00000001;
     uint32_t uOP   = 0x00000001;
     uint64_t urAddr= 0x0000000000000000;
     uint64_t ulAddr= 0x0000000000000000;
@@ -199,7 +199,7 @@ int main(int argc, char **argv) {
     int read= 0x0000000000000000;
     bool last = 1; 
     uint32_t keep = 0xFFFF; 
-    bool write = false; 
+    bool write = true; 
 
     std::vector<int, aligned_allocator<int>> reply(64);
     OCL_CHECK(err,
@@ -219,8 +219,10 @@ int main(int argc, char **argv) {
     OCL_CHECK(err, err = user_kernel.setArg(9, last));
     OCL_CHECK(err, err = user_kernel.setArg(10, keep));
     OCL_CHECK(err, err = user_kernel.setArg(11, write));
-    OCL_CHECK(err, err = user_kernel.setArg(12, buffer_r2));
-    OCL_CHECK(err, err = user_kernel.setArg(13, buffer_r1));
+    uint64_t value = 2; 
+    OCL_CHECK(err, err = user_kernel.setArg(12, value));
+    OCL_CHECK(err, err = user_kernel.setArg(13, buffer_r2));
+    OCL_CHECK(err, err = user_kernel.setArg(14, buffer_r1));
 
 
     printf("enqueue user kernel...\n");
