@@ -198,7 +198,7 @@ int main(int argc, char **argv) {
     uint32_t ulen  = 0x00000008;
     int read= 0x0000000000000000;
     bool last = 1; 
-    uint32_t keep = 0xFFFF; 
+    uint32_t keep = 0xFF; 
     bool write = true; 
 
     std::vector<int, aligned_allocator<int>> reply(64);
