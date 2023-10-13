@@ -196,12 +196,12 @@ int main(int argc, char **argv) {
     //printf("Host->Device user kernel...\n");
     //OCL_CHECK(err, err = q.enqueueMigrateMemObjects({DebugBuffer}, 0));
     //OCL_CHECK(err, err = q.finish());
-    uint32_t ulQPN = 0x00000001;
-    uint32_t uOP   = 0x00000000;
+    uint32_t ulQPN = 0x00000000;
+    uint32_t uOP   = 0x00000001;
     uint64_t urAddr= 0x0000000000000000;
     uint64_t ulAddr= 0x0000000000000000;
-    uint32_t ulen  = 0x00000100;    
-    
+    uint32_t ulen  = 0x00000008;    
+
     int read= 0x0000000000000000;
     bool last = 1;  
     uint32_t keep = 0xFF; 
@@ -225,10 +225,10 @@ int main(int argc, char **argv) {
     OCL_CHECK(err, err = user_kernel.setArg(9, last));
     OCL_CHECK(err, err = user_kernel.setArg(10, keep));
     OCL_CHECK(err, err = user_kernel.setArg(11, write));
-    uint64_t value = 110; 
-    OCL_CHECK(err, err = user_kernel.setArg(12, value));
-    OCL_CHECK(err, err = user_kernel.setArg(13, buffer_r2));
-    OCL_CHECK(err, err = user_kernel.setArg(14, buffer_r1));
+    //uint64_t value = 110; 
+    //OCL_CHECK(err, err = user_kernel.setArg(12, value));
+    OCL_CHECK(err, err = user_kernel.setArg(12, buffer_r2));
+    OCL_CHECK(err, err = user_kernel.setArg(13, buffer_r1));
 
 
 

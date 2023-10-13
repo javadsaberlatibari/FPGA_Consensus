@@ -469,6 +469,8 @@ reg[31:0] qp_node_num = 0;
 reg[31:0] qp_conn_counter = 0; 
 reg[31:0] qp_conn_node_num = 0;
 
+//reg[31:0] test_num = 0; 
+
 always @(posedge net_clk)
 begin
     if (~net_aresetn | ap_start_pulse) begin
@@ -482,7 +484,7 @@ begin
 
         qp_counter <= 0; 
         qp_node_num <= 0; 
-
+        //test_num <= 0; 
         qp_conn_counter <= 0; 
         qp_conn_node_num <= 0;
 
@@ -513,9 +515,18 @@ begin
                 
                 if (qp_node_num != debug[5:2]) begin 
                     if (!axis_qp_interface.valid) begin 
+                        
                         axis_qp_interface.data[2:0]     <= 3'b010; // 2 READY_RECV
+                        
                         // rQPN 
-                        axis_qp_interface.data[26:3]    <= qp_node_num;
+                        if (qp_node_num[4:0] < debug[5:2]) begin 
+                            axis_qp_interface.data[26:3]    <= OP[4:0] * qp_node_num[4:0] + debug[5:2] - 4'b0001;
+                        end 
+                        else begin
+                            axis_qp_interface.data[26:3]    <= OP[4:0] * qp_node_num[4:0] + debug[5:2]; 
+                        end 
+
+                        //test_num                        <= unsigned'((signed'(OP[4:0]) * signed'(qp_node_num[4:0])) + (qp_node_num[4:0] < debug[5:2]) ? signed'(debug[5:2]) - 1 : signed'(debug[5:2]));
                         // rPSN
                         axis_qp_interface.data[50:27]   <= 0;
                         // lPSN
@@ -523,10 +534,7 @@ begin
                         axis_qp_interface.data[90:75]   <= rKey[15:0];
                         axis_qp_interface.data[138:91]  <= vAddr[47:0]; //uint<48> vAddr
                         axis_qp_interface.valid         <= 1'b1;
-                        
-                        // axis_qp_interface.data[26:3]    <= rQPN[23:0];
-                        // axis_qp_interface.data[50:27]   <= rPSN[23:0];
-                        // axis_qp_interface.data[74:51]   <= lPSN[23:0];
+
                         qp_node_num <= qp_node_num + 1; 
                     end 
                 end else begin 
@@ -548,14 +556,18 @@ begin
 
                 if (qp_conn_node_num != debug[5:2]) begin 
                     if (!axis_qp_conn_interface.valid) begin 
+
                         //axis_qp_conn_interface.data[15:0]       <= lQPN[15:0];
-                        // starts at zero for all and iters for amount of qps 
-                        axis_qp_conn_interface.data[15:0]       <= qp_conn_node_num;
+                        axis_qp_conn_interface.data[15:0]       <= (OP[4:0] * debug[5:2]) + qp_conn_counter[4:0];
                         // rQPN
-                        //remote qps are the board nums of remote nodes 
-                        axis_qp_conn_interface.data[39:16]      <= qp_conn_node_num;
+                        if (qp_conn_node_num[4:0] < debug[5:2]) begin 
+                            axis_qp_conn_interface.data[39:16]    <= OP[4:0] * qp_conn_node_num[4:0] + debug[5:2] - 4'b0001;
+                        end 
+                        else begin
+                            axis_qp_conn_interface.data[39:16]    <= OP[4:0] * qp_conn_node_num[4:0] + debug[5:2]; 
+                        end 
                         axis_qp_conn_interface.data[135:40]     <= 0;
-                        //rIP is flipped so we add the remote board nums to the top 8 bits. 
+                        //rIP 
                         axis_qp_conn_interface.data[167:136]    <= {remote_ip_address[31:24] + qp_conn_node_num, remote_ip_address[23:0]};
                         
                         // axis_qp_conn_interface.data[15:0]       <= lQPN[15:0];
@@ -1021,16 +1033,16 @@ ila_stack_top inst_ila_stack_top (
 
 ila_stack_top_inter inst_ila_stack_top_inter (
     .clk(net_clk),
-    .probe0(axis_roce_slice_to_roce.valid),
-    .probe1(axis_roce_slice_to_roce.ready),
-    .probe2(axis_roce_slice_to_roce.data),
-    .probe3(axis_roce_to_roce_slice.valid),
-    .probe4(axis_roce_to_roce_slice.ready),
-    .probe5(axis_roce_to_roce_slice.data),
+    .probe0(axis_qp_interface.valid),
+    .probe1(axis_qp_interface.ready),
+    .probe2(axis_qp_interface.data),
+    .probe3(axis_qp_conn_interface.valid),
+    .probe4(axis_qp_conn_interface.ready),
+    .probe5(axis_qp_conn_interface.data),
     .probe6(axis_roce_slice_to_mie.valid),
     .probe7(axis_roce_slice_to_mie.ready),
     .probe8(axis_roce_slice_to_mie.data),
-    .probe9(run_counter),//32
+    .probe9(qp_node_num),//32
     .probe10(writeState),//8
     .probe11(axis_mie_to_intercon.valid),
     .probe12(axis_mie_to_intercon.ready),

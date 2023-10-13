@@ -219,10 +219,10 @@ int main(int argc, char **argv) {
     OCL_CHECK(err, err = user_kernel.setArg(9, last));
     OCL_CHECK(err, err = user_kernel.setArg(10, keep));
     OCL_CHECK(err, err = user_kernel.setArg(11, write));
-    uint64_t value = 112; 
-    OCL_CHECK(err, err = user_kernel.setArg(12, value));
-    OCL_CHECK(err, err = user_kernel.setArg(13, buffer_r2));
-    OCL_CHECK(err, err = user_kernel.setArg(14, buffer_r1));
+    //uint64_t value = 112; 
+    //OCL_CHECK(err, err = user_kernel.setArg(12, value));
+    OCL_CHECK(err, err = user_kernel.setArg(12, buffer_r2));
+    OCL_CHECK(err, err = user_kernel.setArg(13, buffer_r1));
 
 
     printf("enqueue user kernel...\n");
