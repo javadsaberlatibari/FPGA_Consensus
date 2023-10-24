@@ -62,6 +62,8 @@ module stack_top #(
     axi_stream.slave              s_axis_roce_role_tx_data   ,
     axi_stream.master             m_axis_roce_role_tx_status ,
 
+    //axis_meta.slave               s_axis_qp_interface,           
+
     // Control Signals
     input  wire                                  ap_start         ,
     output wire                                  ap_idle          ,
@@ -80,8 +82,8 @@ module stack_top #(
     input  wire [64-1:0]                         rAddr            ,
     input  wire [64-1:0]                         lAddr            ,
     input  wire [32-1:0]                         len              ,
-    input  wire [32-1:0]                         debug            
-    
+    input  wire [32-1:0]                         debug            ,
+    input  wire [32-1:0]                         arpDelay                
  );
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -166,6 +168,7 @@ reg [31:0] remote_ip_address;
 
 wire set_board_number_valid;
 wire[3:0] set_board_number_data;
+wire[31:0] ARP_IDLE_TIMER;
 reg[3:0] board_number;
 
 // statistics
@@ -294,7 +297,9 @@ end
 assign set_ip_addr_valid = ap_start_pulse;
 assign set_board_number_valid = ap_start_pulse;
 // NOTE: use debug[3:2] as board number
-assign set_board_number_data = {2'b0, debug[3:2]};
+// PRITH: Board number is now debug[5:2]
+//assign set_board_number_data = {2'b0, debug[3:2]};
+assign set_board_number_data =  debug[5:2];
 
 always @(posedge net_clk) begin
     if (~net_aresetn) begin
@@ -354,9 +359,78 @@ assign ip_address_used = iph_ip_address;
 
 
 // request ARP on start
-assign axis_host_arp_lookup_request_TVALID = ap_start_pulse;
+// reg [31:0] arp_remote_ip_address;
+reg [31:0] arp_counter; 
+reg [31:0] arp_node_num; 
+reg [31:0] arp_wait_counter; 
+// reg [0:0] arp_pulse; 
+reg[0:0] arp_write_done;
+//localparam ARP_IDLE_TIMER = 500000000;
+assign ARP_IDLE_TIMER = arpDelay;
+reg[7:0] arpState;
+localparam ARP_IDLE = 0;
+localparam ARP_RQ = 1;
+axi_stream #(.WIDTH(32))     axis_arp_lookup();
+
+always @(posedge net_clk) begin
+    if (~net_aresetn | ap_start_pulse) begin
+        //arp_remote_ip_address <= 32'hD2D4010B;
+        //arp_pulse <= 1'b0;
+        arp_counter <= 0;
+        arp_node_num <= 0; 
+        arp_write_done <= 1'b0; 
+        arpState <= ARP_IDLE; 
+    end
+    else begin
+        case (arpState) 
+            ARP_IDLE : begin
+                if (ap_start && !arp_write_done) begin
+                    arp_wait_counter <= arp_wait_counter + 1;
+                    if (arp_wait_counter == ARP_IDLE_TIMER) begin
+                        arpState                      <= ARP_RQ;
+                        arp_wait_counter                    <= 0;
+                        arp_node_num <= 0; 
+                        arp_counter <= 0; 
+                    end
+                end 
+            end 
+
+            ARP_RQ : begin
+                if (arp_node_num != debug[5:2]) begin 
+                    if (!axis_arp_lookup.valid) begin 
+                        axis_arp_lookup.data[31:24] <= rIP[7:0] + arp_node_num;
+                        axis_arp_lookup.data[23:16] <= rIP[15:8];
+                        axis_arp_lookup.data[15:8] <= rIP[23:16];
+                        axis_arp_lookup.data[7:0] <= rIP[31:24];
+                        axis_arp_lookup.valid <= 1'b1;
+                        arp_node_num <= arp_node_num + 1;
+                    end  
+                end else begin 
+                    arp_node_num <= arp_node_num + 1; 
+                end  
+
+                if (axis_arp_lookup.valid && axis_arp_lookup.ready) begin
+                    axis_arp_lookup.valid <= 1'b0;
+                    if (arp_counter + 1 == OP[31:0]) begin 
+                        //arp_counter <= 0; 
+                        arpState <= ARP_IDLE; 
+                        arp_write_done <= 1; 
+                    end else begin
+                        arp_counter <= arp_counter + 1;
+                    end 
+                end
+            end 
+        endcase
+    end
+end
+
 assign axis_host_arp_lookup_reply_TREADY = 1'b1;
-assign axis_host_arp_lookup_request_TDATA = {rIP[7:0], rIP[15:8], rIP[23:16], rIP[31:24]};
+// assign axis_host_arp_lookup_request_TVALID = arp_pulse;
+// assign axis_host_arp_lookup_request_TDATA = {arp_remote_ip_address[7:0], arp_remote_ip_address[15:8], arp_remote_ip_address[23:16], arp_remote_ip_address[31:24]};
+
+// assign axis_arp_lookup.ready = axis_host_arp_lookup_reply_TREADY;
+// assign axis_host_arp_lookup_request_TVALID = axis_arp_lookup.valid;
+// assign axis_host_arp_lookup_request_TDATA = axis_arp_lookup.data; 
 
 /*
  * STATE MACHINE for
@@ -391,6 +465,14 @@ localparam MODE_OP = 2;
 reg[0:0] write_done;
 reg[31:0] wait_counter = 0;
 
+reg[31:0] qp_counter = 0; 
+reg[31:0] qp_node_num = 0; 
+
+reg[31:0] qp_conn_counter = 0; 
+reg[31:0] qp_conn_node_num = 0;
+
+//reg[31:0] test_num = 0; 
+
 always @(posedge net_clk)
 begin
     if (~net_aresetn | ap_start_pulse) begin
@@ -401,6 +483,12 @@ begin
         axis_host_tx_metadata.valid  <= 1'b0;
         axis_host_tx_metadata.data  <= 0;
         wait_counter <= 0;
+
+        qp_counter <= 0; 
+        qp_node_num <= 0; 
+        //test_num <= 0; 
+        qp_conn_counter <= 0; 
+        qp_conn_node_num <= 0;
 
         write_done <= 0; //TODO: currently not used, should used to avoid rewrite contexts
         writeState <= WRITE_IDLE;
@@ -416,123 +504,183 @@ begin
                     wait_counter <= wait_counter + 1;
                     if (wait_counter == IDLE_TIMER) begin
                         writeState                      <= WRITE_QP;
-                        wait_counter <= 0;
+                        wait_counter                    <= 0;
+
+                        qp_counter <= 0; 
+                        qp_node_num <= 0;  
+                        qp_conn_counter <= 0; 
+                        qp_conn_node_num <= 0;
                     end
                 end
             end
             WRITE_QP: begin // qp 1
-                axis_qp_interface.data[2:0]     <= 3'b010; // 2 READY_RECV
-                axis_qp_interface.data[26:3]    <= rQPN[23:0];
-                axis_qp_interface.data[50:27]   <= rPSN[23:0];
-                axis_qp_interface.data[74:51]   <= lPSN[23:0];
-                axis_qp_interface.data[90:75]   <= rKey[15:0];
-                axis_qp_interface.data[138:91]  <= vAddr[47:0]; //uint<48> vAddr
-                axis_qp_interface.valid         <= 1'b1;
+                
+                if (qp_node_num != debug[5:2]) begin 
+                    if (!axis_qp_interface.valid) begin 
+                        
+                        axis_qp_interface.data[2:0]     <= 3'b010; // 2 READY_RECV
+                        
+                        // rQPN 
+                        if (qp_node_num[4:0] < debug[5:2]) begin 
+                            axis_qp_interface.data[26:3]    <= OP[4:0] * qp_node_num[4:0] + debug[5:2] - 4'b0001;
+                        end 
+                        else begin
+                            axis_qp_interface.data[26:3]    <= OP[4:0] * qp_node_num[4:0] + debug[5:2]; 
+                        end 
+
+                        //test_num                        <= unsigned'((signed'(OP[4:0]) * signed'(qp_node_num[4:0])) + (qp_node_num[4:0] < debug[5:2]) ? signed'(debug[5:2]) - 1 : signed'(debug[5:2]));
+                        // rPSN
+                        axis_qp_interface.data[50:27]   <= 0;
+                        // lPSN
+                        axis_qp_interface.data[74:51]   <= 0;
+                        axis_qp_interface.data[90:75]   <= rKey[15:0];
+                        axis_qp_interface.data[138:91]  <= vAddr[47:0]; //uint<48> vAddr
+                        axis_qp_interface.valid         <= 1'b1;
+
+                        qp_node_num <= qp_node_num + 1; 
+                    end 
+                end else begin 
+                    qp_node_num <= qp_node_num + 1; 
+                end 
+
                 if (axis_qp_interface.valid && axis_qp_interface.ready) begin
-                    axis_qp_interface.valid     <= 1'b0;
-                    writeState                  <= WRITE_CONN;
+                    axis_qp_interface.valid     <= 1'b0; 
+                    if (qp_counter + 1 == OP[31:0]) begin 
+                        writeState <= WRITE_CONN; 
+                    end else begin 
+                        qp_counter <= qp_counter + 1;
+                    end 
+                    
                 end
+
             end
             WRITE_CONN: begin
-                axis_qp_conn_interface.data[15:0]       <= lQPN[15:0];
-                axis_qp_conn_interface.data[39:16]      <= rQPN[23:0];
-                axis_qp_conn_interface.data[135:40]     <= 0;
-                axis_qp_conn_interface.data[167:136]    <= remote_ip_address;
-                axis_qp_conn_interface.data[183:168]    <= rUDP[15:0];
-                axis_qp_conn_interface.valid         <= 1'b1;
+
+                if (qp_conn_node_num != debug[5:2]) begin 
+                    if (!axis_qp_conn_interface.valid) begin 
+
+                        //axis_qp_conn_interface.data[15:0]       <= lQPN[15:0];
+                        axis_qp_conn_interface.data[15:0]       <= (OP[4:0] * debug[5:2]) + qp_conn_counter[4:0];
+                        // rQPN
+                        if (qp_conn_node_num[4:0] < debug[5:2]) begin 
+                            axis_qp_conn_interface.data[39:16]    <= OP[4:0] * qp_conn_node_num[4:0] + debug[5:2] - 4'b0001;
+                        end 
+                        else begin
+                            axis_qp_conn_interface.data[39:16]    <= OP[4:0] * qp_conn_node_num[4:0] + debug[5:2]; 
+                        end 
+                        axis_qp_conn_interface.data[135:40]     <= 0;
+                        //rIP 
+                        axis_qp_conn_interface.data[167:136]    <= {remote_ip_address[31:24] + qp_conn_node_num, remote_ip_address[23:0]};
+                        
+                        // axis_qp_conn_interface.data[15:0]       <= lQPN[15:0];
+                        // axis_qp_conn_interface.data[39:16]      <= rQPN[23:0];
+                        // axis_qp_conn_interface.data[135:40]     <= 0;
+                        // axis_qp_conn_interface.data[167:136]    <= remote_ip_address;                    
+                        axis_qp_conn_interface.data[183:168]    <= rUDP[15:0];
+                        axis_qp_conn_interface.valid         <= 1'b1;
+                        qp_conn_node_num <= qp_conn_node_num + 1; 
+                    end 
+                end else begin
+                    qp_conn_node_num <= qp_conn_node_num + 1; 
+                end 
                 if (axis_qp_conn_interface.valid && axis_qp_conn_interface.ready) begin
                     axis_qp_conn_interface.valid        <= 1'b0;
-                    // NOTE: use debug[1:0] as kernel mode
-                    if (debug[1:0] == 2'b00) begin
-                        // 00 - nothing
-                        write_done <= 1'b1;
-                        writeState <= WRITE_IDLE;
+                    if (qp_conn_counter + 1 == OP[31:0]) begin 
+                        if (debug[1:0] == 2'b00) begin
+                            // 00 - nothing
+                            write_done <= 1'b1;
+                            writeState <= WRITE_IDLE;
 
-                        m_axis_roce_role_tx_status.data <=64'h1111111111111111;
-                        m_axis_roce_role_tx_status.keep <= 8'hFF;
-                        m_axis_roce_role_tx_status.valid <= 1'b1;
-                        m_axis_roce_role_tx_status.last <= 1'b1;
-                        
-                    end else if (debug[1:0] == 2'b01) begin
-                        // 01 - read-write test
-                        writeState <= WRITE_META_READ;
-                    end else if (debug[1:0] == 2'b10) begin
-                        // 10 - run OPcode
-                        writeState <= WRITE_META;
-                    end
+                            m_axis_roce_role_tx_status.data <=64'h1111111111111111;
+                            m_axis_roce_role_tx_status.keep <= 8'hFF;
+                            m_axis_roce_role_tx_status.valid <= 1'b1;
+                            m_axis_roce_role_tx_status.last <= 1'b1;
+                            
+                        end else if (debug[1:0] == 2'b01) begin
+                            // 01 - read-write test
+                            writeState <= WRITE_META_READ;
+                        end else if (debug[1:0] == 2'b10) begin
+                            // 10 - run OPcode
+                            writeState <= WRITE_META;
+                        end
+                    end else begin 
+                        qp_conn_counter <= qp_conn_counter + 1; 
+                    end 
                 end
+
+
             end
             // MODE OP
-            WRITE_META: begin
-                axis_host_tx_metadata.data[2:0]     <= OP[2:0];
-                axis_host_tx_metadata.data[26:3]    <= lQPN[23:0];
-                axis_host_tx_metadata.data[74:27]   <= lAddr[47:0];
-                axis_host_tx_metadata.data[122:75]  <= rAddr[47:0];
-                axis_host_tx_metadata.data[154:123] <= len[31:0];
-                axis_host_tx_metadata.valid         <= 1'b1;
-                if (axis_host_tx_metadata.valid && axis_host_tx_metadata.ready) begin
-                    axis_host_tx_metadata.valid     <= 1'b0;
-                    writeState                      <= WRITE_IDLE;
-                    write_done                      <= 1;
-                end
-            end
-            // MODE test
-            WRITE_META_READ: begin
-                if (wait_counter == 0) begin
-                    axis_host_tx_metadata.data[2:0]     <= 0; // RDMA READ
-                    axis_host_tx_metadata.data[26:3]    <= lQPN[23:0];
-                    axis_host_tx_metadata.data[74:27]   <= 48'h000000000000;//lAddr[47:0];
-                    axis_host_tx_metadata.data[122:75]  <= 48'h000000000000;//rAddr[47:0];
-                    axis_host_tx_metadata.data[154:123] <= len[31:0];
-                    axis_host_tx_metadata.valid         <= 1'b1;
-                end;
-                if (axis_host_tx_metadata.valid && axis_host_tx_metadata.ready) begin
-                    axis_host_tx_metadata.valid     <= 1'b0;
-                end
-                // TODO: optimize this wait logic, count only after valid&ready handshake
-                wait_counter <= wait_counter + 1;
-                if (wait_counter[11:0] == debug[15:4]) begin
-                    writeState                      <= WRITE_META_WRITE;
-                    wait_counter <= 0;
-                end
-            end
-            WRITE_META_WRITE: begin
-                if (wait_counter == 0) begin
-                    axis_host_tx_metadata.data[2:0]     <= 2'b01; // RDMA WRITE
-                    axis_host_tx_metadata.data[26:3]    <= lQPN[23:0];
-                    axis_host_tx_metadata.data[74:27]   <= 48'h000000000200;//lAddr[47:0];
-                    axis_host_tx_metadata.data[122:75]  <= 48'h000000000000;//rAddr[47:0];
-                    axis_host_tx_metadata.data[154:123] <= len[31:0];
-                    axis_host_tx_metadata.valid         <= 1'b1;
-                end;
-                if (axis_host_tx_metadata.valid && axis_host_tx_metadata.ready) begin
-                    axis_host_tx_metadata.valid     <= 1'b0;
-                end
-                wait_counter <= wait_counter + 1;
-                if (wait_counter[11:0] == debug[15:4]) begin
-                    writeState                      <= WRITE_META_READ_2;
-                    wait_counter <= 0;
-                end
-            end
-            WRITE_META_READ_2: begin
-                if (wait_counter == 0) begin
-                    axis_host_tx_metadata.data[2:0]     <= 0; // RDMA READ
-                    axis_host_tx_metadata.data[26:3]    <= lQPN[23:0];
-                    axis_host_tx_metadata.data[74:27]   <= 48'h000000000100;//lAddr[47:0];
-                    axis_host_tx_metadata.data[122:75]  <= 48'h000000000000;//rAddr[47:0];
-                    axis_host_tx_metadata.data[154:123] <= len[31:0];
-                    axis_host_tx_metadata.valid         <= 1'b1;
-                end;
-                if (axis_host_tx_metadata.valid && axis_host_tx_metadata.ready) begin
-                    axis_host_tx_metadata.valid     <= 1'b0;
-                end
-                wait_counter <= wait_counter + 1;
-                if (wait_counter[11:0] == debug[15:4]) begin
-                    writeState                      <= WRITE_IDLE;
-                    wait_counter <= 0;
-                    write_done                      <= 1;
-                end
-            end
+            // WRITE_META: begin
+            //     axis_host_tx_metadata.data[2:0]     <= OP[2:0];
+            //     axis_host_tx_metadata.data[26:3]    <= lQPN[23:0];
+            //     axis_host_tx_metadata.data[74:27]   <= lAddr[47:0];
+            //     axis_host_tx_metadata.data[122:75]  <= rAddr[47:0];
+            //     axis_host_tx_metadata.data[154:123] <= len[31:0];
+            //     axis_host_tx_metadata.valid         <= 1'b1;
+            //     if (axis_host_tx_metadata.valid && axis_host_tx_metadata.ready) begin
+            //         axis_host_tx_metadata.valid     <= 1'b0;
+            //         writeState                      <= WRITE_IDLE;
+            //         write_done                      <= 1;
+            //     end
+            // end
+            // // MODE test
+            // WRITE_META_READ: begin
+            //     if (wait_counter == 0) begin
+            //         axis_host_tx_metadata.data[2:0]     <= 0; // RDMA READ
+            //         axis_host_tx_metadata.data[26:3]    <= lQPN[23:0];
+            //         axis_host_tx_metadata.data[74:27]   <= 48'h000000000000;//lAddr[47:0];
+            //         axis_host_tx_metadata.data[122:75]  <= 48'h000000000000;//rAddr[47:0];
+            //         axis_host_tx_metadata.data[154:123] <= len[31:0];
+            //         axis_host_tx_metadata.valid         <= 1'b1;
+            //     end;
+            //     if (axis_host_tx_metadata.valid && axis_host_tx_metadata.ready) begin
+            //         axis_host_tx_metadata.valid     <= 1'b0;
+            //     end
+            //     // TODO: optimize this wait logic, count only after valid&ready handshake
+            //     wait_counter <= wait_counter + 1;
+            //     if (wait_counter[11:0] == debug[15:4]) begin
+            //         writeState                      <= WRITE_META_WRITE;
+            //         wait_counter <= 0;
+            //     end
+            // end
+            // WRITE_META_WRITE: begin
+            //     if (wait_counter == 0) begin
+            //         axis_host_tx_metadata.data[2:0]     <= 2'b01; // RDMA WRITE
+            //         axis_host_tx_metadata.data[26:3]    <= lQPN[23:0];
+            //         axis_host_tx_metadata.data[74:27]   <= 48'h000000000200;//lAddr[47:0];
+            //         axis_host_tx_metadata.data[122:75]  <= 48'h000000000000;//rAddr[47:0];
+            //         axis_host_tx_metadata.data[154:123] <= len[31:0];
+            //         axis_host_tx_metadata.valid         <= 1'b1;
+            //     end;
+            //     if (axis_host_tx_metadata.valid && axis_host_tx_metadata.ready) begin
+            //         axis_host_tx_metadata.valid     <= 1'b0;
+            //     end
+            //     wait_counter <= wait_counter + 1;
+            //     if (wait_counter[11:0] == debug[15:4]) begin
+            //         writeState                      <= WRITE_META_READ_2;
+            //         wait_counter <= 0;
+            //     end
+            // end
+            // WRITE_META_READ_2: begin
+            //     if (wait_counter == 0) begin
+            //         axis_host_tx_metadata.data[2:0]     <= 0; // RDMA READ
+            //         axis_host_tx_metadata.data[26:3]    <= lQPN[23:0];
+            //         axis_host_tx_metadata.data[74:27]   <= 48'h000000000100;//lAddr[47:0];
+            //         axis_host_tx_metadata.data[122:75]  <= 48'h000000000000;//rAddr[47:0];
+            //         axis_host_tx_metadata.data[154:123] <= len[31:0];
+            //         axis_host_tx_metadata.valid         <= 1'b1;
+            //     end;
+            //     if (axis_host_tx_metadata.valid && axis_host_tx_metadata.ready) begin
+            //         axis_host_tx_metadata.valid     <= 1'b0;
+            //     end
+            //     wait_counter <= wait_counter + 1;
+            //     if (wait_counter[11:0] == debug[15:4]) begin
+            //         writeState                      <= WRITE_IDLE;
+            //         wait_counter <= 0;
+            //         write_done                      <= 1;
+            //     end
+            // end
             default: 
                 writeState                      <= WRITE_IDLE;
         endcase
@@ -741,9 +889,9 @@ arp_server_subnet_ip arp_server_inst(
 .s_axis_arp_lookup_request_V_V_TVALID(axis_arp_lookup_request_TVALID),
 .s_axis_arp_lookup_request_V_V_TREADY(axis_arp_lookup_request_TREADY),
 .s_axis_arp_lookup_request_V_V_TDATA(axis_arp_lookup_request_TDATA),
-.s_axis_host_arp_lookup_request_V_V_TVALID(axis_host_arp_lookup_request_TVALID),
-.s_axis_host_arp_lookup_request_V_V_TREADY(axis_host_arp_lookup_request_TREADY),
-.s_axis_host_arp_lookup_request_V_V_TDATA(axis_host_arp_lookup_request_TDATA),
+.s_axis_host_arp_lookup_request_V_V_TVALID(axis_arp_lookup.valid),
+.s_axis_host_arp_lookup_request_V_V_TREADY(axis_arp_lookup.ready),
+.s_axis_host_arp_lookup_request_V_V_TDATA(axis_arp_lookup.data),
 
 .myMacAddress_V(arp_mac_address),
 .myIpAddress_V(arp_ip_address),
@@ -823,6 +971,35 @@ axis_interconnect_merger_160 tx_metadata_merger (
   .S01_ARB_REQ_SUPPRESS(1'b0)  // input wire S01_ARB_REQ_SUPPRESS
 );
 */
+
+/* MERGER FOR QP STATE 
+
+    Connected to User Kernel
+
+axis_interconnect_merger_160 tx_metadata_merger (
+  .ACLK(net_clk),                                  // input wire ACLK
+  .ARESETN(net_aresetn),                            // input wire ARESETN
+  .S00_AXIS_ACLK(net_clk),                // input wire S00_AXIS_ACLK
+  .S00_AXIS_ARESETN(net_aresetn),          // input wire S00_AXIS_ARESETN
+  .S00_AXIS_TVALID(axis_host_tx_metadata.valid),            // input wire S00_AXIS_TVALID
+  .S00_AXIS_TREADY(axis_host_tx_metadata.ready),            // output wire S00_AXIS_TREADY
+  .S00_AXIS_TDATA(axis_host_tx_metadata.data),              // input wire [159 : 0] S00_AXIS_TDATA
+  .S01_AXIS_ACLK(net_clk),                // input wire S01_AXIS_ACLK
+  .S01_AXIS_ARESETN(net_aresetn),          // input wire S01_AXIS_ARESETN
+  .S01_AXIS_TVALID(s_axis_roce_role_tx_meta.valid),            // input wire S01_AXIS_TVALID
+  .S01_AXIS_TREADY(s_axis_roce_role_tx_meta.ready),            // output wire S01_AXIS_TREADY
+  .S01_AXIS_TDATA(s_axis_roce_role_tx_meta.data),              // input wire [159 : 0] S01_AXIS_TDATA
+  .M00_AXIS_ACLK(net_clk),                // input wire M00_AXIS_ACLK
+  .M00_AXIS_ARESETN(net_aresetn),          // input wire M00_AXIS_ARESETN
+  .M00_AXIS_TVALID(axis_tx_metadata.valid),            // output wire M00_AXIS_TVALID
+  .M00_AXIS_TREADY(axis_tx_metadata.ready),            // input wire M00_AXIS_TREADY
+  .M00_AXIS_TDATA(axis_tx_metadata.data),              // output wire [159 : 0] M00_AXIS_TDATA
+  .S00_ARB_REQ_SUPPRESS(1'b0),  // input wire S00_ARB_REQ_SUPPRESS
+  .S01_ARB_REQ_SUPPRESS(1'b0)  // input wire S01_ARB_REQ_SUPPRESS
+);
+*/
+
+
 /*
  * ILA
  */
@@ -837,8 +1014,8 @@ ila_stack_top inst_ila_stack_top (
     .probe6(s_axis_roce_role_tx_meta.valid),
     .probe7(s_axis_roce_role_tx_meta.ready),
     .probe8(s_axis_roce_role_tx_meta.data),//160
-    .probe9(roce_data_tx_role_pkg_counter),//32
-    .probe10(writeState),//8
+    .probe9(arp_counter),//32
+    .probe10(arpState),//8
     .probe11(m_axis_roce_read_cmd.valid),
     .probe12(m_axis_roce_read_cmd.ready),
     .probe13(m_axis_roce_read_cmd.data),//96
@@ -858,16 +1035,16 @@ ila_stack_top inst_ila_stack_top (
 
 ila_stack_top_inter inst_ila_stack_top_inter (
     .clk(net_clk),
-    .probe0(axis_roce_slice_to_roce.valid),
-    .probe1(axis_roce_slice_to_roce.ready),
-    .probe2(axis_roce_slice_to_roce.data),
-    .probe3(axis_roce_to_roce_slice.valid),
-    .probe4(axis_roce_to_roce_slice.ready),
-    .probe5(axis_roce_to_roce_slice.data),
+    .probe0(axis_qp_interface.valid),
+    .probe1(axis_qp_interface.ready),
+    .probe2(axis_qp_interface.data),
+    .probe3(axis_qp_conn_interface.valid),
+    .probe4(axis_qp_conn_interface.ready),
+    .probe5(axis_qp_conn_interface.data),
     .probe6(axis_roce_slice_to_mie.valid),
     .probe7(axis_roce_slice_to_mie.ready),
     .probe8(axis_roce_slice_to_mie.data),
-    .probe9(run_counter),//32
+    .probe9(qp_node_num),//32
     .probe10(writeState),//8
     .probe11(axis_mie_to_intercon.valid),
     .probe12(axis_mie_to_intercon.ready),

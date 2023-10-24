@@ -116,18 +116,18 @@ int main(int argc, char **argv) {
     uint32_t rQPN = 0x00000001;
     uint32_t lQPN = 0x00000001;
     uint32_t rIP  = 0x0b01d4e0;
-    uint32_t lIP  = 0x0b01d4e0;
+    uint32_t lIP  = 0x0b01d4e2;
     uint32_t rUDP = 0x000012b7;
     uint64_t vAddr= 0x0000000000000001;
     uint32_t rKey = 0x00000000;
-    uint32_t OP   = 0x00000002; //numberofnodes
+    uint32_t OP   = 0x00000002;
     uint64_t rAddr= 0x0000000000000000;
     uint64_t lAddr= 0x0000000000000000;
     uint32_t len  = 0x00000008;
     // [15:4] time interval in cycle       0x100   256cycle
     // [3:2]  board number                 0
     // [1:0]  mode 0-nothing 1-test 2-op   0
-    uint32_t debug= 0x00001000;
+    uint32_t debug= 0x00001008;
     uint32_t arpDelay= 500000000;
     //uint32_t arpDelay= std::stoi(argv[2]);
     printf("checkkkkkkk-Delay: %d\n", arpDelay);
@@ -211,7 +211,7 @@ int main(int argc, char **argv) {
 
     uint32_t ulen  = 0x00000008;
     uint32_t node_num  = 0x00000003;
-    uint32_t board_num  = 0x00000000;
+    uint32_t board_num  = 0x00000002;
 
     OCL_CHECK(err, cl::Buffer buffer_op(context, CL_MEM_READ_ONLY, size_in_bytes, NULL, &err));
     
@@ -241,11 +241,12 @@ int main(int argc, char **argv) {
               operations = (int*)q.enqueueMapBuffer(buffer_op, CL_TRUE, CL_MAP_WRITE, 0, size_in_bytes, NULL, NULL, &err));
 
     for (int i = 0; i < 3; i++) {
-        operations[i] = 5;
+        operations[i] = 7;
     }
+    //59
     //operations[9]=3;
     operations[2]=0;
-    //43
+
     OCL_CHECK(err, err = q.enqueueMigrateMemObjects({buffer_op}, 0 /* 0 means from host*/));
 
     printf("enqueue user kernel...\n");
