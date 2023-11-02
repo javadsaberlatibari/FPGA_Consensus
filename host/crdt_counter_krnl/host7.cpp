@@ -120,7 +120,7 @@ int main(int argc, char **argv) {
     uint32_t rQPN = 0x00000001;
     uint32_t lQPN = 0x00000001;
     uint32_t rIP  = 0x0b01d4e0;
-    uint32_t lIP  = 0x0b01d4e2;
+    uint32_t lIP  = 0x0b01d4e7;
     uint32_t rUDP = 0x000012b7;
     uint64_t vAddr= 0x0000000000000001;
     uint32_t rKey = 0x00000000;
@@ -131,7 +131,7 @@ int main(int argc, char **argv) {
     // [15:4] time interval in cycle       0x100   256cycle
     // [3:2]  board number                 0
     // [1:0]  mode 0-nothing 1-test 2-op   0
-    uint32_t debug= 0x00001008;
+    uint32_t debug= 0x0000101C;
     uint32_t arpDelay= std::stoi(argv[3]);
     printf("Arp-Delay: %d\n", arpDelay);
     printf("Totall Number of Node: %d\n", N_node);
@@ -197,7 +197,7 @@ int main(int argc, char **argv) {
     //OCL_CHECK(err, err = user_kernel.setArg(4, StatusBuffer));
     
     //wait_for_enter("\nPausing for network kernel setup...");
-    sleep(14);
+    sleep(24);
     //Launch the Kernel
     // auto start = std::chrono::high_resolution_clock::now();
     //printf("Host->Device user kernel...\n");
@@ -215,7 +215,7 @@ int main(int argc, char **argv) {
 
     uint32_t ulen  = 0x00000008;
     uint32_t node_num  = N_node;
-    uint32_t board_num  = 0x00000002;
+    uint32_t board_num  = 0x00000007;
 
     OCL_CHECK(err, cl::Buffer buffer_op(context, CL_MEM_READ_ONLY, size_in_bytes, NULL, &err));
     
@@ -245,7 +245,7 @@ int main(int argc, char **argv) {
               operations = (int*)q.enqueueMapBuffer(buffer_op, CL_TRUE, CL_MAP_WRITE, 0, size_in_bytes, NULL, NULL, &err));
 
     for (int i = 0; i < nOP; i++) {
-        operations[i] = 3;
+        operations[i] = 8;
     }
     //operations[nOP-1]=0;
     /*int j=0;

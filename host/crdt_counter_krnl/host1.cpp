@@ -33,6 +33,8 @@ EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h> 
+#include <cstdlib> 
+#include <iostream> 
 
 #define DATA_SIZE 62500000
 
@@ -53,7 +55,7 @@ int main(int argc, char **argv) {
     }
 
     std::string binaryFile = argv[1];
-
+    uint32_t N_node = std::stoi(argv[2]);
     cl_int err;
     cl::CommandQueue q;
     cl::Context context;
@@ -109,7 +111,9 @@ int main(int argc, char **argv) {
         exit(EXIT_FAILURE);
     }
     
-    wait_for_enter("\nPress ENTER to continue after setting up ILA trigger...");
+    //wait_for_enter("\nPress ENTER to continue after setting up ILA trigger...");
+
+
 
     uint32_t rPSN = 0x00000000;
     uint32_t lPSN = 0x00000000;
@@ -120,7 +124,7 @@ int main(int argc, char **argv) {
     uint32_t rUDP = 0x000012b7;
     uint64_t vAddr= 0x0000000000000001;
     uint32_t rKey = 0x00000000;
-    uint32_t OP   = 0x00000002;
+    uint32_t OP   = N_node-1;
     uint64_t rAddr= 0x0000000000000000;
     uint64_t lAddr= 0x0000000000000000;
     uint32_t len  = 0x00000008;
@@ -128,10 +132,9 @@ int main(int argc, char **argv) {
     // [3:2]  board number                 0
     // [1:0]  mode 0-nothing 1-test 2-op   0
     uint32_t debug= 0x00001004;
-    uint32_t arpDelay= 500000000;
-    //uint32_t arpDelay= std::stoi(argv[2]);
-    printf("checkkkkkkk-Delay: %d\n", arpDelay);
-    //void* status; 
+    uint32_t arpDelay= std::stoi(argv[3]);
+    printf("Arp-Delay: %d\n", arpDelay);
+    printf("Totall Number of Node: %d\n", N_node);
 
     //std::vector<unsigned int, aligned_allocator<unsigned int> > status(16);
 
@@ -141,7 +144,7 @@ int main(int argc, char **argv) {
     //uint32_t 
     uint32_t debug1 = 0xd0000000;
     
-    if (argc >=3) {
+    if (argc >=7) {
 	debug1 = (debug1 & 0x00FFFFFF) |((uint32_t)strtoul(argv[2], NULL, 0) << 24);
     }
     uint32_t meta = 1<<(debug1>>29);
@@ -193,15 +196,16 @@ int main(int argc, char **argv) {
     //OCL_CHECK(err, err = user_kernel.setArg(3, debug1));
     //OCL_CHECK(err, err = user_kernel.setArg(4, StatusBuffer));
     
-    wait_for_enter("\nPausing for network kernel setup...");
-
+    //wait_for_enter("\nPausing for network kernel setup...");
+    sleep(12);
     //Launch the Kernel
     // auto start = std::chrono::high_resolution_clock::now();
     //printf("Host->Device user kernel...\n");
     //OCL_CHECK(err, err = q.enqueueMigrateMemObjects({DebugBuffer}, 0));
     //OCL_CHECK(err, err = q.finish());
 
-    uint32_t nOP   = 0x00000003; //number of operations
+    uint32_t nOP   = std::stoi(argv[4]); //number of operations
+    uint32_t wP   = std::stoi(argv[5]); //Write Percentage
     int *operations;
     size_t size_in_bytes = 10 * sizeof(int);
     //uint32_t *operations = arr_ops;
@@ -210,7 +214,7 @@ int main(int argc, char **argv) {
     uint64_t urAddr= 0x0000000000000000;
 
     uint32_t ulen  = 0x00000008;
-    uint32_t node_num  = 0x00000003;
+    uint32_t node_num  = N_node;
     uint32_t board_num  = 0x00000001;
 
     OCL_CHECK(err, cl::Buffer buffer_op(context, CL_MEM_READ_ONLY, size_in_bytes, NULL, &err));
@@ -240,17 +244,47 @@ int main(int argc, char **argv) {
     OCL_CHECK(err,
               operations = (int*)q.enqueueMapBuffer(buffer_op, CL_TRUE, CL_MAP_WRITE, 0, size_in_bytes, NULL, NULL, &err));
 
-    for (int i = 0; i < 3; i++) {
-        operations[i] = 6;
+    for (int i = 0; i < nOP; i++) {
+        operations[i] = 2;
     }
-    //operations[9]=3;
-    operations[2]=0;
+    //operations[nOP-1]=0;
+    /*int j=0;
+    int write_indexs[1000]={0};
+    int k=0;
+    bool find=false;
+    int rand_value=0;
+    printf("testttttt %d------\n", ((nOP*wP)/100));
+
+    while(j<((nOP*wP)/100)){
+        find=false;
+        rand_value= rand()%nOP;
+        for(int i=0; i<k; i++){
+            if(write_indexs[i]==rand_value){
+                find=true;
+                break;
+            }
+                
+        }
+        if(find!=true){
+            write_indexs[k]=rand_value;
+            k++;
+            j++;
+            printf("testttttt %d------\n", rand_value);
+            operations[rand_value] = 1;
+        }
+    }*/
     //51
     OCL_CHECK(err, err = q.enqueueMigrateMemObjects({buffer_op}, 0 /* 0 means from host*/));
 
     printf("enqueue user kernel...\n");
+    durationUs = 0.0;
+    start = std::chrono::high_resolution_clock::now();
     OCL_CHECK(err, err = q.enqueueTask(user_kernel));
     OCL_CHECK(err, err = q.finish());
+    end = std::chrono::high_resolution_clock::now();
+    durationUs = (std::chrono::duration_cast<std::chrono::nanoseconds>(end-start).count() / 1000.0);
+    printf("durationUs:%f\n",durationUs);
+    printf("replication_latency:%f\n",durationUs/nOP);
     
     sleep(15);
     printf("Device->Host user kernel...\n");
@@ -260,7 +294,7 @@ int main(int argc, char **argv) {
 
     printf("STATUS: %d\n", reply[0]);
     
-    for (int i = 0; i < 3; i++) {
+    for (int i = 0; i < N_node; i++) {
         printf("network at %d: %d\n", i, network_ptr0[i]);
     }
 
