@@ -6,7 +6,7 @@
 #include <ap_fixed.h>
 #include "../../../../common/include/communication.hpp"
 #define WAIT_TIMER 256
-#define ITT_NUM 50
+#define ITT_NUM 5
 
 void tx_pkg_sender(
     int s_axi_op,
@@ -24,7 +24,7 @@ void tx_pkg_sender(
     enum fsmStateType {IDLE_STATE, WRITE_META, WAIT_READY, DONE};
     static fsmStateType state = IDLE_STATE;
     static ap_uint<64> wait = 0; 
-    static ap_uint<64> itt = 0; 
+    ap_uint<64> itt = 0; 
     pkt256 tx_meta;
     pkt64 tx_data;
     pkt64 tmp_status;
@@ -147,7 +147,7 @@ extern "C" {
                     m_axis_tx_meta,
                     m_axis_tx_data
             );
-            m_axi_reply[0] = 1; 
+            //m_axi_reply[0] = 1; 
         } else {
             m_axi_reply[0] = 2; 
         }
