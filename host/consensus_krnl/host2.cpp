@@ -191,15 +191,15 @@ int main(int argc, char **argv) {
     //printf("Host->Device user kernel...\n");
     //OCL_CHECK(err, err = q.enqueueMigrateMemObjects({DebugBuffer}, 0));
     //OCL_CHECK(err, err = q.finish());
-    uint32_t ulQPN = 0x00000001;
-    uint32_t uOP   = 0x00000001;
+    uint32_t ulQPN = 0x00000004;
+    uint32_t uOP   = 0x00000000;
     uint64_t urAddr= 0x0000000000000000;
     uint64_t ulAddr= 0x0000000000000000;
-    uint32_t ulen  = 0x00000008;
+    uint32_t ulen  = 0x00000100;
     int read= 0x0000000000000000;
     bool last = 1; 
     uint32_t keep = 0xFF; 
-    bool write = false; 
+    bool write = true; 
 
     std::vector<int, aligned_allocator<int>> reply(64);
     OCL_CHECK(err,
@@ -235,11 +235,11 @@ int main(int argc, char **argv) {
     OCL_CHECK(err, err = q.enqueueMigrateMemObjects({buffer_r2}, CL_MIGRATE_MEM_OBJECT_HOST));
     OCL_CHECK(err, err = q.finish());
 
-    
+    wait_for_enter("\nPausing for network kernel setup...");
     
     for (int i = 0; i < 3; i++) {
         //printf("at i = %d, STATUS: %d vs NET: %d\n", i, reply[i], network_ptr0[0]);
-        printf("at i = %d, STATUS: %d\n", i, reply[i]);
+        printf("at i = %d, STATUS: %d\n", i, network_ptr0[i]);
     }
 
     // auto end = std::chrono::high_resolution_clock::now();

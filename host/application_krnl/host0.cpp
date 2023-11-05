@@ -178,7 +178,7 @@ int main(int argc, char **argv) {
     wait_for_enter("\nPausing for network kernel setup...");
 
 
-    uint32_t boardNum = 0x00000000;
+    uint32_t boardNum = 0;
 
     std::vector<int, aligned_allocator<int>> reply(64);
     OCL_CHECK(err,
@@ -194,7 +194,7 @@ int main(int argc, char **argv) {
     OCL_CHECK(err, err = user_kernel.setArg(5, buffer_r1));
 
 
-    for (int i = 0; i < 300; i++) {
+    for (int i = 0; i < 3; i++) {
         printf("enqueue user kernel...\n");
         OCL_CHECK(err, err = q.enqueueTask(user_kernel));
         OCL_CHECK(err, err = q.finish());

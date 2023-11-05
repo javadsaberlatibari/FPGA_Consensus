@@ -120,7 +120,7 @@ int main(int argc, char **argv) {
     uint32_t rUDP = 0x000012b7;
     uint64_t vAddr= 0x0000000000000001;
     uint32_t rKey = 0x00000000;
-    uint32_t OP   = 0x00000001;
+    uint32_t OP   = 0x00000002;
     uint64_t rAddr= 0x0000000000000000;
     uint64_t lAddr= 0x0000000000000000;
     uint32_t len  = 0x00000008;
@@ -205,7 +205,7 @@ int main(int argc, char **argv) {
     int read= 0x0000000000000000;
     bool last = 1;  
     uint32_t keep = 0xFF; 
-    bool write = true; 
+    bool write = false; 
 
     std::vector<int, aligned_allocator<int>> reply(64);
     OCL_CHECK(err,
@@ -250,8 +250,11 @@ int main(int argc, char **argv) {
     OCL_CHECK(err, err = q.enqueueMigrateMemObjects({buffer_r2}, CL_MIGRATE_MEM_OBJECT_HOST));
     OCL_CHECK(err, err = q.finish());
 
+    OCL_CHECK(err, err = q.enqueueMigrateMemObjects({buffer_r1}, CL_MIGRATE_MEM_OBJECT_HOST));
+    OCL_CHECK(err, err = q.finish());
+
     for (int i = 0; i < 3; i++)
-        printf("STATUS: %d\n", reply[i]);
+        printf("STATUS: %d\n", network_ptr0[i]);
         //printf("STATUS: %d\n", reply[1]);
 
 

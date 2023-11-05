@@ -204,6 +204,7 @@ void heartBeatScanner(
             }
             heartBeatFifoIndex++; 
             state = READ; 
+            break; 
         }
 
         case READ: {
@@ -220,6 +221,7 @@ void heartBeatScanner(
                 }
             }
             state = LEADER_ELECTION; 
+            break; 
         }
 
         case LEADER_ELECTION: {
@@ -246,6 +248,7 @@ void heartBeatScanner(
                 leader_update.write(newleader);
             }
             state = SCAN;
+            break; 
         }
 
     }
@@ -390,19 +393,19 @@ enum replicationEngineStates {
 template <int NUM_NODES, int SYNC_GROUPS>
 void replication_engine(
     ap_uint<32> myBoardNum, 
-    hls::stream<ProposedValue>& proposedValue 
-    //hls::stream<ap_uint<32>>& leaderUpdate,
-    //hls::stream<ap_uint<32>>& valueStream, 
-    // hls::stream<ap_uint<32>>& minProp_req,
-    // hls::stream<ap_uint<32>>& minProp_rsp, 
-    // hls::stream<ap_uint<32>>& writeNewProp_req,
-    // hls::stream<LogEntry>& readSlots_req,  
-    // hls::stream<LogEntry>& readSlots_rsp, 
-    // hls::stream<LogEntry>& writeSlot_rep,
-    // hls::stream<bool>& writeSlot_rsp,
-    // hls::stream<ap_uint<32>>& acceptedValue_req,
-    // hls::stream<updateLocalValue>& acceptedValue_rsq,
-    // hls::stream<updateLocalValue>& updateLocalValue_req
+    hls::stream<ProposedValue>& proposedValue, 
+    hls::stream<ap_uint<32>>& leaderUpdate,
+    hls::stream<ap_uint<32>>& minProp_req,
+    hls::stream<ap_uint<32>>& minProp_rsp, 
+    hls::stream<ap_uint<32>>& writeNewProp_req,
+    hls::stream<LogEntry>& readSlots_req,  
+    hls::stream<LogEntry>& readSlots_rsp, 
+    hls::stream<LogEntry>& writeSlot_rep,
+    hls::stream<bool>& writeSlot_rsp,
+    hls::stream<ap_uint<32>>& acceptedValue_req,
+    hls::stream<updateLocalValue>& acceptedValue_rsq,
+    hls::stream<updateLocalValue>& updateLocalValue_req
+    //int * m_axi_reply
 ) {
     
     //#pragma DATAFLOW
@@ -422,51 +425,62 @@ void replication_engine(
     // static int follower_counter = 0; 
     // static follower followList[NUM_NODES]; 
 
-
     static LogEntry slot; 
     static int myFUO[SYNC_GROUPS]; 
     updateLocalValue uVal; 
 
-    // if (!leaderUpdate.empty()) {
-    //     leaderUpdate.read(leader);
-    // }
+    std::cout << "replication engine" << std::endl;
 
     switch (state) {
 
         /* Inital state on start-up */
         case INIT: {
+            std::cout << "INIT" << std::endl;
             leader = 0; 
             state = LEADER_REPLICA;
+            break; 
         }
 
         /* Check for a leader update */
         case LEADER_UPDATE: {
-            // if (!leaderUpdate.empty()) {
-            //     leaderUpdate.read(leader); 
-            // }
+            std::cout << "LEADER_UPDATE" << std::endl;
+            if (!leaderUpdate.empty()) {
+                leaderUpdate.read(leader); 
+                //m_axi_reply[0] = leader; 
+            }
             state = LEADER_REPLICA;
+            break; 
         }
 
         /* If leader go to propose state, if replica wait for leader actions*/
         case LEADER_REPLICA: {
+            std::cout << "LEADER_REPLICA" << std::endl;
             if (leader == myBoardNum) {
                 state = PROPOSE;
             } else {
                 state = REPLICA; 
             }
+            break; 
         }
 
         /* In Propose state read proposed value, and request follower list*/
         case PROPOSE: {
+            std::cout << "PROPOSE" << std::endl;
             ProposedValue temp; 
             if (done == true && !proposedValue.empty()) {
+                std::cout << "new proposed value!" << std::endl;
                 done = false; 
                 proposedValue.read(temp);
                 myValue = temp.value; 
                 syncronizationGroup = temp.syncronizationGroup;
-            } 
-            state = PREPARE_READ_MIN_PROP;
-
+                //m_axi_reply[1] = myValue;
+                state = PREPARE_READ_MIN_PROP;
+            } else if (done) {
+                state = LEADER_UPDATE; 
+            } else {
+                state = PREPARE_READ_MIN_PROP;
+            }
+            break; 
         }
 
         /* LEADER CATCH UP */
@@ -476,70 +490,80 @@ void replication_engine(
         case REPLICA_CATCH_UP: 
 
         case PREPARE_READ_MIN_PROP: {
-
-            //minProp_req.write(syncronizationGroup);
+            std::cout << "PREPARE_READ_MIN_PROP" << std::endl;
+            minProp_req.write(syncronizationGroup);
             state = PREPARE_SELECT_NEW; 
+            break; 
         }
 
         case PREPARE_SELECT_NEW: {
-            // if (!minProp_rsp.empty()) {
-            //     minProp_rsp.read(highestProposalNum);
-            //     highestProposalNum++; 
-            //     state = PREPARE_WRITE_MIN_PROP_AND_READ_SLOT;
-            // }
+            std::cout << "PREPARE_SELECT_NEW" << std::endl;
+            if (!minProp_rsp.empty()) {
+                minProp_rsp.read(highestProposalNum);
+                highestProposalNum++; 
+                state = PREPARE_WRITE_MIN_PROP_AND_READ_SLOT;
+            }
+            break; 
         }
 
         case PREPARE_WRITE_MIN_PROP_AND_READ_SLOT: {
-
-            //writeNewProp_req.write(highestProposalNum);
-            //readSlots_req.write(LogEntry(syncronizationGroup));
+            std::cout << "PREPARE_WRITE_MIN_PROP_AND_READ_SLOT" << std::endl;
+            writeNewProp_req.write(highestProposalNum);
+            readSlots_req.write(LogEntry(syncronizationGroup));
             state = PREPARE_CHECK_SLOTS; 
+            break; 
         }
 
         case PREPARE_CHECK_SLOTS: {
-
-            // if (!readSlots_rsp.empty()) {
-            //     readSlots_rsp.read(slot);
-            //     if (slot.valid) {
-            //         propValue = slot.value;
-            //     } else {
-            //         propValue = myValue; 
-            //     }
-            //     state = ACCEPT_WRITE; 
-            // }
+            std::cout << "PREPARE_WRITE_MIN_PROP_AND_READ_SLOT" << std::endl;
+            if (!readSlots_rsp.empty()) {
+                readSlots_rsp.read(slot);
+                if (slot.valid) {
+                    propValue = slot.value;
+                } else {
+                    propValue = myValue; 
+                }
+                state = ACCEPT_WRITE; 
+            }
+            break; 
         }
 
         case ACCEPT_WRITE: {
-
-            //writeSlot_rep.write(LogEntry(highestProposalNum, propValue, myFUO));
+            std::cout << "ACCEPT_WRITE" << std::endl;
+            writeSlot_rep.write(LogEntry(highestProposalNum, propValue, myFUO));
             state = ACCEPT_DONE;
-
+            break; 
         }
 
         case ACCEPT_DONE: {
-
+            std::cout << "ACCEPT_DONE" << std::endl;
             if (myValue == propValue) {
                 done = true; 
             } else {
-                //updateLocalValue_req.write(updateLocalValue(propValue, syncronizationGroup));
+                updateLocalValue_req.write(updateLocalValue(propValue, syncronizationGroup));
             }   
             state = LEADER_UPDATE;
             myFUO[syncronizationGroup]+=1; 
+            break; 
         }
 
 
         case REPLICA: {
             /* Check for new entries in the local log */
-            //acceptedValue_req.write(1);
+            std::cout << "REPLICA" << std::endl;
+            acceptedValue_req.write(1);
             state = REPLICA_CHECK; 
+            break; 
         }
 
         case REPLICA_CHECK: {
-            // if (!acceptedValue_rsq.empty()) {
-            //     //acceptedValue_rsq.read(uVal);
-            //     //updateLocalValue_req.write(uVal);
-            //     state = LEADER_UPDATE;
-            // }
+            std::cout << "REPLICA_CHECK" << std::endl;
+            if (!acceptedValue_rsq.empty()) {
+                acceptedValue_rsq.read(uVal);
+                updateLocalValue_req.write(uVal);
+                state = LEADER_UPDATE;
+            }
+            break; 
         }
 
 
@@ -548,6 +572,8 @@ void replication_engine(
 
 
 }
+
+
 
 
 enum logHandlerStates {
@@ -645,6 +671,8 @@ void log_handler(
                 state = ACCEPT_VALUE;
             }
 
+            break; 
+
         }
 
         case READ_MIN_PROP: {
@@ -661,6 +689,7 @@ void log_handler(
             }
 
             state = READ_MIN_PROP_RSP; 
+            break; 
         }
 
         case READ_MIN_PROP_RSP: {
@@ -674,6 +703,7 @@ void log_handler(
             minPropFifoIndex++; 
             minProp_rsp.write(minPropNumber);
             state = REQUEST; 
+            break; 
         }
 
         case WRITE_READ: {
@@ -704,6 +734,7 @@ void log_handler(
                 }
             }
             state = WRITE_READ_RSP;
+            break; 
         }
 
         case WRITE_READ_RSP: {
@@ -723,10 +754,10 @@ void log_handler(
             readSlots_rsp.write(temp);
             slotReadFifoIndex++; 
             state = REQUEST; 
+            break; 
         }
 
         case WRITE_SLOT: {
-
 
             ap_uint<64> sendLog; 
 
@@ -748,6 +779,7 @@ void log_handler(
             }
 
             state = REQUEST; 
+            break; 
         }
 
         case ACCEPT_VALUE: {
@@ -763,6 +795,8 @@ void log_handler(
                         acceptedValue_rsq.write(updateLocalValue(propValue, syncGroup));
                 }
             }
+            state = REQUEST; 
+            break; 
             
         }
 
@@ -825,7 +859,7 @@ void mu(
 
     //#pragma HLS DATAFLOW 
 
-    const int NUM_SLOTS = 1000; 
+    const int NUM_SLOTS = 5; 
     const int FIFO_LENGTH = 5;
 
     // Constants for HeartBeat Memory
@@ -848,7 +882,7 @@ void mu(
     const int LOG_PTR_LEN = LOG_MIN_PROP_PTR_LEN + LOG_LOCAL_LOG_PTR_LEN + LOG_REMOTE_LOG_QUEUE_PTR_LEN; 
     const int LOG_ADDR_LEN = LOG_PTR_LEN * 4; 
 
-    static hls::stream<ap_uint<32>> valueStream;
+
     static hls::stream<ap_uint<32>> leaderSwitch2StreamSplit; 
 
     /* Streams between replication engine and leader switch */
@@ -858,15 +892,25 @@ void mu(
     static hls::stream<ap_uint<32>> leaderSwitch2PermHandler;
 
     /* Streams between replication engine and log handler */
-    static hls::stream<ap_uint<32>> minProp_req;
-    static hls::stream<ap_uint<32>> minProp_rsp;
-    static hls::stream<ap_uint<32>> writeNewProp_req;
-    static hls::stream<LogEntry> readSlots_req;  
-    static hls::stream<LogEntry> readSlots_rsp; 
-    static hls::stream<LogEntry> writeSlot_req;
-    static hls::stream<bool> writeSlot_rsp;
-    static hls::stream<ap_uint<32>> acceptedValue_req;
-    static hls::stream<updateLocalValue> acceptedValue_rsq; 
+    static hls::stream<ap_uint<32>> minProp_req("minimum_prop_request");
+    static hls::stream<ap_uint<32>> minProp_rsp("minimum_prop_response");
+    static hls::stream<ap_uint<32>> writeNewProp_req("write_new_prop_request");
+    static hls::stream<LogEntry> readSlots_req("read_slot_request");  
+    static hls::stream<LogEntry> readSlots_rsp("read_slot_response"); 
+    static hls::stream<LogEntry> writeSlot_req("write_slot_request");
+    static hls::stream<bool> writeSlot_rsp("write_slot_response");
+    static hls::stream<ap_uint<32>> acceptedValue_req("accepted_value_request");
+    static hls::stream<updateLocalValue> acceptedValue_rsq("accepted_value_response"); 
+
+    #pragma HLS STREAM depth=4 variable=minProp_req;
+    #pragma HLS STREAM depth=4 variable=minProp_rsp;
+    #pragma HLS STREAM depth=4 variable=writeNewProp_req;
+    #pragma HLS STREAM depth=4 variable=readSlots_req;
+    #pragma HLS STREAM depth=4 variable=readSlots_rsp;
+    #pragma HLS STREAM depth=4 variable=writeSlot_req;
+    #pragma HLS STREAM depth=4 variable=writeSlot_rsp;
+    #pragma HLS STREAM depth=4 variable=acceptedValue_req;
+    #pragma HLS STREAM depth=4 variable=acceptedValue_rsq;
 
     /* Streams between replication engine to mu */
     static hls::stream<updateLocalValue> updateLocalValue_req;  
@@ -887,12 +931,12 @@ void mu(
     //     send = false; 
     // }
 
-    //test_input(leaderSwitch2RepEngine);
+    test_input(leaderSwitch2RepEngine);
 
     replication_engine<NUM_NODES, SYNC_GROUPS>(
         myBoardNum,
-        proposedValue
-        //leaderSwitch2RepEngine,
+        proposedValue,
+        leaderSwitch2RepEngine
         // minProp_req,
         // minProp_rsp,
         // writeNewProp_req,
@@ -950,10 +994,10 @@ void mu(
     //     m_axis_tx_meta
     // );
 
-    // if (!updateLocalValue_req.empty()) {
-    //     updateLocalValue_req.read(update);
-    //     localValues[update.syncGroup] += update.value; 
-    // }
+    if (!updateLocalValue_req.empty()) {
+        updateLocalValue_req.read(update);
+        localValues[update.syncGroup] += update.value; 
+    }
 
 }
 
@@ -995,7 +1039,7 @@ extern "C" {
         }
 
         if (RTS) {
-            mu<3, 1>(
+            mu<2, 1>(
                 proposedValue,
                 myBoardNum, 
                 network_ptr,
@@ -1003,10 +1047,6 @@ extern "C" {
                 m_axis_tx_meta,
                 m_axis_tx_data
             );
-        }
-
-        if (m_axis_tx_data.full() && m_axis_tx_meta.full()) {
-            counter++; 
         }
 
     }
