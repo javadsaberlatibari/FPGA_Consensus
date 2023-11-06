@@ -10,7 +10,7 @@
 #define SLOT_NUM 100
 
 
-const int NUMBER_OF_NODES = 3; 
+const int NUMBER_OF_NODES = 2; 
 //const ap_uint<32> BASE_IP_ADDR = 0x 0b 01 d4 e0;
 const ap_uint<32> BASE_IP_ADDR = 0xe0d4010b;
 const uint32_t UDP = 0x000012b7;
@@ -21,7 +21,7 @@ struct ProposedValue {
     int value; 
     ap_uint<32> syncronizationGroup;
     ProposedValue()
-        :value(0){}
+        :value(0), syncronizationGroup(0){}
     ProposedValue(int v, ap_uint<32> s)
         : value(v), syncronizationGroup(s) {}
 };
@@ -419,7 +419,7 @@ void replication_engine(
     static int myValue = 0; 
     static ap_uint<32> propValue = 0; 
 
-    static ap_uint<32> syncronizationGroup; 
+    static ap_uint<32> sGroup = 0; 
 
     // static follower follower_rsp; 
     // static int follower_counter = 0; 
@@ -427,7 +427,9 @@ void replication_engine(
 
     static LogEntry slot; 
     static int myFUO[SYNC_GROUPS]; 
-    updateLocalValue uVal; 
+    static updateLocalValue uVal; 
+
+    static ProposedValue temp; 
 
     std::cout << "replication engine" << std::endl;
 
@@ -466,32 +468,34 @@ void replication_engine(
         /* In Propose state read proposed value, and request follower list*/
         case PROPOSE: {
             std::cout << "PROPOSE" << std::endl;
-            ProposedValue temp; 
+            
             if (done == true && !proposedValue.empty()) {
                 std::cout << "new proposed value!" << std::endl;
-                done = false; 
                 proposedValue.read(temp);
                 myValue = temp.value; 
-                syncronizationGroup = temp.syncronizationGroup;
+                sGroup = temp.syncronizationGroup;
                 //m_axi_reply[1] = myValue;
+                done = false; 
                 state = PREPARE_READ_MIN_PROP;
             } else if (done) {
                 state = LEADER_UPDATE; 
             } else {
                 state = PREPARE_READ_MIN_PROP;
             }
+
+
             break; 
         }
 
-        /* LEADER CATCH UP */
-        case LEADER_CATCH_UP: 
+        // /* LEADER CATCH UP */
+        // case LEADER_CATCH_UP: 
 
-        /* REPLICA CATCH UP*/
-        case REPLICA_CATCH_UP: 
+        // /* REPLICA CATCH UP*/
+        // case REPLICA_CATCH_UP: 
 
         case PREPARE_READ_MIN_PROP: {
             std::cout << "PREPARE_READ_MIN_PROP" << std::endl;
-            minProp_req.write(syncronizationGroup);
+            minProp_req.write(sGroup);
             state = PREPARE_SELECT_NEW; 
             break; 
         }
@@ -509,7 +513,7 @@ void replication_engine(
         case PREPARE_WRITE_MIN_PROP_AND_READ_SLOT: {
             std::cout << "PREPARE_WRITE_MIN_PROP_AND_READ_SLOT" << std::endl;
             writeNewProp_req.write(highestProposalNum);
-            readSlots_req.write(LogEntry(syncronizationGroup));
+            readSlots_req.write(LogEntry(sGroup));
             state = PREPARE_CHECK_SLOTS; 
             break; 
         }
@@ -540,10 +544,10 @@ void replication_engine(
             if (myValue == propValue) {
                 done = true; 
             } else {
-                updateLocalValue_req.write(updateLocalValue(propValue, syncronizationGroup));
+                updateLocalValue_req.write(updateLocalValue(propValue, sGroup));
             }   
             state = LEADER_UPDATE;
-            myFUO[syncronizationGroup]+=1; 
+            myFUO[sGroup]+=1; 
             break; 
         }
 
@@ -936,17 +940,17 @@ void mu(
     replication_engine<NUM_NODES, SYNC_GROUPS>(
         myBoardNum,
         proposedValue,
-        leaderSwitch2RepEngine
-        // minProp_req,
-        // minProp_rsp,
-        // writeNewProp_req,
-        // readSlots_req,
-        // readSlots_rsp,
-        // writeSlot_req,
-        // writeSlot_rsp,
-        // acceptedValue_req,
-        // acceptedValue_rsq,
-        // updateLocalValue_req
+        leaderSwitch2RepEngine,
+        minProp_req,
+        minProp_rsp,
+        writeNewProp_req,
+        readSlots_req,
+        readSlots_rsp,
+        writeSlot_req,
+        writeSlot_rsp,
+        acceptedValue_req,
+        acceptedValue_rsq,
+        updateLocalValue_req
     );
 
 /*
@@ -972,21 +976,21 @@ void mu(
     );
 */
 
-    // log_handler<NUM_NODES, SYNC_GROUPS, NUM_SLOTS, FIFO_LENGTH,LOG_BASE_PTR, LOG_BASE_ADDR, LOG_MIN_PROP_PTR_LEN, LOG_MIN_PROP_ADDR_LEN, LOG_LOCAL_LOG_PTR_LEN, LOG_LOCAL_LOG_ADDR_LEN, LOG_REMOTE_LOG_QUEUE_PTR_LEN, LOG_REMOTE_LOG_QUEUE_ADDR_LEN, LOG_PTR_LEN, LOG_ADDR_LEN >(
-    //     myBoardNum,
-    //     network_ptr,
-    //     minProp_req,
-    //     minProp_rsp,
-    //     writeNewProp_req,
-    //     readSlots_req,
-    //     readSlots_rsp,
-    //     writeSlot_req,
-    //     writeSlot_rsp,
-    //     acceptedValue_req,
-    //     acceptedValue_rsq,
-    //     m_axis_tx_meta,
-    //     m_axis_tx_data
-    // );
+    log_handler<NUM_NODES, SYNC_GROUPS, NUM_SLOTS, FIFO_LENGTH,LOG_BASE_PTR, LOG_BASE_ADDR, LOG_MIN_PROP_PTR_LEN, LOG_MIN_PROP_ADDR_LEN, LOG_LOCAL_LOG_PTR_LEN, LOG_LOCAL_LOG_ADDR_LEN, LOG_REMOTE_LOG_QUEUE_PTR_LEN, LOG_REMOTE_LOG_QUEUE_ADDR_LEN, LOG_PTR_LEN, LOG_ADDR_LEN >(
+        myBoardNum,
+        network_ptr,
+        minProp_req,
+        minProp_rsp,
+        writeNewProp_req,
+        readSlots_req,
+        readSlots_rsp,
+        writeSlot_req,
+        writeSlot_rsp,
+        acceptedValue_req,
+        acceptedValue_rsq,
+        m_axis_tx_meta,
+        m_axis_tx_data
+    );
 
     // meta_merger(
     //     m_log_handler_tx_meta,
@@ -1019,7 +1023,7 @@ extern "C" {
         int *network_ptr
     ) {
 
-        #pragma HLS INTERFACE ap_ctrl_chain port=return 
+        //#pragma HLS INTERFACE ap_ctrl_chain port=return 
         #pragma HLS INTERFACE axis port = m_axis_tx_meta
         #pragma HLS INTERFACE axis port = m_axis_tx_data
         #pragma HLS INTERFACE axis port = s_axis_tx_status
@@ -1037,6 +1041,7 @@ extern "C" {
             proposedValue.write(ProposedValue(1, 0));
             RTS = true; 
         }
+
 
         if (RTS) {
             mu<2, 1>(
