@@ -194,22 +194,20 @@ int main(int argc, char **argv) {
     OCL_CHECK(err, err = user_kernel.setArg(5, buffer_r1));
 
 
-    for (int i = 0; i < 300; i++) {
+    for (int i = 0; i < 10; i++) {
         printf("enqueue user kernel...\n");
         OCL_CHECK(err, err = q.enqueueTask(user_kernel));
+
+        printf("Device->Host user kernel...\n");
+        OCL_CHECK(err, err = q.enqueueMigrateMemObjects({buffer_r2}, CL_MIGRATE_MEM_OBJECT_HOST));
         OCL_CHECK(err, err = q.finish());
-    }
 
+        OCL_CHECK(err, err = q.enqueueMigrateMemObjects({buffer_r1}, CL_MIGRATE_MEM_OBJECT_HOST));
+        OCL_CHECK(err, err = q.finish());
 
-    printf("Device->Host user kernel...\n");
-    OCL_CHECK(err, err = q.enqueueMigrateMemObjects({buffer_r2}, CL_MIGRATE_MEM_OBJECT_HOST));
-    OCL_CHECK(err, err = q.finish());
-
-    OCL_CHECK(err, err = q.enqueueMigrateMemObjects({buffer_r1}, CL_MIGRATE_MEM_OBJECT_HOST));
-    OCL_CHECK(err, err = q.finish());
-
-    for (int i = 0; i < 17; i++){
-        printf("net: %d reply: %d\n", network_ptr0[i], reply[i]);
+        for (int j = 0; j < 17; j++){
+            printf("net: %d reply: %d\n", network_ptr0[j], reply[j]);
+        }
     }
 
     std::cout << "EXIT recorded" << std::endl;

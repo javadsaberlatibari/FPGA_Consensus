@@ -15,7 +15,7 @@ const int NUMBER_OF_NODES = 2;
 const ap_uint<32> BASE_IP_ADDR = 0xe0d4010b;
 const uint32_t UDP = 0x000012b7;
 
-bool FOLLOWER_LIST[NUMBER_OF_NODES-1] = {1, 1};
+bool FOLLOWER_LIST[NUMBER_OF_NODES-1] = {1};
 
 struct ProposedValue {
     int value; 
@@ -86,7 +86,8 @@ void rdma_read(
     hls::stream<pkt256>& m_axis_tx_meta
 ){
     //#pragma HLS dataflow
-    
+    #pragma HLS inline off
+    #pragma HLS pipeline II=1
     pkt256 tx_meta;
 
     /*RDMA OP*/
@@ -116,6 +117,8 @@ void rdma_write(
     hls::stream<pkt64>& m_axis_tx_data
 ){
     //#pragma HLS dataflow
+    #pragma HLS inline off
+    #pragma HLS pipeline II=1
     
     pkt256 tx_meta;
     pkt64 tx_data;
@@ -150,229 +153,229 @@ void rdma_write(
     
 }
 
-void meta_merger(
-    hls::stream<pkt256>& a_tx_meta,
-    hls::stream<pkt256>& b_tx_meta,
-    hls::stream<pkt256>& c_tx_meta
-) {
+// void meta_merger(
+//     hls::stream<pkt256>& a_tx_meta,
+//     hls::stream<pkt256>& b_tx_meta,
+//     hls::stream<pkt256>& c_tx_meta
+// ) {
 
-    pkt256 temp_pkt; 
-    if (!a_tx_meta.empty()) {
-        a_tx_meta.read(temp_pkt);
-        c_tx_meta.write(temp_pkt);
-    } else if (!b_tx_meta.empty()) {
-        b_tx_meta.read(temp_pkt);
-        c_tx_meta.write(temp_pkt);        
-    }
-}
-
-
-
-template<int NUM_NODES, int HB_BASE_PTR, int HB_BASE_ADDR, int FIFO_LENGTH>
-void heartBeatScanner(
-    int myBoardNum, 
-    int *network_ptr,
-    hls::stream<ap_uint<32>>& leader_update,
-    hls::stream<pkt256>& m_axis_tx_meta
-    //int *m_axi_reply
-) {
-
-    //static ap_uint<32> remoteHeartBeats[NUM_NODES];
-    static ap_uint<32> heartBeatScores[NUM_NODES];
-    static bool replicaAlive[NUM_NODES];
-    static heartBeatStates state = SCAN; 
-    static ap_uint<32> leader = 0; 
-    static ap_uint<32> newleader = 0; 
-    static ap_uint<32> heartBeatFifoIndex = 0; 
-
-    switch(state) {
-
-        case SCAN: {
-
-            int counter = 0; 
-            for (int i = 0; i < NUM_NODES; i++) {
-                if (i != myBoardNum) {
-                    rdma_read(
-                        (NUM_NODES - 1) * myBoardNum + counter,
-                        HB_BASE_ADDR + 4 + 4 * (FIFO_LENGTH * counter + (heartBeatFifoIndex%FIFO_LENGTH)),
-                        0,
-                        0x100,
-                        m_axis_tx_meta 
-                    );
-                    counter++; 
-                }
-            }
-            heartBeatFifoIndex++; 
-            state = READ; 
-            break; 
-        }
-
-        case READ: {
-            int counter = 0; 
-            for (int i = 0; i < NUM_NODES; i++) {
-                if (i != myBoardNum) {
-                    //m_axi_reply[counter] = network_ptr[HB_BASE_PTR + 1 + FIFO_LENGTH * counter + (heartBeatFifoIndex%FIFO_LENGTH)];
-                    if (network_ptr[HB_BASE_PTR + 1 + FIFO_LENGTH * counter + (heartBeatFifoIndex%FIFO_LENGTH)] > network_ptr[HB_BASE_PTR + 1 + FIFO_LENGTH * counter + ((heartBeatFifoIndex-1)%FIFO_LENGTH)]) {
-                        heartBeatScores[counter]++; 
-                    } else {
-                        heartBeatScores[counter]--; 
-                    }
-                    counter++; 
-                }
-            }
-            state = LEADER_ELECTION; 
-            break; 
-        }
-
-        case LEADER_ELECTION: {
-
-            for (int i = 0; i < NUM_NODES; i++) {
-                if (heartBeatScores[i] >= 6) {
-                    FOLLOWER_LIST[i] = true; 
-                    replicaAlive[i] = true; 
-                } else if (heartBeatScores[i] < 2){
-                    FOLLOWER_LIST[i] = false; 
-                    replicaAlive[i] = false; 
-                }
-            }
-            replicaAlive[myBoardNum] = true; 
-
-            for (int i = 0; i < NUM_NODES; i++) {
-                if (replicaAlive[i] == true) {
-                    newleader = i;
-                    break; 
-                }
-            }
-
-            if (newleader != leader) {
-                leader_update.write(newleader);
-            }
-            state = SCAN;
-            break; 
-        }
-
-    }
-
-}
+//     pkt256 temp_pkt; 
+//     if (!a_tx_meta.empty()) {
+//         a_tx_meta.read(temp_pkt);
+//         c_tx_meta.write(temp_pkt);
+//     } else if (!b_tx_meta.empty()) {
+//         b_tx_meta.read(temp_pkt);
+//         c_tx_meta.write(temp_pkt);        
+//     }
+// }
 
 
-template<int NUM_NODES>
-void permision_handler(
-    int myBoardNum, 
-    hls::stream<ap_uint<32>>& leader_update,
-    hls::stream<pkt256>& m_axis_qp_interface
-) {
 
-    static ap_uint<32> leader = 0;
-    static ap_uint<32> newleader; 
-    static pkt256 qp_info;
+// template<int NUM_NODES, int HB_BASE_PTR, int HB_BASE_ADDR, int FIFO_LENGTH>
+// void heartBeatScanner(
+//     int myBoardNum, 
+//     int *network_ptr,
+//     hls::stream<ap_uint<32>>& leader_update,
+//     hls::stream<pkt256>& m_axis_tx_meta
+//     //int *m_axi_reply
+// ) {
 
-    if (!leader_update.empty()) {
+//     //static ap_uint<32> remoteHeartBeats[NUM_NODES];
+//     static ap_uint<32> heartBeatScores[NUM_NODES];
+//     static bool replicaAlive[NUM_NODES];
+//     static heartBeatStates state = SCAN; 
+//     static ap_uint<32> leader = 0; 
+//     static ap_uint<32> newleader = 0; 
+//     static ap_uint<32> heartBeatFifoIndex = 0; 
 
-        leader_update.read(newleader);
+//     switch(state) {
 
-        if (newleader != leader && myBoardNum == newleader) {
-            leader = newleader;
+//         case SCAN: {
 
-            /* Change permission */
-            int counter = 0; 
+//             int counter = 0; 
+//             for (int i = 0; i < NUM_NODES; i++) {
+//                 if (i != myBoardNum) {
+//                     rdma_read(
+//                         (NUM_NODES - 1) * myBoardNum + counter,
+//                         HB_BASE_ADDR + 4 + 4 * (FIFO_LENGTH * counter + (heartBeatFifoIndex%FIFO_LENGTH)),
+//                         0,
+//                         0x100,
+//                         m_axis_tx_meta 
+//                     );
+//                     counter++; 
+//                 }
+//             }
+//             heartBeatFifoIndex++; 
+//             state = READ; 
+//             break; 
+//         }
 
-            for (int i = 0; i < NUM_NODES; i++) {
+//         case READ: {
+//             int counter = 0; 
+//             for (int i = 0; i < NUM_NODES; i++) {
+//                 if (i != myBoardNum) {
+//                     //m_axi_reply[counter] = network_ptr[HB_BASE_PTR + 1 + FIFO_LENGTH * counter + (heartBeatFifoIndex%FIFO_LENGTH)];
+//                     if (network_ptr[HB_BASE_PTR + 1 + FIFO_LENGTH * counter + (heartBeatFifoIndex%FIFO_LENGTH)] > network_ptr[HB_BASE_PTR + 1 + FIFO_LENGTH * counter + ((heartBeatFifoIndex-1)%FIFO_LENGTH)]) {
+//                         heartBeatScores[counter]++; 
+//                     } else {
+//                         heartBeatScores[counter]--; 
+//                     }
+//                     counter++; 
+//                 }
+//             }
+//             state = LEADER_ELECTION; 
+//             break; 
+//         }
 
-                if (i != myBoardNum) {
-                    //Enable QP
-                    qp_info.data.range(2,0) = 2;  
-                    if (counter < myBoardNum)
-                        qp_info.data.range(26, 3) = i * (NUM_NODES-1) + myBoardNum - 1;
-                    else 
-                        qp_info.data.range(26, 3) = i * (NUM_NODES-1) + myBoardNum;
+//         case LEADER_ELECTION: {
 
-                    qp_info.data.range(50, 27) = 0;
-                    qp_info.data.range(74, 51) = 0; 
-                    qp_info.data.range(90, 75) = 0x00000000; 
-                    qp_info.data.range(128, 91) = 0x0000000000000001;
-                    m_axis_qp_interface.write(qp_info);
-                }
+//             for (int i = 0; i < NUM_NODES; i++) {
+//                 if (heartBeatScores[i] >= 6) {
+//                     FOLLOWER_LIST[i] = true; 
+//                     replicaAlive[i] = true; 
+//                 } else if (heartBeatScores[i] < 2){
+//                     FOLLOWER_LIST[i] = false; 
+//                     replicaAlive[i] = false; 
+//                 }
+//             }
+//             replicaAlive[myBoardNum] = true; 
 
-            }
+//             for (int i = 0; i < NUM_NODES; i++) {
+//                 if (replicaAlive[i] == true) {
+//                     newleader = i;
+//                     break; 
+//                 }
+//             }
 
+//             if (newleader != leader) {
+//                 leader_update.write(newleader);
+//             }
+//             state = SCAN;
+//             break; 
+//         }
 
-        } else if (newleader != leader) {
+//     }
 
-            if (leader == myBoardNum) {
-                for (int i = 0; i < NUM_NODES; i++) {
-
-                    if (i != myBoardNum) {
-                        //Disable QP
-                        qp_info.data.range(2,0) = 0;  
-                        if (i < myBoardNum)
-                            qp_info.data.range(26, 3) = i * (NUM_NODES-1) + myBoardNum - 1;
-                        else 
-                            qp_info.data.range(26, 3) = i * (NUM_NODES-1) + myBoardNum;
-
-                        qp_info.data.range(50, 27) = 0;
-                        qp_info.data.range(74, 51) = 0; 
-                        qp_info.data.range(90, 75) = 0x00000000; 
-                        qp_info.data.range(128, 91) = 0x0000000000000001;
-                        m_axis_qp_interface.write(qp_info);
-                    }
-
-                }
-            }
-
-            qp_info.data.range(2,0) = 0;  
-            if (leader < myBoardNum)
-                qp_info.data.range(26, 3) = leader * (NUM_NODES-1) + myBoardNum - 1;
-            else 
-                qp_info.data.range(26, 3) = leader * (NUM_NODES-1) + myBoardNum;
-
-            qp_info.data.range(50, 27) = 0;
-            qp_info.data.range(74, 51) = 0; 
-            qp_info.data.range(90, 75) = 0x00000000; 
-            qp_info.data.range(128, 91) = 0x0000000000000001;
-            leader = newleader;
-        }
-
-    }
-}
+// }
 
 
-template<int NUM_NODES, int HB_BASE_PTR, int HB_BASE_ADDR, int FIFO_LENGTH>
-void leaderSwitch(
-    int myBoardNum, 
-    int *network_ptr,
-    hls::stream<ap_uint<32>>& leader_update,
-    hls::stream<pkt256>& m_axis_tx_meta
-    //int *m_axi_reply
-) {
+// template<int NUM_NODES>
+// void permision_handler(
+//     int myBoardNum, 
+//     hls::stream<ap_uint<32>>& leader_update,
+//     hls::stream<pkt256>& m_axis_qp_interface
+// ) {
 
-    static int localHeartBeat = 0; 
-    static int scannerCounter = 0; 
+//     static ap_uint<32> leader = 0;
+//     static ap_uint<32> newleader; 
+//     static pkt256 qp_info;
 
-    localHeartBeat++;
-    network_ptr[HB_BASE_PTR] = localHeartBeat;
-    scannerCounter++;
+//     if (!leader_update.empty()) {
 
-    if (scannerCounter == 50) {
-            heartBeatScanner<3, 0, 0, 5>(
-                myBoardNum,
-                network_ptr,
-                leader_update,
-                m_axis_tx_meta
-                //m_axi_reply
-            );
-            scannerCounter = 0; 
-    }
+//         leader_update.read(newleader);
 
-}
+//         if (newleader != leader && myBoardNum == newleader) {
+//             leader = newleader;
+
+//             /* Change permission */
+//             int counter = 0; 
+
+//             for (int i = 0; i < NUM_NODES; i++) {
+
+//                 if (i != myBoardNum) {
+//                     //Enable QP
+//                     qp_info.data.range(2,0) = 2;  
+//                     if (counter < myBoardNum)
+//                         qp_info.data.range(26, 3) = i * (NUM_NODES-1) + myBoardNum - 1;
+//                     else 
+//                         qp_info.data.range(26, 3) = i * (NUM_NODES-1) + myBoardNum;
+
+//                     qp_info.data.range(50, 27) = 0;
+//                     qp_info.data.range(74, 51) = 0; 
+//                     qp_info.data.range(90, 75) = 0x00000000; 
+//                     qp_info.data.range(128, 91) = 0x0000000000000001;
+//                     m_axis_qp_interface.write(qp_info);
+//                 }
+
+//             }
+
+
+//         } else if (newleader != leader) {
+
+//             if (leader == myBoardNum) {
+//                 for (int i = 0; i < NUM_NODES; i++) {
+
+//                     if (i != myBoardNum) {
+//                         //Disable QP
+//                         qp_info.data.range(2,0) = 0;  
+//                         if (i < myBoardNum)
+//                             qp_info.data.range(26, 3) = i * (NUM_NODES-1) + myBoardNum - 1;
+//                         else 
+//                             qp_info.data.range(26, 3) = i * (NUM_NODES-1) + myBoardNum;
+
+//                         qp_info.data.range(50, 27) = 0;
+//                         qp_info.data.range(74, 51) = 0; 
+//                         qp_info.data.range(90, 75) = 0x00000000; 
+//                         qp_info.data.range(128, 91) = 0x0000000000000001;
+//                         m_axis_qp_interface.write(qp_info);
+//                     }
+
+//                 }
+//             }
+
+//             qp_info.data.range(2,0) = 0;  
+//             if (leader < myBoardNum)
+//                 qp_info.data.range(26, 3) = leader * (NUM_NODES-1) + myBoardNum - 1;
+//             else 
+//                 qp_info.data.range(26, 3) = leader * (NUM_NODES-1) + myBoardNum;
+
+//             qp_info.data.range(50, 27) = 0;
+//             qp_info.data.range(74, 51) = 0; 
+//             qp_info.data.range(90, 75) = 0x00000000; 
+//             qp_info.data.range(128, 91) = 0x0000000000000001;
+//             leader = newleader;
+//         }
+
+//     }
+// }
+
+
+// template<int NUM_NODES, int HB_BASE_PTR, int HB_BASE_ADDR, int FIFO_LENGTH>
+// void leaderSwitch(
+//     int myBoardNum, 
+//     int *network_ptr,
+//     hls::stream<ap_uint<32>>& leader_update,
+//     hls::stream<pkt256>& m_axis_tx_meta
+//     //int *m_axi_reply
+// ) {
+
+//     static int localHeartBeat = 0; 
+//     static int scannerCounter = 0; 
+
+//     localHeartBeat++;
+//     network_ptr[HB_BASE_PTR] = localHeartBeat;
+//     scannerCounter++;
+
+//     if (scannerCounter == 50) {
+//             heartBeatScanner<3, 0, 0, 5>(
+//                 myBoardNum,
+//                 network_ptr,
+//                 leader_update,
+//                 m_axis_tx_meta
+//                 //m_axi_reply
+//             );
+//             scannerCounter = 0; 
+//     }
+
+// }
 
 enum replicationEngineStates {
     INIT, 
     LEADER_UPDATE, 
     LEADER_REPLICA,
     PROPOSE,
-    LEADER_CATCH_UP,
-    REPLICA_CATCH_UP,
+    //LEADER_CATCH_UP,
+    //REPLICA_CATCH_UP,
     PREPARE_READ_MIN_PROP, 
     PREPARE_SELECT_NEW, 
     PREPARE_WRITE_MIN_PROP_AND_READ_SLOT, 
@@ -393,8 +396,8 @@ enum replicationEngineStates {
 template <int NUM_NODES, int SYNC_GROUPS>
 void replication_engine(
     ap_uint<32> myBoardNum, 
-    hls::stream<ProposedValue>& proposedValue, 
-    hls::stream<ap_uint<32>>& leaderUpdate,
+    //hls::stream<ProposedValue>& proposedValue, 
+    //hls::stream<ap_uint<32>>& leaderUpdate,
     hls::stream<ap_uint<32>>& minProp_req,
     hls::stream<ap_uint<32>>& minProp_rsp, 
     hls::stream<ap_uint<32>>& writeNewProp_req,
@@ -404,13 +407,14 @@ void replication_engine(
     hls::stream<bool>& writeSlot_rsp,
     hls::stream<ap_uint<32>>& acceptedValue_req,
     hls::stream<updateLocalValue>& acceptedValue_rsq,
-    hls::stream<updateLocalValue>& updateLocalValue_req
-    //int * m_axi_reply
+    hls::stream<updateLocalValue>& updateLocalValue_req,
+    int * m_axi_reply
 ) {
-    
+    #pragma HLS inline off
+    #pragma HLS pipeline II=1
     //#pragma DATAFLOW
     
-    static replicationEngineStates state = INIT;  
+    static replicationEngineStates repstate = INIT;  
     static ap_uint<32> leader = 0; 
     //static bool isLeader = false; 
     static bool done = true; 
@@ -433,39 +437,42 @@ void replication_engine(
 
     std::cout << "replication engine" << std::endl;
 
-    switch (state) {
+    switch (repstate) {
 
-        /* Inital state on start-up */
+        /* Inital repstate on start-up */
         case INIT: {
             std::cout << "INIT" << std::endl;
             leader = 0; 
-            state = LEADER_REPLICA;
+            m_axi_reply[0] = 1; 
+            repstate = LEADER_REPLICA;
             break; 
         }
 
-        /* Check for a leader update */
-        case LEADER_UPDATE: {
-            std::cout << "LEADER_UPDATE" << std::endl;
-            if (!leaderUpdate.empty()) {
-                leaderUpdate.read(leader); 
-                //m_axi_reply[0] = leader; 
-            }
-            state = LEADER_REPLICA;
-            break; 
-        }
+        // /* Check for a leader update */
+        // case LEADER_UPDATE: {
+        //     std::cout << "LEADER_UPDATE" << std::endl;
+        //     if (!leaderUpdate.empty()) {
+        //         leaderUpdate.read(leader); 
+        //         m_axi_reply[0] = leader; 
+        //     }
+        //     repstate = LEADER_REPLICA;
+        //     m_axi_reply[1] = 1; 
+        //     break; 
+        // }
 
-        /* If leader go to propose state, if replica wait for leader actions*/
+        /* If leader go to propose repstate, if replica wait for leader actions*/
         case LEADER_REPLICA: {
             std::cout << "LEADER_REPLICA" << std::endl;
             if (leader == myBoardNum) {
-                state = PROPOSE;
+                repstate = PROPOSE;
             } else {
-                state = REPLICA; 
+                repstate = REPLICA; 
             }
+            m_axi_reply[1] = 2; 
             break; 
         }
 
-        /* In Propose state read proposed value, and request follower list*/
+        /* In Propose repstate read proposed value, and request follower list*/
         case PROPOSE: {
             std::cout << "PROPOSE" << std::endl;
             
@@ -476,13 +483,14 @@ void replication_engine(
                 sGroup = temp.syncronizationGroup;
                 //m_axi_reply[1] = myValue;
                 done = false; 
-                state = PREPARE_READ_MIN_PROP;
+                repstate = PREPARE_READ_MIN_PROP;
             } else if (done) {
-                state = LEADER_UPDATE; 
+                repstate = LEADER_UPDATE; 
             } else {
-                state = PREPARE_READ_MIN_PROP;
+                repstate = PREPARE_READ_MIN_PROP;
             }
 
+            m_axi_reply[2] = 3; 
 
             break; 
         }
@@ -496,7 +504,8 @@ void replication_engine(
         case PREPARE_READ_MIN_PROP: {
             std::cout << "PREPARE_READ_MIN_PROP" << std::endl;
             minProp_req.write(sGroup);
-            state = PREPARE_SELECT_NEW; 
+            repstate = PREPARE_SELECT_NEW; 
+            m_axi_reply[3] = 4; 
             break; 
         }
 
@@ -505,8 +514,9 @@ void replication_engine(
             if (!minProp_rsp.empty()) {
                 minProp_rsp.read(highestProposalNum);
                 highestProposalNum++; 
-                state = PREPARE_WRITE_MIN_PROP_AND_READ_SLOT;
+                repstate = PREPARE_WRITE_MIN_PROP_AND_READ_SLOT;
             }
+            m_axi_reply[4] = 5; 
             break; 
         }
 
@@ -514,7 +524,8 @@ void replication_engine(
             std::cout << "PREPARE_WRITE_MIN_PROP_AND_READ_SLOT" << std::endl;
             writeNewProp_req.write(highestProposalNum);
             readSlots_req.write(LogEntry(sGroup));
-            state = PREPARE_CHECK_SLOTS; 
+            repstate = PREPARE_CHECK_SLOTS; 
+            m_axi_reply[5] = 6; 
             break; 
         }
 
@@ -527,15 +538,17 @@ void replication_engine(
                 } else {
                     propValue = myValue; 
                 }
-                state = ACCEPT_WRITE; 
+                repstate = ACCEPT_WRITE; 
             }
+            m_axi_reply[6] = 7; 
             break; 
         }
 
         case ACCEPT_WRITE: {
             std::cout << "ACCEPT_WRITE" << std::endl;
-            writeSlot_rep.write(LogEntry(highestProposalNum, propValue, myFUO));
-            state = ACCEPT_DONE;
+            writeSlot_rep.write(LogEntry(highestProposalNum, propValue, myFUO[sGroup]));
+            repstate = ACCEPT_DONE;
+            m_axi_reply[7] = 8; 
             break; 
         }
 
@@ -546,8 +559,9 @@ void replication_engine(
             } else {
                 updateLocalValue_req.write(updateLocalValue(propValue, sGroup));
             }   
-            state = LEADER_UPDATE;
+            repstate = LEADER_REPLICA;
             myFUO[sGroup]+=1; 
+            m_axi_reply[8] = 9; 
             break; 
         }
 
@@ -556,7 +570,8 @@ void replication_engine(
             /* Check for new entries in the local log */
             std::cout << "REPLICA" << std::endl;
             acceptedValue_req.write(1);
-            state = REPLICA_CHECK; 
+            repstate = REPLICA_CHECK; 
+            m_axi_reply[7] = 10; 
             break; 
         }
 
@@ -565,8 +580,9 @@ void replication_engine(
             if (!acceptedValue_rsq.empty()) {
                 acceptedValue_rsq.read(uVal);
                 updateLocalValue_req.write(uVal);
-                state = LEADER_UPDATE;
+                repstate = LEADER_REPLICA;
             }
+            m_axi_reply[8] = 11; 
             break; 
         }
 
@@ -587,7 +603,7 @@ enum logHandlerStates {
     WRITE_READ,
     WRITE_READ_RSP,
     WRITE_SLOT, 
-    ACCEPT_VALUE,
+    ACCEPT_VALUE
 };
 
 /*
@@ -635,64 +651,75 @@ void log_handler(
     hls::stream<bool>& writeSlot_rsp,
     hls::stream<ap_uint<32>>& acceptedValue_req,
     hls::stream<updateLocalValue>& acceptedValue_rsq,
-
     hls::stream<pkt256>& m_axis_tx_meta, 
-    hls::stream<pkt64>& m_axis_tx_data
+    hls::stream<pkt64>& m_axis_tx_data,
+    int * m_axi_reply
 ) {
-    
+    #pragma HLS inline off
+    #pragma HLS pipeline II=1
 
-    static logHandlerStates state = REQUEST; 
-    //static Log myLog[SYNC_GROUPS];
+    static logHandlerStates logstate = REQUEST; 
     static ap_uint<32> fuo[SYNC_GROUPS];
-    static ap_uint<32> minPropFifoIndex = 0, slotReadFifoIndex = 0; 
+    static ap_uint<32> minPropFifoIndex = 0;
+    static ap_uint<32> slotReadFifoIndex = 0; 
     static ap_uint<32> newMinProp = 0; 
     static ap_uint<32> syncGroup; 
-
     static LogEntry logSlot; 
 
-
-    switch(state) {
+    switch(logstate) {
 
         case REQUEST: {
 
             if (!minProp_req.empty()) {
                 minProp_req.read(syncGroup);
-                state = READ_MIN_PROP; 
+                logstate = READ_MIN_PROP; 
 
             } else if (!writeNewProp_req.empty() && !readSlots_req.empty()) {
                 readSlots_req.read(logSlot);
                 syncGroup = logSlot.syncGroup; 
                 writeNewProp_req.read(newMinProp);
-                state = WRITE_READ; 
+                logstate = WRITE_READ; 
 
             } else if (!writeSlot_rep.empty()) {
                 writeSlot_rep.read(logSlot);
                 fuo[syncGroup] = logSlot.fuo; 
-                state = WRITE_SLOT;
+                logstate = WRITE_SLOT;
 
             } else if (!acceptedValue_req.empty()) {
                 acceptedValue_req.read(syncGroup);
-                state = ACCEPT_VALUE;
+                logstate = ACCEPT_VALUE;
             }
 
+            m_axi_reply[9] = 10; 
+            
             break; 
 
         }
 
         case READ_MIN_PROP: {
-            for (int i = 0; i < NUM_NODES-1; i++) {
-                if (FOLLOWER_LIST[i]) {
-                    rdma_read(
-                        (NUM_NODES - 1) * myBoardNum + i,
-                        LOG_BASE_ADDR + syncGroup * LOG_ADDR_LEN + 4 + 4 * (FIFO_LENGTH * i + (minPropFifoIndex%FIFO_LENGTH)),
-                        LOG_BASE_ADDR + syncGroup * LOG_ADDR_LEN,
-                        0x100,
-                        m_axis_tx_meta 
-                    );
+
+            int j=0; 
+            int qpn_tmp=myBoardNum*(NUM_NODES-1);
+            while (j<NUM_NODES){
+                if(j!=myBoardNum && FOLLOWER_LIST[j]){
+                    if(!m_axis_tx_meta.full()){
+                        rdma_read(
+                            qpn_tmp,
+                            LOG_BASE_ADDR + syncGroup * LOG_ADDR_LEN + 4 + 4 * (FIFO_LENGTH * j + (minPropFifoIndex%FIFO_LENGTH)),
+                            LOG_BASE_ADDR + syncGroup * LOG_ADDR_LEN,
+                            0x100,
+                            m_axis_tx_meta 
+                            );
+                        j++;
+                        qpn_tmp++;
+                    }
+                }
+                else {
+                    j++;
                 }
             }
-
-            state = READ_MIN_PROP_RSP; 
+            m_axi_reply[10] = 11; 
+            logstate = READ_MIN_PROP_RSP; 
             break; 
         }
 
@@ -706,38 +733,59 @@ void log_handler(
             }
             minPropFifoIndex++; 
             minProp_rsp.write(minPropNumber);
-            state = REQUEST; 
+            logstate = REQUEST; 
+            m_axi_reply[11] = 12; 
             break; 
         }
 
         case WRITE_READ: {
 
-            for (int i = 0; i < NUM_NODES-1; i++) {
-                if (FOLLOWER_LIST[i]) {
-                    rdma_write(
-                        (NUM_NODES - 1) * myBoardNum + i,
-                        0,
-                        LOG_BASE_ADDR,
-                        0x8,
-                        newMinProp,
-                        m_axis_tx_meta, 
-                        m_axis_tx_data
-                    );
+            int j=0; 
+            int qpn_tmp=myBoardNum*(NUM_NODES-1);
+            while (j<NUM_NODES){
+                if(j!=myBoardNum && FOLLOWER_LIST[j]){
+                    if(!m_axis_tx_meta.full() && !m_axis_tx_data.full()){
+                        rdma_write(
+                            qpn_tmp,
+                            0,
+                            LOG_BASE_ADDR,
+                            0x8,
+                            newMinProp,
+                            m_axis_tx_meta, 
+                            m_axis_tx_data
+                            );
+                        j++;
+                        qpn_tmp++;
+                    }
+                }
+                else {
+                    j++;
                 }
             }
 
-            for (int i = 0; i < NUM_NODES-1; i++) {
-                if (FOLLOWER_LIST[i]) {
-                    rdma_read(
-                        (NUM_NODES - 1) * myBoardNum + i,
-                        LOG_BASE_ADDR + syncGroup * LOG_PTR_LEN + 4 + 4 * (FIFO_LENGTH * NUM_NODES) + 4 * 2 * NUM_SLOTS + 4 * (2 * FIFO_LENGTH * i + (slotReadFifoIndex%NUM_SLOTS)),
-                        LOG_BASE_ADDR + syncGroup * LOG_PTR_LEN + 4 + 4 * (FIFO_LENGTH * NUM_NODES),
-                        0x200,
-                        m_axis_tx_meta 
-                    );
+            j=0; 
+            qpn_tmp=myBoardNum*(NUM_NODES-1);
+            while (j<NUM_NODES){
+                if(j!=myBoardNum && FOLLOWER_LIST[j]){
+                    if(!m_axis_tx_meta.full()){
+                        rdma_read(
+                            qpn_tmp,
+                            LOG_BASE_ADDR + syncGroup * LOG_PTR_LEN + 4 + 4 * (FIFO_LENGTH * NUM_NODES) + 4 * 2 * NUM_SLOTS + 4 * (2 * FIFO_LENGTH * j + (slotReadFifoIndex%NUM_SLOTS)),
+                            LOG_BASE_ADDR + syncGroup * LOG_PTR_LEN + 4 + 4 * (FIFO_LENGTH * NUM_NODES),
+                            0x200,
+                            m_axis_tx_meta 
+                            );
+                        j++;
+                        qpn_tmp++;
+                    }
+                }
+                else {
+                    j++;
                 }
             }
-            state = WRITE_READ_RSP;
+
+            logstate = WRITE_READ_RSP;
+            m_axi_reply[12] = 13; 
             break; 
         }
 
@@ -757,7 +805,8 @@ void log_handler(
 
             readSlots_rsp.write(temp);
             slotReadFifoIndex++; 
-            state = REQUEST; 
+            logstate = REQUEST; 
+            m_axi_reply[13] = 14; 
             break; 
         }
 
@@ -768,21 +817,31 @@ void log_handler(
             sendLog.range(31, 0) = logSlot.propVal;
             sendLog.range(63, 32) = logSlot.value;
 
-            for (int i = 0; i < NUM_NODES-1; i++) {
-                if (FOLLOWER_LIST[i]) {
-                    rdma_write(
-                        (NUM_NODES - 1) * myBoardNum + i,
-                        0,
-                        LOG_BASE_ADDR + syncGroup * LOG_ADDR_LEN + LOG_MIN_PROP_ADDR_LEN + logSlot.fuo * 2,
-                        0xc,
-                        sendLog,
-                        m_axis_tx_meta, 
-                        m_axis_tx_data
-                    );
+
+            int j=0; 
+            int qpn_tmp=myBoardNum*(NUM_NODES-1);
+            while (j<NUM_NODES){
+                if(j!=myBoardNum && FOLLOWER_LIST[j]){
+                    if(!m_axis_tx_meta.full() && !m_axis_tx_data.full()){
+                        rdma_write(
+                            qpn_tmp,
+                            0,
+                            LOG_BASE_ADDR + syncGroup * LOG_ADDR_LEN + LOG_MIN_PROP_ADDR_LEN + logSlot.fuo * 2,
+                            0xc,
+                            sendLog,
+                            m_axis_tx_meta, 
+                            m_axis_tx_data
+                            );
+                        j++;
+                        qpn_tmp++;
+                    }
+                }
+                else {
+                    j++;
                 }
             }
-
-            state = REQUEST; 
+            m_axi_reply[14] = 15; 
+            logstate = REQUEST; 
             break; 
         }
 
@@ -799,13 +858,13 @@ void log_handler(
                         acceptedValue_rsq.write(updateLocalValue(propValue, syncGroup));
                 }
             }
-            state = REQUEST; 
+            m_axi_reply[15] = 16; 
+            logstate = REQUEST; 
             break; 
             
         }
 
     }
-
 
 }
 
@@ -849,18 +908,19 @@ void mu(
     // ap_uint<32> proposed_value, 
     // int proposed_syn_group,
 
-    hls::stream<ProposedValue>& proposedValue, 
+    //hls::stream<ProposedValue>& proposedValue, 
 
     /* Global constants */
     ap_uint<32> myBoardNum, 
     int *network_ptr,
-    int * m_axi_reply,
+    int * m_axi_reply_1,
+    int * m_axi_reply_2, 
     /* Connection to network kernel */
     //hls::stream<pkt256>& m_axis_qp_interface, 
     hls::stream<pkt256>& m_axis_tx_meta, 
     hls::stream<pkt64>& m_axis_tx_data
 ) {
-
+    #pragma HLS inline
     //#pragma HLS DATAFLOW 
 
     const int NUM_SLOTS = 5; 
@@ -895,6 +955,10 @@ void mu(
     /* Streams between leader switch and permision handler */
     static hls::stream<ap_uint<32>> leaderSwitch2PermHandler;
 
+    #pragma HLS STREAM depth=4 variable=leaderSwitch2StreamSplit
+    #pragma HLS STREAM depth=8 variable=leaderSwitch2RepEngine
+    #pragma HLS STREAM depth=8 variable=leaderSwitch2PermHandler
+
     /* Streams between replication engine and log handler */
     static hls::stream<ap_uint<32>> minProp_req("minimum_prop_request");
     static hls::stream<ap_uint<32>> minProp_rsp("minimum_prop_response");
@@ -906,20 +970,20 @@ void mu(
     static hls::stream<ap_uint<32>> acceptedValue_req("accepted_value_request");
     static hls::stream<updateLocalValue> acceptedValue_rsq("accepted_value_response"); 
 
-    #pragma HLS STREAM depth=4 variable=minProp_req;
-    #pragma HLS STREAM depth=4 variable=minProp_rsp;
-    #pragma HLS STREAM depth=4 variable=writeNewProp_req;
-    #pragma HLS STREAM depth=4 variable=readSlots_req;
-    #pragma HLS STREAM depth=4 variable=readSlots_rsp;
-    #pragma HLS STREAM depth=4 variable=writeSlot_req;
-    #pragma HLS STREAM depth=4 variable=writeSlot_rsp;
-    #pragma HLS STREAM depth=4 variable=acceptedValue_req;
-    #pragma HLS STREAM depth=4 variable=acceptedValue_rsq;
+    #pragma HLS STREAM depth=4 variable=minProp_req
+    #pragma HLS STREAM depth=4 variable=minProp_rsp
+    #pragma HLS STREAM depth=4 variable=writeNewProp_req
+    #pragma HLS STREAM depth=4 variable=readSlots_req
+    #pragma HLS STREAM depth=4 variable=readSlots_rsp
+    #pragma HLS STREAM depth=4 variable=writeSlot_req
+    #pragma HLS STREAM depth=4 variable=writeSlot_rsp
+    #pragma HLS STREAM depth=4 variable=acceptedValue_req    
+    #pragma HLS STREAM depth=4 variable=acceptedValue_rsq
 
     /* Streams between replication engine to mu */
     static hls::stream<updateLocalValue> updateLocalValue_req;  
     static updateLocalValue update; 
-
+    #pragma HLS STREAM depth=8 variable=updateLocalValue_req
     /* Storing local values */
     static int localValues[SYNC_GROUPS];
 
@@ -927,20 +991,12 @@ void mu(
     static hls::stream<pkt256> m_leader_switch_tx_meta; 
     static hls::stream<pkt256> m_log_handler_tx_meta; 
 
-    //static ProposedValue readPV; 
-
-    // if (send) {
-    //     valueStream.write(proposed_value);
-    //     leaderSwitch2RepEngine.write(0);
-    //     send = false; 
-    // }
-
-    test_input(leaderSwitch2RepEngine);
+    //test_input(leaderSwitch2RepEngine);
 
     replication_engine<NUM_NODES, SYNC_GROUPS>(
         myBoardNum,
-        proposedValue,
-        leaderSwitch2RepEngine,
+        //proposedValue,
+        //leaderSwitch2RepEngine,
         minProp_req,
         minProp_rsp,
         writeNewProp_req,
@@ -950,7 +1006,8 @@ void mu(
         writeSlot_rsp,
         acceptedValue_req,
         acceptedValue_rsq,
-        updateLocalValue_req
+        updateLocalValue_req,
+        m_axi_reply_1
     );
 
 /*
@@ -976,21 +1033,49 @@ void mu(
     );
 */
 
-    log_handler<NUM_NODES, SYNC_GROUPS, NUM_SLOTS, FIFO_LENGTH,LOG_BASE_PTR, LOG_BASE_ADDR, LOG_MIN_PROP_PTR_LEN, LOG_MIN_PROP_ADDR_LEN, LOG_LOCAL_LOG_PTR_LEN, LOG_LOCAL_LOG_ADDR_LEN, LOG_REMOTE_LOG_QUEUE_PTR_LEN, LOG_REMOTE_LOG_QUEUE_ADDR_LEN, LOG_PTR_LEN, LOG_ADDR_LEN >(
-        myBoardNum,
-        network_ptr,
-        minProp_req,
-        minProp_rsp,
-        writeNewProp_req,
-        readSlots_req,
-        readSlots_rsp,
-        writeSlot_req,
-        writeSlot_rsp,
-        acceptedValue_req,
-        acceptedValue_rsq,
-        m_axis_tx_meta,
-        m_axis_tx_data
-    );
+    // log_handler<NUM_NODES, SYNC_GROUPS, NUM_SLOTS, FIFO_LENGTH,LOG_BASE_PTR, LOG_BASE_ADDR, LOG_MIN_PROP_PTR_LEN, LOG_MIN_PROP_ADDR_LEN, LOG_LOCAL_LOG_PTR_LEN, LOG_LOCAL_LOG_ADDR_LEN, LOG_REMOTE_LOG_QUEUE_PTR_LEN, LOG_REMOTE_LOG_QUEUE_ADDR_LEN, LOG_PTR_LEN, LOG_ADDR_LEN >(
+    //     myBoardNum,
+    //     network_ptr,
+    //     minProp_req,
+    //     minProp_rsp,
+    //     writeNewProp_req,
+    //     readSlots_req,
+    //     readSlots_rsp,
+    //     writeSlot_req,
+    //     writeSlot_rsp,
+    //     acceptedValue_req,
+    //     acceptedValue_rsq,
+    //     m_axis_tx_meta,
+    //     m_axis_tx_data,
+    //     m_axi_reply_2
+    // );
+
+    if (!minProp_req.empty()) {
+        ap_uint<32> temp_min; 
+        minProp_req.read(temp_min); 
+        minProp_rsp.write(1);
+    }
+
+    if (!writeNewProp_req.empty() && !readSlots_req.empty()) {
+        
+        LogEntry logSlot; 
+        ap_uint<32> temp_min;
+        readSlots_req.read(logSlot);
+        writeNewProp_req.read(temp_min);
+        readSlots_rsp.write(LogEntry(temp_min, 1, true));
+
+    } 
+
+    if (!writeSlot_req.empty()) {
+        LogEntry logSlot; 
+        writeSlot_req.read(logSlot);
+    }
+
+    if (!acceptedValue_req.empty()) {
+        ap_uint<32> syncGroup; 
+        acceptedValue_req.read(syncGroup);
+        acceptedValue_rsq.write(updateLocalValue(1, syncGroup));
+    }
 
     // meta_merger(
     //     m_log_handler_tx_meta,
@@ -999,8 +1084,13 @@ void mu(
     // );
 
     if (!updateLocalValue_req.empty()) {
+        
         updateLocalValue_req.read(update);
         localValues[update.syncGroup] += update.value; 
+    }
+
+    if (m_axis_tx_data.full() && m_axis_tx_meta.full()) {
+        std::cout << "blank";
     }
 
 }
@@ -1019,7 +1109,8 @@ extern "C" {
         hls::stream<pkt64>& s_axis_tx_status,
         //hls::stream<pkt256>& m_axis_qp_conn_interface, 
         int myBoardNum, 
-        int *m_axi_reply,
+        int *m_axi_reply_1,
+        int *m_axi_reply_2,
         int *network_ptr
     ) {
 
@@ -1031,6 +1122,7 @@ extern "C" {
         //#pragma HLS DATAFLOW
 
         static hls::stream<ProposedValue> proposedValue; 
+        #pragma HLS STREAM depth=8 variable=proposedValue
         static bool RTS = false; 
         static pkt64 status; 
         static int counter = 0; 
@@ -1038,17 +1130,18 @@ extern "C" {
 
         if (!s_axis_tx_status.empty()) {
             s_axis_tx_status.read(status);
-            proposedValue.write(ProposedValue(1, 0));
+            //proposedValue.write(ProposedValue(1, 0));
             RTS = true; 
         }
 
 
         if (RTS) {
             mu<2, 1>(
-                proposedValue,
+                //proposedValue,
                 myBoardNum, 
                 network_ptr,
-                m_axi_reply,
+                m_axi_reply_1,
+                m_axi_reply_2,
                 m_axis_tx_meta,
                 m_axis_tx_data
             );
