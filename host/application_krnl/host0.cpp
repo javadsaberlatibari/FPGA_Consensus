@@ -183,44 +183,47 @@ int main(int argc, char **argv) {
 
     uint32_t boardNum = 0;
 
-    std::vector<int, aligned_allocator<int>> reply1(64);
+    std::vector<int, aligned_allocator<int>> reply(64 * sizeof(int));
     OCL_CHECK(err,
               cl::Buffer buffer_r2(context,
                                    CL_MEM_USE_HOST_PTR | CL_MEM_READ_WRITE,
-                                   sizeof(int),
-                                   reply1.data(),
-                                   &err));
-    std::vector<int, aligned_allocator<int>> reply2(64);
-    OCL_CHECK(err,
-              cl::Buffer buffer_r3(context,
-                                   CL_MEM_USE_HOST_PTR | CL_MEM_READ_WRITE,
-                                   sizeof(int),
-                                   reply2.data(),
+                                   sizeof(int) * 30,
+                                   reply.data(),
                                    &err));
 
     OCL_CHECK(err, err = user_kernel.setArg(3, boardNum));
     OCL_CHECK(err, err = user_kernel.setArg(4, buffer_r2));
-    OCL_CHECK(err, err = user_kernel.setArg(5, buffer_r3));
+    OCL_CHECK(err, err = user_kernel.setArg(5, 30));
     OCL_CHECK(err, err = user_kernel.setArg(6, buffer_r1));
 
 
-    for (int i = 0; i < 3; i++) {
-        printf("enqueue user kernel...\n");
-        OCL_CHECK(err, err = q.enqueueTask(user_kernel));
+    //for (int i = 0; i < 20; i++) {
+    printf("enqueue user kernel... \n");
+    OCL_CHECK(err, err = q.enqueueTask(user_kernel));
+    OCL_CHECK(err, err = q.finish());
+    sleep(1);
 
-        sleep(1);
 
-    }
     printf("Device->Host user kernel...\n");
     OCL_CHECK(err, err = q.enqueueMigrateMemObjects({buffer_r2}, CL_MIGRATE_MEM_OBJECT_HOST));
     OCL_CHECK(err, err = q.finish());
 
-    OCL_CHECK(err, err = q.enqueueMigrateMemObjects({buffer_r3}, CL_MIGRATE_MEM_OBJECT_HOST));
+    OCL_CHECK(err, err = q.enqueueMigrateMemObjects({buffer_r1}, CL_MIGRATE_MEM_OBJECT_HOST));
     OCL_CHECK(err, err = q.finish());
 
-    for (int j = 0; j < 17; j++){
-        printf("r1: %d r2: %d\n", reply1[j], reply2[j]);
+    printf("REP\n");
+    for (int j = 0; j < 30; j++) {
+        printf("%d ", reply[j]);
     }
+    printf("\n");
+
+    printf("NET\n");
+    for (int j = 0; j < 40; j++) {
+        printf("%d ", network_ptr0[j]);
+    }
+    printf("\n");
+
+    //}
 
     std::cout << "EXIT recorded" << std::endl;
 }

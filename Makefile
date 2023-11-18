@@ -115,6 +115,7 @@ endif
 # Kernel compiler global settings
 CLFLAGS += -t $(TARGET) --platform $(DEVICE) --save-temps #--config $(CONFIGLINKTCL)
 #CLFLAGS += --kernel_frequency 250
+#CLFLAGS += --kernel_frequency "0:250|1:250|2:500"
 CLFLAGS += --user_ip_repo_paths $(IPREPOPATH)
 ifneq ($(TARGET), hw)
   CLFLAGS += -g
