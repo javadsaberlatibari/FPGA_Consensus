@@ -177,8 +177,8 @@ int main(int argc, char **argv) {
     OCL_CHECK(err, err = q.enqueueTask(network_kernel));
     OCL_CHECK(err, err = q.finish());
 
-    sleep(5);
-    wait_for_enter("\nPausing for network kernel setup...");
+    sleep(10);
+    //wait_for_enter("\nPausing for network kernel setup...");
 
     uint32_t boardNum = 1;
 
@@ -192,7 +192,7 @@ int main(int argc, char **argv) {
 
     OCL_CHECK(err, err = user_kernel.setArg(3, boardNum));
     OCL_CHECK(err, err = user_kernel.setArg(4, buffer_r2));
-    OCL_CHECK(err, err = user_kernel.setArg(5, 30));
+    OCL_CHECK(err, err = user_kernel.setArg(5, 300));
     OCL_CHECK(err, err = user_kernel.setArg(6, buffer_r1));
 
 
@@ -200,7 +200,7 @@ int main(int argc, char **argv) {
     printf("enqueue user kernel... \n");
     OCL_CHECK(err, err = q.enqueueTask(user_kernel));
     OCL_CHECK(err, err = q.finish());
-    sleep(1);
+    sleep(5);
 
 
     printf("Device->Host user kernel...\n");
@@ -212,15 +212,23 @@ int main(int argc, char **argv) {
 
     printf("REP\n");
     for (int j = 0; j < 30; j++) {
-        printf("%d ", reply[j]);
+        printf("%d : %d, \n", j, reply[j]);
     }
     printf("\n");
 
-    printf("NET\n");
-    for (int j = 0; j < 40; j++) {
+    printf("NET\nHB: ");
+    for (int j = 0; j < 32; j++) {
         printf("%d ", network_ptr0[j]);
+        if (j == 5) printf("\nMIN PROP: ");
+        if (j == 11) printf("\nLOCAL LOG: ");
+        if (j == 21) printf("\nLOG FIFOs: ");
     }
     printf("\n");
+
+    for (int j = 32; j <64; j++) {
+        printf("%d ", network_ptr0[j]);
+    }
+
 
     std::cout << "EXIT recorded" << std::endl;
 }
