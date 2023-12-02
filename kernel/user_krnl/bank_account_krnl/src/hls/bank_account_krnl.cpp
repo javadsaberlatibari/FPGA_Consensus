@@ -24,7 +24,7 @@ const int FIFO_LENGTH = 5;
 // Only 1 HB regardless of number of sync groups
 const int HB_BASE_PTR = 0;
 const int HB_BASE_ADDR = 0;
-const int HB_PTR_LEN = 1 + (NUM_NODES-1) * FIFO_LENGTH; 
+const int HB_PTR_LEN = 1 + NUM_NODES; 
 const int HB_ADDR_LEN = 4 * HB_PTR_LEN; 
 
 // Constants for replication logs
@@ -40,7 +40,10 @@ const int LOG_REMOTE_LOG_QUEUE_ADDR_LEN = 4 * LOG_REMOTE_LOG_QUEUE_PTR_LEN;
 const int LOG_PTR_LEN = LOG_MIN_PROP_PTR_LEN + LOG_LOCAL_LOG_PTR_LEN + LOG_REMOTE_LOG_QUEUE_PTR_LEN; 
 const int LOG_ADDR_LEN = LOG_PTR_LEN * 4; 
 
-
+const int BROADCAST_BASE_PTR = HB_PTR_LEN + LOG_PTR_LEN;
+const int BROADCAST_BASE_ADDR = HB_ADDR_LEN + LOG_ADDR_LEN;
+/* # of Nonconflicting calls*/
+const int BROADCAST_SG_LEN = 1000; 
 
 struct ProposedValue {
     int value; 
@@ -77,57 +80,32 @@ struct LogEntry
         :propVal(p), value(v), valid(va) {}
 };
 
-// struct Log
-// {
-// 	ap_uint<32> minProsal;
-// 	ap_uint<32> FUO;
-//     LogEntry slots[SLOT_NUM];
-// 	Log()
-// 		:minProsal(0), FUO(FUO) {}
-// };
-
-// struct follower 
-// {
-// 	ap_uint<32> boardNum;
-// 	ap_uint<32> lqpn; 
-// 	bool last; 
-// 	follower(ap_uint<32> bn, ap_uint<32> q, bool l)
-// 	:boardNum(bn), lqpn(q), last(l) {}
-
-// };
-
-// enum heartBeatStates {
-//     UPDATE,
-//     SCAN, 
-//     READ,
-//     LEADER_ELECTION
-// };
-
 void rdma_read(
     int s_axi_lqpn,
     ap_uint<64> s_axi_laddr,
     ap_uint<64> s_axi_raddr,
     int s_axi_len,
-    hls::stream<pkt256>& m_axis_tx_meta
+    //hls::stream<pkt256>& m_axis_tx_meta
+    hls::stream<ap_uint<256>>& m_axis_tx_meta
 ){
     //#pragma HLS dataflow
     #pragma HLS inline off
     #pragma HLS pipeline II=1
-    pkt256 tx_meta;
+    ap_uint<256> tx_meta;
 
     /*RDMA OP*/
-    tx_meta.data.range(2,0) = 0x00000000; 
+    tx_meta.range(2,0) = 0x00000000; 
     /*lQPN*/
-    tx_meta.data.range(26,3) = s_axi_lqpn; 
+    tx_meta.range(26,3) = s_axi_lqpn; 
     /*
     lAddr
     */
-    tx_meta.data.range(74, 27) = s_axi_laddr; 
+    tx_meta.range(74, 27) = s_axi_laddr; 
     /*rAddr*/
-    tx_meta.data.range(122, 75) = s_axi_raddr; 
+    tx_meta.range(122, 75) = s_axi_raddr; 
     //+(itt*4)
     /*len*/
-    tx_meta.data.range(154, 123) = s_axi_len;
+    tx_meta.range(154, 123) = s_axi_len;
     m_axis_tx_meta.write(tx_meta);
     
 }
@@ -138,39 +116,39 @@ void rdma_write(
     ap_uint<64> s_axi_raddr,
     int s_axi_len,
     ap_uint<64>  write_value,
-    hls::stream<pkt256>& m_axis_tx_meta, 
-    hls::stream<pkt64>& m_axis_tx_data
+    hls::stream<ap_uint<256>>& m_axis_tx_meta, 
+    hls::stream<ap_uint<64>>& m_axis_tx_data
 ){
     //#pragma HLS dataflow
     #pragma HLS inline off
     #pragma HLS pipeline II=1
     
-    pkt256 tx_meta;
-    pkt64 tx_data;
+    ap_uint<256> tx_meta;
+    ap_uint<64> tx_data;
 
     /*RDMA OP*/
-    tx_meta.data.range(2,0) = 0x00000001; 
+    tx_meta.range(2,0) = 0x00000001; 
     /*lQPN*/
-    tx_meta.data.range(26,3) = s_axi_lqpn; 
+    tx_meta.range(26,3) = s_axi_lqpn; 
     /*
     lAddr
     if 0 writes from tx_data. 
     */
-    tx_meta.data.range(74, 27) = s_axi_laddr; 
+    tx_meta.range(74, 27) = s_axi_laddr; 
     /*rAddr*/
-    tx_meta.data.range(122, 75) = s_axi_raddr; 
+    tx_meta.range(122, 75) = s_axi_raddr; 
     //+(itt*4)
     /*len*/
-    tx_meta.data.range(154, 123) = s_axi_len;
+    tx_meta.range(154, 123) = s_axi_len;
     
     if (!m_axis_tx_meta.full()) 
         m_axis_tx_meta.write(tx_meta);
 
     //Write data only if laddr is 0
     if (s_axi_laddr == 0) {
-        tx_data.data(63, 0) = write_value;
-        tx_data.keep(7, 0) = 0xff;
-        tx_data.last = 1; 
+        tx_data.range(63, 0) = write_value;
+        //tx_data.keep(7, 0) = 0xff;
+        //tx_data.last = 1; 
         if (!m_axis_tx_data.full())
             m_axis_tx_data.write(tx_data);
     }
@@ -178,221 +156,256 @@ void rdma_write(
     
 }
 
-// void meta_merger(
-//     hls::stream<pkt256>& a_tx_meta,
-//     hls::stream<pkt256>& b_tx_meta,
-//     hls::stream<pkt256>& c_tx_meta
-// ) {
+void meta_merger(
+    hls::stream<ap_uint<256>>& a_tx_meta,
+    hls::stream<ap_uint<256>>& b_tx_meta,
+    hls::stream<pkt256>& c_tx_meta
+) {
 
-//     pkt256 temp_pkt; 
-//     if (!a_tx_meta.empty()) {
-//         a_tx_meta.read(temp_pkt);
-//         c_tx_meta.write(temp_pkt);
-//     } else if (!b_tx_meta.empty()) {
-//         b_tx_meta.read(temp_pkt);
-//         c_tx_meta.write(temp_pkt);        
-//     }
-// }
+    ap_uint<256> temp_val; 
+    pkt256 temp_pkt; 
+    while (!a_tx_meta.empty()) {
+        a_tx_meta.read(temp_val);
+        temp_pkt.data = temp_val.range(255, 0); 
+        c_tx_meta.write(temp_pkt);
+    }
+    while (!b_tx_meta.empty()) {
+        b_tx_meta.read(temp_val);
+        temp_pkt.data = temp_val.range(255, 0); 
+        c_tx_meta.write(temp_pkt);        
+    }
+}
 
+void data_merger(
+    hls::stream<ap_uint<64>>& a_tx_data,
+    hls::stream<ap_uint<64>>& b_tx_data,
+    hls::stream<pkt64>& c_tx_data
+) {
 
+    ap_uint<64> temp_val; 
+    pkt64 temp_pkt; 
+    while (!a_tx_data.empty()) {
+        a_tx_data.read(temp_val);
+        temp_pkt.data(63,0) = temp_val.range(63, 0); 
+        temp_pkt.keep(7, 0) = 0xff;
+        temp_pkt.last = 1; 
+        c_tx_data.write(temp_pkt);
+    }
+    while (!b_tx_data.empty()) {
+        b_tx_data.read(temp_val);
+        temp_pkt.data = temp_val.range(63, 0); 
+        temp_pkt.keep(7, 0) = 0xff;
+        temp_pkt.last = 1; 
+        c_tx_data.write(temp_pkt);        
+    }
+}
 
-// template<int NUM_NODES, int HB_BASE_PTR, int HB_BASE_ADDR, int FIFO_LENGTH>
-// void heartBeatScanner(
-//     int myBoardNum, 
-//     int *network_ptr,
-//     hls::stream<ap_uint<32>>& leader_update,
-//     hls::stream<pkt256>& m_axis_tx_meta
-//     //int *m_axi_reply
-// ) {
+enum heartBeatStates {
+    UPDATE,
+    SCAN, 
+    READ,
+    LEADER_ELECTION
+};
 
-//     //static ap_uint<32> remoteHeartBeats[NUM_NODES];
-//     static ap_uint<32> heartBeatScores[NUM_NODES];
-//     static bool replicaAlive[NUM_NODES];
-//     static heartBeatStates state = SCAN; 
-//     static ap_uint<32> leader = 0; 
-//     static ap_uint<32> newleader = 0; 
-//     static ap_uint<32> heartBeatFifoIndex = 0; 
+void heartBeatScanner(
+    int myBoardNum, 
+    int *network_ptr,
+    hls::stream<ap_uint<32>>& leader_update,
+    hls::stream<ap_uint<256>>& m_axis_tx_meta
+) {
 
-//     switch(state) {
+    static ap_uint<32> remoteHeartBeats[NUM_NODES];
+    static ap_uint<32> heartBeatScores[NUM_NODES];
+    static bool replicaAlive[NUM_NODES];
+    static heartBeatStates state = SCAN; 
+    static ap_uint<32> leader = 0; 
+    static ap_uint<32> newleader = 0; 
 
-//         case SCAN: {
+    switch(state) {
 
-//             int counter = 0; 
-//             for (int i = 0; i < NUM_NODES; i++) {
-//                 if (i != myBoardNum) {
-//                     rdma_read(
-//                         (NUM_NODES - 1) * myBoardNum + counter,
-//                         HB_BASE_ADDR + 4 + 4 * (FIFO_LENGTH * counter + (heartBeatFifoIndex%FIFO_LENGTH)),
-//                         0,
-//                         0x100,
-//                         m_axis_tx_meta 
-//                     );
-//                     counter++; 
-//                 }
-//             }
-//             heartBeatFifoIndex++; 
-//             state = READ; 
-//             break; 
-//         }
+        case SCAN: {
 
-//         case READ: {
-//             int counter = 0; 
-//             for (int i = 0; i < NUM_NODES; i++) {
-//                 if (i != myBoardNum) {
-//                     //m_axi_reply[counter] = network_ptr[HB_BASE_PTR + 1 + FIFO_LENGTH * counter + (heartBeatFifoIndex%FIFO_LENGTH)];
-//                     if (network_ptr[HB_BASE_PTR + 1 + FIFO_LENGTH * counter + (heartBeatFifoIndex%FIFO_LENGTH)] > network_ptr[HB_BASE_PTR + 1 + FIFO_LENGTH * counter + ((heartBeatFifoIndex-1)%FIFO_LENGTH)]) {
-//                         heartBeatScores[counter]++; 
-//                     } else {
-//                         heartBeatScores[counter]--; 
-//                     }
-//                     counter++; 
-//                 }
-//             }
-//             state = LEADER_ELECTION; 
-//             break; 
-//         }
+            int j=0; 
+            int qpn_tmp=myBoardNum*(NUM_NODES-1);
+            while (j<NUM_NODES){
+                if(j!=myBoardNum) {
+                    if(!m_axis_tx_meta.full()){
+                        rdma_read(
+                            qpn_tmp,
+                            HB_BASE_ADDR + 4 + 4 * j,
+                            HB_BASE_ADDR,
+                            0x4,
+                            m_axis_tx_meta 
+                            );
+                        j++;
+                        qpn_tmp++;
+                    }
+                }
+                else {
+                    j++;
+                }
+            }
+            state = READ; 
+            break; 
+        }
 
-//         case LEADER_ELECTION: {
+        case READ: {
+            for (int i = 0; i < NUM_NODES; i++) {
+                if (i != myBoardNum) {
+                    int temp_hb = network_ptr[HB_BASE_PTR + 1 + i];
+                    if (temp_hb > remoteHeartBeats[i]) {
+                        heartBeatScores[i]++; 
+                    } else {
+                        heartBeatScores[i]--; 
+                    }
+                    remoteHeartBeats[i] = temp_hb;
+                }
+            }
+            state = LEADER_ELECTION; 
+            break; 
+        }
 
-//             for (int i = 0; i < NUM_NODES; i++) {
-//                 if (heartBeatScores[i] >= 6) {
-//                     FOLLOWER_LIST[i] = true; 
-//                     replicaAlive[i] = true; 
-//                 } else if (heartBeatScores[i] < 2){
-//                     FOLLOWER_LIST[i] = false; 
-//                     replicaAlive[i] = false; 
-//                 }
-//             }
-//             replicaAlive[myBoardNum] = true; 
+        case LEADER_ELECTION: {
 
-//             for (int i = 0; i < NUM_NODES; i++) {
-//                 if (replicaAlive[i] == true) {
-//                     newleader = i;
-//                     break; 
-//                 }
-//             }
+            for (int i = 0; i < NUM_NODES; i++) {
+                if (heartBeatScores[i] >= 6) {
+                    FOLLOWER_LIST[i] = true; 
+                    replicaAlive[i] = true; 
+                } else if (heartBeatScores[i] < 2){
+                    FOLLOWER_LIST[i] = false; 
+                    replicaAlive[i] = false; 
+                }
+            }
+            replicaAlive[myBoardNum] = true; 
 
-//             if (newleader != leader) {
-//                 leader_update.write(newleader);
-//             }
-//             state = SCAN;
-//             break; 
-//         }
+            for (int i = 0; i < NUM_NODES; i++) {
+                if (replicaAlive[i] == true) {
+                    newleader = i;
+                    break; 
+                }
+            }
 
-//     }
+            if (newleader != leader) {
+                leader_update.write(newleader);
+            }
+            state = SCAN;
+            break; 
+        }
 
-// }
+    }
 
-
-// template<int NUM_NODES>
-// void permision_handler(
-//     int myBoardNum, 
-//     hls::stream<ap_uint<32>>& leader_update,
-//     hls::stream<pkt256>& m_axis_qp_interface
-// ) {
-
-//     static ap_uint<32> leader = 0;
-//     static ap_uint<32> newleader; 
-//     static pkt256 qp_info;
-
-//     if (!leader_update.empty()) {
-
-//         leader_update.read(newleader);
-
-//         if (newleader != leader && myBoardNum == newleader) {
-//             leader = newleader;
-
-//             /* Change permission */
-//             int counter = 0; 
-
-//             for (int i = 0; i < NUM_NODES; i++) {
-
-//                 if (i != myBoardNum) {
-//                     //Enable QP
-//                     qp_info.data.range(2,0) = 2;  
-//                     if (counter < myBoardNum)
-//                         qp_info.data.range(26, 3) = i * (NUM_NODES-1) + myBoardNum - 1;
-//                     else 
-//                         qp_info.data.range(26, 3) = i * (NUM_NODES-1) + myBoardNum;
-
-//                     qp_info.data.range(50, 27) = 0;
-//                     qp_info.data.range(74, 51) = 0; 
-//                     qp_info.data.range(90, 75) = 0x00000000; 
-//                     qp_info.data.range(128, 91) = 0x0000000000000001;
-//                     m_axis_qp_interface.write(qp_info);
-//                 }
-
-//             }
+}
 
 
-//         } else if (newleader != leader) {
+template<int NUM_NODES>
+void permision_handler(
+    int myBoardNum, 
+    hls::stream<ap_uint<32>>& leader_update,
+    hls::stream<pkt256>& m_axis_qp_interface
+) {
 
-//             if (leader == myBoardNum) {
-//                 for (int i = 0; i < NUM_NODES; i++) {
+    static ap_uint<32> leader = 0;
+    static ap_uint<32> newleader; 
+    static pkt256 qp_info;
 
-//                     if (i != myBoardNum) {
-//                         //Disable QP
-//                         qp_info.data.range(2,0) = 0;  
-//                         if (i < myBoardNum)
-//                             qp_info.data.range(26, 3) = i * (NUM_NODES-1) + myBoardNum - 1;
-//                         else 
-//                             qp_info.data.range(26, 3) = i * (NUM_NODES-1) + myBoardNum;
+    if (!leader_update.empty()) {
 
-//                         qp_info.data.range(50, 27) = 0;
-//                         qp_info.data.range(74, 51) = 0; 
-//                         qp_info.data.range(90, 75) = 0x00000000; 
-//                         qp_info.data.range(128, 91) = 0x0000000000000001;
-//                         m_axis_qp_interface.write(qp_info);
-//                     }
+        leader_update.read(newleader);
 
-//                 }
-//             }
+        if (newleader != leader && myBoardNum == newleader) {
+            leader = newleader;
 
-//             qp_info.data.range(2,0) = 0;  
-//             if (leader < myBoardNum)
-//                 qp_info.data.range(26, 3) = leader * (NUM_NODES-1) + myBoardNum - 1;
-//             else 
-//                 qp_info.data.range(26, 3) = leader * (NUM_NODES-1) + myBoardNum;
+            /* Change permission */
+            int counter = 0; 
 
-//             qp_info.data.range(50, 27) = 0;
-//             qp_info.data.range(74, 51) = 0; 
-//             qp_info.data.range(90, 75) = 0x00000000; 
-//             qp_info.data.range(128, 91) = 0x0000000000000001;
-//             leader = newleader;
-//         }
+            for (int i = 0; i < NUM_NODES; i++) {
 
-//     }
-// }
+                if (i != myBoardNum) {
+                    //Enable QP
+                    qp_info.data.range(2,0) = 2; //READY TO RECEIVE
+                    if (counter < myBoardNum)
+                        qp_info.data.range(26, 3) = i * (NUM_NODES-1) + myBoardNum - 1;
+                    else 
+                        qp_info.data.range(26, 3) = i * (NUM_NODES-1) + myBoardNum;
+
+                    qp_info.data.range(50, 27) = 0;
+                    qp_info.data.range(74, 51) = 0; 
+                    qp_info.data.range(90, 75) = 0x00000000; 
+                    qp_info.data.range(128, 91) = 0x0000000000000001;
+                    m_axis_qp_interface.write(qp_info);
+                }
+
+            }
 
 
-// template<int NUM_NODES, int HB_BASE_PTR, int HB_BASE_ADDR, int FIFO_LENGTH>
-// void leaderSwitch(
-//     int myBoardNum, 
-//     int *network_ptr,
-//     hls::stream<ap_uint<32>>& leader_update,
-//     hls::stream<pkt256>& m_axis_tx_meta
-//     //int *m_axi_reply
-// ) {
+        } else if (newleader != leader) {
 
-//     static int localHeartBeat = 0; 
-//     static int scannerCounter = 0; 
+            if (leader == myBoardNum) {
+                for (int i = 0; i < NUM_NODES; i++) {
 
-//     localHeartBeat++;
-//     network_ptr[HB_BASE_PTR] = localHeartBeat;
-//     scannerCounter++;
+                    if (i != myBoardNum) {
+                        //Disable QP
+                        qp_info.data.range(2,0) = 0;  //INIT
+                        if (i < myBoardNum)
+                            qp_info.data.range(26, 3) = i * (NUM_NODES-1) + myBoardNum - 1;
+                        else 
+                            qp_info.data.range(26, 3) = i * (NUM_NODES-1) + myBoardNum;
 
-//     if (scannerCounter == 50) {
-//             heartBeatScanner<3, 0, 0, 5>(
-//                 myBoardNum,
-//                 network_ptr,
-//                 leader_update,
-//                 m_axis_tx_meta
-//                 //m_axi_reply
-//             );
-//             scannerCounter = 0; 
-//     }
+                        qp_info.data.range(50, 27) = 0;
+                        qp_info.data.range(74, 51) = 0; 
+                        qp_info.data.range(90, 75) = 0x00000000; 
+                        qp_info.data.range(128, 91) = 0x0000000000000001;
+                        m_axis_qp_interface.write(qp_info);
+                    }
 
-// }
+                }
+            }
+
+            qp_info.data.range(2,0) = 0;  
+            if (leader < myBoardNum)
+                qp_info.data.range(26, 3) = leader * (NUM_NODES-1) + myBoardNum - 1;
+            else 
+                qp_info.data.range(26, 3) = leader * (NUM_NODES-1) + myBoardNum;
+
+            qp_info.data.range(50, 27) = 0;
+            qp_info.data.range(74, 51) = 0; 
+            qp_info.data.range(90, 75) = 0x00000000; 
+            qp_info.data.range(128, 91) = 0x0000000000000001;
+            leader = newleader;
+        }
+
+    }
+}
+
+
+template<int NUM_NODES, int HB_BASE_PTR, int HB_BASE_ADDR, int FIFO_LENGTH>
+void leaderSwitch(
+    int myBoardNum, 
+    int *network_ptr,
+    hls::stream<ap_uint<32>>& leader_update,
+    hls::stream<ap_uint<256>>& m_axis_tx_meta
+    //int *m_axi_reply
+) {
+
+    static int localHeartBeat = 0; 
+    static int scannerCounter = 0; 
+
+    localHeartBeat++;
+    network_ptr[HB_BASE_PTR] = localHeartBeat;
+    scannerCounter++;
+
+    if (scannerCounter == 50) {
+            heartBeatScanner(
+                myBoardNum,
+                network_ptr,
+                leader_update,
+                m_axis_tx_meta
+                //m_axi_reply
+            );
+            scannerCounter = 0; 
+    }
+
+}
 
 void replication_engine_fsm(
     hls::stream<ProposedValue>& proposedValue,
@@ -456,6 +469,7 @@ void replication_engine_fsm(
             //reply[3] = 222;
             state = READ_MIN_PROP_REQ; 
         }
+        //counter++;
         break; 
 
     case READ_MIN_PROP_REQ: 
@@ -467,7 +481,7 @@ void replication_engine_fsm(
 
     case READ_MIN_PROP_RSP: 
         //reply[4] = 55 + counter; 
-        counter++; 
+        //counter++; 
         if (!minProp_rsp.empty()) {
             minProp_rsp.read(newHiPropNum);
             newHiPropNum+=1; 
@@ -531,7 +545,7 @@ void replication_engine_fsm(
         } else {
             state = REPLICA; 
         }
-        counter++; 
+        //counter++; 
         break; 
 
     default:
@@ -552,8 +566,8 @@ void log_handler_fsm(
     hls::stream<bool>& writeSlot_rsp,
     hls::stream<ap_uint<32>>& acceptedValue_req,
     hls::stream<updateLocalValue>& acceptedValue_rsq,
-    hls::stream<pkt256>& m_axis_tx_meta, 
-    hls::stream<pkt64>& m_axis_tx_data,
+    hls::stream<ap_uint<256>>& m_axis_tx_meta, 
+    hls::stream<ap_uint<64>>& m_axis_tx_data,
     int myBoardNum,
     int* network_ptr,
     int* reply
@@ -572,7 +586,7 @@ void log_handler_fsm(
     switch (state)
     {
     case REQUEST: {
-        reply[21] = call_counter; 
+        //reply[21] = call_counter; 
         if (!minProp_req.empty()) {
             minProp_req.read(sGroup);
             state = READ_MIN_PROP; 
@@ -598,7 +612,7 @@ void log_handler_fsm(
         break;
     }
     case READ_MIN_PROP: {
-        reply[0] = 111 + counter; 
+        //reply[0] = 111 + counter; 
         int j=0; 
         int qpn_tmp=myBoardNum*(NUM_NODES-1);
         while (j<NUM_NODES){
@@ -613,8 +627,8 @@ void log_handler_fsm(
                         0x4,
                         m_axis_tx_meta 
                         );
-                    reply[1] = LOG_BASE_ADDR + sGroup * LOG_ADDR_LEN + 8 + (4 * FIFO_LENGTH * (slot)) + 4 * (minPropFifoIndex[sGroup]%FIFO_LENGTH); 
-                    reply[2] = LOG_BASE_ADDR + sGroup * LOG_ADDR_LEN; 
+                    //reply[1] = LOG_BASE_ADDR + sGroup * LOG_ADDR_LEN + 8 + (4 * FIFO_LENGTH * (slot)) + 4 * (minPropFifoIndex[sGroup]%FIFO_LENGTH); 
+                    //reply[2] = LOG_BASE_ADDR + sGroup * LOG_ADDR_LEN; 
                     j++;
                     qpn_tmp++;
 
@@ -630,11 +644,11 @@ void log_handler_fsm(
 
     case READ_MIN_PROP_RSP: {
         bool value_found = false; 
-        reply[3] = 222 + counter; 
+        //reply[3] = 222 + counter; 
         int minPropNumber = INT_MIN, temp; 
         for (int i = 0; i < NUM_NODES-1; i++) {
             temp = network_ptr[LOG_BASE_PTR + sGroup * LOG_PTR_LEN + 2 + FIFO_LENGTH * i + (minPropFifoIndex[sGroup]%FIFO_LENGTH)]; 
-            reply[4] = LOG_BASE_PTR + sGroup * LOG_PTR_LEN + 2 + FIFO_LENGTH * i + (minPropFifoIndex[sGroup]%FIFO_LENGTH); 
+            //reply[4] = LOG_BASE_PTR + sGroup * LOG_PTR_LEN + 2 + FIFO_LENGTH * i + (minPropFifoIndex[sGroup]%FIFO_LENGTH); 
             if (temp > minPropNumber && temp != 0) {
                 minPropNumber = temp;
                 value_found = true; 
@@ -645,7 +659,7 @@ void log_handler_fsm(
         }
 
         if (value_found) {
-            reply[26] = minPropNumber;
+            //reply[26] = minPropNumber;
             minPropFifoIndex[sGroup]++; 
             minProp_rsp.write(minPropNumber);
             //counter++; 
@@ -657,7 +671,7 @@ void log_handler_fsm(
     
     case WRITE_READ: {
         network_ptr[LOG_BASE_PTR] = newMinProp; 
-        reply[5] = 333 + counter; 
+        //reply[5] = 333 + counter; 
         int j=0; 
         int qpn_tmp=myBoardNum*(NUM_NODES-1);
         while (j<NUM_NODES){
@@ -674,7 +688,7 @@ void log_handler_fsm(
                         );
                     j++;
                     qpn_tmp++;
-                    reply[6] = LOG_BASE_ADDR + sGroup * LOG_ADDR_LEN; 
+                    //reply[6] = LOG_BASE_ADDR + sGroup * LOG_ADDR_LEN; 
                 }
             }
             else {
@@ -696,8 +710,8 @@ void log_handler_fsm(
                         );
                     j++;
                     qpn_tmp++;
-                    reply[7] = LOG_BASE_ADDR + sGroup * LOG_ADDR_LEN + LOG_MIN_PROP_ADDR_LEN + LOG_LOCAL_LOG_ADDR_LEN + 4 * (2 * FIFO_LENGTH * slot + (slotReadFifoIndex[sGroup]%NUM_SLOTS));
-                    reply[8] = LOG_BASE_ADDR + sGroup * LOG_ADDR_LEN + LOG_MIN_PROP_ADDR_LEN + 4 * (fuo[sGroup]%NUM_SLOTS);
+                    //reply[7] = LOG_BASE_ADDR + sGroup * LOG_ADDR_LEN + LOG_MIN_PROP_ADDR_LEN + LOG_LOCAL_LOG_ADDR_LEN + 4 * (2 * FIFO_LENGTH * slot + (slotReadFifoIndex[sGroup]%NUM_SLOTS));
+                    //reply[8] = LOG_BASE_ADDR + sGroup * LOG_ADDR_LEN + LOG_MIN_PROP_ADDR_LEN + 4 * (fuo[sGroup]%NUM_SLOTS);
                 }
             }
             else {
@@ -709,17 +723,17 @@ void log_handler_fsm(
     }
 
     case WRITE_READ_RSP: {
-        reply[9] = 444 + counter; 
+        //reply[9] = 444 + counter; 
         LogEntry temp_log;
         int maxPropNumber = 0; 
         for (int i = 0; i < NUM_NODES-1; i++) {
             if (FOLLOWER_LIST[i]) {
                 int propNum = network_ptr[LOG_BASE_PTR + sGroup * LOG_PTR_LEN + LOG_MIN_PROP_PTR_LEN + LOG_LOCAL_LOG_PTR_LEN + (2 * i * FIFO_LENGTH) + (slotReadFifoIndex[sGroup]%NUM_SLOTS)];
                 int propValue = network_ptr[LOG_BASE_PTR + sGroup * LOG_PTR_LEN + LOG_MIN_PROP_PTR_LEN + LOG_LOCAL_LOG_PTR_LEN + (2 * i * FIFO_LENGTH) + (slotReadFifoIndex[sGroup]%NUM_SLOTS) + 1];
-                reply[10] = LOG_BASE_PTR + sGroup * LOG_PTR_LEN + LOG_MIN_PROP_PTR_LEN + LOG_LOCAL_LOG_PTR_LEN + (2 * i * FIFO_LENGTH) + (slotReadFifoIndex[sGroup]%NUM_SLOTS);
-                reply[11] = LOG_BASE_PTR + sGroup * LOG_PTR_LEN + LOG_MIN_PROP_PTR_LEN + LOG_LOCAL_LOG_PTR_LEN + (2 * i * FIFO_LENGTH) + (slotReadFifoIndex[sGroup]%NUM_SLOTS) + 1;
-                reply[27] = propNum; 
-                reply[28] = propValue; 
+                //reply[10] = LOG_BASE_PTR + sGroup * LOG_PTR_LEN + LOG_MIN_PROP_PTR_LEN + LOG_LOCAL_LOG_PTR_LEN + (2 * i * FIFO_LENGTH) + (slotReadFifoIndex[sGroup]%NUM_SLOTS);
+                //reply[11] = LOG_BASE_PTR + sGroup * LOG_PTR_LEN + LOG_MIN_PROP_PTR_LEN + LOG_LOCAL_LOG_PTR_LEN + (2 * i * FIFO_LENGTH) + (slotReadFifoIndex[sGroup]%NUM_SLOTS) + 1;
+                //reply[27] = propNum; 
+                //reply[28] = propValue; 
                 
                 if (propNum != 0 && propNum > maxPropNumber) {
                     temp_log = LogEntry(propNum, propValue, true);
@@ -735,7 +749,7 @@ void log_handler_fsm(
     }
 
     case WRITE_SLOT: {
-        reply[12] = 55 + counter; 
+        //reply[12] = 55 + counter; 
         ap_uint<64> sendLog; 
         sendLog.range(31, 0) = logSlot.propVal;
         sendLog.range(63, 32) = logSlot.value;
@@ -755,7 +769,7 @@ void log_handler_fsm(
                         );
                     j++;
                     qpn_tmp++;
-                    reply[13] = LOG_BASE_ADDR + sGroup * LOG_ADDR_LEN + LOG_MIN_PROP_ADDR_LEN + 4 * (fuo[sGroup]%NUM_SLOTS);
+                    //reply[13] = LOG_BASE_ADDR + sGroup * LOG_ADDR_LEN + LOG_MIN_PROP_ADDR_LEN + 4 * (fuo[sGroup]%NUM_SLOTS);
                 }
             }
             else {
@@ -769,15 +783,15 @@ void log_handler_fsm(
     }
 
     case ACCEPT_VALUE: {
-        reply[13] = 66 + counter; 
+        //reply[13] = 66 + counter; 
         for (int i = 0; i < SYNC_GROUPS; i++) {
-            reply[14] = LOG_BASE_PTR + i * LOG_PTR_LEN + LOG_MIN_PROP_PTR_LEN  + (slotAcceptFifoIndex[i]%NUM_SLOTS);
-            reply[15] = LOG_BASE_PTR + i * LOG_PTR_LEN + LOG_MIN_PROP_PTR_LEN  + (slotAcceptFifoIndex[i]%NUM_SLOTS) + 1; 
+            //reply[14] = LOG_BASE_PTR + i * LOG_PTR_LEN + LOG_MIN_PROP_PTR_LEN  + (slotAcceptFifoIndex[i]%NUM_SLOTS);
+            //reply[15] = LOG_BASE_PTR + i * LOG_PTR_LEN + LOG_MIN_PROP_PTR_LEN  + (slotAcceptFifoIndex[i]%NUM_SLOTS) + 1; 
             int propNum = network_ptr[LOG_BASE_PTR + i * LOG_PTR_LEN + LOG_MIN_PROP_PTR_LEN  + (slotAcceptFifoIndex[i]%NUM_SLOTS)];
             int propValue = network_ptr[LOG_BASE_PTR + i * LOG_PTR_LEN + LOG_MIN_PROP_PTR_LEN  + (slotAcceptFifoIndex[i]%NUM_SLOTS) + 1];
 
             if (propNum != 0) {
-                reply[16] = 77 + counter;
+                //reply[16] = 77 + counter;
                 acceptedValue_rsq.write(updateLocalValue(propValue, i));
                 slotAcceptFifoIndex[i]+=2;
             }
@@ -793,22 +807,15 @@ void log_handler_fsm(
 
 }
 
-/* Check for Bank Account (not sure for other applications) */
-bool isPermissible(int update, int value) {
-    if (value + update < 0) {
-        return false; 
-    }
-    return true; 
-}
-
-void mu(
+void smr(
+    hls::stream<bool>& smr_finished, 
     hls::stream<ProposedValue>& proposedValue,
-    // hls::stream<ProposedValue>& nonConflictingPropsedValue, 
-    // hls::stream<bool>& permissible_rsp, 
-    // hls::stream<int>& query_req, 
-    // hls::stream<int>& query_rsp, 
-    hls::stream<pkt256>& m_axis_tx_meta, 
-    hls::stream<pkt64>& m_axis_tx_data,
+    hls::stream<int>& permissible_req, 
+    hls::stream<int>& permissible_rsp, 
+    hls::stream<int>& query_req, 
+    hls::stream<int>& query_rsp, 
+    hls::stream<ap_uint<256>>& m_axis_tx_meta, 
+    hls::stream<ap_uint<64>>& m_axis_tx_data,
     int myBoardNum, 
     int *network_ptr, 
     int* reply
@@ -827,7 +834,7 @@ void mu(
     static hls::stream<updateLocalValue> acceptedValue_rsq("accepted_value_response"); 
     static hls::stream<updateLocalValue> updateLocalValue_req;  
     static updateLocalValue update; 
-    static ProposedValue nonConflictingUpdate; 
+    static int permissible; 
     static int query; 
 
     replication_engine_fsm(
@@ -867,116 +874,237 @@ void mu(
     if (!updateLocalValue_req.empty()) {
         updateLocalValue_req.read(update);
         localValues[update.syncGroup] += update.value;
-        reply[29] = localValues[update.syncGroup]; 
+        smr_finished.write(1);
     }
 
     //Update from Non-Conflicting Method Calls
     //Need to check Permissibility
-    // if (!nonConflictingPropsedValue.empy()) {
-    //     nonConflictingPropsedValue.read(nonConflictingUpdate);
+    if (!permissible_req.empty()) {
+        permissible_req.read(permissible);
+        permissible_rsp.write(localValues[permissible]);
+    }
 
-    //     if (isPermissible(nonConflictingUpdate.value, localValues[nonConflictingUpdate.syncronizationGroup])) {
-    //         localValues[nonConflictingUpdate.syncronizationGroup] += nonConflictingUpdate.value; 
-    //         permissible_rsp.write(true);
-    //     } else {
-    //         permissible_rsp.write(true);
-    //     }
-
-    // }
-
-    // if (!query_req.empty()) {
-    //     query_req.read(query);
-    //     query_rsp.write(localValues[query]);
-    // }
+    if (!query_req.empty()) {
+        query_req.read(query);
+        query_rsp.write(localValues[query]);
+    }
 
 
 }
 
 
-/*
+void broadcast(
+    hls::stream<bool>& ncc_finished, 
+    hls::stream<int>& broadcast_req, 
+    hls::stream<int>& ncc_permissible_req,
+    hls::stream<int>& ncc_permissible_rsp, 
+    hls::stream<int>& query_req, 
+    hls::stream<int>& query_rsp, 
+    hls::stream<ap_uint<256>>& m_axis_tx_meta, 
+    hls::stream<ap_uint<64>>& m_axis_tx_data,
+    int myBoardNum, 
+    int *network_ptr, 
+    int* reply
+) {
 
-    Connected to Host
-    Performs some application that has confliting use cases. 
+    static int pValue; 
+    static int perm; 
+    static int query; 
+    static int deposit = 0; 
 
-*/
-extern "C" {
-    void application_krnl(
-        hls::stream<pkt256>& m_axis_tx_meta, 
-        hls::stream<pkt64>& m_axis_tx_data,
-        hls::stream<pkt64>& s_axis_tx_status,
-        //hls::stream<pkt256>& m_axis_qp_conn_interface, 
-        int myBoardNum, 
-        int *m_axi_reply,
-        int count,
-        int *network_ptr
-    ) {
-
-        //#pragma HLS INTERFACE ap_ctrl_chain port=return 
-        #pragma HLS INTERFACE axis port = m_axis_tx_meta
-        #pragma HLS INTERFACE axis port = m_axis_tx_data
-        #pragma HLS INTERFACE axis port = s_axis_tx_status
-
-        //#pragma HLS DATAFLOW
-
-        static hls::stream<ProposedValue> proposedValue; 
-        static hls::stream<bool> proposedFinished; 
-        #pragma HLS STREAM depth=8 variable=proposedValue
-        #pragma HLS STREAM depth=8 variable=proposedFinished
-        static bool RTS = false; 
-        static pkt64 status; 
-        static int counter = 0; 
-        static bool done_with_proposed = false; 
-
-        if (!s_axis_tx_status.empty()) {
-            s_axis_tx_status.read(status);
-            
-            if (myBoardNum == 0) {
-                proposedValue.write(ProposedValue(1, 0));
-                proposedValue.write(ProposedValue(1, 0));
+    if (!broadcast_req.empty()) {
+        broadcast_req.read(pValue);
+        deposit += pValue; 
+        int j=0; 
+        int qpn_tmp=myBoardNum*(NUM_NODES-1);
+        while (j<NUM_NODES){
+            if(j!=myBoardNum){
+                if(!m_axis_tx_meta.full() && !m_axis_tx_data.full()) { 
+                    rdma_write(
+                        qpn_tmp,
+                        0,
+                        BROADCAST_BASE_ADDR + 4 * myBoardNum,
+                        0x8,
+                        deposit,
+                        m_axis_tx_meta, 
+                        m_axis_tx_data
+                        );
+                    j++;
+                    qpn_tmp++;
+                }
             }
-            RTS = true; 
+            else {
+                j++;
+            }
+        }
+        ncc_finished.write(1);
+    }
+
+    if (!query_req.empty()) {
+        query_req.read(query);
+        int sum_remote = 0; 
+        for (int i = 0; i < NUM_NODES; i++) {
+            if (i != myBoardNum) {
+                sum_remote += network_ptr[BROADCAST_BASE_PTR + i];
+            }
+        }
+        query_rsp.write(deposit + sum_remote);
+    }
+
+    if (!ncc_permissible_req.empty()) {
+        ncc_permissible_req.read(perm);
+        ncc_permissible_rsp.write(deposit);
+    }
+
+
+}
+
+
+extern "C" void bank_account_krnl(
+    hls::stream<pkt256>& m_axis_tx_meta, 
+    hls::stream<pkt64>& m_axis_tx_data,
+    hls::stream<pkt64>& s_axis_tx_status,
+    int myBoardNum,
+    int* ops, 
+    int* amount, 
+    int num_ops, 
+    int* m_axi_reply,
+    int* network_ptr
+) {
+
+    #pragma HLS INTERFACE axis port = m_axis_tx_meta
+    #pragma HLS INTERFACE axis port = m_axis_tx_data
+    #pragma HLS INTERFACE axis port = s_axis_tx_status
+
+    static hls::stream<bool> smr_finished;
+    static hls::stream<bool> ncc_finished; 
+    static hls::stream<ProposedValue> proposed; 
+    #pragma HLS STREAM depth=8 variable=proposed
+    static hls::stream<int> broadcast_req; 
+    static hls::stream<int> smr_permissble_req; 
+    static hls::stream<int> smr_permissible_rsp; 
+    static hls::stream<int> ncc_permissible_req; 
+    static hls::stream<int> ncc_permissible_rsp; 
+    static hls::stream<int> smr_query_req; 
+    static hls::stream<int> smr_query_rsp; 
+    static hls::stream<int> ncc_query_req; 
+    static hls::stream<int> ncc_query_rsp; 
+
+    static hls::stream<ap_uint<256>> smr_tx_meta; 
+    static hls::stream<ap_uint<64>> smr_tx_data;
+    static hls::stream<ap_uint<256>> ncc_tx_meta; 
+    static hls::stream<ap_uint<64>> ncc_tx_data;
+    #pragma HLS STREAM depth=8 variable=smr_tx_meta
+    #pragma HLS STREAM depth=8 variable=smr_tx_data
+    #pragma HLS STREAM depth=8 variable=ncc_tx_meta
+    #pragma HLS STREAM depth=8 variable=ncc_tx_data
+
+    static int counter = 0; 
+    static int smr_value, ncc_value; 
+    static bool RTS = false; 
+    static pkt64 status; 
+    static bool read_op = true; 
+    static int inital_value = 100000; 
+
+    if (!s_axis_tx_status.empty()) {
+        s_axis_tx_status.read(status);
+        RTS = true; 
+    }
+
+    while(counter < num_ops && RTS) {
+
+        if (read_op) {
+            switch(ops[counter]) {
+
+                case 0: {
+                    smr_permissble_req.write(0);
+                    ncc_permissible_req.write(0);
+                    break; 
+                }
+
+                case 1: {
+                    broadcast_req.write(amount[counter]);
+                    break;
+                }
+
+                case 2: {
+                    smr_query_req.write(0);
+                    ncc_query_req.write(0);
+                    break; 
+                }
+            }
+            read_op = false; 
         }
 
+        smr(
+            smr_finished,
+            proposed,
+            smr_permissble_req,
+            smr_permissible_rsp, 
+            smr_query_req,
+            smr_query_rsp, 
+            smr_tx_meta,
+            smr_tx_data,
+            myBoardNum,
+            network_ptr,
+            m_axi_reply
+        );
 
-        if (RTS) {
-            //while (!done_with_proposed) {
-                // mu<2, 1>(
-                //     //proposedValue,
-                //     //proposedFinished,
-                //     m_axis_tx_meta,
-                //     m_axis_tx_data,
-                //     myBoardNum, 
-                //     network_ptr,
-                //     m_axi_reply_1,
-                //     //m_axi_reply_2
-                // );
+        broadcast(
+            ncc_finished,
+            broadcast_req, 
+            ncc_permissible_req,
+            ncc_permissible_rsp, 
+            ncc_query_req,
+            ncc_query_rsp, 
+            ncc_tx_meta,
+            ncc_tx_data,
+            myBoardNum,
+            network_ptr,
+            m_axi_reply
+        );
 
-            while (counter < count) {
-                mu(
-                    proposedValue,
-                    m_axis_tx_meta,
-                    m_axis_tx_data,
-                    myBoardNum,
-                    network_ptr,
-                    m_axi_reply
-                );
+
+        if (!smr_permissible_rsp.empty() && !ncc_permissible_rsp.empty()) {
+            smr_permissible_rsp.read(smr_value);
+            ncc_permissible_rsp.read(ncc_value);
+            if (inital_value + smr_value + ncc_value - amount[counter] >= 0) {
+                proposed.write(ProposedValue(-amount[counter], 0));
+            } else {
+                read_op = true; 
                 counter++; 
             }
-
-            
-                // if (!proposedFinished.empty()) {
-                //     proposedFinished.read(done_with_proposed); 
-                // }
-
-            //}
-
         }
 
+        meta_merger(smr_tx_meta, ncc_tx_meta, m_axis_tx_meta);
+        data_merger(smr_tx_data, ncc_tx_data, m_axis_tx_data);
 
+
+        if (!smr_query_rsp.empty() && !ncc_query_rsp.empty()) {
+            int smr_query, ncc_query;
+            smr_query_rsp.read(smr_query); 
+            ncc_query_rsp.read(ncc_query);
+            m_axi_reply[0] = inital_value + smr_query + ncc_query; 
+            read_op = true;
+            counter++; 
+        }
+
+        if (!smr_finished.empty()) {
+            bool temp; 
+            smr_finished.read(temp);
+            read_op = true;
+            counter++; 
+        }
+
+        if (!ncc_finished.empty()) {
+            bool temp; 
+            ncc_finished.read(temp);
+            read_op = true;
+            counter++; 
+        }
 
     }
+
 }
-
-
 
 

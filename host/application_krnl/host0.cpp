@@ -122,7 +122,7 @@ int main(int argc, char **argv) {
     uint32_t rUDP = 0x000012b7;
     uint64_t vAddr= 0x0000000000000001;
     uint32_t rKey = 0x00000000;
-    uint32_t OP   = 0x00000002;
+    uint32_t OP   = 0x00000001;
     uint64_t rAddr= 0x0000000000000000;
     uint64_t lAddr= 0x0000000000000000;
     uint32_t len  = 0x00000008;
@@ -164,6 +164,7 @@ int main(int argc, char **argv) {
     OCL_CHECK(err, err = network_kernel.setArg(11, lAddr));
     OCL_CHECK(err, err = network_kernel.setArg(12, len));
     OCL_CHECK(err, err = network_kernel.setArg(13, debug));
+    //OCL_CHECK(err, err = network_kernel.setArg(14, 400000000));
     OCL_CHECK(err,
               cl::Buffer buffer_r1(context,
                                    CL_MEM_USE_HOST_PTR | CL_MEM_READ_WRITE,
@@ -176,8 +177,8 @@ int main(int argc, char **argv) {
     OCL_CHECK(err, err = q.enqueueTask(network_kernel));
     OCL_CHECK(err, err = q.finish());
 
-    sleep(10);
-    //wait_for_enter("\nPausing for network kernel setup...");
+    //sleep(10);
+    wait_for_enter("\nPausing for network kernel setup...");
 
 
     uint32_t boardNum = 0;
@@ -192,7 +193,7 @@ int main(int argc, char **argv) {
 
     OCL_CHECK(err, err = user_kernel.setArg(3, boardNum));
     OCL_CHECK(err, err = user_kernel.setArg(4, buffer_r2));
-    OCL_CHECK(err, err = user_kernel.setArg(5, 200));
+    OCL_CHECK(err, err = user_kernel.setArg(5, 30));
     OCL_CHECK(err, err = user_kernel.setArg(6, buffer_r1));
 
 
@@ -220,13 +221,13 @@ int main(int argc, char **argv) {
     for (int j = 0; j < 32; j++) {
         printf("%d ", network_ptr0[j]);
         if (j == 5) printf("\nMIN PROP: ");
-        if (j == 11) printf("\nLOCAL LOG: ");
-        if (j == 21) printf("\nLOG FIFOs: ");
+        if (j == 12) printf("\nLOCAL LOG: ");
+        if (j == 22) printf("\nLOG FIFOs: ");
     }
     printf("\n");
-    for (int j = 32; j <64; j++) {
-        printf("%d ", network_ptr0[j]);
-    }
+    // for (int j = 32; j < 96; j++) {
+    //     printf("%d ", network_ptr0[j]);
+    // }
 
     //}
 

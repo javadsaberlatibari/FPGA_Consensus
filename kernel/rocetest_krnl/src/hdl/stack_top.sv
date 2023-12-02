@@ -365,7 +365,7 @@ reg [31:0] arp_node_num;
 reg [31:0] arp_wait_counter; 
 // reg [0:0] arp_pulse; 
 reg[0:0] arp_write_done;
-localparam ARP_IDLE_TIMER = 500000000;
+localparam ARP_IDLE_TIMER = 400000000;
 reg[7:0] arpState;
 localparam ARP_IDLE = 0;
 localparam ARP_RQ = 1;
