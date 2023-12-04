@@ -112,7 +112,7 @@ int main(int argc, char **argv) {
         exit(EXIT_FAILURE);
     }
     
-    wait_for_enter("\nPress ENTER to continue after setting up ILA trigger...");
+    //wait_for_enter("\nPress ENTER to continue after setting up ILA trigger...");
 
     /*===============================================================Init and start Network Kernel===============================================================*/    
 
@@ -125,7 +125,7 @@ int main(int argc, char **argv) {
     uint32_t rQPN = 0x00000001;
     uint32_t lQPN = 0x00000001;
     uint32_t rIP  = 0x0b01d4e0;
-    uint32_t lIP  = 0x0b01d4e0;
+    uint32_t lIP  = 0x0b01d4e4;
     uint32_t rUDP = 0x000012b7;
     uint64_t vAddr= 0x0000000000000001;
     uint32_t rKey = 0x00000000;
@@ -136,7 +136,7 @@ int main(int argc, char **argv) {
     // [15:4] time interval in cycle       0x100   256cycle
     // [3:2]  board number                 0
     // [1:0]  mode 0-nothing 1-test 2-op   0
-    uint32_t debug= 0x00001000;
+    uint32_t debug= 0x00001010;
 
     // Set network kernel arguments
     OCL_CHECK(err, err = network_kernel.setArg(0, rPSN)); // Default IP address
@@ -161,15 +161,20 @@ int main(int argc, char **argv) {
                                    &err));
     OCL_CHECK(err, err = network_kernel.setArg(14, buffer_network));
 
+    // network_ptr0[3] = 3;
+    // network_ptr0[15] = 2;
+    // network_ptr0[16] = -2;
+    // OCL_CHECK(err, err = q.enqueueMigrateMemObjects({buffer_network}, 0 /* 0 means from host*/));
+
     printf("enqueue network kernel...\n");
     OCL_CHECK(err, err = q.enqueueTask(network_kernel));
     OCL_CHECK(err, err = q.finish());
 
     sleep(5);
-    //wait_for_enter("\nPausing for network kernel setup...");
+    wait_for_enter("\nPausing for network kernel setup...");
     /*===============================================================Init and Start User kernel===============================================================*/
 
-    uint32_t boardNum = 0;
+    uint32_t boardNum = 1;
     int num_ops = NUM_OPS; 
     std::vector<int, aligned_allocator<int>> reply(64 * sizeof(int));
     OCL_CHECK(err,
@@ -221,7 +226,7 @@ int main(int argc, char **argv) {
         calls++;
     }
 
-    // ops = {0, 0, 2, 2};
+    // ops = {1, 1, 2, 2};
     // amount = {1, 1, 1, 1};
 
     OCL_CHECK(err, err = user_kernel.setArg(3, boardNum));

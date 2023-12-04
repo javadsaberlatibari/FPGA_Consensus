@@ -35,6 +35,7 @@ EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <unistd.h> 
 #include <cstdlib> 
 #include <iostream> 
+#include <fstream>
 
 #define DATA_SIZE 62500000
 
@@ -49,29 +50,29 @@ void wait_for_enter(const std::string &msg) {
 }
 
 int main(int argc, char **argv) {
+
     if (argc < 2) {
-        std::cout << "Usage: " << argv[0] << " <XCLBIN File> [<#Tx Pkt> <IP address in format: 10.1.212.121> <Port>]" << std::endl;
+        std::cout << "Usage: " << argv[0] << " <XCLBIN File> <NUM_NODES> <NUM_OPS> <WRITE_%>" << std::endl;
         return EXIT_FAILURE;
     }
-
+    /*===============================================================Handle INPUT ARGs===============================================================*/
     std::string binaryFile = argv[1];
+    int NUM_NODES = std::atoi(argv[2]);
+    int NUM_OPS = std::atoi(argv[3]);
+    double WRITE_PERCENTAGE = std::atoi(argv[4]);
+    int ID = std::atoi(argv[5]);
+    int exe = atoi(argv[6]);
+
+    // std::string benchmark_location = "../benchmarks/";
+    // benchmark_location += std::to_string(NUM_NODES) + "-" + std::to_string(NUM_OPS) + "-" + std::to_string(WRITE_PERCENTAGE);
+    // benchmark_location += "/" + usecase + "/";
+    /*===============================================================Program FPGA with input bitstream===============================================================*/
 
     cl_int err;
     cl::CommandQueue q;
     cl::Context context;
-
     cl::Kernel user_kernel;
     cl::Kernel network_kernel;
-
-    auto size = DATA_SIZE;
-    
-    //Allocate Memory in Host Memory
-    auto vector_size_bytes = sizeof(int) * size;
-    std::vector<int, aligned_allocator<int>> network_ptr0(size);
-
-    // for (int i = 0; i < size; i++) {
-    //     network_ptr0[i] = 0xcabcabcab;
-    // }
 
     //OPENCL HOST CODE AREA START
     //Create Program and Kernel
@@ -111,8 +112,13 @@ int main(int argc, char **argv) {
         exit(EXIT_FAILURE);
     }
     
-    wait_for_enter("\nPress ENTER to continue after setting up ILA trigger...");
+    //wait_for_enter("\nPress ENTER to continue after setting up ILA trigger...");
 
+    /*===============================================================Init and start Network Kernel===============================================================*/    
+
+    auto size = DATA_SIZE;
+    auto vector_size_bytes = sizeof(int) * size;
+    std::vector<int, aligned_allocator<int>> network_ptr0(size);
 
     uint32_t rPSN = 0x00000000;
     uint32_t lPSN = 0x00000000;
@@ -123,7 +129,7 @@ int main(int argc, char **argv) {
     uint32_t rUDP = 0x000012b7;
     uint64_t vAddr= 0x0000000000000001;
     uint32_t rKey = 0x00000000;
-    uint32_t OP   = 0x00000001;
+    uint32_t OP   = NUM_NODES-1;
     uint64_t rAddr= 0x0000000000000000;
     uint64_t lAddr= 0x0000000000000000;
     uint32_t len  = 0x00000008;
@@ -131,24 +137,6 @@ int main(int argc, char **argv) {
     // [3:2]  board number                 0
     // [1:0]  mode 0-nothing 1-test 2-op   0
     uint32_t debug= 0x00001004;
-    //void* status; 
-
-    //std::vector<unsigned int, aligned_allocator<unsigned int> > status(16);
-
-    // [31:29] meta count          b 110     2^6=64
-    // [28:24] len in 2^           b 10000   2^16=64kB
-    // [23:0]  lQPN                0x000000
-    //uint32_t 
-    uint32_t debug1 = 0xd0000000;
-    
-    if (argc >=3) {
-	debug1 = (debug1 & 0x00FFFFFF) |((uint32_t)strtoul(argv[2], NULL, 0) << 24);
-    }
-    uint32_t meta = 1<<(debug1>>29);
-    uint32_t length = 1<<((debug1>>24) & 0x1F);
-    printf("meta count      = %d\n", meta);
-    printf("length in bytes = %d\n", length);
-    printf("total data read = %d\n\n", meta*length);
 
     // Set network kernel arguments
     OCL_CHECK(err, err = network_kernel.setArg(0, rPSN)); // Default IP address
@@ -165,34 +153,32 @@ int main(int argc, char **argv) {
     OCL_CHECK(err, err = network_kernel.setArg(11, lAddr));
     OCL_CHECK(err, err = network_kernel.setArg(12, len));
     OCL_CHECK(err, err = network_kernel.setArg(13, debug));
-    //OCL_CHECK(err, err = network_kernel.setArg(14, 400000000));
     OCL_CHECK(err,
-              cl::Buffer buffer_r1(context,
+              cl::Buffer buffer_network(context,
                                    CL_MEM_USE_HOST_PTR | CL_MEM_READ_WRITE,
                                    vector_size_bytes,
                                    network_ptr0.data(),
                                    &err));
-    OCL_CHECK(err, err = network_kernel.setArg(14, buffer_r1));
+    OCL_CHECK(err, err = network_kernel.setArg(14, buffer_network));
 
-    // network_ptr0[12] = 1;
-    // network_ptr0[13] = 1;
-    // network_ptr0[14] = 1;
-    // network_ptr0[15] = 1;
-    
-    OCL_CHECK(err, err = q.enqueueMigrateMemObjects({buffer_r1}, 0 /* 0 means from host*/));
+    // network_ptr0[3] = 5;
+    // network_ptr0[15] = 4;
+    // network_ptr0[16] = -4;
+    // OCL_CHECK(err, err = q.enqueueMigrateMemObjects({buffer_network}, 0 /* 0 means from host*/));
 
     printf("enqueue network kernel...\n");
     OCL_CHECK(err, err = q.enqueueTask(network_kernel));
     OCL_CHECK(err, err = q.finish());
 
-    //sleep(10);
+    sleep(5);
     wait_for_enter("\nPausing for network kernel setup...");
+    /*===============================================================Init and Start User kernel===============================================================*/
 
     uint32_t boardNum = 1;
-    int num_ops = 1; 
+    int num_ops = NUM_OPS; 
     std::vector<int, aligned_allocator<int>> reply(64 * sizeof(int));
     OCL_CHECK(err,
-              cl::Buffer buffer_r2(context,
+              cl::Buffer buffer_reply(context,
                                    CL_MEM_USE_HOST_PTR | CL_MEM_READ_WRITE,
                                    sizeof(int) * 100,
                                    reply.data(),
@@ -215,16 +201,43 @@ int main(int argc, char **argv) {
                                    amount.data(),
                                    &err));    
 
-    ops =       {1, 2, 2, 2, 2, 2, 2, 2, 2, 2};
-    amount =    {1, 1, 1}; 
+
+    int expected_calls; 
+    std::ifstream myfile;
+    myfile.open((std::to_string(ID+1) + ".txt").c_str());
+    std::string line; 
+    int calls = 0; 
+
+    while(getline(myfile, line)) {
+        if (line.at(0) == '#') {
+            expected_calls = std::stoi(line.substr(1, line.size()));
+            continue;
+        }
+        
+        if (line.size() > 1) {
+            printf("%d %d \n", line.at(0)-48, line.at(2)-48);
+            ops[calls] = line.at(0)-48;
+            amount[calls] = line.at(2)-48;
+        } else {
+            printf("%d \n", line.at(0)-48);
+            ops[calls] = line.at(0)-48;
+            amount[calls] = 0;
+        }
+        calls++;
+    }
+
+    // ops = {1, 1, 2, 2};
+    // amount = {1, 1, 1, 1};
 
     OCL_CHECK(err, err = user_kernel.setArg(3, boardNum));
     OCL_CHECK(err, err = user_kernel.setArg(4, buffer_ops));
     OCL_CHECK(err, err = user_kernel.setArg(5, buffer_amount));
     OCL_CHECK(err, err = user_kernel.setArg(6, num_ops));
-    OCL_CHECK(err, err = user_kernel.setArg(7, buffer_r2));
-    OCL_CHECK(err, err = user_kernel.setArg(8, buffer_r1));
+    OCL_CHECK(err, err = user_kernel.setArg(7, buffer_reply));
+    OCL_CHECK(err, err = user_kernel.setArg(8, buffer_network));
+    OCL_CHECK(err, err = user_kernel.setArg(9, exe)); 
 
+    printf("Host->Device user kernel... \n");
     OCL_CHECK(err, err = q.enqueueMigrateMemObjects({buffer_ops}, 0 /* 0 means from host*/));
     OCL_CHECK(err, err = q.enqueueMigrateMemObjects({buffer_amount}, 0 /* 0 means from host*/));
     OCL_CHECK(err, err = q.finish());
@@ -236,17 +249,17 @@ int main(int argc, char **argv) {
     OCL_CHECK(err, err = q.finish());
     auto end = std::chrono::high_resolution_clock::now();
     durationUs = (std::chrono::duration_cast<std::chrono::nanoseconds>(end-start).count() / 1000.0);
-    printf("durationUs:%f\n",durationUs);
-    printf("replication_latency:%f\n",durationUs/num_ops);
-    sleep(5);
+    sleep(10);
 
+    /*===============================================================OUTPUT===============================================================*/
 
     printf("Device->Host user kernel...\n");
-    OCL_CHECK(err, err = q.enqueueMigrateMemObjects({buffer_r2}, CL_MIGRATE_MEM_OBJECT_HOST));
+    OCL_CHECK(err, err = q.enqueueMigrateMemObjects({buffer_network}, CL_MIGRATE_MEM_OBJECT_HOST));
+    OCL_CHECK(err, err = q.enqueueMigrateMemObjects({buffer_reply}, CL_MIGRATE_MEM_OBJECT_HOST));
     OCL_CHECK(err, err = q.finish());
 
-    OCL_CHECK(err, err = q.enqueueMigrateMemObjects({buffer_r1}, CL_MIGRATE_MEM_OBJECT_HOST));
-    OCL_CHECK(err, err = q.finish());
+    printf("durationUs:%f\n",durationUs);
+    printf("replication_latency:%f\n",durationUs/num_ops);
 
     printf("REP\n");
     for (int j = 0; j < 30; j++) {
@@ -255,18 +268,16 @@ int main(int argc, char **argv) {
     printf("\n");
 
     printf("NET\nHB: ");
-    for (int j = 0; j < 30; j++) {
+    for (int j = 0; j < 50; j++) {
         printf("%d ", network_ptr0[j]);
-        if (j == 2) printf("\nMIN PROP: ");
-        if (j == 9) printf("\nLOCAL LOG: ");
-        if (j == 19) printf("\nLOG FIFOs: ");
+        if (j == NUM_NODES-1) printf("\nMIN PROP: ");
+        if (j == (NUM_NODES-1) + 2 + (NUM_NODES-1)*5) printf("\nLOCAL LOG: ");
+        if (j == (NUM_NODES-1) + 2 + (NUM_NODES-1)*5 + 10) printf("\nLOG FIFOs: ");
+    }
+    for (int j = 51; j < 60; j++) {
+        printf("%d ", network_ptr0[j]);
     }
     printf("\n");
-
-    for (int j = 30; j < 40; j++) {
-        printf("%d ", network_ptr0[j]);
-    }
-
 
     std::cout << "EXIT recorded" << std::endl;
 }
