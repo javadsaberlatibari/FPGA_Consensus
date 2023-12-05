@@ -7,7 +7,7 @@
 
 
 
-const int NUM_NODES = 3; 
+const int NUM_NODES = 12; 
 const int SYNC_GROUPS = 1; 
 
 // Need for QP info
@@ -15,9 +15,10 @@ const ap_uint<32> BASE_IP_ADDR = 0xe0d4010b;
 const uint32_t UDP = 0x000012b7;
 
 // Written by Leader Switch and read by Log Handler
-bool FOLLOWER_LIST[NUM_NODES-1] = {1 ,1};
+bool FOLLOWER_LIST[NUM_NODES-1] = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
 
-const int NUM_SLOTS = 5 * 2; 
+//25% write log size (smaller % can use this as well)
+const int NUM_SLOTS = 25000 * 2; 
 const int FIFO_LENGTH = 5;
 
 // Constants for HeartBeat Memory
@@ -37,7 +38,7 @@ const int LOG_LOCAL_LOG_PTR_LEN = NUM_SLOTS; // local log
 const int LOG_LOCAL_LOG_ADDR_LEN = 4 * LOG_LOCAL_LOG_PTR_LEN; 
 const int LOG_REMOTE_LOG_QUEUE_PTR_LEN = 2 * (NUM_NODES-1) * FIFO_LENGTH;
 const int LOG_REMOTE_LOG_QUEUE_ADDR_LEN = 4 * LOG_REMOTE_LOG_QUEUE_PTR_LEN; 
-const int LOG_PTR_LEN = LOG_MIN_PROP_PTR_LEN + (NUM_NODES-1) * LOG_LOCAL_LOG_PTR_LEN + (NUM_NODES-1) * LOG_REMOTE_LOG_QUEUE_PTR_LEN; 
+const int LOG_PTR_LEN = LOG_MIN_PROP_PTR_LEN + LOG_LOCAL_LOG_PTR_LEN + LOG_REMOTE_LOG_QUEUE_PTR_LEN; 
 const int LOG_ADDR_LEN = LOG_PTR_LEN * 4; 
 
 const int BROADCAST_BASE_PTR = HB_PTR_LEN + LOG_PTR_LEN;
@@ -416,6 +417,7 @@ void replication_engine_fsm(
     hls::stream<updateLocalValue>& acceptedValue_rsq,
     hls::stream<updateLocalValue>& updateLocalValue_req,
     int myBoardNum, 
+    int num_nodes, 
     int* reply
 ) {
 
@@ -565,6 +567,7 @@ void log_handler_fsm(
     hls::stream<ap_uint<256>>& m_axis_tx_meta, 
     hls::stream<ap_uint<64>>& m_axis_tx_data,
     int myBoardNum,
+    int num_nodes, 
     int* network_ptr,
     int* reply
 ) {
@@ -611,8 +614,8 @@ void log_handler_fsm(
     case READ_MIN_PROP: {
         //reply[0] = 111 + counter; 
         int j=0; 
-        int qpn_tmp=myBoardNum*(NUM_NODES-1);
-        while (j<NUM_NODES){
+        int qpn_tmp=myBoardNum*(num_nodes-1);
+        while (j<num_nodes){
             if(j!=myBoardNum && FOLLOWER_LIST[j]) {
                 if(!m_axis_tx_meta.full()){
 
@@ -643,7 +646,7 @@ void log_handler_fsm(
         bool value_found = false; 
         //reply[3] = 222 + counter; 
         int temp; 
-        for (int i = 0; i < NUM_NODES-1; i++) {
+        for (int i = 0; i < num_nodes-1; i++) {
             temp = network_ptr[LOG_BASE_PTR + 2 + FIFO_LENGTH * i + (minPropFifoIndex[sGroup]%FIFO_LENGTH)]; 
             reply[6] = LOG_BASE_PTR + 2 + FIFO_LENGTH * i + (minPropFifoIndex[sGroup]%FIFO_LENGTH); 
             if (temp > minPropNumber && temp != 0) {
@@ -670,8 +673,8 @@ void log_handler_fsm(
         network_ptr[LOG_BASE_PTR] = newMinProp; 
         //reply[5] = 333 + counter; 
         int j=0; 
-        int qpn_tmp=myBoardNum*(NUM_NODES-1);
-        while (j<NUM_NODES){
+        int qpn_tmp=myBoardNum*(num_nodes-1);
+        while (j<num_nodes){
             if(j!=myBoardNum && FOLLOWER_LIST[j]){
                 if(!m_axis_tx_meta.full() && !m_axis_tx_data.full()){
                     rdma_write(
@@ -693,8 +696,8 @@ void log_handler_fsm(
             }
         }
         j=0; 
-        qpn_tmp=myBoardNum*(NUM_NODES-1);
-        while (j<NUM_NODES){
+        qpn_tmp=myBoardNum*(num_nodes-1);
+        while (j<num_nodes){
             if(j!=myBoardNum && FOLLOWER_LIST[j]){
                 if(!m_axis_tx_meta.full()){
                     int slot = (j < myBoardNum) ? j : j-1; 
@@ -723,7 +726,7 @@ void log_handler_fsm(
         //reply[9] = 444 + counter; 
         LogEntry temp_log;
         int maxPropNumber = 0; 
-        for (int i = 0; i < NUM_NODES-1; i++) {
+        for (int i = 0; i < num_nodes-1; i++) {
             if (FOLLOWER_LIST[i]) {
                 int propNum = network_ptr[LOG_BASE_PTR + LOG_MIN_PROP_PTR_LEN + LOG_LOCAL_LOG_PTR_LEN + (2 * i * FIFO_LENGTH) + (slotReadFifoIndex[sGroup]%NUM_SLOTS)];
                 int propValue = network_ptr[LOG_BASE_PTR + LOG_MIN_PROP_PTR_LEN + LOG_LOCAL_LOG_PTR_LEN + (2 * i * FIFO_LENGTH) + (slotReadFifoIndex[sGroup]%NUM_SLOTS) + 1];
@@ -751,8 +754,8 @@ void log_handler_fsm(
         sendLog.range(31, 0) = logSlot.propVal;
         sendLog.range(63, 32) = logSlot.value;
         int j=0; 
-        int qpn_tmp=myBoardNum*(NUM_NODES-1);
-        while (j<NUM_NODES){
+        int qpn_tmp=myBoardNum*(num_nodes-1);
+        while (j<num_nodes){
             if(j!=myBoardNum && FOLLOWER_LIST[j]){
                 if(!m_axis_tx_meta.full() && !m_axis_tx_data.full()){
                     rdma_write(
@@ -814,6 +817,7 @@ void smr(
     hls::stream<ap_uint<256>>& m_axis_tx_meta, 
     hls::stream<ap_uint<64>>& m_axis_tx_data,
     int myBoardNum, 
+    int num_nodes, 
     int *network_ptr, 
     int* reply
 ) {
@@ -847,6 +851,7 @@ void smr(
         acceptedValue_rsq,
         updateLocalValue_req,
         myBoardNum,
+        num_nodes,
         reply
     );
 
@@ -863,6 +868,7 @@ void smr(
         m_axis_tx_meta,
         m_axis_tx_data,
         myBoardNum,
+        num_nodes,
         network_ptr,
         reply        
     );
@@ -900,6 +906,7 @@ void broadcast(
     hls::stream<ap_uint<256>>& m_axis_tx_meta, 
     hls::stream<ap_uint<64>>& m_axis_tx_data,
     int myBoardNum, 
+    int num_nodes,
     int *network_ptr, 
     int* reply
 ) {
@@ -913,8 +920,8 @@ void broadcast(
         broadcast_req.read(pValue);
         deposit += pValue; 
         int j=0; 
-        int qpn_tmp=myBoardNum*(NUM_NODES-1);
-        while (j<NUM_NODES){
+        int qpn_tmp=myBoardNum*(num_nodes-1);
+        while (j<num_nodes){
             if(j!=myBoardNum){
                 if(!m_axis_tx_meta.full() && !m_axis_tx_data.full()) { 
                     rdma_write(
@@ -940,7 +947,7 @@ void broadcast(
     if (!query_req.empty()) {
         query_req.read(query);
         int sum_remote = 0; 
-        for (int i = 0; i < NUM_NODES; i++) {
+        for (int i = 0; i < num_nodes; i++) {
             if (i != myBoardNum) {
                 sum_remote += network_ptr[BROADCAST_BASE_PTR + i];
             }
@@ -967,7 +974,7 @@ extern "C" void bank_account_krnl(
     int num_ops, 
     int* m_axi_reply,
     int* network_ptr,
-    int debug_exe
+    int num_nodes
 ) {
 
     #pragma HLS INTERFACE axis port = m_axis_tx_meta
@@ -1013,8 +1020,8 @@ extern "C" void bank_account_krnl(
     }
 
 
-    while (debug_counter < debug_exe && RTS && counter < num_ops) {
-    //while(counter < num_ops && RTS) {
+    //while (debug_counter < debug_exe && RTS && counter < num_ops) {
+    while(counter < num_ops && RTS) {
         m_axi_reply[0] = debug_counter; 
         if (read_op) {
             switch(ops[counter]) {
@@ -1061,6 +1068,7 @@ extern "C" void bank_account_krnl(
             smr_tx_meta,
             smr_tx_data,
             myBoardNum,
+            num_nodes,
             network_ptr,
             m_axi_reply
         );
@@ -1075,6 +1083,7 @@ extern "C" void bank_account_krnl(
             ncc_tx_meta,
             ncc_tx_data,
             myBoardNum,
+            num_nodes,
             network_ptr,
             m_axi_reply
         );

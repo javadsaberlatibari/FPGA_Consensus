@@ -174,8 +174,8 @@ int main(int argc, char **argv) {
     wait_for_enter("\nPausing for network kernel setup...");
     /*===============================================================Init and Start User kernel===============================================================*/
 
-    uint32_t boardNum = 1;
-    int num_ops = NUM_OPS; 
+    uint32_t boardNum = ID;
+    int num_ops = NUM_OPS/NUM_NODES; 
     std::vector<int, aligned_allocator<int>> reply(64 * sizeof(int));
     OCL_CHECK(err,
               cl::Buffer buffer_reply(context,

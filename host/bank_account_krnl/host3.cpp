@@ -112,7 +112,7 @@ int main(int argc, char **argv) {
         exit(EXIT_FAILURE);
     }
     
-    //wait_for_enter("\nPress ENTER to continue after setting up ILA trigger...");
+    wait_for_enter("\nPress ENTER to continue after setting up ILA trigger...");
 
     /*===============================================================Init and start Network Kernel===============================================================*/    
 
@@ -171,11 +171,12 @@ int main(int argc, char **argv) {
     OCL_CHECK(err, err = q.finish());
 
     sleep(5);
-    wait_for_enter("\nPausing for network kernel setup...");
+    //wait_for_enter("\nPausing for network kernel setup...");
     /*===============================================================Init and Start User kernel===============================================================*/
 
-    uint32_t boardNum = 1;
-    int num_ops = NUM_OPS; 
+    uint32_t boardNum = ID;
+    int num_ops = NUM_OPS/NUM_NODES; 
+    printf("NUMOPS = %d\n", num_ops);
     std::vector<int, aligned_allocator<int>> reply(64 * sizeof(int));
     OCL_CHECK(err,
               cl::Buffer buffer_reply(context,
@@ -215,15 +216,25 @@ int main(int argc, char **argv) {
         }
         
         if (line.size() > 1) {
-            printf("%d %d \n", line.at(0)-48, line.at(2)-48);
+            //printf("%d %d \n", line.at(0)-48, line.at(2)-48);
             ops[calls] = line.at(0)-48;
             amount[calls] = line.at(2)-48;
         } else {
-            printf("%d \n", line.at(0)-48);
+            //printf("%d \n", line.at(0)-48);
             ops[calls] = line.at(0)-48;
             amount[calls] = 0;
         }
         calls++;
+    }
+
+    printf("NUMOPS = %d\n", calls);
+
+    //Check for non-leader conflicting calls
+    for (int i = 0; i < num_ops; i++) {
+        if (ops[i] == 0) {
+            printf("ERROR!\n");
+            return 0; 
+        }
     }
 
     // ops = {1, 1, 2, 2};
@@ -235,7 +246,7 @@ int main(int argc, char **argv) {
     OCL_CHECK(err, err = user_kernel.setArg(6, num_ops));
     OCL_CHECK(err, err = user_kernel.setArg(7, buffer_reply));
     OCL_CHECK(err, err = user_kernel.setArg(8, buffer_network));
-    OCL_CHECK(err, err = user_kernel.setArg(9, exe)); 
+    OCL_CHECK(err, err = user_kernel.setArg(9, NUM_NODES)); 
 
     printf("Host->Device user kernel... \n");
     OCL_CHECK(err, err = q.enqueueMigrateMemObjects({buffer_ops}, 0 /* 0 means from host*/));
@@ -249,7 +260,7 @@ int main(int argc, char **argv) {
     OCL_CHECK(err, err = q.finish());
     auto end = std::chrono::high_resolution_clock::now();
     durationUs = (std::chrono::duration_cast<std::chrono::nanoseconds>(end-start).count() / 1000.0);
-    sleep(10);
+    sleep(5);
 
     /*===============================================================OUTPUT===============================================================*/
 
