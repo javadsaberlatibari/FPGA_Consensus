@@ -46,6 +46,16 @@ const int BROADCAST_BASE_ADDR = HB_ADDR_LEN + LOG_ADDR_LEN;
 /* # of Nonconflicting calls*/
 const int BROADCAST_SG_LEN = 1000; 
 
+struct LocalMemOp {
+    bool read; 
+    ap_uint<32> index;
+    ap_uint<32> value; 
+    LocalMemOp()
+        :read(false) {}
+    LocalMemOp(bool r, ap_uint<32> i, ap_uint<32> v)
+        :read(r), index(i), value(v) {}
+};
+
 struct ProposedValue {
     int value; 
     ap_uint<32> syncronizationGroup;
@@ -80,6 +90,29 @@ struct LogEntry
     LogEntry(ap_uint<32> p, ap_uint<32> v, bool va) 
         :propVal(p), value(v), valid(va) {}
 };
+
+void localWrite(
+    hls::stream<LocalMemOp>& log2lw_req,
+    hls::stream<ap_uint<32>>& log2lw_rsp,
+    hls::stream<LocalMemOp>& ls2lw_req,
+    hls::stream<ap_uint<32>>& ls2lw_rsp,
+    int* ptr
+) {
+
+    static LocalMemOp op; 
+
+    if (!log2lw_req.empty()) {
+        log2lw_req.read(op);
+        ptr[op.index] = op.value;
+    }
+
+    if (!ls2lw_req.empty()) {
+        ls2lw_req.read(op);
+        ptr[op.index] = op.value;
+    }
+
+}
+
 
 void rdma_read(
     int s_axi_lqpn,
@@ -196,6 +229,8 @@ void merger(
         c_tx_data.write(temp_pkt_64);        
     }
 }
+
+
 
 // enum heartBeatStates {
 //     UPDATE,
@@ -417,14 +452,18 @@ void replication_engine_fsm(
     hls::stream<updateLocalValue>& acceptedValue_rsq,
     hls::stream<updateLocalValue>& updateLocalValue_req,
     int myBoardNum, 
-    int num_nodes, 
-    int* reply
+    int num_nodes
+    //int* reply
 ) {
+
+    //#pragma HLS DATAFLOW
+    #pragma HLS inline off
+    #pragma HLS pipeline II=1
 
     enum fsmStateType {INIT, LEADER_REPLICA, PROPOSE, READ_MIN_PROP_REQ, READ_MIN_PROP_RSP, WRITE_MIN_PROP_AND_READ_SLOT, CHECK_SLOTS, ACCEPT_WRITE, ACCEPT_DONE, REPLICA, REPLICA_CHECK};
     static fsmStateType state = INIT; 
     static int leader = 0; 
-    static int counter = 0; 
+    //static int counter = 0; 
     static bool done = true; 
     static int myValue = 0; 
     static ap_uint<32> sGroup = 0;  
@@ -457,7 +496,7 @@ void replication_engine_fsm(
             proposedValue.read(pVal);
             myValue = pVal.value; 
             sGroup = pVal.syncronizationGroup;
-            reply[28] = myValue;
+            //reply[28] = myValue;
             done = false; 
             state = READ_MIN_PROP_REQ; 
         } else if (done) {
@@ -568,13 +607,17 @@ void log_handler_fsm(
     hls::stream<ap_uint<64>>& m_axis_tx_data,
     int myBoardNum,
     int num_nodes, 
-    int* network_ptr,
-    int* reply
+    int* network_ptr
+    //int* reply
 ) {
+
+    #pragma HLS inline off
+    #pragma HLS pipeline II=1
+    //#pragma HLS DATAFLOW
 
     enum fsmStateType {REQUEST, READ_MIN_PROP, READ_MIN_PROP_RSP, WRITE_READ, WRITE_READ_RSP, WRITE_SLOT, ACCEPT_VALUE};
     static fsmStateType state = REQUEST; 
-    static int counter = 0; 
+    static int reads = 0; 
     static int call_counter = 0; 
     static ap_uint<32> sGroup = 0; 
     static int minPropFifoIndex[SYNC_GROUPS], slotReadFifoIndex[SYNC_GROUPS], slotAcceptFifoIndex[SYNC_GROUPS]; 
@@ -627,8 +670,8 @@ void log_handler_fsm(
                         0x4,
                         m_axis_tx_meta 
                         );
-                    reply[4] = LOG_BASE_ADDR + 8 + 4 * (FIFO_LENGTH * (slot) + (minPropFifoIndex[sGroup]%FIFO_LENGTH)); 
-                    reply[5] = LOG_BASE_ADDR; 
+                    //reply[4] = LOG_BASE_ADDR + 8 + 4 * (FIFO_LENGTH * (slot) + (minPropFifoIndex[sGroup]%FIFO_LENGTH)); 
+                    //reply[5] = LOG_BASE_ADDR; 
                     j++;
                     qpn_tmp++;
 
@@ -648,11 +691,11 @@ void log_handler_fsm(
         int temp; 
         for (int i = 0; i < num_nodes-1; i++) {
             temp = network_ptr[LOG_BASE_PTR + 2 + FIFO_LENGTH * i + (minPropFifoIndex[sGroup]%FIFO_LENGTH)]; 
-            reply[6] = LOG_BASE_PTR + 2 + FIFO_LENGTH * i + (minPropFifoIndex[sGroup]%FIFO_LENGTH); 
+            //reply[6] = LOG_BASE_PTR + 2 + FIFO_LENGTH * i + (minPropFifoIndex[sGroup]%FIFO_LENGTH); 
             if (temp > minPropNumber && temp != 0) {
                 minPropNumber = temp;
                 value_found = true; 
-            } else if (counter == 0) {
+            } else if (reads == 0) {
                 minPropNumber = 0; 
                 value_found = true; 
             }
@@ -662,7 +705,7 @@ void log_handler_fsm(
             //reply[26] = minPropNumber;
             minPropFifoIndex[sGroup]+=1; 
             minProp_rsp.write(minPropNumber);
-            counter++; 
+            reads++; 
             state = REQUEST; 
         }
 
@@ -710,8 +753,8 @@ void log_handler_fsm(
                         );
                     j++;
                     qpn_tmp++;
-                    reply[7] = LOG_BASE_ADDR + LOG_MIN_PROP_ADDR_LEN + LOG_LOCAL_LOG_ADDR_LEN + 4 * (2 * FIFO_LENGTH * slot + (slotReadFifoIndex[sGroup]%NUM_SLOTS));
-                    reply[8] = LOG_BASE_ADDR + LOG_MIN_PROP_ADDR_LEN + 4 * (fuo[sGroup]%NUM_SLOTS);
+                    //reply[7] = LOG_BASE_ADDR + LOG_MIN_PROP_ADDR_LEN + LOG_LOCAL_LOG_ADDR_LEN + 4 * (2 * FIFO_LENGTH * slot + (slotReadFifoIndex[sGroup]%NUM_SLOTS));
+                    //reply[8] = LOG_BASE_ADDR + LOG_MIN_PROP_ADDR_LEN + 4 * (fuo[sGroup]%NUM_SLOTS);
                 }
             }
             else {
@@ -730,8 +773,8 @@ void log_handler_fsm(
             if (FOLLOWER_LIST[i]) {
                 int propNum = network_ptr[LOG_BASE_PTR + LOG_MIN_PROP_PTR_LEN + LOG_LOCAL_LOG_PTR_LEN + (2 * i * FIFO_LENGTH) + (slotReadFifoIndex[sGroup]%NUM_SLOTS)];
                 int propValue = network_ptr[LOG_BASE_PTR + LOG_MIN_PROP_PTR_LEN + LOG_LOCAL_LOG_PTR_LEN + (2 * i * FIFO_LENGTH) + (slotReadFifoIndex[sGroup]%NUM_SLOTS) + 1];
-                reply[10] = LOG_BASE_PTR + LOG_MIN_PROP_PTR_LEN + LOG_LOCAL_LOG_PTR_LEN + (2 * i * FIFO_LENGTH) + (slotReadFifoIndex[sGroup]%NUM_SLOTS);
-                reply[11] = LOG_BASE_PTR + LOG_MIN_PROP_PTR_LEN + LOG_LOCAL_LOG_PTR_LEN + (2 * i * FIFO_LENGTH) + (slotReadFifoIndex[sGroup]%NUM_SLOTS) + 1;
+                //reply[10] = LOG_BASE_PTR + LOG_MIN_PROP_PTR_LEN + LOG_LOCAL_LOG_PTR_LEN + (2 * i * FIFO_LENGTH) + (slotReadFifoIndex[sGroup]%NUM_SLOTS);
+                //reply[11] = LOG_BASE_PTR + LOG_MIN_PROP_PTR_LEN + LOG_LOCAL_LOG_PTR_LEN + (2 * i * FIFO_LENGTH) + (slotReadFifoIndex[sGroup]%NUM_SLOTS) + 1;
                 //reply[27] = propNum; 
                 //reply[28] = propValue; 
                 
@@ -769,7 +812,7 @@ void log_handler_fsm(
                         );
                     j++;
                     qpn_tmp++;
-                    reply[13] = LOG_BASE_ADDR + LOG_MIN_PROP_ADDR_LEN + 4 * (fuo[sGroup]%NUM_SLOTS);
+                    //reply[13] = LOG_BASE_ADDR + LOG_MIN_PROP_ADDR_LEN + 4 * (fuo[sGroup]%NUM_SLOTS);
                 }
             }
             else {
@@ -785,8 +828,8 @@ void log_handler_fsm(
     case ACCEPT_VALUE: {
         //reply[13] = 66 + counter; 
         for (int i = 0; i < SYNC_GROUPS; i++) {
-            reply[14] = LOG_BASE_PTR + LOG_MIN_PROP_PTR_LEN  + (slotAcceptFifoIndex[i]%NUM_SLOTS);
-            reply[15] = LOG_BASE_PTR + LOG_MIN_PROP_PTR_LEN  + (slotAcceptFifoIndex[i]%NUM_SLOTS) + 1; 
+            //reply[14] = LOG_BASE_PTR + LOG_MIN_PROP_PTR_LEN  + (slotAcceptFifoIndex[i]%NUM_SLOTS);
+            //reply[15] = LOG_BASE_PTR + LOG_MIN_PROP_PTR_LEN  + (slotAcceptFifoIndex[i]%NUM_SLOTS) + 1; 
             int propNum = network_ptr[LOG_BASE_PTR + i * LOG_PTR_LEN + LOG_MIN_PROP_PTR_LEN  + (slotAcceptFifoIndex[i]%NUM_SLOTS)];
             int propValue = network_ptr[LOG_BASE_PTR + i * LOG_PTR_LEN + LOG_MIN_PROP_PTR_LEN  + (slotAcceptFifoIndex[i]%NUM_SLOTS) + 1];
 
@@ -818,9 +861,12 @@ void smr(
     hls::stream<ap_uint<64>>& m_axis_tx_data,
     int myBoardNum, 
     int num_nodes, 
-    int *network_ptr, 
-    int* reply
+    int *network_ptr 
+    //int* reply
 ) {
+    #pragma HLS DATAFLOW
+    //#pragma HLS inline off
+    //#pragma HLS pipeline II=1
 
     static int localValues[SYNC_GROUPS];
 
@@ -851,8 +897,7 @@ void smr(
         acceptedValue_rsq,
         updateLocalValue_req,
         myBoardNum,
-        num_nodes,
-        reply
+        num_nodes
     );
 
     log_handler_fsm(
@@ -869,15 +914,16 @@ void smr(
         m_axis_tx_data,
         myBoardNum,
         num_nodes,
-        network_ptr,
-        reply        
+        network_ptr    
     );
 
     //Update from Conflicting Method Calls
     if (!updateLocalValue_req.empty()) {
         updateLocalValue_req.read(update);
         localValues[update.syncGroup] += update.value;
-        smr_finished.write(1);
+        if (myBoardNum == 0) {
+            smr_finished.write(1);
+        }
     }
 
     //Update from Non-Conflicting Method Calls
@@ -907,9 +953,12 @@ void broadcast(
     hls::stream<ap_uint<64>>& m_axis_tx_data,
     int myBoardNum, 
     int num_nodes,
-    int *network_ptr, 
-    int* reply
+    int *network_ptr 
+    //int* reply
 ) {
+    #pragma HLS DATAFLOW
+    //#pragma HLS inline off
+    //#pragma HLS pipeline II=1
 
     static int pValue; 
     static int perm; 
@@ -964,6 +1013,11 @@ void broadcast(
 }
 
 
+/*
+    TODO: Adding Dataflow Pragma to parallelize and pipeline design. 
+
+
+*/
 extern "C" void bank_account_krnl(
     hls::stream<pkt256>& m_axis_tx_meta, 
     hls::stream<pkt64>& m_axis_tx_data,
@@ -974,12 +1028,17 @@ extern "C" void bank_account_krnl(
     int num_ops, 
     int* m_axi_reply,
     int* network_ptr,
-    int num_nodes
+    int num_nodes,
+    int debug_exe
 ) {
-
+    
     #pragma HLS INTERFACE axis port = m_axis_tx_meta
     #pragma HLS INTERFACE axis port = m_axis_tx_data
     #pragma HLS INTERFACE axis port = s_axis_tx_status
+    
+    #pragma HLS INTEFACE m_axi port = ops bundle = gmem1
+    #pragma HLS INTEFACE m_axi port = amount bundle = gmem1
+
 
     static hls::stream<bool> smr_finished;
     static hls::stream<bool> ncc_finished; 
@@ -1014,15 +1073,21 @@ extern "C" void bank_account_krnl(
     static bool read_op = true; 
     static int inital_value = 100000; 
 
-    if (!s_axis_tx_status.empty()) {
-        s_axis_tx_status.read(status);
-        RTS = true; 
-    }
+    #pragma HLS DATAFLOW
 
+    // if (!s_axis_tx_status.empty()) {
+    //     s_axis_tx_status.read(status);
+    //     RTS = true; 
+    // }
 
-    //while (debug_counter < debug_exe && RTS && counter < num_ops) {
-    while(counter < num_ops && RTS) {
+    
+    while (debug_counter < debug_exe && counter < num_ops) {
+    //while(counter < num_ops && RTS) {
+
+        
+
         m_axi_reply[0] = debug_counter; 
+        m_axi_reply[1] = counter; 
         if (read_op) {
             switch(ops[counter]) {
 
@@ -1030,7 +1095,9 @@ extern "C" void bank_account_krnl(
                     if (!smr_permissble_req.full() && !ncc_permissible_req.full()) {
                         smr_permissble_req.write(0);
                         ncc_permissible_req.write(0);
-                        m_axi_reply[1] = 111 + debug_counter; 
+                        m_axi_reply[2] = 111;
+                        m_axi_reply[3] = ops[counter];
+                        m_axi_reply[4] = amount[counter]; 
                         read_op = false; 
                     }
                     break; 
@@ -1039,7 +1106,9 @@ extern "C" void bank_account_krnl(
                 case 1: {
                     if (!broadcast_req.full()) {
                         broadcast_req.write(amount[counter]);
-                        m_axi_reply[1] = 222 + debug_counter; 
+                        m_axi_reply[2] = 222;
+                        m_axi_reply[3] = ops[counter];
+                        m_axi_reply[4] = amount[counter]; 
                         read_op = false; 
                     }
                     break;
@@ -1049,7 +1118,8 @@ extern "C" void bank_account_krnl(
                     if (!smr_query_req.full() && !ncc_query_req.full()) {
                         smr_query_req.write(0);
                         ncc_query_req.write(0);
-                        m_axi_reply[1] = 333 + debug_counter; 
+                        m_axi_reply[2] = 333;
+                        m_axi_reply[3] = ops[counter];
                         read_op = false; 
                     }
                     break; 
@@ -1069,8 +1139,7 @@ extern "C" void bank_account_krnl(
             smr_tx_data,
             myBoardNum,
             num_nodes,
-            network_ptr,
-            m_axi_reply
+            network_ptr
         );
 
         broadcast(
@@ -1084,8 +1153,7 @@ extern "C" void bank_account_krnl(
             ncc_tx_data,
             myBoardNum,
             num_nodes,
-            network_ptr,
-            m_axi_reply
+            network_ptr
         );
 
         merger( smr_tx_meta, 
@@ -1096,7 +1164,7 @@ extern "C" void bank_account_krnl(
                 m_axis_tx_data);
 
         if (!smr_permissible_rsp.empty() && !ncc_permissible_rsp.empty()) {
-            m_axi_reply[2] = 444 + debug_counter; 
+            m_axi_reply[4] = 444; 
             smr_permissible_rsp.read(smr_value);
             ncc_permissible_rsp.read(ncc_value);
             if (inital_value + smr_value + ncc_value - amount[counter] >= 0) {
@@ -1108,7 +1176,7 @@ extern "C" void bank_account_krnl(
         }
 
         if (!smr_query_rsp.empty() && !ncc_query_rsp.empty()) {
-            m_axi_reply[3] = 555 + debug_counter; 
+            m_axi_reply[5] = 555; 
             int smr_query, ncc_query;
             smr_query_rsp.read(smr_query); 
             ncc_query_rsp.read(ncc_query);
@@ -1118,7 +1186,7 @@ extern "C" void bank_account_krnl(
         }
 
         if (!smr_finished.empty()) {
-            m_axi_reply[3] = 666 + debug_counter; 
+            m_axi_reply[5] = 666; 
             bool temp; 
             smr_finished.read(temp);
             read_op = true;
@@ -1126,7 +1194,7 @@ extern "C" void bank_account_krnl(
         }
 
         if (!ncc_finished.empty()) {
-            m_axi_reply[3] = 777 + debug_counter; 
+            m_axi_reply[5] = 777; 
             bool temp; 
             ncc_finished.read(temp);
             read_op = true;

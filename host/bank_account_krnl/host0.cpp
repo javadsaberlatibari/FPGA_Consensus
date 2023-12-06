@@ -165,7 +165,7 @@ int main(int argc, char **argv) {
     OCL_CHECK(err, err = q.enqueueTask(network_kernel));
     OCL_CHECK(err, err = q.finish());
 
-    sleep(5);
+    sleep(10);
     //wait_for_enter("\nPausing for network kernel setup...");
     /*===============================================================Init and Start User kernel===============================================================*/
 
@@ -232,6 +232,7 @@ int main(int argc, char **argv) {
     OCL_CHECK(err, err = user_kernel.setArg(7, buffer_reply));
     OCL_CHECK(err, err = user_kernel.setArg(8, buffer_network));
     OCL_CHECK(err, err = user_kernel.setArg(9, NUM_NODES)); 
+    OCL_CHECK(err, err = user_kernel.setArg(10, exe)); 
 
     printf("Host->Device user kernel... \n");
     OCL_CHECK(err, err = q.enqueueMigrateMemObjects({buffer_ops}, 0 /* 0 means from host*/));

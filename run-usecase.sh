@@ -4,9 +4,9 @@
 #Node_List="156 159 157 153 155 154";
 source /tools/Xilinx/Vitis/2023.1/settings64.sh
 source /opt/xilinx/xrt/setup.sh
-NUM_Nodes=4 #number of nodes.
+NUM_Nodes=3 #number of nodes.
 #Node_List="158 151 159 154 155 157";
-Node_List="158 151 159 154"
+Node_List="154 156 158"
 Arp_Delay_Base=400000000;
 EXE=1000000
 Number_of_Operations=100000;
