@@ -206,8 +206,9 @@ int main(int argc, char **argv) {
 
     uint32_t nOP   = std::stoi(argv[4]); //number of operations
     uint32_t wP   = std::stoi(argv[5]); //Write Percentage
+    uint32_t qOP   = nOP-((nOP*wP)/100); //query operations added for Bram
     int *operations;
-    size_t size_in_bytes = 10 * sizeof(int);
+    size_t size_in_bytes = 2000000 * sizeof(int);
     //uint32_t *operations = arr_ops;
     uint32_t ulQPN = 0x00000000;
     uint64_t ulAddr= 0x0000000000000000;
@@ -237,19 +238,20 @@ int main(int argc, char **argv) {
     OCL_CHECK(err, err = user_kernel.setArg(7, node_num));
     OCL_CHECK(err, err = user_kernel.setArg(8, board_num));
     OCL_CHECK(err, err = user_kernel.setArg(9, nOP));
-    OCL_CHECK(err, err = user_kernel.setArg(10, buffer_op));
-    OCL_CHECK(err, err = user_kernel.setArg(11, buffer_r2));
-    OCL_CHECK(err, err = user_kernel.setArg(12, buffer_r1));
+    OCL_CHECK(err, err = user_kernel.setArg(10, qOP));//added for Bram
+    OCL_CHECK(err, err = user_kernel.setArg(11, buffer_op));
+    OCL_CHECK(err, err = user_kernel.setArg(12, buffer_r2));
+    OCL_CHECK(err, err = user_kernel.setArg(13, buffer_r1));
 
     OCL_CHECK(err,
               operations = (int*)q.enqueueMapBuffer(buffer_op, CL_TRUE, CL_MAP_WRITE, 0, size_in_bytes, NULL, NULL, &err));
 
     for (int i = 0; i < nOP; i++) {
-        operations[i] = 2;
+        operations[i] = 0;
     }
     //operations[nOP-1]=0;
-    /*int j=0;
-    int write_indexs[1000]={0};
+    int j=0;
+    int write_indexs[500000]={0};
     int k=0;
     bool find=false;
     int rand_value=0;
@@ -269,10 +271,10 @@ int main(int argc, char **argv) {
             write_indexs[k]=rand_value;
             k++;
             j++;
-            printf("testttttt %d------\n", rand_value);
-            operations[rand_value] = 1;
+            //printf("testttttt %d------\n", rand_value);
+            operations[rand_value] = 2;
         }
-    }*/
+    }
     //51
     OCL_CHECK(err, err = q.enqueueMigrateMemObjects({buffer_op}, 0 /* 0 means from host*/));
 

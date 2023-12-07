@@ -34,7 +34,7 @@ EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <stdlib.h>
 #include <unistd.h> 
 #include <cstdlib> 
-#include <iostream> 
+#include <iostream>
 
 #define DATA_SIZE 62500000
 
@@ -55,7 +55,7 @@ int main(int argc, char **argv) {
     }
 
     std::string binaryFile = argv[1];
-    uint32_t N_node = std::stoi(argv[2]);
+    uint32_t N_node =std::stoi(argv[2]);
     cl_int err;
     cl::CommandQueue q;
     cl::Context context;
@@ -114,29 +114,27 @@ int main(int argc, char **argv) {
     //wait_for_enter("\nPress ENTER to continue after setting up ILA trigger...");
 
 
+
     uint32_t rPSN = 0x00000000;
     uint32_t lPSN = 0x00000000;
     uint32_t rQPN = 0x00000001;
     uint32_t lQPN = 0x00000001;
     uint32_t rIP  = 0x0b01d4e0;
-    uint32_t lIP  = 0x0b01d4e0;
+    uint32_t lIP  = 0x0b01d4e5;
     uint32_t rUDP = 0x000012b7;
     uint64_t vAddr= 0x0000000000000001;
     uint32_t rKey = 0x00000000;
-    //uint32_t OP   = 0x00000002; //numberofnodes
-    uint32_t OP   = N_node-1; //numberofnodes
+    uint32_t OP   = N_node-1;
     uint64_t rAddr= 0x0000000000000000;
     uint64_t lAddr= 0x0000000000000000;
     uint32_t len  = 0x00000008;
     // [15:4] time interval in cycle       0x100   256cycle
     // [3:2]  board number                 0
     // [1:0]  mode 0-nothing 1-test 2-op   0
-    uint32_t debug= 0x00001000;
-    //uint32_t arpDelay= 500000000;
+    uint32_t debug= 0x00001014;
     uint32_t arpDelay= std::stoi(argv[3]);
     printf("Arp-Delay: %d\n", arpDelay);
     printf("Totall Number of Node: %d\n", N_node);
-    //void* status; 
 
     //std::vector<unsigned int, aligned_allocator<unsigned int> > status(16);
 
@@ -199,7 +197,7 @@ int main(int argc, char **argv) {
     //OCL_CHECK(err, err = user_kernel.setArg(4, StatusBuffer));
     
     //wait_for_enter("\nPausing for network kernel setup...");
-    sleep(10);
+    sleep(20);
     //Launch the Kernel
     // auto start = std::chrono::high_resolution_clock::now();
     //printf("Host->Device user kernel...\n");
@@ -209,6 +207,7 @@ int main(int argc, char **argv) {
     uint32_t nOP   = std::stoi(argv[4]); //number of operations
     uint32_t wP   = std::stoi(argv[5]); //Write Percentage
     uint32_t qOP   = nOP-((nOP*wP)/100); //query operations added for Bram
+
     int *operations;
     size_t size_in_bytes = 2000000 * sizeof(int);
     //uint32_t *operations = arr_ops;
@@ -218,7 +217,7 @@ int main(int argc, char **argv) {
 
     uint32_t ulen  = 0x00000008;
     uint32_t node_num  = N_node;
-    uint32_t board_num  = 0x00000000;
+    uint32_t board_num  = 0x00000005;
 
     OCL_CHECK(err, cl::Buffer buffer_op(context, CL_MEM_READ_ONLY, size_in_bytes, NULL, &err));
     
@@ -274,12 +273,10 @@ int main(int argc, char **argv) {
             k++;
             j++;
             //printf("testttttt %d------\n", rand_value);
-            operations[rand_value] = 1;
+            operations[rand_value] = 4;
         }
     }
-    //operations[9]=3;
-    //operations[2]=0;
-    //43
+
     OCL_CHECK(err, err = q.enqueueMigrateMemObjects({buffer_op}, 0 /* 0 means from host*/));
 
     printf("enqueue user kernel...\n");
@@ -290,8 +287,9 @@ int main(int argc, char **argv) {
     end = std::chrono::high_resolution_clock::now();
     durationUs = (std::chrono::duration_cast<std::chrono::nanoseconds>(end-start).count() / 1000.0);
     printf("durationUs:%f\n",durationUs);
-    printf("replication_latency:%f\n",durationUs/nOP);
-
+    printf("numberofop:%d\n",nOP);
+    printf("response_time:%f\n",durationUs/nOP);
+    
     sleep(15);
     printf("Device->Host user kernel...\n");
     OCL_CHECK(err, err = q.enqueueMigrateMemObjects({buffer_r1}, CL_MIGRATE_MEM_OBJECT_HOST));

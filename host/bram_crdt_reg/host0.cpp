@@ -199,7 +199,7 @@ int main(int argc, char **argv) {
     //OCL_CHECK(err, err = user_kernel.setArg(4, StatusBuffer));
     
     //wait_for_enter("\nPausing for network kernel setup...");
-    sleep(10);
+    sleep(5);
     //Launch the Kernel
     // auto start = std::chrono::high_resolution_clock::now();
     //printf("Host->Device user kernel...\n");
@@ -290,7 +290,8 @@ int main(int argc, char **argv) {
     end = std::chrono::high_resolution_clock::now();
     durationUs = (std::chrono::duration_cast<std::chrono::nanoseconds>(end-start).count() / 1000.0);
     printf("durationUs:%f\n",durationUs);
-    printf("replication_latency:%f\n",durationUs/nOP);
+    printf("numberofop:%d\n",nOP);
+    printf("response_time:%f\n",durationUs/nOP);
 
     sleep(15);
     printf("Device->Host user kernel...\n");
@@ -298,10 +299,10 @@ int main(int argc, char **argv) {
     OCL_CHECK(err, err = q.enqueueMigrateMemObjects({buffer_r2}, CL_MIGRATE_MEM_OBJECT_HOST));
     OCL_CHECK(err, err = q.finish());
 
-    printf("STATUS: %d\n", reply[0]);
+    printf("STATUS: %x\n", reply[0]);
     
     for (int i = 0; i < N_node; i++) {
-        printf("network at %d: %d\n", i, network_ptr0[i]);
+        printf("network at %d: %x\n", i, network_ptr0[i]);
     }
 
     // auto end = std::chrono::high_resolution_clock::now();

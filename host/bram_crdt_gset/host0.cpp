@@ -199,7 +199,7 @@ int main(int argc, char **argv) {
     //OCL_CHECK(err, err = user_kernel.setArg(4, StatusBuffer));
     
     //wait_for_enter("\nPausing for network kernel setup...");
-    sleep(10);
+    sleep(5);
     //Launch the Kernel
     // auto start = std::chrono::high_resolution_clock::now();
     //printf("Host->Device user kernel...\n");
@@ -209,6 +209,7 @@ int main(int argc, char **argv) {
     uint32_t nOP   = std::stoi(argv[4]); //number of operations
     uint32_t wP   = std::stoi(argv[5]); //Write Percentage
     uint32_t qOP   = nOP-((nOP*wP)/100); //query operations added for Bram
+    uint32_t wOP  = (nOP*wP)/100;
     int *operations;
     size_t size_in_bytes = 2000000 * sizeof(int);
     //uint32_t *operations = arr_ops;
@@ -241,9 +242,10 @@ int main(int argc, char **argv) {
     OCL_CHECK(err, err = user_kernel.setArg(8, board_num));
     OCL_CHECK(err, err = user_kernel.setArg(9, nOP));
     OCL_CHECK(err, err = user_kernel.setArg(10, qOP)); //added for Bram
-    OCL_CHECK(err, err = user_kernel.setArg(11, buffer_op));
-    OCL_CHECK(err, err = user_kernel.setArg(12, buffer_r2));
-    OCL_CHECK(err, err = user_kernel.setArg(13, buffer_r1));
+    OCL_CHECK(err, err = user_kernel.setArg(11, wOP)); //added for Bram
+    OCL_CHECK(err, err = user_kernel.setArg(12, buffer_op));
+    OCL_CHECK(err, err = user_kernel.setArg(13, buffer_r2));
+    OCL_CHECK(err, err = user_kernel.setArg(14, buffer_r1));
 
     OCL_CHECK(err,
               operations = (int*)q.enqueueMapBuffer(buffer_op, CL_TRUE, CL_MAP_WRITE, 0, size_in_bytes, NULL, NULL, &err));
@@ -290,7 +292,8 @@ int main(int argc, char **argv) {
     end = std::chrono::high_resolution_clock::now();
     durationUs = (std::chrono::duration_cast<std::chrono::nanoseconds>(end-start).count() / 1000.0);
     printf("durationUs:%f\n",durationUs);
-    printf("replication_latency:%f\n",durationUs/nOP);
+    printf("numberofop:%d\n",nOP);
+    printf("response_time:%f\n",durationUs/nOP);
 
     sleep(15);
     printf("Device->Host user kernel...\n");
@@ -300,10 +303,15 @@ int main(int argc, char **argv) {
 
     printf("STATUS: %d\n", reply[0]);
     
-    for (int i = 0; i < N_node; i++) {
+    for (int i = 0; i < 100; i++) {
         printf("network at %d: %d\n", i, network_ptr0[i]);
     }
-
+    for (int i = 8999; i < 100; i++) {
+        printf("network at %d: %d\n", i, network_ptr0[i]);
+    }
+    for (int i = 17999; i < 100; i++) {
+        printf("network at %d: %d\n", i, network_ptr0[i]);
+    }
     // auto end = std::chrono::high_resolution_clock::now();
     // durationUs = (std::chrono::duration_cast<std::chrono::nanoseconds>(end-start).count() / 1000.0);
     // printf("durationUs:%f\n",durationUs);

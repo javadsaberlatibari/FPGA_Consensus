@@ -199,7 +199,7 @@ int main(int argc, char **argv) {
     //OCL_CHECK(err, err = user_kernel.setArg(4, StatusBuffer));
     
     //wait_for_enter("\nPausing for network kernel setup...");
-    sleep(10);
+    sleep(5);
     //Launch the Kernel
     // auto start = std::chrono::high_resolution_clock::now();
     //printf("Host->Device user kernel...\n");
@@ -211,6 +211,7 @@ int main(int argc, char **argv) {
     uint32_t qOP   = nOP-((nOP*wP)/100); //query operations added for Bram
     int *operations;
     size_t size_in_bytes = 2000000 * sizeof(int);
+    uint32_t check_value = 9;
     //uint32_t *operations = arr_ops;
     uint32_t ulQPN = 0x00000001;
     uint64_t ulAddr= 0x0000000000000000;
@@ -241,9 +242,10 @@ int main(int argc, char **argv) {
     OCL_CHECK(err, err = user_kernel.setArg(8, board_num));
     OCL_CHECK(err, err = user_kernel.setArg(9, nOP));
     OCL_CHECK(err, err = user_kernel.setArg(10, qOP)); //added for Bram
-    OCL_CHECK(err, err = user_kernel.setArg(11, buffer_op));
-    OCL_CHECK(err, err = user_kernel.setArg(12, buffer_r2));
-    OCL_CHECK(err, err = user_kernel.setArg(13, buffer_r1));
+    OCL_CHECK(err, err = user_kernel.setArg(11, check_value)); //added for Th_Bram
+    OCL_CHECK(err, err = user_kernel.setArg(12, buffer_op));
+    OCL_CHECK(err, err = user_kernel.setArg(13, buffer_r2));
+    OCL_CHECK(err, err = user_kernel.setArg(14, buffer_r1));
 
     OCL_CHECK(err,
               operations = (int*)q.enqueueMapBuffer(buffer_op, CL_TRUE, CL_MAP_WRITE, 0, size_in_bytes, NULL, NULL, &err));
@@ -259,9 +261,9 @@ int main(int argc, char **argv) {
     int rand_value=0;
     printf("testttttt %d------\n", ((nOP*wP)/100));
 
-    while(j<((nOP*wP)/100)){
+    while(j<(((nOP*wP)/100))-2){
         find=false;
-        rand_value= rand()%nOP;
+        rand_value= 1+ (rand()%(nOP-2));
         for(int i=0; i<k; i++){
             if(write_indexs[i]==rand_value){
                 find=true;
@@ -277,6 +279,8 @@ int main(int argc, char **argv) {
             operations[rand_value] = 1;
         }
     }
+    operations[0] = 1;
+    operations[nOP-1] = 9;
     //operations[9]=3;
     //operations[2]=0;
     //43
@@ -290,7 +294,8 @@ int main(int argc, char **argv) {
     end = std::chrono::high_resolution_clock::now();
     durationUs = (std::chrono::duration_cast<std::chrono::nanoseconds>(end-start).count() / 1000.0);
     printf("durationUs:%f\n",durationUs);
-    printf("replication_latency:%f\n",durationUs/nOP);
+    printf("numberofop:%d\n",nOP);
+    printf("response_time:%f\n",durationUs/nOP);
 
     sleep(15);
     printf("Device->Host user kernel...\n");
@@ -298,10 +303,13 @@ int main(int argc, char **argv) {
     OCL_CHECK(err, err = q.enqueueMigrateMemObjects({buffer_r2}, CL_MIGRATE_MEM_OBJECT_HOST));
     OCL_CHECK(err, err = q.finish());
 
-    printf("STATUS: %d\n", reply[0]);
+    float temp_throughput;
+    temp_throughput = (nOP*node_num)/((durationUs));
+    //printf("STATUS: %d\n", reply[0]);
+    printf("Throughput in Microseconds: %f\n", temp_throughput);
     
     for (int i = 0; i < N_node; i++) {
-        printf("network at %d: %d\n", i, network_ptr0[i]);
+        printf("network at %d: %x\n", i, network_ptr0[i]);
     }
 
     // auto end = std::chrono::high_resolution_clock::now();

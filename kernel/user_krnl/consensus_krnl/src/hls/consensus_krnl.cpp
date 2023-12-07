@@ -6,7 +6,7 @@
 #include <ap_fixed.h>
 #include "../../../../common/include/communication.hpp"
 
-#define Counter 1 //Counter GSet TwoPSet PNSet USet LwwReg MValueReg
+#define OrSet 1 //Counter GSet TwoPSet PNSet USet LwwReg MValueReg
 
 void rdma_write(
     int s_axi_lqpn,
@@ -48,7 +48,9 @@ void rdma_write(
 }
 
 
-void crdt_counter(
+
+
+void crdt_orset(
     int op_num,
     int *ops,
     int s_axi_lqpn,
@@ -60,110 +62,9 @@ void crdt_counter(
     hls::stream<pkt512>& s_axis_tx_status,
     hls::stream<pkt256>& m_axis_tx_meta, 
     hls::stream<pkt512>& m_axis_tx_data,
-    int *counter,
-    int *network_ptr
-    //int wait_cyc
-) {
-    //#pragma inline 
-    //#pragma HLS dataflow
-    enum fsmStateType {IDLE_STATE, OPERATION_FETCH, QUERY, UPDATE_COUNTER, DONE};
-    static fsmStateType state = IDLE_STATE;
-    static int op_cnt = 0; 
-
-    pkt512 tmp_status;
-    static ap_uint<64> local_counter = 0;
-
-
-    while(op_cnt<op_num){
-
-        switch(state) {
-
-            case IDLE_STATE: 
-                //m_axis_tx_meta.write(tx_meta);
-                if (!s_axis_tx_status.empty()) {
-                    s_axis_tx_status.read(tmp_status);
-                    state = OPERATION_FETCH; 
-            }
-          
-            break; 
-
-            case OPERATION_FETCH:
-                if(op_cnt<op_num){
-
-                    if(ops[op_cnt]==0)
-                        state= QUERY;
-                    else{
-                        local_counter= local_counter+ ops[op_cnt];
-                        state= UPDATE_COUNTER;
-                    }
-                    
-                }
-                else
-                    state= DONE;
-
-            break;
-
-            case QUERY:
-                int remote_counter;
-                for (int i=0; i<node_num; i++){
-                    if(i!=board_num)
-                        remote_counter = network_ptr[i] + remote_counter;
-                }
-                *counter = remote_counter + local_counter;
-                state= OPERATION_FETCH;
-
-                op_cnt++;
-
-            break;
-
-            case UPDATE_COUNTER:
-                int j=0; 
-                int qpn_tmp=board_num*(node_num-1);
-                while (j<node_num){
-                    if(j!=board_num){
-                        if(!m_axis_tx_meta.full() && !m_axis_tx_data.full()){
-                            rdma_write(
-                                qpn_tmp,
-                                s_axi_laddr,
-                                s_axi_raddr+(board_num*4),
-                                s_axi_len,
-                                local_counter,
-                                m_axis_tx_meta, 
-                                m_axis_tx_data
-                                );
-                            j++;
-                            qpn_tmp++;
-
-
-                        }
-                    }
-                    else {
-                        j++;
-                    }
-                }
-                state = OPERATION_FETCH; 
-                op_cnt++;
-                
-          
-            break; 
-        }
-    }
-
-}
-
-void crdt_gset(
-    int op_num,
-    int *ops,
-    int s_axi_lqpn,
-    ap_uint<64> s_axi_laddr,
-    ap_uint<64> s_axi_raddr,
-    int s_axi_len,
-    hls::stream<pkt512>& s_axis_tx_status,
-    hls::stream<pkt256>& m_axis_tx_meta, 
-    hls::stream<pkt512>& m_axis_tx_data,
-    int *set,
-    int *set_size,
-    int *network_ptr
+    hls::stream<ap_uint<256> >& axis_mem_request,
+    hls::stream<ap_uint<64> >& update_set_request,
+    hls::stream<ap_uint<32> >& element_tags
     //int wait_cyc
 ) {
     //#pragma inline 
@@ -173,7 +74,7 @@ void crdt_gset(
     static int op_cnt = 0; 
 
     pkt512 tmp_status;
-    static ap_uint<64> gset[20];
+    static ap_uint<64> gset[5000];
     static ap_uint<64> set_index=0;
 
     static ap_uint<64> log_index=0;
@@ -181,6 +82,12 @@ void crdt_gset(
     static bool update_set= false;
     static ap_uint<64> write_counter=0;
 
+    static ap_uint<32> current_set_el=0;
+    static ap_uint<16> unique_tag=0;
+    static ap_uint<32> tmp_tags;
+    static ap_uint<32> send_tags;
+    static ap_uint<64> write_ops_cnt=0;
+
     while(op_cnt<op_num){
 
         switch(state) {
@@ -199,8 +106,11 @@ void crdt_gset(
 
                     if(ops[op_cnt]==0)
                         state= QUERY;
-                    else
+                    else{
                         state= UPDATE_SET;
+                        write_ops_cnt++;
+                        //current_set_el=ops[op_cnt];
+                    }
                     
                 }
                 else
@@ -210,731 +120,314 @@ void crdt_gset(
 
             case QUERY:
 
-                while(network_ptr[log_index]!=0){ //Checking log
-                    find_flag= false;
-                    for(ap_uint<64> i=0; i<set_index; i++){ //Union in Set
-                        if(network_ptr[log_index]== gset [i]){
-                            find_flag=true;
-                            break;
-                        }
-                    }
-                    if(!find_flag)
-                    {
-                        gset[set_index]=network_ptr[log_index];
-                        set_index++;
-                    }
+                if(!axis_mem_request.full()){
+                    axis_mem_request.write(ops[op_cnt]);
+                    state= OPERATION_FETCH;
 
-                    log_index++;
+                    op_cnt++;
                 }
-                if(set_index>0){
-                    *set = gset[set_index-1];
-                    *set_size = set_index;
-                }
-
-                state= OPERATION_FETCH;
-
-                op_cnt++;
 
             break;
 
             case UPDATE_SET: 
-                if(!update_set){
+                if(!update_set_request.full()){
+                    if(ops[op_cnt]<0){ //remove find all tags to send!
+                        current_set_el.range(31, 16)= 0;
+                        current_set_el.range(15, 0)= (ops[op_cnt]*(-1));
+                        update_set_request.write(current_set_el);
+                        int j=0; 
+                        int qpn_tmp=board_num*(node_num-1);
+                        write_counter++;
+                        while (j<node_num){
+                            if(j!=board_num){
+                                if(!m_axis_tx_meta.full() && !m_axis_tx_data.full()){
+                                    rdma_write(
+                                        qpn_tmp,
+                                        s_axi_laddr,
+                                        s_axi_raddr+(((board_num*3000)+write_counter)*4),
+                                        s_axi_len,
+                                        current_set_el,
+                                        m_axis_tx_meta, 
+                                        m_axis_tx_data
+                                        );
+                                    j++;
+                                    qpn_tmp++;
 
-                    find_flag= false;
-                    for(ap_uint<64> i=0; i<set_index; i++){ //Union in Set
-                        if(ops[op_cnt]== gset [i]){
-                            find_flag=true;
-                            break;
+
+                                }
+                            }
+                            else {
+                                j++;
+                            }
+                        }
+                        
+                        while(element_tags.empty());
+                        element_tags.read(tmp_tags);
+                        int num_tags=tmp_tags;
+                        if (num_tags>0){
+                            current_set_el.range(31, 16)= num_tags;
+                            current_set_el.range(15, 0)= 0xffff;
+                            int j=0; 
+                            int qpn_tmp=board_num*(node_num-1);
+                            write_counter++;
+                            while (j<node_num){
+                                if(j!=board_num){
+                                    if(!m_axis_tx_meta.full() && !m_axis_tx_data.full()){
+                                        rdma_write(
+                                            qpn_tmp,
+                                            s_axi_laddr,
+                                            s_axi_raddr+(((board_num*3000)+write_counter)*4),
+                                            s_axi_len,
+                                            current_set_el,
+                                            m_axis_tx_meta, 
+                                            m_axis_tx_data
+                                            );
+                                            j++;
+                                        qpn_tmp++;
+
+
+                                    }
+                                }
+                                else {
+                                    j++;
+                                }
+                            }
+                        }
+                        int k=0;
+                        while(k<num_tags){
+                            if(!element_tags.empty()){
+                                element_tags.read(tmp_tags);
+                                tmp_tags(31,31)=1;// to detemine this one is tag
+                                k+=2;
+                                int j=0; 
+                                int qpn_tmp=board_num*(node_num-1);
+                                write_counter++;
+                                while (j<node_num){
+                                    if(j!=board_num){
+                                        if(!m_axis_tx_meta.full() && !m_axis_tx_data.full()){
+                                            rdma_write(
+                                                qpn_tmp,
+                                                s_axi_laddr,
+                                                s_axi_raddr+(((board_num*3000)+write_counter)*4),
+                                                s_axi_len,
+                                                tmp_tags,
+                                                m_axis_tx_meta, 
+                                                m_axis_tx_data
+                                                );
+                                            j++;
+                                            qpn_tmp++;
+
+
+                                        }
+                                    }
+                                    else {
+                                        j++;
+                                    }
+                                }
+                            }
                         }
                     }
-                    if(!find_flag)
-                    {
-                        gset[set_index]=ops[op_cnt];
-                        set_index++;
+                    else{//add
+                        //generate unique tag
+                        unique_tag.range(15,13)=board_num;
+                        unique_tag.range(12,0)=write_ops_cnt;
+                        current_set_el.range(31, 16)= unique_tag;
+                        current_set_el.range(15, 0)= ops[op_cnt];
+                        update_set_request.write(current_set_el);
+                        int j=0; 
+                        int qpn_tmp=board_num*(node_num-1);
+                        write_counter++;
+                        while (j<node_num){
+                            if(j!=board_num){
+                                if(!m_axis_tx_meta.full() && !m_axis_tx_data.full()){
+                                    rdma_write(
+                                        qpn_tmp,
+                                        s_axi_laddr,
+                                        s_axi_raddr+(((board_num*3000)+write_counter)*4),
+                                        s_axi_len,
+                                        current_set_el,
+                                        m_axis_tx_meta, 
+                                        m_axis_tx_data
+                                        );
+                                    j++;
+                                    qpn_tmp++;
+
+
+                                }
+                            }
+                            else {
+                                j++;
+                            }
+                        }
+
                     }
-
-
-
-                    update_set = true;
-                }
-                
-                if(!m_axis_tx_meta.full() && !m_axis_tx_data.full()){
-
-                    rdma_write(
-                        s_axi_lqpn,
-                        s_axi_laddr,
-                        s_axi_raddr+(write_counter*4),
-                        s_axi_len,
-                        ops[op_cnt],
-                        m_axis_tx_meta, 
-                        m_axis_tx_data
-                        );
-
                     state = OPERATION_FETCH; 
-                    update_set = false;
                     op_cnt++;
-                    write_counter++;
                 }
-                
-          
-            break; 
+                break; 
         }
     }
 
 }
+void update_orset(int *network_ptr, int node_num, int board_num, int query_num, int write_num, hls::stream<ap_uint<64> >& update_set_request, hls::stream<ap_uint<64> >& set_size_request, hls::stream<ap_uint<32> >& element_tags){
 
-void crdt_pnset(
-    int op_num,
-    int *ops,
-    int s_axi_lqpn,
-    ap_uint<64> s_axi_laddr,
-    ap_uint<64> s_axi_raddr,
-    int s_axi_len,
-    hls::stream<pkt512>& s_axis_tx_status,
-    hls::stream<pkt256>& m_axis_tx_meta, 
-    hls::stream<pkt512>& m_axis_tx_data,
-    int *set,
-    int *set_size,
-    int *network_ptr
-    //int wait_cyc
-) {
-    //#pragma inline 
-    //#pragma HLS dataflow
-    enum fsmStateType {IDLE_STATE, OPERATION_FETCH, QUERY, UPDATE_SET, DONE};
-    static fsmStateType state = IDLE_STATE;
-    static int op_cnt = 0; 
+    static ap_uint<64> tmp_set_size_a=0;
+    static ap_uint<64> tmp_set_size_r=0;
+    static ap_uint<32> tmp_hbm;
+    static int write_cnt=0;
+    static int log_index[8]={0};
+    static ap_uint<32> orseta [10000]={0};
+    static bool orseta_valid [10000]={true};
+    static ap_uint<32> orsetr [10000]={0};
+    static ap_uint<64> current_set_el=0;
+    bool first_find=false;
+    int first_index=0;
+    static int update_period=1000;
+    static ap_uint<512> internal_clock=0;
+    static ap_uint<64> tmp_tags;
+    static ap_uint<32> remove_element;
+    static int real_remove=0;
 
-    pkt512 tmp_status;
-    static ap_uint<64> pnsetcounter[20];
-    static ap_uint<64> set_index=0;
+    while (write_cnt<write_num){
+        internal_clock++;
+        if(!update_set_request.empty()){
+            update_set_request.read(current_set_el);
+            if(current_set_el.range(31,16)!=0){ // it is add operation. 
+                orseta[tmp_set_size_a]=current_set_el;
+                tmp_set_size_a++;
+            } 
+            else{
+                //find=false;
+                first_find=false;
+                for(int i=0; i<tmp_set_size_a; i++){
+                    if(current_set_el.range(15,0)== orseta[i].range(15,0)){
+                        //find= true;
+                        //break;
+                        if(!first_find){
+                            first_find=true;
+                            first_index= tmp_set_size_r;
+                        }
+                        orsetr[tmp_set_size_r]= current_set_el.range(31,0);
+                        tmp_set_size_r++;
+                    }
+                }
+                if(first_find){
+                    element_tags.write((tmp_set_size_r- first_index));
+                    int k = (tmp_set_size_r- first_index);
+                    while(k>0){
+                        if(k>2){
 
-    static ap_uint<64> log_index=0;
-    static bool find_flag= false;
-    static bool update_set= false;
-    static ap_uint<64> write_counter=0;
+                            if(!element_tags.full()){
+                                for (int m=0; m<2; m++)
+                                    tmp_tags.range((15+(16*m)),((16*m)))=orsetr[first_index+m].range(31,16);
+                            
+                                element_tags.write(tmp_tags);
+                                k-=2;
+                            }
 
-    while(op_cnt<op_num){
+                        }
+                        else{
+                            if(!element_tags.full()){
+                                for (int m=0; m<k; m++)
+                                    tmp_tags.range((15+(16*(1-m))),((16*(1-m))))=orsetr[first_index+m].range(31,16);
+                            
+                                element_tags.write(tmp_tags);
+                                k=0;
+                            }
+                        }
+                    }
+                }
 
-        switch(state) {
-
-            case IDLE_STATE: 
-                //m_axis_tx_meta.write(tx_meta);
-                if (!s_axis_tx_status.empty()) {
-                    s_axis_tx_status.read(tmp_status);
-                    state = OPERATION_FETCH; 
             }
-          
-            break; 
 
-            case OPERATION_FETCH:
-                if(op_cnt<op_num){
-
-                    if(ops[op_cnt]==0)
-                        state= QUERY;
-                    else
-                        state= UPDATE_SET;
-                    
-                }
-                else
-                    state= DONE;
-
-            break;
-
-            case QUERY:
-
-                while(network_ptr[log_index]!=0){ //Checking log
-                    if (network_ptr[log_index]>0){
-                        pnsetcounter[network_ptr[log_index]]++;
-                    }
-                    else{
-                        pnsetcounter[abs(network_ptr[log_index])]--;
-                    }
-                    log_index++;
-                }
-                if(set_index>0){
-                    *set = pnsetcounter[0];
-                    *set_size = set_index;
-                }
-
-                state= OPERATION_FETCH;
-
-                op_cnt++;
-
-            break;
-
-            case UPDATE_SET: 
-                if(!update_set){
-
-                    if (ops[op_cnt]>0){
-                        pnsetcounter[ops[op_cnt]]++;
-                    }
-                    else{
-                        pnsetcounter[abs(ops[op_cnt])]--;
-                    }
-
-                    update_set = true;
-                }
-                
-                if(!m_axis_tx_meta.full() && !m_axis_tx_data.full()){
-
-                    rdma_write(
-                        s_axi_lqpn,
-                        s_axi_laddr,
-                        s_axi_raddr+(write_counter*4),
-                        s_axi_len,
-                        ops[op_cnt],
-                        m_axis_tx_meta, 
-                        m_axis_tx_data
-                        );
-
-                    state = OPERATION_FETCH; 
-                    update_set = false;
-                    op_cnt++;
-                    write_counter++;
-                }
-                
-          
-            break; 
+            write_cnt++;
         }
+        if(internal_clock==update_period){
+            internal_clock=0;
+            int ntag=0;
+            static bool wait_tag[8]={false};
+                    for (int i=0; i<node_num; i++){
+                        if(i!=board_num){
+                            tmp_hbm=network_ptr[(i*3000)+log_index[i]];
+                            if(tmp_hbm!=0){
+                                if(wait_tag[i]){
+                                    for(int k=0; k<2; k++){
+                                        if(tmp_hbm(((16*k)+15),(16*k))!=0){
+                                            remove_element.range(31,16)=tmp_hbm(((16*k)+15),(16*k));
+                                            for(int l=0; l<tmp_set_size_a; l++){
+                                                if(orseta[l]==remove_element){
+                                                    real_remove++;
+                                                    orseta_valid[l]=false;
+                                                }
+                                            }
+                                            ntag-=2;
+                                            if(ntag<0)
+                                                wait_tag[i]=false;
+                                        }
+                                    }
+
+                                }
+                                else{
+                                    if(tmp_hbm.range(15,0)==0xffff){//tag
+                                        ntag=tmp_hbm.range(31,16);
+                                        wait_tag[i]=true;
+                                    }
+                                    else if (tmp_hbm.range(31,16)==0)//remove
+                                    {
+                                        remove_element.range(15,0)=tmp_hbm.range(15,0);
+                                    }
+                                    else{//add
+                                        orseta[tmp_set_size_a]=tmp_hbm;
+                                        tmp_set_size_a++;
+                                    }
+                                    
+                                }
+                                log_index[i]++;
+                            }
+                        }
+                            //remote_counter = network_ptr[i] + remote_counter;
+                    }
+        }
+
+        if(!set_size_request.full()){
+            set_size_request.write(tmp_set_size_a-real_remove);
+        }
+
     }
 
 }
+void handle_query(int *setsize, int query_num, hls::stream<ap_uint<256> >& axis_mem_request, hls::stream<ap_uint<64> >& set_size_request){
 
-void crdt_twopset(
-    int op_num,
-    int *ops,
-    int s_axi_lqpn,
-    ap_uint<64> s_axi_laddr,
-    ap_uint<64> s_axi_raddr,
-    int s_axi_len,
-    hls::stream<pkt512>& s_axis_tx_status,
-    hls::stream<pkt256>& m_axis_tx_meta, 
-    hls::stream<pkt512>& m_axis_tx_data,
-    int *add_set,
-    int *remove_set,
-    int *set_size,
-    int *network_ptr
-    //int wait_cyc
-) {
-    //#pragma inline 
+    static int query_cnt=0;
+
+    static ap_uint<64> tmp_set_size=0;
+    static ap_uint<256> tmp_read=0;
+    
     //#pragma HLS dataflow
-    enum fsmStateType {IDLE_STATE, OPERATION_FETCH, QUERY, UPDATE_SET, DONE};
-    static fsmStateType state = IDLE_STATE;
-    static int op_cnt = 0; 
+    while (query_cnt<query_num){
+        if(!axis_mem_request.empty()){
+            axis_mem_request.read(tmp_read);
+            query_cnt++;
+            *setsize=tmp_set_size;
+        }
 
-    pkt512 tmp_status;
-    static ap_uint<64> add_gset[20];
-    static ap_uint<64> remove_gset[20];
-    static ap_uint<64> add_set_index=0;
-    static ap_uint<64> remove_set_index=0;
-
-    static ap_uint<64> log_index=0;
-    static bool find_flag= false;
-    static bool update_set= false;
-    static ap_uint<64> write_counter=0;
-
-    while(op_cnt<op_num){
-
-        switch(state) {
-
-            case IDLE_STATE: 
-                //m_axis_tx_meta.write(tx_meta);
-                if (!s_axis_tx_status.empty()) {
-                    s_axis_tx_status.read(tmp_status);
-                    state = OPERATION_FETCH; 
-            }
-          
-            break; 
-
-            case OPERATION_FETCH:
-                if(op_cnt<op_num){
-
-                    if(ops[op_cnt]==0)
-                        state= QUERY;
-                    else
-                        state= UPDATE_SET;
-                    
-                }
-                else
-                    state= DONE;
-
-            break;
-
-            case QUERY:
-
-                while(network_ptr[log_index]!=0){ //Checking log
-                    find_flag= false;
-                    if (network_ptr[log_index]>0){
-                        for(ap_uint<64> i=0; i<add_set_index; i++){ //Union in Set
-                            if(network_ptr[log_index]== add_gset [i]){
-                                find_flag=true;
-                                break;
-                            }
-                        }
-                        if(!find_flag)
-                        {
-                            add_gset[add_set_index]=network_ptr[log_index];
-                            add_set_index++;
-                        }
-                    }
-                    else {
-                        for(ap_uint<64> i=0; i<remove_set_index; i++){ //Union in Set
-                            if(network_ptr[log_index]== remove_gset[i]){
-                                find_flag=true;
-                                break;
-                            }
-                        }
-                        if(!find_flag)
-                        {
-                            remove_gset[remove_set_index]=network_ptr[log_index];
-                            remove_set_index;
-                        }
-                    }
-                    log_index++;
-                }
-                if(add_set_index>0){
-                    *add_set = add_gset[add_set_index-1];
-                    *add_set = remove_gset[remove_set_index-1];
-                    *set_size = add_set_index+ remove_set_index;
-                }
-
-                state= OPERATION_FETCH;
-
-                op_cnt++;
-
-            break;
-
-            case UPDATE_SET: 
-                if(!update_set){
-
-                    find_flag= false;
-                    if (ops[op_cnt]>0){
-                        for(ap_uint<64> i=0; i<add_set_index; i++){ //Union in Set
-                            if(ops[op_cnt]== add_gset [i]){
-                                find_flag=true;
-                                break;
-                            }
-                        }
-                        if(!find_flag)
-                        {
-                            add_gset[add_set_index]=ops[op_cnt];
-                            add_set_index++;
-                        }
-                    }
-                    else{
-                        for(ap_uint<64> i=0; i<remove_set_index; i++){ //Union in Set
-                            if(ops[op_cnt]== remove_gset [i]){
-                                find_flag=true;
-                                break;
-                            }
-                        }
-                        if(!find_flag)
-                        {
-                            remove_gset[remove_set_index]=ops[op_cnt];
-                            remove_set_index++;
-                        }
-
-                    }
-
-
-
-                    update_set = true;
-                }
-                
-                if(!m_axis_tx_meta.full() && !m_axis_tx_data.full()){
-
-                    rdma_write(
-                        s_axi_lqpn,
-                        s_axi_laddr,
-                        s_axi_raddr+(write_counter*4),
-                        s_axi_len,
-                        ops[op_cnt],
-                        m_axis_tx_meta, 
-                        m_axis_tx_data
-                        );
-
-                    state = OPERATION_FETCH; 
-                    update_set = false;
-                    op_cnt++;
-                    write_counter++;
-                }
-                
-          
-            break; 
+        if(!set_size_request.empty()){
+            set_size_request.read(tmp_set_size);
         }
     }
 
-}
-
-void crdt_uset(
-    int op_num,
-    int *ops,
-    int s_axi_lqpn,
-    ap_uint<64> s_axi_laddr,
-    ap_uint<64> s_axi_raddr,
-    int s_axi_len,
-    hls::stream<pkt512>& s_axis_tx_status,
-    hls::stream<pkt256>& m_axis_tx_meta, 
-    hls::stream<pkt512>& m_axis_tx_data,
-    int *set,
-    int *remove,
-    int *set_size,
-    int *network_ptr
-    //int wait_cyc
-) {
-    //#pragma inline 
-    //#pragma HLS dataflow
-    enum fsmStateType {IDLE_STATE, OPERATION_FETCH, QUERY, UPDATE_SET, DONE};
-    static fsmStateType state = IDLE_STATE;
-    static int op_cnt = 0; 
-
-    pkt512 tmp_status;
-    static ap_uint<64> u_set[20];
-    static ap_uint<64> remove_f[20]= {0};
-
-    static ap_uint<64> set_index=0;
-
-    static ap_uint<64> log_index=0;
-    static bool find_flag= false;
-    static bool update_set= false;
-    static ap_uint<64> write_counter=0;
-
-    while(op_cnt<op_num){
-
-        switch(state) {
-
-            case IDLE_STATE: 
-                //m_axis_tx_meta.write(tx_meta);
-                if (!s_axis_tx_status.empty()) {
-                    s_axis_tx_status.read(tmp_status);
-                    state = OPERATION_FETCH; 
-            }
-          
-            break; 
-
-            case OPERATION_FETCH:
-                if(op_cnt<op_num){
-
-                    if(ops[op_cnt]==0)
-                        state= QUERY;
-                    else
-                        state= UPDATE_SET;
-                    
-                }
-                else
-                    state= DONE;
-
-            break;
-
-            case QUERY:
-
-                while(network_ptr[log_index]!=0){ //Checking log
-                    find_flag= false;
-                    if (network_ptr[log_index]>0){
-                        for(ap_uint<64> i=0; i<set_index; i++){ //Union in Set
-                            if(network_ptr[log_index]== u_set[i]){
-                                find_flag=true;
-                                break;
-                            }
-                        }
-                        if(!find_flag)
-                        {
-                            u_set[set_index]=network_ptr[log_index];
-                            set_index++;
-                        }
-                    }
-                    else {
-                        for(ap_uint<64> i=0; i<set_index; i++){ //Union in Set
-                            if(abs(network_ptr[log_index])== u_set[i]){
-                                remove_f[i]=1;
-                                break;
-                            }
-                        }
-                    }
-                    log_index++;
-                }
-                if(set_index>0){
-                    *set = u_set[set_index-1];
-                    *remove = remove_f[set_index-1];
-                    *set_size = set_index;
-                }
-
-                state= OPERATION_FETCH;
-
-                op_cnt++;
-
-            break;
-
-            case UPDATE_SET: 
-                if(!update_set){
-
-                    find_flag= false;
-                    if (ops[op_cnt]>0){
-                        for(ap_uint<64> i=0; i<set_index; i++){ //Union in Set
-                            if(ops[op_cnt]== u_set[i]){
-                                find_flag=true;
-                                break;
-                            }
-                        }
-                        if(!find_flag)
-                        {
-                            u_set[set_index]=ops[op_cnt];
-                            set_index++;
-                        }
-                    }
-                    else{
-                        for(ap_uint<64> i=0; i<set_index; i++){ //Union in Set
-                            if(ops[op_cnt]== u_set[i]){
-                                remove_f[i]=1;
-                                break;
-                            }
-                        }
-
-                    }
-
-
-
-                    update_set = true;
-                }
-                
-                if(!m_axis_tx_meta.full() && !m_axis_tx_data.full()){
-
-                    rdma_write(
-                        s_axi_lqpn,
-                        s_axi_laddr,
-                        s_axi_raddr+(write_counter*4),
-                        s_axi_len,
-                        ops[op_cnt],
-                        m_axis_tx_meta, 
-                        m_axis_tx_data
-                        );
-
-                    state = OPERATION_FETCH; 
-                    update_set = false;
-                    op_cnt++;
-                    write_counter++;
-                }
-                
-          
-            break; 
-        }
-    }
 
 }
+void bram_mem_maneger_orset(int *network_ptr, int *setsize, int node_num, int board_num, int query_num, int write_num, hls::stream<ap_uint<256> >& axis_mem_request, hls::stream<ap_uint<64> >& update_set_request, hls::stream<ap_uint<32> >& element_tags){
 
-void crdt_lwwreg(
-    int op_num,
-    int *ops,
-    int s_axi_lqpn,
-    ap_uint<64> s_axi_laddr,
-    ap_uint<64> s_axi_raddr,
-    int s_axi_len,
-    hls::stream<pkt512>& s_axis_tx_status,
-    hls::stream<pkt256>& m_axis_tx_meta, 
-    hls::stream<pkt512>& m_axis_tx_data,
-    int *reg,
-    int *network_ptr
-    //int wait_cyc
-) {
-    //#pragma inline 
-    //#pragma HLS dataflow
-    enum fsmStateType {IDLE_STATE, OPERATION_FETCH, QUERY, UPDATE_REG, DONE};
-    static fsmStateType state = IDLE_STATE;
-    static int op_cnt = 0; 
+    #pragma HLS dataflow
+    static hls::stream<ap_uint<64> > set_size_request;
 
-    pkt512 tmp_status;
-    static ap_uint<16> local_reg = 0;
-    static ap_uint<16> time_stamp= 0;
-    static ap_uint<64> write_value= 0;
-    static ap_uint<64> remote_value= 0;
-
-    while(op_cnt<op_num){
-
-        switch(state) {
-
-            case IDLE_STATE: 
-                //m_axis_tx_meta.write(tx_meta);
-                if (!s_axis_tx_status.empty()) {
-                    s_axis_tx_status.read(tmp_status);
-                    state = OPERATION_FETCH; 
-            }
-          
-            break; 
-
-            case OPERATION_FETCH:
-                if(op_cnt<op_num){
-
-                    if(ops[op_cnt]==0)
-                        state= QUERY;
-                    else
-                        state= UPDATE_REG;
-                    
-                }
-                else
-                    state= DONE;
-
-            break;
-
-            case QUERY:
-                remote_value= network_ptr[0];
-                if(remote_value.range(31,16) > time_stamp){
-                    *reg = remote_value.range(15,0);
-                }
-                else
-                    *reg = local_reg;
-
-                state= OPERATION_FETCH;
-
-                op_cnt++;
-
-            break;
-
-            case UPDATE_REG: 
-                remote_value= network_ptr[0];
-                if(remote_value.range(31,16) > time_stamp){
-                    time_stamp= remote_value.range(31,16);
-                }
-                if(!m_axis_tx_meta.full() && !m_axis_tx_data.full()){
-                    time_stamp++;
-                    local_reg = ops[op_cnt];
-                    write_value.range(31,16)= time_stamp;
-                    write_value.range(15,0)= local_reg;
-
-                    rdma_write(
-                        s_axi_lqpn,
-                        s_axi_laddr,
-                        s_axi_raddr,
-                        s_axi_len,
-                        write_value,
-                        m_axis_tx_meta, 
-                        m_axis_tx_data
-                        );
-
-                    state = OPERATION_FETCH; 
-                    op_cnt++;
-
-                }
-                
-          
-            break; 
-        }
-    }
-
+    handle_query(setsize, query_num, axis_mem_request, set_size_request);
+    update_orset(network_ptr, node_num, board_num, query_num, write_num, update_set_request, set_size_request, element_tags);
+    
 }
 
-void crdt_mvaluereg(
-    int op_num,
-    int *ops,
-    int s_axi_lqpn,
-    ap_uint<64> s_axi_laddr,
-    ap_uint<64> s_axi_raddr,
-    int s_axi_len,
-    hls::stream<pkt512>& s_axis_tx_status,
-    hls::stream<pkt256>& m_axis_tx_meta, 
-    hls::stream<pkt512>& m_axis_tx_data,
-    int *reg,
-    int *network_ptr
-    //int wait_cyc
-) {
-    //#pragma inline 
-    //#pragma HLS dataflow
-    enum fsmStateType {IDLE_STATE, OPERATION_FETCH, QUERY, UPDATE_REG, DONE};
-    static fsmStateType state = IDLE_STATE;
-    static int op_cnt = 0; 
-    static int write_counter=0;
-
-    pkt512 tmp_status;
-    static ap_uint<32> local_reg_vec [100] = {0};
-    static ap_uint<16> vec_index=0;
-    static ap_uint<16> log_index=0 ;
-    static ap_uint<16> version= 0;
-    static ap_uint<64> write_value= 0;
-    static ap_uint<64> remote_value= 0;
-
-    while(op_cnt<op_num){
-
-        switch(state) {
-
-            case IDLE_STATE: 
-                //m_axis_tx_meta.write(tx_meta);
-                if (!s_axis_tx_status.empty()) {
-                    s_axis_tx_status.read(tmp_status);
-                    state = OPERATION_FETCH;
-            }
-          
-            break; 
-
-            case OPERATION_FETCH:
-                if(op_cnt<op_num){
-
-                    if(ops[op_cnt]==0)
-                        state= QUERY;
-                    else
-                        state= UPDATE_REG;
-                    
-                }
-                else
-                    state= DONE;
-
-            break;
-
-            case QUERY:
-                while(network_ptr[log_index]!=0){
-                    remote_value= network_ptr[log_index];
-                    local_reg_vec[vec_index]= remote_value;
-                    if(remote_value.range(31,16) > version){
-                        version= remote_value.range(31,16);
-                    }
-                    log_index++;
-                    vec_index++;
-                }
-                *reg = local_reg_vec[vec_index-1];
-
-                state= OPERATION_FETCH;
-
-                op_cnt++;
-
-            break;
-
-            case UPDATE_REG: 
-            
-                while(network_ptr[log_index]!=0){
-                    remote_value= network_ptr[log_index];
-                    local_reg_vec[vec_index]= remote_value;
-                    if(remote_value.range(31,16) > version){
-                        version= remote_value.range(31,16);
-                    }
-                    log_index++;
-                    vec_index++;
-                }
-                if(!m_axis_tx_meta.full() && !m_axis_tx_data.full()){
-                    version++;
-                    write_value.range(31,16)= version;
-                    write_value.range(15,0)= ops[op_cnt];
-                    local_reg_vec[vec_index]= write_value.range(31,0);
-                    vec_index++;
-                    rdma_write(
-                        s_axi_lqpn,
-                        s_axi_laddr,
-                        s_axi_raddr +(write_counter*4),
-                        s_axi_len,
-                        write_value,
-                        m_axis_tx_meta, 
-                        m_axis_tx_data
-                        );
-
-                    state = OPERATION_FETCH; 
-                    op_cnt++;
-                    write_counter++;
-
-                }
-                
-          
-            break; 
-        }
-    }
-
-}
 
 extern "C" {
 
@@ -949,6 +442,8 @@ extern "C" {
         int node_num,
         int board_num,
         int op_num,
+        int query_num,
+        int write_num,
         int *ops,
         int *crdt,
         #if defined(TwoPSet) || defined(USet)
@@ -965,12 +460,22 @@ extern "C" {
         #pragma HLS INTERFACE axis port = m_axis_tx_meta
         #pragma HLS INTERFACE axis port = m_axis_tx_data
         #pragma HLS INTERFACE axis port = s_axis_tx_status
+        
+        #pragma HLS INTERFACE m_axi port=ops bundle=gmem0
+        #pragma HLS INTERFACE m_axi port=network_ptr bundle=gmem1
+        #pragma HLS INTERFACE m_axi port=crdt bundle=gmem1
 
         #pragma HLS dataflow
 
-        #ifdef Counter
+        static hls::stream<ap_uint<256> > axis_mem_request;
 
-            crdt_counter(
+
+        #ifdef OrSet
+            
+            static hls::stream<ap_uint<64> > update_set_request;
+            static hls::stream<ap_uint<32> > element_tags;
+
+            crdt_orset(
                 op_num,
                 ops,
                 s_axi_lqpn,
@@ -982,118 +487,13 @@ extern "C" {
                 s_axis_tx_status,
                 m_axis_tx_meta, 
                 m_axis_tx_data,
-                crdt,
-                network_ptr
+                axis_mem_request,
+                update_set_request,
+                element_tags
                 );
+            bram_mem_maneger_orset(network_ptr, crdt, node_num, board_num, query_num, write_num, axis_mem_request, update_set_request, element_tags);
         #endif
 
-        #ifdef GSet
-
-            crdt_gset(
-                op_num,
-                ops,
-                s_axi_lqpn,
-                s_axi_laddr,
-                s_axi_raddr,
-                s_axi_len,
-                s_axis_tx_status,
-                m_axis_tx_meta, 
-                m_axis_tx_data,
-                crdt,
-                set_size,
-                network_ptr
-                );
-        #endif
-
-        #ifdef TwoPSet
-
-            crdt_twopset(
-                op_num,
-                ops,
-                s_axi_lqpn,
-                s_axi_laddr,
-                s_axi_raddr,
-                s_axi_len,
-                s_axis_tx_status,
-                m_axis_tx_meta, 
-                m_axis_tx_data,
-                crdt,
-                crdttwo,
-                set_size,
-                network_ptr
-                );
-        #endif
-
-        #ifdef PNSet
-
-            crdt_pnset(
-                op_num,
-                ops,
-                s_axi_lqpn,
-                s_axi_laddr,
-                s_axi_raddr,
-                s_axi_len,
-                s_axis_tx_status,
-                m_axis_tx_meta, 
-                m_axis_tx_data,
-                crdt,
-                set_size,
-                network_ptr
-                );
-        #endif
-
-        #ifdef USet
-
-            crdt_uset(
-                op_num,
-                ops,
-                s_axi_lqpn,
-                s_axi_laddr,
-                s_axi_raddr,
-                s_axi_len,
-                s_axis_tx_status,
-                m_axis_tx_meta, 
-                m_axis_tx_data,
-                crdt,
-                crdttwo,
-                set_size,
-                network_ptr
-                );
-        #endif
-        
-        #ifdef LwwReg
-
-            crdt_lwwreg(
-                op_num,
-                ops,
-                s_axi_lqpn,
-                s_axi_laddr,
-                s_axi_raddr,
-                s_axi_len,
-                s_axis_tx_status,
-                m_axis_tx_meta, 
-                m_axis_tx_data,
-                crdt,
-                network_ptr
-                );
-        #endif
-
-        #ifdef MValueReg
-
-            crdt_mvaluereg(
-                op_num,
-                ops,
-                s_axi_lqpn,
-                s_axi_laddr,
-                s_axi_raddr,
-                s_axi_len,
-                s_axis_tx_status,
-                m_axis_tx_meta, 
-                m_axis_tx_data,
-                crdt,
-                network_ptr
-                );
-        #endif
     }
 
 }

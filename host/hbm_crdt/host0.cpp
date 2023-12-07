@@ -240,10 +240,10 @@ int main(int argc, char **argv) {
     OCL_CHECK(err, err = user_kernel.setArg(7, node_num));
     OCL_CHECK(err, err = user_kernel.setArg(8, board_num));
     OCL_CHECK(err, err = user_kernel.setArg(9, nOP));
-    OCL_CHECK(err, err = user_kernel.setArg(10, qOP)); //added for Bram
-    OCL_CHECK(err, err = user_kernel.setArg(11, buffer_op));
-    OCL_CHECK(err, err = user_kernel.setArg(12, buffer_r2));
-    OCL_CHECK(err, err = user_kernel.setArg(13, buffer_r1));
+    //OCL_CHECK(err, err = user_kernel.setArg(10, qOP)); //added for Bram
+    OCL_CHECK(err, err = user_kernel.setArg(10, buffer_op));
+    OCL_CHECK(err, err = user_kernel.setArg(11, buffer_r2));
+    OCL_CHECK(err, err = user_kernel.setArg(12, buffer_r1));
 
     OCL_CHECK(err,
               operations = (int*)q.enqueueMapBuffer(buffer_op, CL_TRUE, CL_MAP_WRITE, 0, size_in_bytes, NULL, NULL, &err));
