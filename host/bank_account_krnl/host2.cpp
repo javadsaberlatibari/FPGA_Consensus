@@ -62,10 +62,6 @@ int main(int argc, char **argv) {
     double WRITE_PERCENTAGE = std::atoi(argv[4]);
     int ID = std::atoi(argv[5]);
     int exe = atoi(argv[6]);
-
-    // std::string benchmark_location = "../benchmarks/";
-    // benchmark_location += std::to_string(NUM_NODES) + "-" + std::to_string(NUM_OPS) + "-" + std::to_string(WRITE_PERCENTAGE);
-    // benchmark_location += "/" + usecase + "/";
     /*===============================================================Program FPGA with input bitstream===============================================================*/
 
     cl_int err;
@@ -125,7 +121,7 @@ int main(int argc, char **argv) {
     uint32_t rQPN = 0x00000001;
     uint32_t lQPN = 0x00000001;
     uint32_t rIP  = 0x0b01d4e0;
-    uint32_t lIP  = 0x0b01d4e2;
+    uint32_t lIP  = 0x0b01d4e0 + ID;
     uint32_t rUDP = 0x000012b7;
     uint64_t vAddr= 0x0000000000000001;
     uint32_t rKey = 0x00000000;
@@ -136,7 +132,7 @@ int main(int argc, char **argv) {
     // [15:4] time interval in cycle       0x100   256cycle
     // [3:2]  board number                 0
     // [1:0]  mode 0-nothing 1-test 2-op   0
-    uint32_t debug= 0x00001008;
+    uint32_t debug= 0x00001000 + 4 * ID;
 
     // Set network kernel arguments
     OCL_CHECK(err, err = network_kernel.setArg(0, rPSN)); // Default IP address
@@ -161,10 +157,6 @@ int main(int argc, char **argv) {
                                    &err));
     OCL_CHECK(err, err = network_kernel.setArg(14, buffer_network));
 
-    // network_ptr0[3] = 3;
-    // network_ptr0[15] = 2;
-    // network_ptr0[16] = -2;
-    // OCL_CHECK(err, err = q.enqueueMigrateMemObjects({buffer_network}, 0 /* 0 means from host*/));
     printf("enqueue network kernel...\n");
     OCL_CHECK(err, err = q.enqueueTask(network_kernel));
     OCL_CHECK(err, err = q.finish());
@@ -172,17 +164,25 @@ int main(int argc, char **argv) {
     sleep(10);
     //wait_for_enter("\nPausing for network kernel setup...");
     /*===============================================================Init and Start User kernel===============================================================*/
+
     uint32_t boardNum = ID;
-    int num_ops = NUM_OPS/NUM_NODES-1; 
+    int num_ops = NUM_OPS/NUM_NODES; 
     printf("NUMOPS = %d\n", num_ops);
-    std::vector<int, aligned_allocator<int>> reply(64 * sizeof(int));
+    std::vector<int, aligned_allocator<int>> reply_bank(64 * sizeof(int));
     OCL_CHECK(err,
-              cl::Buffer buffer_reply(context,
+              cl::Buffer buffer_reply_bank(context,
                                    CL_MEM_USE_HOST_PTR | CL_MEM_READ_WRITE,
                                    sizeof(int) * 100,
-                                   reply.data(),
+                                   reply_bank.data(),
                                    &err));
 
+    std::vector<int, aligned_allocator<int>> reply_bram(64 * sizeof(int));
+    OCL_CHECK(err,
+              cl::Buffer buffer_reply_bram(context,
+                                   CL_MEM_USE_HOST_PTR | CL_MEM_READ_WRITE,
+                                   sizeof(int) * 100,
+                                   reply_bram.data(),
+                                   &err));
 
     std::vector<int, aligned_allocator<int>> ops(num_ops * sizeof(int));
     OCL_CHECK(err,
@@ -200,8 +200,8 @@ int main(int argc, char **argv) {
                                    amount.data(),
                                    &err));    
 
-
     int expected_calls; 
+    int expected_query = 0; 
     std::ifstream myfile;
     myfile.open((std::to_string(ID+1) + ".txt").c_str());
     std::string line; 
@@ -214,37 +214,38 @@ int main(int argc, char **argv) {
         }
         
         if (line.size() > 1) {
-            //printf("%d %d \n", line.at(0)-48, line.at(2)-48);
-            ops[calls] = line.at(0)-48;
-            amount[calls] = line.at(2)-48;
+            //printf("%d %d \n", line.at(0) - 48, std::stoi(line.substr(1, line.size())));
+            ops[calls] = line.at(0) - 48;
+            amount[calls] = std::stoi(line.substr(1, line.size()));
         } else {
-            //printf("%d \n", line.at(0)-48);
-            ops[calls] = line.at(0)-48;
+            //printf("%d \n", line.at(0) - 48);
+            ops[calls] = line.at(0) - 48;
             amount[calls] = 0;
         }
         calls++;
     }
-    printf("NUMOPS = %d\n", calls);
+    printf("dataset size: %d\n", calls);
+    printf("expected calls: %d\n", expected_calls);
 
-    //Check for non-leader conflicting calls
-    for (int i = 0; i < num_ops; i++) {
-        if (ops[i] == 0) {
-            printf("ERROR!\n");
-            return 0; 
-        }
+    if (ID == 0) {
+        expected_query = num_ops - (((float) WRITE_PERCENTAGE/100) * NUM_OPS)/2;
+    } else {
+        expected_query = num_ops - ((((float) WRITE_PERCENTAGE/100) * NUM_OPS)/2)/(NUM_NODES-1);
     }
 
-    // ops = {1, 1, 2, 2};
-    // amount = {1, 1, 1, 1};
+    printf("QUERY = %d\n", expected_query);
+    //expected_query = 4; 
 
     OCL_CHECK(err, err = user_kernel.setArg(3, boardNum));
     OCL_CHECK(err, err = user_kernel.setArg(4, buffer_ops));
     OCL_CHECK(err, err = user_kernel.setArg(5, buffer_amount));
     OCL_CHECK(err, err = user_kernel.setArg(6, num_ops));
-    OCL_CHECK(err, err = user_kernel.setArg(7, buffer_reply));
-    OCL_CHECK(err, err = user_kernel.setArg(8, buffer_network));
-    OCL_CHECK(err, err = user_kernel.setArg(9, NUM_NODES)); 
-    OCL_CHECK(err, err = user_kernel.setArg(10, exe)); 
+    OCL_CHECK(err, err = user_kernel.setArg(7, buffer_reply_bank));
+    OCL_CHECK(err, err = user_kernel.setArg(8, buffer_reply_bram));
+    OCL_CHECK(err, err = user_kernel.setArg(9, buffer_network));
+    OCL_CHECK(err, err = user_kernel.setArg(10, NUM_NODES)); 
+    OCL_CHECK(err, err = user_kernel.setArg(11, exe)); 
+    OCL_CHECK(err, err = user_kernel.setArg(12, expected_query)); 
 
     printf("Host->Device user kernel... \n");
     OCL_CHECK(err, err = q.enqueueMigrateMemObjects({buffer_ops}, 0 /* 0 means from host*/));
@@ -258,13 +259,14 @@ int main(int argc, char **argv) {
     OCL_CHECK(err, err = q.finish());
     auto end = std::chrono::high_resolution_clock::now();
     durationUs = (std::chrono::duration_cast<std::chrono::nanoseconds>(end-start).count() / 1000.0);
-    sleep(5);
+    sleep(10);
 
     /*===============================================================OUTPUT===============================================================*/
 
     printf("Device->Host user kernel...\n");
     OCL_CHECK(err, err = q.enqueueMigrateMemObjects({buffer_network}, CL_MIGRATE_MEM_OBJECT_HOST));
-    OCL_CHECK(err, err = q.enqueueMigrateMemObjects({buffer_reply}, CL_MIGRATE_MEM_OBJECT_HOST));
+    OCL_CHECK(err, err = q.enqueueMigrateMemObjects({buffer_reply_bank}, CL_MIGRATE_MEM_OBJECT_HOST));
+    OCL_CHECK(err, err = q.enqueueMigrateMemObjects({buffer_reply_bram}, CL_MIGRATE_MEM_OBJECT_HOST));
     OCL_CHECK(err, err = q.finish());
 
     printf("durationUs:%f\n",durationUs);
@@ -272,20 +274,31 @@ int main(int argc, char **argv) {
 
     printf("REP\n");
     for (int j = 0; j < 30; j++) {
-        printf("%d : %d, \n", j, reply[j]);
+        printf("%d : bank %d bram %d, \n", j, reply_bank[j], reply_bram[j]);
     }
     printf("\n");
 
     printf("NET\nHB: ");
-    for (int j = 0; j < 50; j++) {
+    for (int j = 0; j < 12 + 2 + 55; j++) {
         printf("%d ", network_ptr0[j]);
-        if (j == NUM_NODES-1) printf("\nMIN PROP: ");
-        if (j == (NUM_NODES-1) + 2 + (NUM_NODES-1)*5) printf("\nLOCAL LOG: ");
-        //if (j == (NUM_NODES-1) + 2 + (NUM_NODES-1)*5 + 10) printf("\nLOG FIFOs: ");
+        if (j == 11) printf("\nMIN PROP: ");
     }
     printf("\n");
-    for (int j = 3 + (NUM_NODES-1) + 2 + (NUM_NODES-1)*5 + 500000 * (NUM_NODES-1) + (NUM_NODES-1) * 2 * 5; j < 3 + (NUM_NODES-1) + 2 + (NUM_NODES-1)*5 + 500000 * (NUM_NODES-1) + (NUM_NODES-1) * 2 * 5 + NUM_NODES; j++) {
+    printf("\nLOCAL LOG: ");
+    for (int j = 12 + 2 + 55; j < 12 + 2 + 55 + 100; j++) {
         printf("%d ", network_ptr0[j]);
+    }
+
+    printf("...\n");
+    printf("\nLOG FIFOs: ");
+    for (int j = 12 + 2 + 55 + 25000; j < 12 + 2 + 55 + 25000 + 110; j++) {
+        printf("%d ", network_ptr0[j]);
+    }
+    printf("\n");
+
+    printf("DEPOSITS: \n");
+    for (int i = 25179; i < 25179 + 12; i++) {
+        printf("%d ", network_ptr0[i]);
     }
     printf("\n");
 
