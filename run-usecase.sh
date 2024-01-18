@@ -4,13 +4,13 @@
 #Node_List="156 159 157 153 155 154";
 source /tools/Xilinx/Vitis/2023.1/settings64.sh
 source /opt/xilinx/xrt/setup.sh
-NUM_Nodes=4 #number of nodes.
-#Node_List="158 151 159 154 155 157";
-Node_List="161 160 163 162"
+NUM_Nodes=6 #number of nodes.
+#Node_List="159 158 155 151 157 154"
+Node_List="159 158 155 151 157 154"
 Arp_Delay_Base=400000000;
 EXE=10000000
 Number_of_Operations=100000;
-Write_Percentage=15;
+Write_Percentage=25;
 Usecase=account
 Operations_Each_Node=$((Number_of_Operations/NUM_Nodes));
 

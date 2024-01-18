@@ -86,6 +86,8 @@ struct LogEntry
 	bool valid; 
     LogEntry()
         :valid(false) {}
+    LogEntry(ap_uint<32> p, ap_uint<32> f)
+        :propVal(p), fuo(f) {}
     LogEntry(ap_uint<32> s)
         :valid(false), syncGroup(s) {}
     LogEntry(ap_uint<32> p, ap_uint<32> v, ap_uint<32> s) 

@@ -7,6 +7,8 @@
 #include "packet.hpp"
 #include "toe.hpp"
 
+#pragma once
+
 #define DWIDTH512 512
 #define DWIDTH256 256
 #define DWIDTH128 128
