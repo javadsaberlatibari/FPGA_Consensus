@@ -101,7 +101,7 @@ int main(int argc, char **argv) {
             OCL_CHECK(err,
                       network_kernel = cl::Kernel(program, "rocetest_krnl", &err));
             OCL_CHECK(err,
-                      user_kernel = cl::Kernel(program, "consensus_krnl", &err));
+                      user_kernel = cl::Kernel(program, "bram_crdt_counter", &err));
             valid_device++;
             break; // we break because we found a valid device
         }
@@ -197,7 +197,7 @@ int main(int argc, char **argv) {
     //OCL_CHECK(err, err = user_kernel.setArg(4, StatusBuffer));
     
     //wait_for_enter("\nPausing for network kernel setup...");
-    sleep(8);
+    sleep(4);
     //Launch the Kernel
     // auto start = std::chrono::high_resolution_clock::now();
     //printf("Host->Device user kernel...\n");

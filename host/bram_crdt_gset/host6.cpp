@@ -101,7 +101,7 @@ int main(int argc, char **argv) {
             OCL_CHECK(err,
                       network_kernel = cl::Kernel(program, "rocetest_krnl", &err));
             OCL_CHECK(err,
-                      user_kernel = cl::Kernel(program, "consensus_krnl", &err));
+                      user_kernel = cl::Kernel(program, "bram_crdt_gset", &err));
             valid_device++;
             break; // we break because we found a valid device
         }
@@ -197,7 +197,7 @@ int main(int argc, char **argv) {
     //OCL_CHECK(err, err = user_kernel.setArg(4, StatusBuffer));
     
     //wait_for_enter("\nPausing for network kernel setup...");
-    sleep(22);
+    sleep(14);
     //Launch the Kernel
     // auto start = std::chrono::high_resolution_clock::now();
     //printf("Host->Device user kernel...\n");
@@ -206,8 +206,11 @@ int main(int argc, char **argv) {
 
     uint32_t nOP   = std::stoi(argv[4]); //number of operations
     uint32_t wP   = std::stoi(argv[5]); //Write Percentage
+    uint32_t qOP   = nOP-((nOP*wP)/100); //query operations added for Bram
+    uint32_t wOP  = (nOP*wP)/100;
+
     int *operations;
-    size_t size_in_bytes = 10 * sizeof(int);
+    size_t size_in_bytes = 2000000 * sizeof(int);
     //uint32_t *operations = arr_ops;
     uint32_t ulQPN = 0x00000001;
     uint64_t ulAddr= 0x0000000000000000;
@@ -238,7 +241,7 @@ int main(int argc, char **argv) {
     OCL_CHECK(err, err = user_kernel.setArg(8, board_num));
     OCL_CHECK(err, err = user_kernel.setArg(9, nOP));
     OCL_CHECK(err, err = user_kernel.setArg(10, qOP)); //added for Bram
-    OCL_CHECK(err, err = user_kernel.setArg(11, qOP)); //added for Bram
+    OCL_CHECK(err, err = user_kernel.setArg(11, wOP)); //added for Bram
     OCL_CHECK(err, err = user_kernel.setArg(12, buffer_op));
     OCL_CHECK(err, err = user_kernel.setArg(13, buffer_r2));
     OCL_CHECK(err, err = user_kernel.setArg(14, buffer_r1));
@@ -272,7 +275,7 @@ for (int i = 0; i < nOP; i++) {
             k++;
             j++;
             //printf("testttttt %d------\n", rand_value);
-            operations[rand_value] = 4;
+            operations[rand_value] = rand()%1000000;
         }
     }
 
@@ -286,7 +289,9 @@ for (int i = 0; i < nOP; i++) {
     end = std::chrono::high_resolution_clock::now();
     durationUs = (std::chrono::duration_cast<std::chrono::nanoseconds>(end-start).count() / 1000.0);
     printf("durationUs:%f\n",durationUs);
-    printf("replication_latency:%f\n",durationUs/nOP);
+
+    printf("numberofop:%d\n",nOP);
+    printf("response_time:%f\n",durationUs/nOP);
     
     sleep(15);
     printf("Device->Host user kernel...\n");
@@ -296,8 +301,12 @@ for (int i = 0; i < nOP; i++) {
 
     printf("STATUS: %d\n", reply[0]);
     
-    for (int i = 0; i < N_node; i++) {
-        printf("network at %d: %d\n", i, network_ptr0[i]);
+    for(int i=0; i<node_num; i++){
+        for (int j = (9000*i); j < ((9000*i)+100); j++){
+            printf("network at %d: %d\n", j, network_ptr0[j]);
+            if (j==(((9000*i)+100)-1))
+                printf("network at %d: %d\n", ((9000*(i+1))-1), network_ptr0[((9000*(i+1))-1)]);
+        }
     }
 
     // auto end = std::chrono::high_resolution_clock::now();

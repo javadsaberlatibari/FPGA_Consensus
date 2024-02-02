@@ -101,7 +101,7 @@ int main(int argc, char **argv) {
             OCL_CHECK(err,
                       network_kernel = cl::Kernel(program, "rocetest_krnl", &err));
             OCL_CHECK(err,
-                      user_kernel = cl::Kernel(program, "consensus_krnl", &err));
+                      user_kernel = cl::Kernel(program, "th_bram_crdt_reg", &err));
             valid_device++;
             break; // we break because we found a valid device
         }
@@ -299,10 +299,12 @@ int main(int argc, char **argv) {
     OCL_CHECK(err, err = q.enqueueMigrateMemObjects({buffer_r2}, CL_MIGRATE_MEM_OBJECT_HOST));
     OCL_CHECK(err, err = q.finish());
 
-    float temp_throughput;
-    temp_throughput = (nOP*node_num)/((durationUs));
-    //printf("STATUS: %d\n", reply[0]);
-    printf("Throughput in Microseconds: %f\n", temp_throughput);
+    if ((board_num+1)==node_num){
+        float temp_throughput;
+        temp_throughput = (nOP*node_num)/((durationUs));
+        //printf("STATUS: %d\n", reply[0]);
+        printf("Throughput in Microseconds: %f\n", temp_throughput);
+    }
     
     for (int i = 0; i < N_node; i++) {
         printf("network at %d: %x\n", i, network_ptr0[i]);

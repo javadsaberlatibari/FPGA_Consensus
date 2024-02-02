@@ -46,7 +46,8 @@ void rdma_write(
     
 }
 
-void crdt_lwwreg(
+
+void crdt_counter(
     int op_num,
     int *ops,
     int s_axi_lqpn,
@@ -55,26 +56,24 @@ void crdt_lwwreg(
     int s_axi_len,
     int node_num,
     int board_num,
+    int failure_point,
+    int failed_node,
     hls::stream<pkt512>& s_axis_tx_status,
     hls::stream<pkt256>& m_axis_tx_meta, 
     hls::stream<pkt512>& m_axis_tx_data,
-    hls::stream<ap_uint<32> >& axis_mem_request,
-    hls::stream<ap_uint<16> >& now_tmie_stamp
+    hls::stream<ap_uint<256> >& axis_mem_request
     //int wait_cyc
 ) {
     //#pragma inline 
     //#pragma HLS dataflow
-    enum fsmStateType {IDLE_STATE, OPERATION_FETCH, QUERY, UPDATE_REG, DONE};
+    enum fsmStateType {IDLE_STATE, OPERATION_FETCH, QUERY, UPDATE_COUNTER, DONE};
     static fsmStateType state = IDLE_STATE;
     static int op_cnt = 0; 
 
     pkt512 tmp_status;
-    static ap_uint<16> local_reg = 0;
-    static ap_uint<16> time_stamp= 0;
-    static ap_uint<64> write_value= 0;
-    static ap_uint<64> remote_value= 0;
-    static ap_uint<32> tmp_local_reg= 0;
-    static ap_uint<16> tmp_time_stamp= 0;
+    static ap_uint<64> local_counter = 0;
+    ap_uint<256> tmp_local_counter;
+    static bool node_failure[8]={false};
 
     while(op_cnt<op_num){
 
@@ -91,18 +90,13 @@ void crdt_lwwreg(
 
             case OPERATION_FETCH:
                 if(op_cnt<op_num){
-
+                    if(op_cnt==failure_point)
+                        node_failure[failed_node]=true;
                     if(ops[op_cnt]==0)
                         state= QUERY;
-                    else {
-                        local_reg= ops[op_cnt];
-                        state= UPDATE_REG;
-                        if(!now_tmie_stamp.empty()){
-                            now_tmie_stamp.read(tmp_time_stamp);
-                            if(tmp_time_stamp>time_stamp)
-                                time_stamp=tmp_time_stamp;
-                        }
-
+                    else{
+                        local_counter= local_counter+ ops[op_cnt];
+                        state= UPDATE_COUNTER;
                     }
                     
                 }
@@ -112,33 +106,29 @@ void crdt_lwwreg(
             break;
 
             case QUERY:
-
                 if(!axis_mem_request.full()){
-                    tmp_local_reg.range(15,0)=local_reg;
-                    tmp_local_reg.range(31,16)=time_stamp;
-                    axis_mem_request.write(tmp_local_reg);
+                    tmp_local_counter= local_counter;
+                    axis_mem_request.write(tmp_local_counter);
                     state= OPERATION_FETCH;
 
                     op_cnt++;
                 }
+                
 
             break;
 
-            case UPDATE_REG: 
+            case UPDATE_COUNTER:
                 int j=0; 
                 int qpn_tmp=board_num*(node_num-1);
-                time_stamp++;
-                write_value.range(15,0)=local_reg;
-                write_value.range(31,16)=time_stamp;
                 while (j<node_num){
-                    if(j!=board_num){
+                    if(j!=board_num && node_failure[j]!=true){
                         if(!m_axis_tx_meta.full() && !m_axis_tx_data.full()){
                             rdma_write(
                                 qpn_tmp,
                                 s_axi_laddr,
                                 s_axi_raddr+(board_num*4),
                                 s_axi_len,
-                                write_value,
+                                local_counter,
                                 m_axis_tx_meta, 
                                 m_axis_tx_data
                                 );
@@ -161,53 +151,44 @@ void crdt_lwwreg(
     }
 
 }
-void bram_mem_maneger_lww(int *network_ptr, int *reg, int node_num, int board_num, int query_num, hls::stream<ap_uint<32> >& axis_mem_request, hls::stream<ap_uint<16> >& now_tmie_stamp){
-    static ap_uint<32> bram_reg=0;
+void bram_mem_maneger(int *network_ptr, int *counter, int node_num, int board_num, int query_num, hls::stream<ap_uint<256> >& axis_mem_request){
+    static int bram_counter=0;
     static int update_period=1000;
     static int internal_clock=0;
-    
+    static int local_counter=0;
     static int query_cnt=0;
+    static int remote_counter=0;
+    static int tmp_HBM=0;
 
-    ap_uint<32> tmp_local_reg;
-    static ap_uint<16> local_reg=0;
-    static ap_uint<16> local_timestamp=0;
-
-    ap_uint<32> tmp_reg;
+    ap_uint<256> tmp_local_counter;
     
     while (query_cnt<query_num){
         internal_clock++;
         if(!axis_mem_request.empty()){
-            axis_mem_request.read(tmp_local_reg);
+            axis_mem_request.read(tmp_local_counter);
             query_cnt++;
-            *reg=bram_reg;
-            local_reg=tmp_local_reg.range(15,0);
-            local_timestamp=tmp_local_reg.range(31,16);
+            *counter=bram_counter;
+            local_counter=tmp_local_counter;
         }
         if(internal_clock==update_period){
             internal_clock=0;
+            remote_counter=0;
                     for (int i=0; i<node_num; i++){
                         if(i!=board_num){
-                            tmp_reg=network_ptr[i];
-                            if(tmp_reg.range(31,16)>local_timestamp){
-                                local_timestamp=tmp_reg.range(31,16);
-                                local_reg=tmp_reg.range(15,0);
-                            }
-                            
-                            
+                            tmp_HBM=network_ptr[i];
+                            remote_counter = tmp_HBM + remote_counter;
                         }
                     }
-                    if(!now_tmie_stamp.full())
-                        now_tmie_stamp.write(local_timestamp);
-                    bram_reg.range(15,0) = local_reg;
-                    bram_reg.range(31,16) = local_timestamp;
+                    bram_counter = remote_counter + local_counter;
         }
     }
 }
 
 
+
 extern "C" {
 
-    void consensus_krnl(
+    void failure_bram_crdt_counter(
         hls::stream<pkt256>& m_axis_tx_meta, 
         hls::stream<pkt512>& m_axis_tx_data, 
         hls::stream<pkt512>& s_axis_tx_status, 
@@ -219,11 +200,12 @@ extern "C" {
         int board_num,
         int op_num,
         int query_num,
+        int failure_point, //operation that failure occurs
+        int failed_node,
         int *ops,
         int *crdt,
         int *network_ptr
-        //int wait_cyc
-        //ap_uint<512>* m_axi_status
+
     ) {
 
         #pragma HLS INTERFACE axis port = m_axis_tx_meta
@@ -236,9 +218,9 @@ extern "C" {
 
         #pragma HLS dataflow
 
-        static hls::stream<ap_uint<32> > axis_mem_request;
-        static hls::stream<ap_uint<16> > now_tmie_stamp;
-            crdt_lwwreg(
+        static hls::stream<ap_uint<256> > axis_mem_request;
+            
+            crdt_counter(
                 op_num,
                 ops,
                 s_axi_lqpn,
@@ -247,13 +229,17 @@ extern "C" {
                 s_axi_len,
                 node_num,
                 board_num,
+                failure_point,
+                failed_node,
                 s_axis_tx_status,
                 m_axis_tx_meta, 
                 m_axis_tx_data,
-                axis_mem_request,
-                now_tmie_stamp
+                axis_mem_request
                 );
-            bram_mem_maneger_lww(network_ptr, crdt, node_num, board_num, query_num, axis_mem_request,now_tmie_stamp);
+            bram_mem_maneger(network_ptr, crdt, node_num, board_num, query_num, axis_mem_request);
+
+
+    
     }
 
 }

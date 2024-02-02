@@ -101,7 +101,7 @@ int main(int argc, char **argv) {
             OCL_CHECK(err,
                       network_kernel = cl::Kernel(program, "rocetest_krnl", &err));
             OCL_CHECK(err,
-                      user_kernel = cl::Kernel(program, "consensus_krnl", &err));
+                      user_kernel = cl::Kernel(program, "bram_crdt_gset", &err));
             valid_device++;
             break; // we break because we found a valid device
         }
@@ -197,7 +197,7 @@ int main(int argc, char **argv) {
     //OCL_CHECK(err, err = user_kernel.setArg(4, StatusBuffer));
     
     //wait_for_enter("\nPausing for network kernel setup...");
-    sleep(14);
+    sleep(8);
     //Launch the Kernel
     // auto start = std::chrono::high_resolution_clock::now();
     //printf("Host->Device user kernel...\n");
@@ -299,10 +299,13 @@ int main(int argc, char **argv) {
 
     printf("STATUS: %d\n", reply[0]);
     
-    for (int i = 0; i < N_node; i++) {
-        printf("network at %d: %d\n", i, network_ptr0[i]);
+    for(int i=0; i<node_num; i++){
+        for (int j = (9000*i); j < ((9000*i)+100); j++){
+            printf("network at %d: %d\n", j, network_ptr0[j]);
+            if (j==(((9000*i)+100)-1))
+                printf("network at %d: %d\n", ((9000*(i+1))-1), network_ptr0[((9000*(i+1))-1)]);
+        }
     }
-
     // auto end = std::chrono::high_resolution_clock::now();
     // durationUs = (std::chrono::duration_cast<std::chrono::nanoseconds>(end-start).count() / 1000.0);
     // printf("durationUs:%f\n",durationUs);

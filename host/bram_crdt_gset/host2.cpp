@@ -101,7 +101,7 @@ int main(int argc, char **argv) {
             OCL_CHECK(err,
                       network_kernel = cl::Kernel(program, "rocetest_krnl", &err));
             OCL_CHECK(err,
-                      user_kernel = cl::Kernel(program, "consensus_krnl", &err));
+                      user_kernel = cl::Kernel(program, "bram_crdt_gset", &err));
             valid_device++;
             break; // we break because we found a valid device
         }
@@ -197,7 +197,7 @@ int main(int argc, char **argv) {
     //OCL_CHECK(err, err = user_kernel.setArg(4, StatusBuffer));
     
     //wait_for_enter("\nPausing for network kernel setup...");
-    sleep(11);
+    sleep(6);
     //Launch the Kernel
     // auto start = std::chrono::high_resolution_clock::now();
     //printf("Host->Device user kernel...\n");
@@ -258,7 +258,7 @@ int main(int argc, char **argv) {
     bool find=false;
     int rand_value=0;
     printf("testttttt %d------\n", ((nOP*wP)/100));
-
+    printf("Write P: %d\n", wP);
     while(j<((nOP*wP)/100)){
         find=false;
         rand_value= rand()%nOP;
@@ -274,7 +274,7 @@ int main(int argc, char **argv) {
             k++;
             j++;
             //printf("testttttt %d------\n", rand_value);
-            operations[rand_value] = 1;
+            operations[rand_value] = rand()%1000000;
         }
     }
 
@@ -299,14 +299,12 @@ int main(int argc, char **argv) {
 
     printf("STATUS: %d\n", reply[0]);
     
-    for (int i = 0; i < 100; i++) {
-        printf("network at %d: %d\n", i, network_ptr0[i]);
-    }
-    for (int i = 8999; i < 100; i++) {
-        printf("network at %d: %d\n", i, network_ptr0[i]);
-    }
-    for (int i = 17999; i < 100; i++) {
-        printf("network at %d: %d\n", i, network_ptr0[i]);
+    for(int i=0; i<node_num; i++){
+        for (int j = (9000*i); j < ((9000*i)+100); j++){
+            printf("network at %d: %d\n", j, network_ptr0[j]);
+            if (j==(((9000*i)+100)-1))
+                printf("network at %d: %d\n", ((9000*(i+1))-1), network_ptr0[((9000*(i+1))-1)]);
+        }
     }
 
     // auto end = std::chrono::high_resolution_clock::now();
