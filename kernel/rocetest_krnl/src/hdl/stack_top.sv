@@ -60,6 +60,7 @@ module stack_top #(
     // RoCE application interface
     axis_meta.slave               s_axis_roce_role_tx_meta   ,
     axi_stream.slave              s_axis_roce_role_tx_data   ,
+    axi_stream.slave              s_axis_roce_role_permission_switch   ,
     axi_stream.master             m_axis_roce_role_tx_status ,
 
     //axis_meta.slave               s_axis_qp_interface,           
@@ -726,6 +727,7 @@ roce_stack #(
     //CONTROL
     .s_axis_qp_interface(axis_qp_interface),
     .s_axis_qp_conn_interface(axis_qp_conn_interface),
+    .permission_switch(s_axis_roce_role_permission_switch),
         //.local_ip_address_V(link_local_ipv6_address), // Use IPv6 addr
     .local_ip_address(iph_ip_address), //Use IPv4 addr (still 128 bits)
     .crc_drop_pkg_count_valid(regCrcDropPkgCount_valid),

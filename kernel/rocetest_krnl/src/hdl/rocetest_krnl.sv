@@ -15,6 +15,7 @@ module rocetest_krnl #(
   parameter integer C_M_AXIS_NET_TX_TDATA_WIDTH         = 512,
   parameter integer C_S_AXIS_ROLE_TX_META_TDATA_WIDTH   = 256,
   parameter integer C_S_AXIS_ROLE_TX_DATA_TDATA_WIDTH   = 512,
+  parameter integer C_S_AXIS_ROLE_PERMISSION_SWITCH_TDATA_WIDTH   = 128,
   parameter integer C_M_AXIS_ROLE_TX_STATUS_TDATA_WIDTH = 512
 )
 (
@@ -91,6 +92,14 @@ module rocetest_krnl #(
   input  wire [C_S_AXIS_ROLE_TX_DATA_TDATA_WIDTH-1:0]     s_axis_role_tx_data_tdata   ,
   input  wire [C_S_AXIS_ROLE_TX_DATA_TDATA_WIDTH/8-1:0]   s_axis_role_tx_data_tkeep   ,
   input  wire                                             s_axis_role_tx_data_tlast   ,
+
+  // AXI4-Stream (slave) interface s_axis_role_permission_switch
+  input  wire                                             s_axis_role_permission_switch_tvalid  ,
+  output wire                                             s_axis_role_permission_switch_tready  ,
+  input  wire [C_S_AXIS_ROLE_PERMISSION_SWITCH_TDATA_WIDTH-1:0]     s_axis_role_permission_switch_tdata   ,
+  input  wire [C_S_AXIS_ROLE_PERMISSION_SWITCH_TDATA_WIDTH/8-1:0]   s_axis_role_permission_switch_tkeep   ,
+  input  wire                                             s_axis_role_permission_switch_tlast   ,
+  
   // AXI4-Stream (master) interface m_axis_role_tx_status
   output wire                                             m_axis_role_tx_status_tvalid,
   input  wire                                             m_axis_role_tx_status_tready,
@@ -104,7 +113,7 @@ module rocetest_krnl #(
   // input  wire [C_S_AXIS_ROLE_TX_META_TDATA_WIDTH-1:0]     s_axis_qp_interface_tdata   ,
   // input  wire [C_S_AXIS_ROLE_TX_META_TDATA_WIDTH/8-1:0]   s_axis_qp_interface_tkeep   ,
   // input  wire                                             s_axis_qp_interface_tlast   ,
-  
+
   // AXI4-Lite slave interface
   input  wire                                             s_axi_control_awvalid       ,
   output wire                                             s_axi_control_awready       ,
@@ -162,6 +171,7 @@ axi_stream axis_net_tx_data_aclk();
 // RoCE interface
 axis_meta #(.WIDTH(160))    s_axis_roce_role_tx_meta();
 axi_stream      s_axis_roce_role_tx_data();
+axi_stream      s_axis_roce_role_permission_switch();
 axi_stream      m_axis_roce_role_tx_status();
 
 // axis_meta       s_axis_qp_interface(); 
@@ -257,6 +267,7 @@ stack_top #(
     // RoCE application interface
     .s_axis_roce_role_tx_meta   ( s_axis_roce_role_tx_meta   ),
     .s_axis_roce_role_tx_data   ( s_axis_roce_role_tx_data   ),
+    .s_axis_roce_role_permission_switch   ( s_axis_roce_role_permission_switch   ),
     .m_axis_roce_role_tx_status ( m_axis_roce_role_tx_status ),
     //.s_axis_qp_interface ( s_axis_qp_interface ),
     // DMA
@@ -394,6 +405,12 @@ assign s_axis_role_tx_data_tready = s_axis_roce_role_tx_data.ready;
 assign s_axis_roce_role_tx_meta.valid = s_axis_role_tx_meta_tvalid;
 assign s_axis_roce_role_tx_meta.data = s_axis_role_tx_meta_tdata[159:0];
 assign s_axis_role_tx_meta_tready = s_axis_roce_role_tx_meta.ready;
+
+assign s_axis_roce_role_permission_switch.valid = s_axis_role_permission_switch_tvalid;
+assign s_axis_roce_role_permission_switch.data = s_axis_role_permission_switch_tdata;
+assign s_axis_roce_role_permission_switch.keep = s_axis_role_permission_switch_tkeep;
+assign s_axis_roce_role_permission_switch.last = s_axis_role_permission_switch_tlast;
+assign s_axis_role_permission_switch_tready = s_axis_roce_role_permission_switch.ready;
 
 assign m_axis_role_tx_status_tvalid = m_axis_roce_role_tx_status.valid;
 assign m_axis_role_tx_status_tdata = m_axis_roce_role_tx_status.data;
