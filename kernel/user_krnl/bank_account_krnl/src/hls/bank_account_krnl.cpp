@@ -1,5 +1,14 @@
 #include "util.h"
 
+#define TP_CHECK 0
+/*
+
+    TODO: Remove replica states from replication_engine_fsm. Only leader issues smr commands. 
+    In mem_manager poll current log position, then if none zero and greater than prop we have seen update value. 
+    Push prop number, fuo, and value up to smr. 
+
+*/
+
 void replication_engine_fsm(
 
     hls::stream<ProposedValue>& propose,
@@ -17,13 +26,11 @@ void replication_engine_fsm(
     #pragma HLS INTERFACE axis port = propose
     #pragma HLS INTERFACE axis port = prepare_req
     #pragma HLS INTERFACE axis port = prepare_rsp
-
     #pragma HLS INTERFACE axis port = acceptedValue_req
     #pragma HLS INTERFACE axis port = acceptedValue_rsq
     #pragma HLS INTERFACE axis port = updateLocalValue_req
 
 
-    //enum fsmStateType {INIT, LEADER_REPLICA, PROPOSE, READ_MIN_PROP_REQ, READ_MIN_PROP_RSP, WRITE_MIN_PROP_AND_READ_SLOT, CHECK_SLOTS, ACCEPT_WRITE, ACCEPT_DONE, REPLICA, REPLICA_CHECK};
     enum fsmStateType {INIT, LEADER_REPLICA, PROPOSE, PREPARE_REQUEST, PREPARE_REPLY, ACCEPT, REPLICA, REPLICA_CHECK};
     static fsmStateType state = INIT; 
     static int leader = 0; 
@@ -48,7 +55,7 @@ void replication_engine_fsm(
     case LEADER_REPLICA:
         if (myBoardNum == leader)
             state = PROPOSE; 
-        else 
+        else if (myBoardNum > 12)
             state = REPLICA; 
         break;
 
@@ -130,28 +137,18 @@ void replication_engine_fsm(
 
 
 void log_handler_fsm(
-    // hls::stream<ap_uint<32>>& minProp_req,
-    // hls::stream<ap_uint<32>>& minProp_rsp,
-    // hls::stream<ap_uint<32>>& writeNewProp_req,
-    // hls::stream<LogEntry>& readSlots_req,
-    // hls::stream<LogEntry>& readSlots_rsp, 
 
     hls::stream<ap_uint<32>>& prepare_req,
     hls::stream<LogEntry>& prepare_rsp, 
     hls::stream<LogEntry>& writeSlot_req,
-    
     hls::stream<ap_uint<32>>& acceptedValue_req,
     hls::stream<updateLocalValue>& acceptedValue_rsq,
-
     hls::stream<ap_uint<32>>& minPropReadBram_req,
     hls::stream<ap_uint<32>>& minPropReadBram_rsp,
-
     hls::stream<LogEntry>& readSlotsReadBram_req,
     hls::stream<LogEntry>& readSlotsReadBram_rsp,
-
     hls::stream<ap_uint<32>>& logReadBram_req,
     hls::stream<ap_uint<64>>& logReadBram_rsp,
-
     hls::stream<ap_uint<256>>& m_axis_tx_meta, 
     hls::stream<ap_uint<64>>& m_axis_tx_data,
 
@@ -328,8 +325,6 @@ void smr(
     hls::stream<ap_uint<32>>& minPropReadBram_rsp,
     int myBoardNum, 
     int num_nodes
-    //int *network_ptr 
-    //int* reply
 ) {
     static int localValues[SYNC_GROUPS];
 
@@ -338,15 +333,11 @@ void smr(
     static hls::stream<ap_uint<32>> writeNewProp_req("write_new_prop_request");
     static hls::stream<LogEntry> readSlots_req("read_slot_request");  
     static hls::stream<LogEntry> readSlots_rsp("read_slot_response"); 
-
     static hls::stream<ap_uint<32>> prepare_req;
     static hls::stream<LogEntry> prepare_rsp;
-
     static hls::stream<LogEntry> writeSlot_req("write_slot_request");
-
     static hls::stream<ap_uint<32>> acceptedValue_req("accepted_value_request");
     static hls::stream<updateLocalValue> acceptedValue_rsq("accepted_value_response"); 
-
     static hls::stream<updateLocalValue> updateLocalValue_req;  
     static updateLocalValue update; 
     static int permissible; 
@@ -363,7 +354,6 @@ void smr(
         updateLocalValue_req,
         myBoardNum,
         num_nodes
-        //reply
     );
 
     log_handler_fsm(
@@ -372,23 +362,16 @@ void smr(
         writeSlot_req,
         acceptedValue_req,
         acceptedValue_rsq,
-
         minPropReadBram_req,
         minPropReadBram_rsp,
-
         readSlotsReadBram_req,
         readSlotsReadBram_rsp,
         logReadBram_req,
         logReadBram_rsp,
-
-
         m_axis_tx_meta,
         m_axis_tx_data,
-
         myBoardNum,
-        num_nodes
-        //reply
-        //network_ptr    
+        num_nodes  
     );
 
     //Update from Conflicting Method Calls
@@ -531,21 +514,23 @@ void bank(
     static hls::stream<ap_uint<64>> smr_tx_data; 
     static hls::stream<ap_uint<256>> ncc_tx_meta; 
     static hls::stream<ap_uint<64>> ncc_tx_data;
+    static hls::stream<ap_uint<256>> fin_sig_tx_meta; 
+    static hls::stream<ap_uint<64>> fin_sig_tx_data;
     #pragma HLS STREAM depth=128 variable=smr_tx_meta
     #pragma HLS STREAM depth=128 variable=smr_tx_data
     #pragma HLS STREAM depth=64 variable=ncc_tx_meta
     #pragma HLS STREAM depth=64 variable=ncc_tx_data
+    #pragma HLS STREAM depth=16 variable=fin_sig_tx_meta
+    #pragma HLS STREAM depth=16 variable=fin_sig_tx_data
 
     static int counter = 0; 
     static int debug_counter = 0; 
     static bool read_op = true; 
     static int inital_value = 100000; 
 
-    //while (debug_counter < debug_exe && counter < num_ops) {
     while(counter < num_ops) {
-        //reply_bank[0] = debug_counter; 
-        // reply_bank[1] = counter; 
-        if (read_op) {
+
+        if (read_op && counter < num_ops) {
             switch(ops[counter]) {
 
                 case 0: {
@@ -576,7 +561,8 @@ void bank(
             
         }
 
-        smr(smr_finished,
+        smr(
+            smr_finished,
             proposed,
             smr_permissble_req,
             smr_permissible_rsp, 
@@ -592,8 +578,7 @@ void bank(
             minPropReadBram_rsp,
             myBoardNum,
             num_nodes
-            //m_axi_reply
-            );
+        );
 
         crdt_counter(
             ncc_finished,
@@ -606,10 +591,11 @@ void bank(
             num_nodes
         );
 
-        meta_merger( smr_tx_meta, 
-                ncc_tx_meta, 
-                m_axis_tx_meta
-                );
+        meta_merger( 
+            smr_tx_meta, 
+            ncc_tx_meta, 
+            m_axis_tx_meta
+        );
 
         data_merger(
             smr_tx_data,
@@ -648,25 +634,53 @@ void bank(
             counter++; 
         }
 
-        debug_counter++; 
     }
+
+    // #if TP_CHECK
+    // if (counter == num_ops && myBoardNum == 0) {
+    //     int j=0; 
+    //     int qpn_tmp=myBoardNum*(num_nodes-1);
+    //     while (j<num_nodes){
+    //         if(j!=myBoardNum){
+    //             if(!m_axis_tx_meta.full() && !m_axis_tx_data.full()) { 
+    //                 rdma_write(
+    //                     qpn_tmp,
+    //                     0,
+    //                     0,
+    //                     0x8,
+    //                     (ap_uint<64>) debug_exe,
+    //                     fin_sig_tx_meta, 
+    //                     fin_sig_tx_data
+    //                     );
+    //                 j++;
+    //                 qpn_tmp++;
+    //             }
+    //         } else {
+    //             j++;
+    //         }
+    //         meta_converter(fin_sig_tx_meta, m_axis_tx_meta);
+    //         data_converter(fin_sig_tx_data, m_axis_tx_data);
+    //     }
+    // }
+    // #endif
 
 }
 
-void mem_manager(  int *network_ptr, 
-                        int *reply, 
-                        int node_num, 
-                        int board_num, 
-                        int query_num, 
-                        int exe, 
-                        hls::stream<ap_uint<32>>& axis_mem_request,
-                        hls::stream<ap_uint<32>>& minPropReadBram_req,
-                        hls::stream<ap_uint<32>>& minPropReadBram_rsp,
-                        hls::stream<LogEntry>& readSlotsReadBram_req,
-                        hls::stream<LogEntry>& readSlotsReadBram_rsp,
-                        hls::stream<ap_uint<32>>& logReadBram_req,
-                        hls::stream<ap_uint<64>>& logReadBram_rsp
-                    ){
+void mem_manager(  
+                    volatile int *network_ptr, 
+                    int *reply, 
+                    int node_num, 
+                    int board_num, 
+                    int query_num, 
+                    int exe, 
+                    hls::stream<ap_uint<32>>& axis_mem_request,
+                    hls::stream<ap_uint<32>>& minPropReadBram_req,
+                    hls::stream<ap_uint<32>>& minPropReadBram_rsp,
+                    hls::stream<LogEntry>& readSlotsReadBram_req,
+                    hls::stream<LogEntry>& readSlotsReadBram_rsp,
+                    hls::stream<ap_uint<32>>& logReadBram_req,
+                    hls::stream<ap_uint<64>>& logReadBram_rsp
+                ){
 
 
     #pragma HLS INTERFACE axis port = axis_mem_request
@@ -695,32 +709,20 @@ void mem_manager(  int *network_ptr,
     static int minProp = 0; 
     static ap_uint<64> maxPropNumber = 0; 
     static int propNum, propValue;  
-    // static int bram_minPropFifos[64];
-    // //#pragma HLS array_partition variable=bram_minPropFifos complete dim=1
-    // static int bram_slotFifos[128];
-    // //#pragma HLS array_partition variable=bram_slotFifos complete dim=1
-    // static int bram_Log[25000];
-    //#pragma HLS array_partition variable=bram_Log complete dim=1
+    static bool check_throughput = true; 
 
+  
     while (query_cnt<query_num) { 
-    //&& exe_cnt < exe){
-
-        // reply[0] = internal_clock; 
-        // reply[1] = query_cnt;
         exe_cnt++; 
-
         internal_clock++;
+
         if(!axis_mem_request.empty()){
 
             axis_mem_request.read(tmp_local_counter);
             query_cnt++;
-            
-            // reply[2] = 111;
+    
             reply[29] = bram_counter;
-            // reply[4] = internal_clock; 
-            // reply[5] = query_cnt;
             local_counter=tmp_local_counter;
-
         } 
         
         if (!minPropReadBram_req.empty() && !minPropReadBram_rsp.full()) {
@@ -733,12 +735,6 @@ void mem_manager(  int *network_ptr,
                     minProp = temp; 
                 } 
             }
-
-            // reply[6] = 222;
-            // reply[7] = minProp + 1; 
-            // reply[8] = internal_clock; 
-            // reply[9] = query_cnt;
-
             minPropReadBram_rsp.write(minProp);
 
         } 
@@ -760,17 +756,10 @@ void mem_manager(  int *network_ptr,
             }
 
             if (maxPropNumber.range(31,0) != 0) {
-                // reply[11] = 4444; 
                 readSlotsReadBram_rsp.write(LogEntry(maxPropNumber.range(31,0), maxPropNumber.range(63, 32), true));
             } else {
-                // reply[12] = 5555; 
                 readSlotsReadBram_rsp.write(LogEntry(slotIndex.propVal, 0));
             }
-
-            // reply[10] = 333;
-            // reply[11] = 0; 
-            // reply[12] = internal_clock; 
-            // reply[13] = query_cnt;
 
         } 
         
@@ -782,10 +771,6 @@ void mem_manager(  int *network_ptr,
             propValue = network_ptr[LOG_BASE_PTR + LOG_MIN_PROP_PTR_LEN + slotRead%NUM_SLOTS + 1];
             slot.range(63, 32) = propValue; 
             slot.range(31, 0) = propNum;
-            // reply[14] = 444;
-            // reply[15] = 0; 
-            // reply[16] = internal_clock; 
-            // reply[17] = query_cnt;
             logReadBram_rsp.write(slot);
 
         }
@@ -793,8 +778,6 @@ void mem_manager(  int *network_ptr,
         if(internal_clock==update_period){
             internal_clock=0;
             remote_counter=0;
-
-            // reply[6] = 555;
 
             for (int i=0; i<node_num; i++){
                 if(i!=board_num){
@@ -806,26 +789,17 @@ void mem_manager(  int *network_ptr,
             bram_counter = remote_counter + local_counter;
         }
 
-
-        // if (internal_clock % 5 == 0) {
-        //     if (leader == board_num) {
-        //         for (int i = 0; i < 64; i++) {
-        //             //#pragma HLS UNROLL factor=32
-        //             bram_minPropFifos[i] = network_ptr[LOG_BASE_PTR + i];
-        //         }
-        //         for (int i = 0; i < 128; i++) {
-        //             //#pragma HLS UNROLL factor=32
-        //             bram_slotFifos[i] = network_ptr[LOG_BASE_PTR + LOG_MIN_PROP_PTR_LEN + LOG_LOCAL_LOG_PTR_LEN + i];
-        //         }
-        //     }  else  {
-        //         for (int i = 0; i < 25000; i++) {
-        //             //#pragma HLS UNROLL factor = 32
-        //             bram_Log[i] =  network_ptr[LOG_BASE_PTR + LOG_MIN_PROP_PTR_LEN + i];
-        //         }
-        //     }
-        // }
-
     }
+
+    #if TP_CHECK
+    static int fin_sig_found = false; 
+    while (query_cnt == query_num && board_num != 0 && !fin_sig_found) {
+        if (network_ptr[LOG_BASE_PTR] == exe) {
+            fin_sig_found = true; 
+        }
+    }
+    #endif
+
 }
 
 void bank_account_krnl(
@@ -836,9 +810,9 @@ void bank_account_krnl(
     int* ops, 
     int* amount, 
     int num_ops, 
-    int* reply_bank,
+    int* reply_bank, 
     int* reply_bram, 
-    int* network_ptr,
+    volatile int* network_ptr,
     int num_nodes,
     int debug_exe,
     int query_num
@@ -862,6 +836,7 @@ void bank_account_krnl(
     static hls::stream<LogEntry> readSlotsReadBram_rsp;
     static hls::stream<ap_uint<32>> logReadBram_req;
     static hls::stream<ap_uint<64>> logReadBram_rsp;
+    static hls::stream<bool> throughput;
     #pragma HLS STREAM depth=8 variable=minPropReadBram_req
     #pragma HLS STREAM depth=8 variable=minPropReadBram_rsp
     #pragma HLS STREAM depth=8 variable=readSlotsReadBram_req
@@ -876,44 +851,43 @@ void bank_account_krnl(
         s_axis_tx_status.read(status);
     }
 
-    #pragma HLS dataflow
+    #pragma HLS dataflow 
 
+    {
+        bank(
+            m_axis_tx_meta,
+            m_axis_tx_data,
+            query_mem_req,
+            minPropReadBram_req,
+            minPropReadBram_rsp,
+            readSlotsReadBram_req,
+            readSlotsReadBram_rsp,
+            logReadBram_req,
+            logReadBram_rsp,
+            myBoardNum,
+            ops,
+            amount,
+            num_ops,
+            reply_bank,
+            num_nodes,
+            bank_debug_exe
+        );
 
-
-    bank(
-        m_axis_tx_meta,
-        m_axis_tx_data,
-        query_mem_req,
-        minPropReadBram_req,
-        minPropReadBram_rsp,
-        readSlotsReadBram_req,
-        readSlotsReadBram_rsp,
-        logReadBram_req,
-        logReadBram_rsp,
-        myBoardNum,
-        ops,
-        amount,
-        num_ops,
-        reply_bank,
-        num_nodes,
-        bank_debug_exe
-    );
-
-    mem_manager(
-        network_ptr,
-        reply_bram,
-        num_nodes,
-        myBoardNum,
-        query_num,
-        bram_debug_exe,
-        query_mem_req,
-        minPropReadBram_req,
-        minPropReadBram_rsp,
-        readSlotsReadBram_req,
-        readSlotsReadBram_rsp,
-        logReadBram_req,
-        logReadBram_rsp
-    );
-
+        mem_manager(
+            network_ptr,
+            reply_bram,
+            num_nodes,
+            myBoardNum,
+            query_num,
+            bram_debug_exe,
+            query_mem_req,
+            minPropReadBram_req,
+            minPropReadBram_rsp,
+            readSlotsReadBram_req,
+            readSlotsReadBram_rsp,
+            logReadBram_req,
+            logReadBram_rsp
+        );
+    }
 }
 

@@ -271,7 +271,7 @@ int main(int argc, char **argv) {
 
     printf("durationUs:%f\n",durationUs);
     printf("replication_latency:%f\n",durationUs/num_ops);
-
+    printf("Throughput:%f\n",NUM_OPS/durationUs);
     // printf("REP\n");
     // for (int j = 0; j < 30; j++) {
     //     printf("%d : bank %d bram %d, \n", j, reply_bank[j], reply_bram[j]);

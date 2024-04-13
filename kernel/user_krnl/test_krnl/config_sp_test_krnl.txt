@@ -1,7 +1,7 @@
 [connectivity]
 #nk=cmac_krnl:1:cmac_krnl_1
 #nk=rocetest_krnl:1:rocetest_krnl_1
-#nk=consensus_krnl:1:application_krnl_1
+#nk=consensus_krnl:1:test_krnl_1
 
 slr=cmac_krnl_1:SLR2
 
@@ -10,15 +10,15 @@ sp=rocetest_krnl_1.m00_axi:HBM[0]
 sc=cmac_krnl_1.axis_net_rx:rocetest_krnl_1.s_axis_net_rx
 sc=rocetest_krnl_1.m_axis_net_tx:cmac_krnl_1.axis_net_tx
 
-sc=application_krnl_1.m_axis_tx_meta:rocetest_krnl_1.s_axis_role_tx_meta
-sc=application_krnl_1.m_axis_tx_data:rocetest_krnl_1.s_axis_role_tx_data
-sc=rocetest_krnl_1.m_axis_role_tx_status:application_krnl_1.s_axis_tx_status
-#sc=application_krnl_1.m_axis_qp_conn_interface:rocetest_krnl_1.s_axis_qp_interface
+sc=test_krnl_1.m_axis_tx_meta:rocetest_krnl_1.s_axis_role_tx_meta
+sc=test_krnl_1.m_axis_tx_data:rocetest_krnl_1.s_axis_role_tx_data
+sc=rocetest_krnl_1.m_axis_role_tx_status:test_krnl_1.s_axis_tx_status
+#sc=test_krnl_1.m_axis_qp_conn_interface:rocetest_krnl_1.s_axis_qp_interface
 
-#sp=application_krnl_1.m_axi_reply:HBM[1]
-#sp=application_krnl_1.network_ptr:HBM[1]
+#sp=test_krnl_1.m_axi_reply:HBM[1]
+#sp=test_krnl_1.network_ptr:HBM[1]
 
 
 [debug]
-chipscope=application_krnl_1:m_axis_tx_meta
-chipscope=application_krnl_1:m_axis_tx_data
+chipscope=test_krnl_1:m_axis_tx_meta
+chipscope=test_krnl_1:m_axis_tx_data

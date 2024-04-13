@@ -83,81 +83,58 @@ void rdma_write(
 }
 
 extern "C" {
-    void application_krnl(
+    void test_krnl(
         hls::stream<pkt256>& m_axis_tx_meta, 
         hls::stream<pkt64>& m_axis_tx_data,
         hls::stream<pkt64>& s_axis_tx_status,
-        //hls::stream<pkt256>& m_axis_qp_conn_interface, 
-        int myBoardNum
-        int *m_axi_reply,
-        int *ops, 
-        int *mem_lloc, 
-        int *mem_rloc, 
-        int *mem_len, 
-        int *mem_val, 
-        int ops_num,
+        int myBoardNum,
         int *network_ptr
     ) {
 
-        //#pragma HLS INTERFACE ap_ctrl_chain port=return 
         #pragma HLS INTERFACE axis port = m_axis_tx_meta
         #pragma HLS INTERFACE axis port = m_axis_tx_data
         #pragma HLS INTERFACE axis port = s_axis_tx_status
+        ap_uint<64> counter = 1; 
+        pkt64 status; 
+        if (!s_axis_tx_status.empty()) {
+            s_axis_tx_status.read(status);
+        }
+        #pragma HLS DATAFLOW
 
-        static int counter = 0; 
-
-
-        while (counter < ops_num) {
-
-            if (ops[counter]==1) {
-                int j=0; 
-                int qpn_tmp=myBoardNum*(NUM_NODES-1);
-                while (j<NUM_NODES){
-                    if(j!=myBoardNum){
-                        if(!m_axis_tx_meta.full() && !m_axis_tx_data.full()){
-                            rdma_write(
-                                qpn_tmp,
-                                0,
-                                mem_rloc[counter],
-                                mem_len[counter],
-                                mem_val[counter],
-                                m_axis_tx_meta, 
-                                m_axis_tx_data
-                                );
-                            j++;
-                            qpn_tmp++;
-                        }
-                    }
-                    else {
-                        j++;
-                    }
-                }
-            } else if (ops[counter]==0) {
-                int j=0; 
-                int qpn_tmp=myBoardNum*(NUM_NODES-1);
-                while (j<NUM_NODES){
-                    if(j!=myBoardNum) {
-                        if(!m_axis_tx_meta.full()){
-                            rdma_read(
-                                qpn_tmp,
-                                mem_lloc[counter],
-                                mem_rloc[counter],
-                                mem_len[counter],
-                                m_axis_tx_meta 
-                                );
-                            j++;
-                            qpn_tmp++;
-
-                        }
-                    }
-                    else {
-                        j++;
-                    }
-                }
+        while (counter < 1000000) {
+            if(!m_axis_tx_meta.full() && !m_axis_tx_data.full()) {
+                rdma_write(
+                    0,
+                    0,
+                    0,
+                    0x8,
+                    counter,
+                    m_axis_tx_meta, 
+                    m_axis_tx_data
+                );
             }
+            if(!m_axis_tx_meta.full()){
+                rdma_read(
+                    0,
+                    counter * 4,
+                    0,
+                    0x4,
+                    m_axis_tx_meta
+                );
+            }
+
+            counter++; 
+
+            // if (!write && !read) {
+            //     write = true;
+            //     read = true; 
+            //     counter++; 
+            // }
+        
         }
     }
 }
+
 
 
 

@@ -265,7 +265,7 @@ int main(int argc, char **argv) {
     OCL_CHECK(err, err = q.finish());
     auto end = std::chrono::high_resolution_clock::now();
     durationUs = (std::chrono::duration_cast<std::chrono::nanoseconds>(end-start).count() / 1000.0);
-    sleep(10);
+    sleep(25);
 
     /*===============================================================OUTPUT===============================================================*/
 
@@ -277,35 +277,36 @@ int main(int argc, char **argv) {
 
     printf("durationUs:%f\n",durationUs);
     printf("replication_latency:%f\n",durationUs/num_ops);
+    printf("Throughput:%f\n",NUM_OPS/durationUs);
 
-    // printf("REP\n");
-    // for (int j = 0; j < 30; j++) {
-    //     printf("%d : bank %d bram %d, \n", j, reply_bank[j], reply_bram[j]);
-    // }
-    // printf("\n");
+    printf("REP\n");
+    for (int j = 0; j < 30; j++) {
+        printf("%d : bank %d bram %d, \n", j, reply_bank[j], reply_bram[j]);
+    }
+    printf("\n");
 
-    // printf("NET\nHB: ");
-    // for (int j = 0; j < 12 + 2 + 55; j++) {
-    //     printf("%d ", network_ptr0[j]);
-    //     if (j == 11) printf("\nMIN PROP: ");
-    // }
-    // printf("\n");
-    // printf("\nLOCAL LOG: ");
-    // for (int j = 12 + 2 + 55; j < 12 + 2 + 55 + 100; j++) {
-    //     printf("%d ", network_ptr0[j]);
-    // }
+    printf("NET\nHB: ");
+    for (int j = 0; j < 12 + 2 + 55; j++) {
+        printf("%d ", network_ptr0[j]);
+        if (j == 11) printf("\nMIN PROP: ");
+    }
+    printf("\n");
+    printf("\nLOCAL LOG: ");
+    for (int j = 12 + 2 + 55; j < 12 + 2 + 55 + 100; j++) {
+        printf("%d ", network_ptr0[j]);
+    }
 
-    // printf("...\n");
-    // printf("\nLOG FIFOs: ");
-    // for (int j = 12 + 2 + 55 + 25000; j < 12 + 2 + 55 + 25000 + 110; j++) {
-    //     printf("%d ", network_ptr0[j]);
-    // }
-    // printf("\n");
+    printf("...\n");
+    printf("\nLOG FIFOs: ");
+    for (int j = 12 + 2 + 55 + 25000; j < 12 + 2 + 55 + 25000 + 110; j++) {
+        printf("%d ", network_ptr0[j]);
+    }
+    printf("\n");
 
-    // printf("DEPOSITS: \n");
-    // for (int i = 25179; i < 25179 + 12; i++) {
-    //     printf("%d ", network_ptr0[i]);
-    // }
+    printf("DEPOSITS: \n");
+    for (int i = 25179; i < 25179 + 12; i++) {
+        printf("%d ", network_ptr0[i]);
+    }
     printf("\n");
 
     std::cout << "EXIT recorded" << std::endl;
