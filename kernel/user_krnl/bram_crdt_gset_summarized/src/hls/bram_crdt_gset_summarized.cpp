@@ -6,7 +6,6 @@
 #include <ap_fixed.h>
 #include "../../../../common/include/communication.hpp"
 
-
 void rdma_write(
     int s_axi_lqpn,
     ap_uint<64> s_axi_laddr,
@@ -46,7 +45,7 @@ void rdma_write(
     
 }
 
-void crdt_gset_summarized(
+void crdt_gset(
     int op_num,
     int *ops,
     int s_axi_lqpn,
@@ -69,7 +68,7 @@ void crdt_gset_summarized(
     static int op_cnt = 0; 
 
     pkt512 tmp_status;
-    static ap_uint<64> gset[5000];
+    //static ap_uint<64> gset[5000];
     static ap_uint<64> set_index=0;
 
     static ap_uint<64> log_index=0;
@@ -79,9 +78,8 @@ void crdt_gset_summarized(
 
     static ap_uint<64> current_set_el=0;
     static ap_uint<64> write_value=0;
-    static int summarizition_depth=2;
-    static int summarizition_counter=0;
-    int uprange, downrange;
+    static int summarizing_depth=2;
+    static int summarizing_counter=0;
 
     while(op_cnt<op_num){
 
@@ -124,18 +122,22 @@ void crdt_gset_summarized(
             break;
 
             case UPDATE_SET: 
-                if(summarizition_counter==summarizition_depth){
-                    if(!update_set_request.full()){
-                        update_set_request.write(current_set_el);
+                
+                if(!update_set_request.full()){
+                    
+                    if(summarizing_counter==(summarizing_depth-1)){
+                        write_value.range(31,16)=current_set_el.range(15,0);
+                        update_set_request.write(write_value);
                         int j=0; 
                         int qpn_tmp=board_num*(node_num-1);
+                    
                         while (j<node_num){
                             if(j!=board_num){
                                 if(!m_axis_tx_meta.full() && !m_axis_tx_data.full()){
                                     rdma_write(
                                         qpn_tmp,
                                         s_axi_laddr,
-                                        s_axi_raddr+(((board_num*4500)+write_counter)*4),
+                                        s_axi_raddr+(((board_num*9000)+write_counter)*4),
                                         s_axi_len,
                                         write_value,
                                         m_axis_tx_meta, 
@@ -152,23 +154,16 @@ void crdt_gset_summarized(
                             }
                         }
                     write_counter++;
-                    state = OPERATION_FETCH; 
-                    op_cnt++;
-                    summarizition_counter=0;
-                } 
-            } 
-            else{
-                if(!update_set_request.full()){
-                    update_set_request.write(current_set_el);
-                    
-                    downrange=summarizition_counter*16;
-                    uprange=downrange+15;
-                    write_value.range(uprange,downrange)=current_set_el;
-                    state = OPERATION_FETCH; 
-                    op_cnt++;
-                    summarizition_counter++;
+                    summarizing_counter=0;
                 }
-            } 
+                else{
+                    write_value.range(15,0)= current_set_el.range(15,0);
+                    summarizing_counter++;
+                }
+                op_cnt++;
+                state = OPERATION_FETCH; 
+                
+            }    
           
             break; 
         }
@@ -192,9 +187,11 @@ void update_local_gset(int write_num, hls::stream<ap_uint<64> >& update_set_requ
         //internal_clock++;
         if(!update_set_request.empty()){
             update_set_request.read(current_set_el);
-            local_gset[local_gset_cnt]=current_set_el;
+            local_gset[local_gset_cnt]=current_set_el.range(15,0);
             local_gset_cnt++;
-            write_cnt++;
+            local_gset[local_gset_cnt]=current_set_el.range(31,16);
+            local_gset_cnt++;
+            write_cnt=write_cnt+2;
         }
         if(local_gset_sent_index<local_gset_cnt){
             if(!local_set_e.full()){
@@ -208,7 +205,7 @@ void update_local_gset(int write_num, hls::stream<ap_uint<64> >& update_set_requ
     break_signal.write(1111);
 
 }
-void update_gset(ap_uint<64> *network_ptr, int node_num, int board_num, hls::stream<ap_uint<64> >& local_set_e, hls::stream<ap_uint<64> >& break_signal , hls::stream<ap_uint<64> >& set_size_request){
+void update_gset(int *network_ptr, int node_num, int board_num, hls::stream<ap_uint<64> >& local_set_e, hls::stream<ap_uint<64> >& break_signal , hls::stream<ap_uint<64> >& set_size_request){
 
     static ap_uint<64> tmp_set_size=0;
     static ap_uint<64> tmp_read;
@@ -216,10 +213,14 @@ void update_gset(ap_uint<64> *network_ptr, int node_num, int board_num, hls::str
     static int gset [25000]={0};
     bool find=false;
     bool break_flag=false;
-    int uprange, downrange;
-    static int summarizition_depth=2;
 
-    while(!break_flag){
+    
+    static bool  check_statrt [8]= {false};
+    static bool  check_finish [8]= {false};
+    static int check_throughput_count=0; 
+
+    while((!break_flag)){
+
         if(!break_signal.empty()){
             ap_uint<64> tmp;
             break_signal.read(tmp);
@@ -227,24 +228,31 @@ void update_gset(ap_uint<64> *network_ptr, int node_num, int board_num, hls::str
         }
         for (int i=0; i<node_num; i++){
             if(i!=board_num){
-                tmp_read=network_ptr[(i*4500)+log_index[i]];
+                tmp_read=network_ptr[(i*9000)+log_index[i]];
                 if(tmp_read!=0){
                     log_index[i]++;
-                    for (int k=0; k<summarizition_depth; k++){
-                        downrange=k*16;
-                        uprange=downrange+15;
-                        tmp_read=tmp_read.range(uprange,downrange);
-                        find=false;
-                        for(int j=0; j<tmp_set_size; j++){
-                            if(tmp_read== gset[j]){
-                                find= true;
-                                break;
-                            }
+                    find=false;
+                    for(int j=0; j<tmp_set_size; j++){
+                        if(tmp_read.range(15,0)== gset[j]){
+                            find= true;
+                            break;
                         }
-                        if(!find){
-                            gset[tmp_set_size]=tmp_read;
-                            tmp_set_size++;
+                    }
+                    if(!find){
+                        gset[tmp_set_size]=tmp_read.range(15,0);
+                        tmp_set_size++;
+                    }
+
+                    find=false;
+                    for(int j=0; j<tmp_set_size; j++){
+                        if(tmp_read.range(31,16)== gset[j]){
+                            find= true;
+                            break;
                         }
+                    }
+                    if(!find){
+                        gset[tmp_set_size]=tmp_read.range(31,16);
+                        tmp_set_size++;
                     }
                 }
             }
@@ -253,21 +261,28 @@ void update_gset(ap_uint<64> *network_ptr, int node_num, int board_num, hls::str
                     local_set_e.read(tmp_read);
                     if(tmp_read!=0){
                         log_index[i]++;
-                        for (int k=0; k<summarizition_depth; k++){
-                            downrange=k*16;
-                            uprange=downrange+15;
-                            tmp_read=tmp_read.range(uprange,downrange);
-                            find=false;
-                            for(int j=0; j<tmp_set_size; j++){
-                                if(tmp_read== gset[j]){
-                                    find= true;
-                                    break;
-                                }
+                        find=false;
+                        for(int j=0; j<tmp_set_size; j++){
+                            if(tmp_read.range(15,0)== gset[j]){
+                                find= true;
+                                break;
                             }
-                            if(!find){
-                                gset[tmp_set_size]=tmp_read;
-                                tmp_set_size++;
+                        }
+                        if(!find){
+                            gset[tmp_set_size]=tmp_read.range(15,0);
+                            tmp_set_size++;
+                        }
+
+                        find=false;
+                        for(int j=0; j<tmp_set_size; j++){
+                            if(tmp_read.range(31,16)== gset[j]){
+                                find= true;
+                                break;
                             }
+                        }
+                        if(!find){
+                            gset[tmp_set_size]=tmp_read.range(31,16);
+                            tmp_set_size++;
                         }
                     }
                 }
@@ -300,7 +315,7 @@ void handle_query(int *setsize, int query_num, hls::stream<ap_uint<256> >& axis_
 
 
 }
-void bram_mem_maneger_gset_summarized(ap_uint<64> *network_ptr, int *setsize, int node_num, int board_num, int query_num, int write_num, hls::stream<ap_uint<256> >& axis_mem_request, hls::stream<ap_uint<64> >& update_set_request){
+void bram_mem_maneger_gset(int *network_ptr, int *setsize, int node_num, int board_num, int query_num, int write_num, hls::stream<ap_uint<256> >& axis_mem_request, hls::stream<ap_uint<64> >& update_set_request){
 
     #pragma HLS dataflow
     static hls::stream<ap_uint<64> > set_size_request, local_set_e, break_signal;
@@ -310,6 +325,8 @@ void bram_mem_maneger_gset_summarized(ap_uint<64> *network_ptr, int *setsize, in
     update_gset(network_ptr, node_num, board_num, local_set_e, break_signal , set_size_request);
     
 }
+
+
 extern "C" {
 
     void bram_crdt_gset_summarized(
@@ -325,9 +342,10 @@ extern "C" {
         int op_num,
         int query_num,
         int write_num,
+        //ap_uint<512> *cyc_th,
         int *ops,
         int *crdt,
-        ap_uint<64> *network_ptr
+        int *network_ptr
         //int wait_cyc
         //ap_uint<512>* m_axi_status
     ) {
@@ -343,11 +361,11 @@ extern "C" {
         #pragma HLS dataflow
 
         static hls::stream<ap_uint<256> > axis_mem_request;
+        static hls::stream<ap_uint<64> > update_set_request;
 
-            
-            static hls::stream<ap_uint<64> > update_set_request;
+        //#pragma HLS STREAM depth=8 variable=update_set_request
 
-            crdt_gset_summarized(
+            crdt_gset(
                 op_num,
                 ops,
                 s_axi_lqpn,
@@ -362,9 +380,7 @@ extern "C" {
                 axis_mem_request,
                 update_set_request
                 );
-            bram_mem_maneger_gset_summarized(network_ptr, crdt, node_num, board_num, query_num, write_num, axis_mem_request, update_set_request);
-
-       
+            bram_mem_maneger_gset(network_ptr, crdt, node_num, board_num, query_num, write_num, axis_mem_request, update_set_request);
     }
 
 }

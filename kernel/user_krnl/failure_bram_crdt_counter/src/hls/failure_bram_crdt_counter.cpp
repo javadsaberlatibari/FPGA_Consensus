@@ -139,6 +139,8 @@ void crdt_counter(
                         }
                     }
                     else {
+                        if(node_failure[j]==true && j!=board_num)
+                            qpn_tmp++;
                         j++;
                     }
                 }

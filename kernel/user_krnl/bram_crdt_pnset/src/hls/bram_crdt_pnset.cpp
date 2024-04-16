@@ -197,7 +197,7 @@ void update_pnset(int *network_ptr, int node_num, int board_num, hls::stream<ap_
     static ap_uint<64> current_set_size=0;
     static ap_int<64> tmp_read;
     static int log_index[8]={0};
-    static int pnset [25000][1]={{0}};
+    static int pnset [25000][2]={{0}};
     //static int find_index=0;
     bool find=false;
     bool break_flag=false;

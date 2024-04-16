@@ -207,7 +207,12 @@ int main(int argc, char **argv) {
     uint32_t nOP   = std::stoi(argv[4]); //number of operations
     uint32_t wP   = std::stoi(argv[5]); //Write Percentage
     uint32_t qOP   = nOP-((nOP*wP)/100); //query operations added for Bram
-    uint32_t wOP  = (nOP*wP)/100;
+    uint32_t wOP;
+    int wOP_tmp= int((nOP*wP)/100);
+    if(wOP_tmp%2==1)
+        wOP=wOP_tmp-1;
+    else
+        wOP=wOP_tmp;
     int *operations;
     size_t size_in_bytes = 2000000 * sizeof(int);
     //uint32_t *operations = arr_ops;
@@ -218,6 +223,9 @@ int main(int argc, char **argv) {
     uint32_t ulen  = 0x00000008;
     uint32_t node_num  = N_node;
     uint32_t board_num  = 0x00000002;
+
+    uint32_t check_value  = 9;
+    uint32_t exe_time  = 0;
 
     OCL_CHECK(err, cl::Buffer buffer_op(context, CL_MEM_READ_ONLY, size_in_bytes, NULL, &err));
     
@@ -241,6 +249,8 @@ int main(int argc, char **argv) {
     OCL_CHECK(err, err = user_kernel.setArg(9, nOP));
     OCL_CHECK(err, err = user_kernel.setArg(10, qOP)); //added for Bram
     OCL_CHECK(err, err = user_kernel.setArg(11, wOP)); //added for Bram
+    //OCL_CHECK(err, err = user_kernel.setArg(12, check_value)); //added for Bram
+    //OCL_CHECK(err, err = user_kernel.setArg(13, exe_time)); //added for Bram
     OCL_CHECK(err, err = user_kernel.setArg(12, buffer_op));
     OCL_CHECK(err, err = user_kernel.setArg(13, buffer_r2));
     OCL_CHECK(err, err = user_kernel.setArg(14, buffer_r1));
@@ -259,9 +269,10 @@ int main(int argc, char **argv) {
     int rand_value=0;
     printf("testttttt %d------\n", ((nOP*wP)/100));
     printf("Write P: %d\n", wP);
-    while(j<((nOP*wP)/100)){
+
+    while(j<(wOP)-2){
         find=false;
-        rand_value= rand()%nOP;
+        rand_value= 1+ (rand()%(nOP-2));
         for(int i=0; i<k; i++){
             if(write_indexs[i]==rand_value){
                 find=true;
@@ -274,10 +285,11 @@ int main(int argc, char **argv) {
             k++;
             j++;
             //printf("testttttt %d------\n", rand_value);
-            operations[rand_value] = rand()%60000;
-            //operations[rand_value] = 1;
+            operations[rand_value] = rand()%1000000;
         }
     }
+    operations[0] = 1;
+    operations[nOP-1] = 9;
 
     OCL_CHECK(err, err = q.enqueueMigrateMemObjects({buffer_op}, 0 /* 0 means from host*/));
 
@@ -291,7 +303,7 @@ int main(int argc, char **argv) {
     printf("durationUs:%f\n",durationUs);
     printf("numberofop:%d\n",nOP);
     printf("response_time:%f\n",durationUs/nOP);
-    
+
     sleep(15);
     printf("Device->Host user kernel...\n");
     OCL_CHECK(err, err = q.enqueueMigrateMemObjects({buffer_r1}, CL_MIGRATE_MEM_OBJECT_HOST));
@@ -299,12 +311,13 @@ int main(int argc, char **argv) {
     OCL_CHECK(err, err = q.finish());
 
     printf("STATUS: %d\n", reply[0]);
-    
+
+
     for(int i=0; i<node_num; i++){
-        for (int j = (4500*i); j < ((4500*i)+100); j++){
-            printf("network at %d: %x\n", j, network_ptr0[j]);
-            if (j==(((4500*i)+100)-1))
-                printf("network at %d: %x\n", ((4500*(i+1))-1), network_ptr0[((4500*(i+1))-1)]);
+        for (int j = (9000*i); j < ((9000*i)+100); j++){
+            printf("network at %d: %d\n", j, network_ptr0[j]);
+            if (j==(((9000*i)+100)-1))
+                printf("network at %d: %d\n", ((9000*(i+1))-1), network_ptr0[((9000*(i+1))-1)]);
         }
     }
 

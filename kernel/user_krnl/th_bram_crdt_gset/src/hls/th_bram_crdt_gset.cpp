@@ -68,7 +68,7 @@ void crdt_gset(
     static int op_cnt = 0; 
 
     pkt512 tmp_status;
-    static ap_uint<64> gset[5000];
+    //static ap_uint<64> gset[5000];
     static ap_uint<64> set_index=0;
 
     static ap_uint<64> log_index=0;
@@ -157,73 +157,108 @@ void crdt_gset(
     }
 
 }
-void update_gset(int *network_ptr, int node_num, int board_num, int query_num, int write_num, int check_value, hls::stream<ap_uint<64> >& update_set_request, hls::stream<ap_uint<64> >& set_size_request){
+void update_local_gset(int write_num, hls::stream<ap_uint<64> >& update_set_request, hls::stream<ap_uint<64> >& local_set_e, hls::stream<ap_uint<64> >& break_signal){
 
-    static ap_uint<64> tmp_set_size=0;
-    static ap_uint<64> tmp_hbm;
+    //static ap_uint<64> tmp_set_size=0;
+    //static ap_uint<64> tmp_hbm;
     static int write_cnt=0;
-    static int log_index[8]={0};
-    static int gset [25000]={0};
+    //static int log_index[8]={0};
+    //static int gset [25000]={0};
+    static int local_gset [10000]={0};
+    static int local_gset_cnt=0;
+    static int local_gset_sent_index=0;
     static ap_uint<64> current_set_el=0;
-    bool find=false;
-    static int update_period=1000;
-    static ap_uint<512> internal_clock=0;
-    static int check_throughput_count=0;
-    static bool  check_finish [8]= {false};
+    //bool find=false;
 
-    while ((write_cnt<write_num)|| (check_throughput_count!=(node_num-1))){
-        internal_clock++;
+    while (write_cnt<write_num){
+        //internal_clock++;
         if(!update_set_request.empty()){
             update_set_request.read(current_set_el);
-            find=false;
-            for(int i=0; i<tmp_set_size; i++){
-                if(current_set_el== gset[i]){
-                    find= true;
-                    break;
-                }
-            }
-            if(!find){
-                gset[tmp_set_size]=current_set_el;
-                tmp_set_size++;
-            }
+            local_gset[local_gset_cnt]=current_set_el;
+            local_gset_cnt++;
             write_cnt++;
         }
-        if(internal_clock==update_period){
-            internal_clock=0;
-                    for (int i=0; i<node_num; i++){
-                        if(i!=board_num){
-                            tmp_hbm=network_ptr[(i*9000)+log_index[i]];
-                            if(tmp_hbm!=0){
-                                if(tmp_hbm==check_value){
-                                    if(!check_finish[i]){
-                                        check_finish[i]=true;
-                                        check_throughput_count++;
-                                    }
-                                }
-                                log_index[i]++;
-                                find=false;
-                                for(int j=0; j<tmp_set_size; j++){
-                                    if(tmp_hbm== gset[j]){
-                                        find= true;
-                                        break;
-                                    }
-                                }
-                                if(!find){
-                                    gset[tmp_set_size]=tmp_hbm;
-                                    tmp_set_size++;
-                                }
-                            }
-                        }
-                            //remote_counter = network_ptr[i] + remote_counter;
-                    }
-        }
-
-        if(!set_size_request.full()){
-            set_size_request.write(tmp_set_size);
+        if(local_gset_sent_index<local_gset_cnt){
+            if(!local_set_e.full()){
+                
+                local_set_e.write(local_gset[local_gset_sent_index]);
+                local_gset_sent_index++;
+            }
         }
 
     }
+    break_signal.write(1111);
 
+}
+void update_gset(int *network_ptr, int node_num, int board_num, int check_value, int execution_time, hls::stream<ap_uint<64> >& local_set_e, hls::stream<ap_uint<64> >& break_signal , hls::stream<ap_uint<64> >& set_size_request){
+
+    static ap_uint<64> tmp_set_size=0;
+    static ap_uint<64> tmp_read;
+    static int log_index[8]={0};
+    static int gset [25000]={0};
+    bool find=false;
+    bool break_flag=false;
+
+    
+    static bool  check_statrt [8]= {false};
+    static bool  check_finish [8]= {false};
+    static int check_throughput_count=0; 
+
+    while((!break_flag) || (check_throughput_count!=(node_num-1))){
+
+        if(!break_signal.empty()){
+            ap_uint<64> tmp;
+            break_signal.read(tmp);
+            break_flag= true;
+        }
+        for (int i=0; i<node_num; i++){
+            if(i!=board_num){
+                tmp_read=network_ptr[(i*9000)+log_index[i]];
+                if(tmp_read!=0){
+                    if(!check_finish[i]){
+                        if(tmp_read==check_value){
+                            check_finish[i]= true;
+                            check_throughput_count++;
+                        }
+                    }
+                    log_index[i]++;
+                    find=false;
+                    for(int j=0; j<tmp_set_size; j++){
+                        if(tmp_read== gset[j]){
+                            find= true;
+                            break;
+                        }
+                    }
+                    if(!find){
+                        gset[tmp_set_size]=tmp_read;
+                        tmp_set_size++;
+                    }
+                }
+            }
+            else{
+                if(!local_set_e.empty()){
+                    local_set_e.read(tmp_read);
+                    if(tmp_read!=0){
+                        log_index[i]++;
+                        find=false;
+                        for(int j=0; j<tmp_set_size; j++){
+                            if(tmp_read== gset[j]){
+                                find= true;
+                                break;
+                            }
+                        }
+                        if(!find){
+                            gset[tmp_set_size]=tmp_read;
+                            tmp_set_size++;
+                        }
+                    }
+                }
+            }
+        }
+        if(!set_size_request.full()){
+            set_size_request.write(tmp_set_size);
+        }
+    }
 }
 void handle_query(int *setsize, int query_num, hls::stream<ap_uint<256> >& axis_mem_request, hls::stream<ap_uint<64> >& set_size_request){
 
@@ -247,13 +282,14 @@ void handle_query(int *setsize, int query_num, hls::stream<ap_uint<256> >& axis_
 
 
 }
-void bram_mem_maneger_gset(int *network_ptr, int *setsize, int node_num, int board_num, int query_num, int write_num, int check_value, hls::stream<ap_uint<256> >& axis_mem_request, hls::stream<ap_uint<64> >& update_set_request){
+void bram_mem_maneger_gset(int *network_ptr, int *setsize, int node_num, int board_num, int query_num, int write_num, int check_value, int execution_time, hls::stream<ap_uint<256> >& axis_mem_request, hls::stream<ap_uint<64> >& update_set_request){
 
     #pragma HLS dataflow
-    static hls::stream<ap_uint<64> > set_size_request;
+    static hls::stream<ap_uint<64> > set_size_request, local_set_e, break_signal;
 
     handle_query(setsize, query_num, axis_mem_request, set_size_request);
-    update_gset(network_ptr, node_num, board_num, query_num, write_num, check_value, update_set_request, set_size_request);
+    update_local_gset(write_num, update_set_request, local_set_e, break_signal);
+    update_gset(network_ptr, node_num, board_num, check_value, execution_time, local_set_e, break_signal , set_size_request);
     
 }
 
@@ -274,6 +310,8 @@ extern "C" {
         int query_num,
         int write_num,
         int check_value, 
+        int execution_time, 
+        //ap_uint<512> *cyc_th,
         int *ops,
         int *crdt,
         int *network_ptr
@@ -292,9 +330,9 @@ extern "C" {
         #pragma HLS dataflow
 
         static hls::stream<ap_uint<256> > axis_mem_request;
+        static hls::stream<ap_uint<64> > update_set_request;
 
-            
-            static hls::stream<ap_uint<64> > update_set_request;
+        //#pragma HLS STREAM depth=8 variable=update_set_request
 
             crdt_gset(
                 op_num,
@@ -311,7 +349,7 @@ extern "C" {
                 axis_mem_request,
                 update_set_request
                 );
-            bram_mem_maneger_gset(network_ptr, crdt, node_num, board_num, query_num, write_num, check_value, axis_mem_request, update_set_request);
+            bram_mem_maneger_gset(network_ptr, crdt, node_num, board_num, query_num, write_num, check_value, execution_time, axis_mem_request, update_set_request);
     }
 
 }
