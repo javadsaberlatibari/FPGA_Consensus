@@ -231,6 +231,7 @@ ipx::associate_bus_interfaces -busif axis_net_tx -clock ap_clk [ipx::current_cor
 
 puts "TEMPORARY: Not packaging reference clock as diff clock due to post-System Linker validate error"
 
+report_ip_status -license_status
 
 set_property xpm_libraries {XPM_CDC XPM_MEMORY XPM_FIFO} [ipx::current_core]
 set_property supported_families { } [ipx::current_core]

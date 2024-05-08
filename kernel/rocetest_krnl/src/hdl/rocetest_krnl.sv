@@ -15,6 +15,8 @@ module rocetest_krnl #(
   parameter integer C_M_AXIS_NET_TX_TDATA_WIDTH         = 512,
   parameter integer C_S_AXIS_ROLE_TX_META_TDATA_WIDTH   = 256,
   parameter integer C_S_AXIS_ROLE_TX_DATA_TDATA_WIDTH   = 512,
+  parameter integer C_S_AXIS_ROLE_PERMISSION_SWITCH_TDATA_WIDTH   = 128,
+  parameter integer C_M_AXIS_ROLE_PERMISSION_SWITCH_ACK_TDATA_WIDTH   = 128,
   parameter integer C_M_AXIS_ROLE_TX_STATUS_TDATA_WIDTH = 512
 )
 (
@@ -91,12 +93,35 @@ module rocetest_krnl #(
   input  wire [C_S_AXIS_ROLE_TX_DATA_TDATA_WIDTH-1:0]     s_axis_role_tx_data_tdata   ,
   input  wire [C_S_AXIS_ROLE_TX_DATA_TDATA_WIDTH/8-1:0]   s_axis_role_tx_data_tkeep   ,
   input  wire                                             s_axis_role_tx_data_tlast   ,
+
+  // AXI4-Stream (slave) interface s_axis_role_permission_switch
+  input  wire                                             s_axis_role_permission_switch_tvalid  ,
+  output wire                                             s_axis_role_permission_switch_tready  ,
+  input  wire [C_S_AXIS_ROLE_PERMISSION_SWITCH_TDATA_WIDTH-1:0]     s_axis_role_permission_switch_tdata   ,
+  input  wire [C_S_AXIS_ROLE_PERMISSION_SWITCH_TDATA_WIDTH/8-1:0]   s_axis_role_permission_switch_tkeep   ,
+  input  wire                                             s_axis_role_permission_switch_tlast   ,
+
+    // AXI4-Stream (master) interface m_axis_role_permission_switch_ack
+  output  wire                                             m_axis_role_permission_switch_ack_tvalid  ,
+  input wire                                             m_axis_role_permission_switch_ack_tready  ,
+  output  wire [C_M_AXIS_ROLE_PERMISSION_SWITCH_ACK_TDATA_WIDTH-1:0]     m_axis_role_permission_switch_ack_tdata   ,
+  output  wire [C_M_AXIS_ROLE_PERMISSION_SWITCH_ACK_TDATA_WIDTH/8-1:0]   m_axis_role_permission_switch_ack_tkeep   ,
+  output  wire                                             m_axis_role_permission_switch_ack_tlast   ,
+  
   // AXI4-Stream (master) interface m_axis_role_tx_status
   output wire                                             m_axis_role_tx_status_tvalid,
   input  wire                                             m_axis_role_tx_status_tready,
   output wire [C_M_AXIS_ROLE_TX_STATUS_TDATA_WIDTH-1:0]   m_axis_role_tx_status_tdata ,
   output wire [C_M_AXIS_ROLE_TX_STATUS_TDATA_WIDTH/8-1:0] m_axis_role_tx_status_tkeep ,
   output wire                                             m_axis_role_tx_status_tlast ,
+
+  // // AXI4-Stream (slave) interface s_axis_qp_interface
+  // input  wire                                             s_axis_qp_interface_tvalid  ,
+  // output wire                                             s_axis_qp_interface_tready  ,
+  // input  wire [C_S_AXIS_ROLE_TX_META_TDATA_WIDTH-1:0]     s_axis_qp_interface_tdata   ,
+  // input  wire [C_S_AXIS_ROLE_TX_META_TDATA_WIDTH/8-1:0]   s_axis_qp_interface_tkeep   ,
+  // input  wire                                             s_axis_qp_interface_tlast   ,
+
   // AXI4-Lite slave interface
   input  wire                                             s_axi_control_awvalid       ,
   output wire                                             s_axi_control_awready       ,
@@ -145,6 +170,7 @@ wire [64-1:0]                       rAddr                         ;
 wire [64-1:0]                       lAddr                         ;
 wire [32-1:0]                       len                           ;
 wire [32-1:0]                       debug                         ;
+wire [32-1:0]                       arpDelay                      ;
 wire [64-1:0]                       mem_ptr                       ;
 
 // cmac interface
@@ -153,7 +179,12 @@ axi_stream axis_net_tx_data_aclk();
 // RoCE interface
 axis_meta #(.WIDTH(160))    s_axis_roce_role_tx_meta();
 axi_stream      s_axis_roce_role_tx_data();
+axi_stream      s_axis_roce_role_permission_switch();
+axi_stream      m_axis_roce_role_permission_switch_ack();
 axi_stream      m_axis_roce_role_tx_status();
+
+// axis_meta       s_axis_qp_interface(); 
+
 // ROCE memory interface
 axis_meta       m_axis_roce_read_cmd();
 axis_meta       m_axis_roce_write_cmd();
@@ -223,6 +254,7 @@ inst_control_s_axi (
   .lAddr     ( lAddr                 ),
   .len       ( len                   ),
   .debug     ( debug                 ),
+  .arpDelay  ( arpDelay              ),
   .mem_ptr   ( mem_ptr               )
 );
 
@@ -244,7 +276,10 @@ stack_top #(
     // RoCE application interface
     .s_axis_roce_role_tx_meta   ( s_axis_roce_role_tx_meta   ),
     .s_axis_roce_role_tx_data   ( s_axis_roce_role_tx_data   ),
+    .s_axis_roce_role_permission_switch   ( s_axis_roce_role_permission_switch   ),
+    .m_axis_roce_role_permission_switch_ack   ( m_axis_roce_role_permission_switch_ack   ),
     .m_axis_roce_role_tx_status ( m_axis_roce_role_tx_status ),
+    //.s_axis_qp_interface ( s_axis_qp_interface ),
     // DMA
     // let route=0 : ROUTE_DMA (not ROUTE_CUSTOM)
     .m_axis_roce_read_cmd   ( m_axis_roce_read_cmd   ),
@@ -269,7 +304,8 @@ stack_top #(
     .rAddr                  ( rAddr                  ),
     .lAddr                  ( lAddr                  ),
     .len                    ( len                    ),
-    .debug                  ( debug                  )
+    .debug                  ( debug                  ),
+    .arpDelay               ( arpDelay               )
 );
 
 // TODO: mem interface
@@ -380,11 +416,27 @@ assign s_axis_roce_role_tx_meta.valid = s_axis_role_tx_meta_tvalid;
 assign s_axis_roce_role_tx_meta.data = s_axis_role_tx_meta_tdata[159:0];
 assign s_axis_role_tx_meta_tready = s_axis_roce_role_tx_meta.ready;
 
+assign s_axis_roce_role_permission_switch.valid = s_axis_role_permission_switch_tvalid;
+assign s_axis_roce_role_permission_switch.data = s_axis_role_permission_switch_tdata;
+assign s_axis_roce_role_permission_switch.keep = s_axis_role_permission_switch_tkeep;
+assign s_axis_roce_role_permission_switch.last = s_axis_role_permission_switch_tlast;
+assign s_axis_role_permission_switch_tready = s_axis_roce_role_permission_switch.ready;
+
+assign m_axis_role_permission_switch_ack_tvalid = m_axis_roce_role_permission_switch_ack.valid;
+assign m_axis_role_permission_switch_ack_tdata  = m_axis_roce_role_permission_switch_ack.data;
+assign m_axis_role_permission_switch_ack_tkeep =  m_axis_roce_role_permission_switch_ack.keep;
+assign m_axis_role_permission_switch_ack_tlast = m_axis_roce_role_permission_switch_ack.last;
+assign m_axis_roce_role_permission_switch_ack.ready = m_axis_role_permission_switch_ack_tready;
+
 assign m_axis_role_tx_status_tvalid = m_axis_roce_role_tx_status.valid;
 assign m_axis_role_tx_status_tdata = m_axis_roce_role_tx_status.data;
 assign m_axis_role_tx_status_tkeep = m_axis_roce_role_tx_status.keep;
 assign m_axis_role_tx_status_tlast = m_axis_roce_role_tx_status.last;
 assign m_axis_roce_role_tx_status.ready = m_axis_role_tx_status_tready;
+
+// assign s_axis_qp_interface.valid = s_axis_qp_interface_tvalid;
+// assign s_axis_qp_interface.data = s_axis_qp_interface_tdata[159:0];
+// assign s_axis_qp_interface_tready = s_axis_qp_interface.ready;
 
 endmodule
 `default_nettype wire

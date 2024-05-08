@@ -120,6 +120,16 @@ set_property interface_mode slave [ipx::get_bus_interfaces s_axis_role_tx_data -
 set_property abstraction_type_vlnv xilinx.com:interface:axis_rtl:1.0 [ipx::get_bus_interfaces s_axis_role_tx_data -of_objects [ipx::current_core]]
 ipx::associate_bus_interfaces -busif s_axis_role_tx_data -clock ap_clk [ipx::current_core]
 
+ipx::add_bus_interface s_axis_role_permission_switch [ipx::current_core]
+set_property interface_mode slave [ipx::get_bus_interfaces s_axis_role_permission_switch -of_objects [ipx::current_core]]
+set_property abstraction_type_vlnv xilinx.com:interface:axis_rtl:1.0 [ipx::get_bus_interfaces s_axis_role_permission_switch -of_objects [ipx::current_core]]
+ipx::associate_bus_interfaces -busif s_axis_role_permission_switch -clock ap_clk [ipx::current_core]
+
+ipx::add_bus_interface m_axis_role_permission_switch_ack [ipx::current_core]
+set_property interface_mode master [ipx::get_bus_interfaces m_axis_role_permission_switch_ack -of_objects [ipx::current_core]]
+set_property abstraction_type_vlnv xilinx.com:interface:axis_rtl:1.0 [ipx::get_bus_interfaces m_axis_role_permission_switch_ack -of_objects [ipx::current_core]]
+ipx::associate_bus_interfaces -busif m_axis_role_permission_switch_ack -clock ap_clk [ipx::current_core]
+
 ipx::add_bus_interface m_axis_role_tx_status [ipx::current_core]
 set_property interface_mode master [ipx::get_bus_interfaces m_axis_role_tx_status -of_objects [ipx::current_core]]
 set_property abstraction_type_vlnv xilinx.com:interface:axis_rtl:1.0 [ipx::get_bus_interfaces m_axis_role_tx_status -of_objects [ipx::current_core]]

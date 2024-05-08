@@ -62,7 +62,8 @@ module roce_stack #(
    //Config
     axis_meta.slave  s_axis_qp_interface,
     axis_meta.slave  s_axis_qp_conn_interface,
-
+    axi_stream.slave permission_switch,
+    axi_stream.master permission_switch_ack,
 
    input wire[31:0]     local_ip_address,
    output logic         crc_drop_pkg_count_valid,
@@ -161,6 +162,18 @@ rocev2_ip rocev2_inst(
     .s_axis_qp_conn_interface_V_TVALID(s_axis_qp_conn_interface.valid),
     .s_axis_qp_conn_interface_V_TREADY(s_axis_qp_conn_interface.ready),
     .s_axis_qp_conn_interface_V_TDATA(s_axis_qp_conn_interface.data),
+
+    .permission_switch_TVALID(permission_switch.valid),
+    .permission_switch_TREADY(permission_switch.ready),
+    .permission_switch_TDATA(permission_switch.data),
+    .permission_switch_TKEEP(permission_switch.keep),
+    .permission_switch_TLAST(permission_switch.last),
+
+    .permission_switch_ack_TVALID(permission_switch_ack.valid),
+    .permission_switch_ack_TREADY(permission_switch_ack.ready),
+    .permission_switch_ack_TDATA(permission_switch_ack.data),
+    .permission_switch_ack_TKEEP(permission_switch_ack.keep),
+    .permission_switch_ack_TLAST(permission_switch_ack.last),
     
     //.local_ip_address_V(link_local_ipv6_address), // Use IPv6 addr
     .local_ip_address_V({local_ip_address,local_ip_address,local_ip_address,local_ip_address}), //Use IPv4 addr
@@ -267,6 +280,8 @@ assign s_axis_mem_read_data.ready = 1'b0;
 
 assign s_axis_qp_interface.ready = 1'b0;
 assign s_axis_qp_conn_interface.ready = 1'b0;
+assign permission_switch.ready = 1'b0;
+assign permission_switch_ack.valid = 1'b0;
 
 end
 endgenerate
