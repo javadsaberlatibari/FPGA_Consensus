@@ -47,7 +47,6 @@ module roce_host_control_s_axi
     output wire [63:0]                   lAddr,
     output wire [31:0]                   len,
     output wire [31:0]                   debug,
-    output wire [31:0]                   arpDelay,
     output wire [63:0]                   mem_ptr
 );
 //------------------------Address Info-------------------
@@ -161,11 +160,9 @@ localparam
     ADDR_LEN_CTRL       = 8'h80,
     ADDR_DEBUG_DATA_0   = 8'h84,
     ADDR_DEBUG_CTRL     = 8'h88,
-    ADDR_ARPDELAY_DATA_0   = 8'h8c,
-    ADDR_ARPDELAY_CTRL     = 8'h90,
-    ADDR_MEM_PTR_DATA_0 = 8'h94,
-    ADDR_MEM_PTR_DATA_1 = 8'h98,
-    ADDR_MEM_PTR_CTRL   = 8'h9c,
+    ADDR_MEM_PTR_DATA_0 = 8'h8c,
+    ADDR_MEM_PTR_DATA_1 = 8'h90,
+    ADDR_MEM_PTR_CTRL   = 8'h94,
     WRIDLE              = 2'd0,
     WRDATA              = 2'd1,
     WRRESP              = 2'd2,
@@ -210,7 +207,6 @@ localparam
     reg  [63:0]                   int_lAddr = 'b0;
     reg  [31:0]                   int_len = 'b0;
     reg  [31:0]                   int_debug = 'b0;
-    reg  [31:0]                   int_arpDelay = 'b0;
     reg  [63:0]                   int_mem_ptr = 'b0;
 
 //------------------------Instantiation------------------
@@ -370,9 +366,6 @@ always @(posedge ACLK) begin
                 ADDR_DEBUG_DATA_0: begin
                     rdata <= int_debug[31:0];
                 end
-                ADDR_ARPDELAY_DATA_0: begin
-                    rdata <= int_arpDelay[31:0];
-                end
                 ADDR_MEM_PTR_DATA_0: begin
                     rdata <= int_mem_ptr[31:0];
                 end
@@ -402,7 +395,6 @@ assign rAddr     = int_rAddr;
 assign lAddr     = int_lAddr;
 assign len       = int_len;
 assign debug     = int_debug;
-assign arpDelay     = int_arpDelay;
 assign mem_ptr   = int_mem_ptr;
 // int_ap_start
 always @(posedge ACLK) begin
@@ -667,16 +659,6 @@ always @(posedge ACLK) begin
     else if (ACLK_EN) begin
         if (w_hs && waddr == ADDR_DEBUG_DATA_0)
             int_debug[31:0] <= (WDATA[31:0] & wmask) | (int_debug[31:0] & ~wmask);
-    end
-end
-
-// int_arpDelay[31:0]
-always @(posedge ACLK) begin
-    if (ARESET)
-        int_arpDelay[31:0] <= 0;
-    else if (ACLK_EN) begin
-        if (w_hs && waddr == ADDR_ARPDELAY_DATA_0)
-            int_arpDelay[31:0] <= (WDATA[31:0] & wmask) | (int_arpDelay[31:0] & ~wmask);
     end
 end
 
