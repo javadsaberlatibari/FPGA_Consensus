@@ -39,7 +39,7 @@ constexpr unsigned long ConstLog2(unsigned long val) {
 const uint32_t MAX_KEY_SIZE = 64;
 const uint32_t MAX_ADDRESS_BITS = 16;
 
-const uint32_t NUM_TABLES = 9;
+const uint32_t NUM_TABLES = 2;
 const uint32_t TABLE_ADDRESS_BITS = ConstLog2(MAX_NUMBER_OF_ENTRIES/(NUM_TABLES-1));
 const uint32_t TABLE_SIZE = (1 << TABLE_ADDRESS_BITS);
 

@@ -6,17 +6,17 @@ source /tools/Xilinx/Vitis/2023.1/settings64.sh
 source /opt/xilinx/xrt/setup.sh
 NUM_Nodes=3 #number of nodes.
 #Node_List="""151 153 154 155 156 159"
-Node_List="151 155 156"
+Node_List="160 161 162"
 Arp_Delay_Base=400000000;
 # ACCOUNT 7500 10000 12500
 # PROJECT 11250 15000 18750
 # COURSEWARE 11250 15000 18750
 # RUBiS 50000 66666 83332
-EXE=0
+EXE=75000
 
 Number_of_Operations=1000000;
 Write_Percentage=15;
-Usecase=project_hm
+Usecase=account_bram
 Operations_Each_Node=$((Number_of_Operations/NUM_Nodes));
 
 for i in $( seq 0 $((NUM_Nodes-=1)) ); do
@@ -36,7 +36,8 @@ for j in $Node_List; do
     #scp -r bitstreams/${Usecase}.xclbin pyuvaraj@pc${j}.cloudlab.umass.edu:/users/pyuvaraj
     scp -r host/host${h} pyuvaraj@pc${j}.cloudlab.umass.edu:/users/pyuvaraj
     #scp -r /home/pyuvaraj/benchmarks/${NUM_Nodes}-${Number_of_Operations}-${Write_Percentage}/${Usecase}/${t}.txt pyuvaraj@pc${j}.cloudlab.umass.edu:/users/pyuvaraj
-    scp -r /home/pyuvaraj/benchmarks/${NUM_Nodes}-${Number_of_Operations}-${Write_Percentage}/project/${t}.txt pyuvaraj@pc${j}.cloudlab.umass.edu:/users/pyuvaraj
+    scp -r /home/pyuvaraj/fpga-rdma-testbed/benchmarks/${NUM_Nodes}-${Number_of_Operations}-${Write_Percentage}/${Usecase}/${t}.txt pyuvaraj@pc${j}.cloudlab.umass.edu:/users/pyuvaraj
+    #scp -r /home/pyuvaraj/benchmarks/${NUM_Nodes}-${Number_of_Operations}-${Write_Percentage}/project/${t}.txt pyuvaraj@pc${j}.cloudlab.umass.edu:/users/pyuvaraj
     scp xrt.ini pyuvaraj@pc${j}.cloudlab.umass.edu:/users/pyuvaraj
     ((t+=1))
     ((h+=1))

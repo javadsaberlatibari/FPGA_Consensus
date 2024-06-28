@@ -98,7 +98,7 @@ int main(int argc, char **argv) {
             OCL_CHECK(err,
                       network_kernel = cl::Kernel(program, "rocetest_krnl", &err));
             OCL_CHECK(err,
-                      user_kernel = cl::Kernel(program, "project_hm_krnl", &err));
+                      user_kernel = cl::Kernel(program, "account_bram_krnl", &err));
             valid_device++;
             break; // we break because we found a valid device
         }
@@ -108,7 +108,7 @@ int main(int argc, char **argv) {
         exit(EXIT_FAILURE);
     }
     
-    //wait_for_enter("\nPress ENTER to continue after setting up ILA trigger...");
+    wait_for_enter("\nPress ENTER to continue after setting up ILA trigger...");
 
     /*===============================================================Init and start Network Kernel===============================================================*/    
 
@@ -157,16 +157,33 @@ int main(int argc, char **argv) {
                                    &err));
     OCL_CHECK(err, err = network_kernel.setArg(14, buffer_network));
 
+    
     printf("enqueue network kernel...\n");
     OCL_CHECK(err, err = q.enqueueTask(network_kernel));
     OCL_CHECK(err, err = q.finish());
 
     //sleep(5);
-    //wait_for_enter("\nPausing for network kernel setup...");
+    wait_for_enter("\nPausing for network kernel setup...");
     /*===============================================================Init and Start User kernel===============================================================*/
 
     uint32_t boardNum = ID;
     int num_ops = NUM_OPS/NUM_NODES; 
+    printf("NUMOPS = %d\n", num_ops);
+    std::vector<int, aligned_allocator<int>> reply_bank(64 * sizeof(int));
+    OCL_CHECK(err,
+              cl::Buffer buffer_reply_bank(context,
+                                   CL_MEM_USE_HOST_PTR | CL_MEM_READ_WRITE,
+                                   sizeof(int) * 100,
+                                   reply_bank.data(),
+                                   &err));
+
+    std::vector<int, aligned_allocator<int>> reply_bram(64 * sizeof(int));
+    OCL_CHECK(err,
+              cl::Buffer buffer_reply_bram(context,
+                                   CL_MEM_USE_HOST_PTR | CL_MEM_READ_WRITE,
+                                   sizeof(int) * 100,
+                                   reply_bram.data(),
+                                   &err));
 
     std::vector<int, aligned_allocator<int>> ops(num_ops * sizeof(int));
     OCL_CHECK(err,
@@ -191,41 +208,49 @@ int main(int argc, char **argv) {
     std::string line; 
     int calls = 0; 
 
+    //printf("TEST\n");
     while(getline(myfile, line)) {
         if (line.at(0) == '#') {
             expected_calls = std::stoi(line.substr(1, line.size()));
             continue;
         }
         
-        if (line.find('-') != std::string::npos) {
-            int i = line.find('-');
-            ops[calls] = line.at(0) - 48;
-            u_int32_t s_id = std::stoi(line.substr(1, i));
-            u_int32_t c_id = std::stoi(line.substr(i + 1, line.size()));
-            amount[calls] = (s_id << 16) + c_id; 
+        ops[calls] = line.at(0) - 48;
 
-        } else if (line.size() > 1) {
+        if (line.size() > 1) {
             //printf("%d %d \n", line.at(0) - 48, std::stoi(line.substr(1, line.size())));
-            ops[calls] = line.at(0) - 48;
+            //ops[calls] = line.at(0) - 48;
             amount[calls] = std::stoi(line.substr(1, line.size()));
-            // if (ops[calls] == 3) {
-            //     printf("op: %d val: %d \n", ops[calls], amount[calls]);
-            // }
         } else {
             //printf("%d \n", line.at(0) - 48);
-            ops[calls] = line.at(0) - 48;
+            //ops[calls] = line.at(0) - 48;
             amount[calls] = 0;
         }
+        //printf("%d %x \n", ops[calls], amount[calls]);
         calls++;
     }
     printf("dataset size: %d\n", calls);
+    printf("expected calls: %d\n", expected_calls);
 
+    // for (int i = 0; i < calls; i++) {
+    //     printf("Operations: %d and num: %d\n", ops[i], amount[i]);
+    // }
+
+
+    if (ID == 0) {
+        expected_query = num_ops - (((float) WRITE_PERCENTAGE/100) * NUM_OPS) * 0.5;
+    } else {
+        expected_query = num_ops - ((((float) WRITE_PERCENTAGE/100) * NUM_OPS) * 0.5)/(NUM_NODES-1);
+    }
+
+    printf("QUERY = %d\n", expected_query);
+    //expected_query = 4; 
 
     OCL_CHECK(err, err = user_kernel.setArg(3, buffer_network));
     OCL_CHECK(err, err = user_kernel.setArg(4, boardNum));
     OCL_CHECK(err, err = user_kernel.setArg(5, buffer_ops));
     OCL_CHECK(err, err = user_kernel.setArg(6, buffer_amount));
-    OCL_CHECK(err, err = user_kernel.setArg(7, calls));
+    OCL_CHECK(err, err = user_kernel.setArg(7, num_ops));
     OCL_CHECK(err, err = user_kernel.setArg(8, NUM_NODES)); 
     OCL_CHECK(err, err = user_kernel.setArg(9, exe)); 
     
@@ -242,64 +267,105 @@ int main(int argc, char **argv) {
     OCL_CHECK(err, err = q.finish());
     auto end = std::chrono::high_resolution_clock::now();
     durationUs = (std::chrono::duration_cast<std::chrono::nanoseconds>(end-start).count() / 1000.0);
-    sleep(10);
+    sleep(15);
 
     /*===============================================================OUTPUT===============================================================*/
 
-    printf("Device->Host user kernel...\n");
+    // printf("Device->Host user kernel...\n");
     OCL_CHECK(err, err = q.enqueueMigrateMemObjects({buffer_network}, CL_MIGRATE_MEM_OBJECT_HOST));
     OCL_CHECK(err, err = q.finish());
 
     printf("durationUs:%f\n",durationUs);
-    printf("replication_latency:%f\n",durationUs/calls);
+    printf("replication_latency:%f\n",durationUs/num_ops);
     printf("throughput:%f OPs/us\n", NUM_OPS/durationUs);
 
-    const int NUM_NODES_MEM = 12; 
+
+    const int LOG_SIZE = 2 + 55 + 2 * 125000 + 110; 
+    const int HB_START = 0; 
+    const int HB_END = 12; 
     const int SYNC_GROUPS = 1; 
-    const int NUM_SLOTS = 187500 * 2; 
-    const int FIFO_LENGTH = 5;
-    const int HB_BASE_PTR = 0;
-    const int HB_BASE_ADDR = 0;
-    const int HB_PTR_LEN = NUM_NODES_MEM; 
-    const int HB_ADDR_LEN = 4 * HB_PTR_LEN; 
-    const int LOG_BASE_PTR = HB_PTR_LEN; 
-    const int LOG_BASE_ADDR = HB_ADDR_LEN; 
-    const int LOG_MIN_PROP_PTR_LEN = 2 + (NUM_NODES_MEM-1) * FIFO_LENGTH; // local heartbeat and remote heartbeat queue
-    const int LOG_MIN_PROP_ADDR_LEN = 4 * LOG_MIN_PROP_PTR_LEN; 
-    const int LOG_LOCAL_LOG_PTR_LEN = NUM_SLOTS; // local log 
-    const int LOG_LOCAL_LOG_ADDR_LEN = 4 * LOG_LOCAL_LOG_PTR_LEN; 
-    const int LOG_REMOTE_LOG_QUEUE_PTR_LEN = 2 * (NUM_NODES_MEM-1) * FIFO_LENGTH;
-    const int LOG_REMOTE_LOG_QUEUE_ADDR_LEN = 4 * LOG_REMOTE_LOG_QUEUE_PTR_LEN; 
-    const int LOG_PTR_LEN = LOG_MIN_PROP_PTR_LEN + LOG_LOCAL_LOG_PTR_LEN + LOG_REMOTE_LOG_QUEUE_PTR_LEN; 
-    const int LOG_ADDR_LEN = LOG_PTR_LEN * 4; 
-    const int BROADCAST_EMPLOYEE_PTR = HB_PTR_LEN + SYNC_GROUPS * LOG_PTR_LEN;
-    const int BROADCAST_EMPLOYEE_ADDR = HB_ADDR_LEN + SYNC_GROUPS * LOG_ADDR_LEN;
-    const int BROADCAST_EMPLOYEE_LEN = 62500; 
+
+    const int PROP_START = HB_END;
+    const int PROP_END = PROP_START + 2 + 55; 
+
+    const int LOCAL_LOG_START = PROP_END; 
+    const int LOCAL_LOG_END = LOCAL_LOG_START + 2 * 125000; 
+
+    const int LOG_FIFO_START = LOCAL_LOG_END; 
+    const int LOG_FIFO_END = LOG_FIFO_START + 110; 
+
+    const int CRDT_START = HB_END + LOG_SIZE * SYNC_GROUPS;
+    const int CRDT_END = CRDT_START + 24; 
+
+    // printf("HB: ");
+    // for (int i = HB_START; i < HB_END; i++) {
+    //     printf("%d ", network_ptr0[i]);
+    // }
+    // printf("\n");
 
     printf("PROP: ");
-    for (int i = LOG_BASE_PTR; i < LOG_BASE_PTR + LOG_MIN_PROP_PTR_LEN; i++) {
+    for (int i = PROP_START; i < PROP_END; i++) {
         printf("%d ", network_ptr0[i]);
     }
     printf("\n");
+    
     printf("LOCAL LOG: ");
-    for (int i = LOG_BASE_PTR + LOG_MIN_PROP_PTR_LEN; i < LOG_BASE_PTR + LOG_MIN_PROP_PTR_LEN + 100; i++) {
+    for (int i = LOCAL_LOG_START; i < LOCAL_LOG_START + 100; i++) {
         printf("%x ", network_ptr0[i]);
     }
     printf("\n");
+
     printf("LOG FIFOs: ");
-    for (int i = LOG_BASE_PTR + LOG_MIN_PROP_PTR_LEN + LOG_LOCAL_LOG_PTR_LEN; i < LOG_BASE_PTR + LOG_MIN_PROP_PTR_LEN + LOG_LOCAL_LOG_PTR_LEN + LOG_REMOTE_LOG_QUEUE_PTR_LEN; i++) {
+    for (int i = LOG_FIFO_START; i < LOG_FIFO_END; i++) {
         printf("%d ", network_ptr0[i]);
     }
     printf("\n");
-    printf("Add Employee: ");
-    for (int j = 0; j < NUM_NODES; j++) { 
-        if (j != 0)
-        for (int i = 0; i < 100; i++) {
-            printf("%d ", network_ptr0[BROADCAST_EMPLOYEE_PTR + BROADCAST_EMPLOYEE_LEN * j + i]);
-        }
-        printf("\n");
+
+    /*****************/
+
+    // printf("PROP: ");
+    // for (int i = PROP_START + LOG_SIZE; i < PROP_END + LOG_SIZE; i++) {
+    //     printf("%d ", network_ptr0[i]);
+    // }
+    // printf("\n");
+    
+    // printf("LOCAL LOG: ");
+    // for (int i = LOCAL_LOG_START + LOG_SIZE; i < LOCAL_LOG_START + 100 + LOG_SIZE; i++) {
+    //     printf("%x ", network_ptr0[i]);
+    // }
+    // printf("\n");
+
+    // printf("LOG FIFOs: ");
+    // for (int i = LOG_FIFO_START + LOG_SIZE; i < LOG_FIFO_END + LOG_SIZE; i++) {
+    //     printf("%d ", network_ptr0[i]);
+    // }
+    // printf("\n");
+
+    /*****************/
+
+    // printf("PROP: ");
+    // for (int i = PROP_START + 2 * LOG_SIZE; i < PROP_END +  2 * LOG_SIZE; i++) {
+    //     printf("%d ", network_ptr0[i]);
+    // }
+    // printf("\n");
+    
+    // printf("LOCAL LOG: ");
+    // for (int i = LOCAL_LOG_START +  2 * LOG_SIZE; i < LOCAL_LOG_START + 100 +  2 * LOG_SIZE; i++) {
+    //     printf("%x ", network_ptr0[i]);
+    // }
+    // printf("\n");
+
+    // printf("LOG FIFOs: ");
+    // for (int i = LOG_FIFO_START +  2 * LOG_SIZE; i < LOG_FIFO_END +  2 * LOG_SIZE; i++) {
+    //     printf("%d ", network_ptr0[i]);
+    // }
+    // printf("\n");
+
+    // /**********/
+    printf("Stock increments: ");
+    for (int i = CRDT_START; i < CRDT_END; i++) {
+        printf("%d ", network_ptr0[i]);
     }
-    printf("\n");
 
     std::cout << "EXIT recorded" << std::endl;
 }

@@ -709,10 +709,8 @@ void project(
                     if (!add_req.full()) {
                         temp_amount = amount_list[counter];
                         std::cout << "Add Employee ID: " << temp_amount.range(31, 0) << std::endl; 
-                        if (!employee[temp_amount.range(31, 0)]) {
-                            add_req.write(amount_list[counter]);
-                            employee[temp_amount.range(31, 0)] = 1;
-                        }
+                        add_req.write(amount_list[counter]);
+                        employee[temp_amount.range(31, 0)] = 1;
                         counter++; 
                     }
                     break;
@@ -746,7 +744,7 @@ void project(
                     29 - 0 (15 bits): Project ID
                 */
                 case 0: {
-                    temp_amount = permiss_rsp.range(29, 0);
+                    temp_amount = amount_list[counter];
                     lookupResponse = lookup<KEY_SIZE,VALUE_SIZE>(htLookupReq<KEY_SIZE>(temp_amount.range(31, 0), 0));
                     std::cout << lookupResponse.key << " - " <<  lookupResponse.value << " - " << lookupResponse.hit << " - " <<  lookupResponse.source << " - " << std::endl;
                     
@@ -768,7 +766,7 @@ void project(
                     29 - 0 (30 bits): Project ID
                 */
                 case 1: {
-                    temp_amount = permiss_rsp.range(29, 0);
+                    temp_amount = amount_list[counter];;
                     lookupResponse = lookup<KEY_SIZE,VALUE_SIZE>(htLookupReq<KEY_SIZE>(temp_amount.range(31, 0), 0));
                     if (lookupResponse.value == 1 && lookupResponse.hit) {
                         std::cout << "DeleteProject - Project ID: " << temp_amount.range(31, 0) << std::endl;
@@ -789,7 +787,7 @@ void project(
                     15 - 0 (9 bits) : Project ID
                 */
                 case 2: {
-                    temp_amount = permiss_rsp.range(29, 0);
+                    temp_amount = amount_list[counter];
                     lookupResponse = lookup<KEY_SIZE,VALUE_SIZE>(htLookupReq<KEY_SIZE>(temp_amount.range(31, 16), 0));
                     if (lookupResponse.value == 1 && lookupResponse.hit && (employee[temp_amount.range(15, 0)] || permiss_rsp.range(29, 0))) {
                         std::cout << "WorksOn Employee ID: " << temp_amount.range(31, 16) << " Project ID: " << temp_amount.range(15, 0) << std::endl;

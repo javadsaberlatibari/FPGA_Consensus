@@ -98,7 +98,7 @@ int main(int argc, char **argv) {
             OCL_CHECK(err,
                       network_kernel = cl::Kernel(program, "rocetest_krnl", &err));
             OCL_CHECK(err,
-                      user_kernel = cl::Kernel(program, "project_hm_krnl", &err));
+                      user_kernel = cl::Kernel(program, "project_krnl", &err));
             valid_device++;
             break; // we break because we found a valid device
         }
@@ -108,7 +108,7 @@ int main(int argc, char **argv) {
         exit(EXIT_FAILURE);
     }
     
-    //wait_for_enter("\nPress ENTER to continue after setting up ILA trigger...");
+    wait_for_enter("\nPress ENTER to continue after setting up ILA trigger...");
 
     /*===============================================================Init and start Network Kernel===============================================================*/    
 
@@ -161,7 +161,6 @@ int main(int argc, char **argv) {
     OCL_CHECK(err, err = q.enqueueTask(network_kernel));
     OCL_CHECK(err, err = q.finish());
 
-    //sleep(5);
     //wait_for_enter("\nPausing for network kernel setup...");
     /*===============================================================Init and Start User kernel===============================================================*/
 
@@ -242,7 +241,7 @@ int main(int argc, char **argv) {
     OCL_CHECK(err, err = q.finish());
     auto end = std::chrono::high_resolution_clock::now();
     durationUs = (std::chrono::duration_cast<std::chrono::nanoseconds>(end-start).count() / 1000.0);
-    sleep(10);
+    sleep(30);
 
     /*===============================================================OUTPUT===============================================================*/
 

@@ -564,55 +564,10 @@ void mem_manager(
 }
 
 
-// const int BUFFER_SIZE = 10000;
-
-// static int operation_list[BUFFER_SIZE];
-// static ap_uint<32>* amount_list[BUFFER_SIZE];
-
-// void load_buffer(
-//     int* operation_list_ptr,
-//     ap_uint<32>* amount_list_ptr,
-//     bool swap
-// ) {
-
-//     static bool loaded = false; 
-//     static int index = 0; 
-//     static int operation_buffer
-
-//     if (swap) {
-//         if (!loaded) {
-//             for (int i = 0; i < BUFFER_SIZE; i++) {
-//                 #pragma HLS UNROLL
-//                 operation_list[i] = operation_list_ptr[index + i];
-//                 amount_list[i] = amount_list_ptr[index + i];
-//             }
-//         } else {
-//             for (int i = 0; i < BUFFER_SIZE; i++) {
-//                 #pragma HLS UNROLL
-//                 operation_list[i] = operation_buffer[i];
-//                 amount_list[i] = amount_buffer[i];
-//             }
-//         }
-//         loaded = false; 
-//     } else if (!loaded) {
-//         for (int i = 0; i < BUFFER_SIZE; i++) {
-//             #pragma HLS UNROLL
-//             operation_buffer[i] = operation_list_ptr[index + i];
-//             amount_buffer[i] = amount_list_ptr[index + i];
-//         }
-
-//         loaded = true; 
-//     }
-// }
-
-
-
 void project(
     hls::stream<pkt256>& m_axis_tx_meta,
     hls::stream<pkt64>& m_axis_tx_data,
     int board_number,
-    int* operation_list_ptr,
-    ap_uint<32>* amount_list_ptr,
     int number_of_operations,
     int number_of_nodes,
     int debug_exe,
@@ -968,14 +923,12 @@ void project(
 
 }
 
-extern "C" void project_krnl(
+extern "C" void project_bram_krnl(
     hls::stream<pkt256>& m_axis_tx_meta,
     hls::stream<pkt64>& m_axis_tx_data,
     hls::stream<pkt64>& s_axis_tx_status,
     volatile int* HBM_PTR,
     int board_number,
-    int* operation_list,
-    ap_uint<32>* amount_list,
     int number_of_operations,
     int number_of_nodes,
     int debug_exe
@@ -983,8 +936,6 @@ extern "C" void project_krnl(
 
     #pragma HLS INTERFACE m_axi port=operation_list bundle=gmem0
     #pragma HLS INTERFACE m_axi port=amount_list bundle=gmem0
-    // #pragma HLS cache port=operation_list lines=8 depth=8
-    // #pragma HLS cache port=amount_list lines=8 depth=8
     #pragma HLS INTERFACE m_axi port=HBM_PTR bundle=gmem1
     #pragma HLS INTERFACE axis port = m_axis_tx_meta
     #pragma HLS INTERFACE axis port = m_axis_tx_data
@@ -1001,8 +952,6 @@ extern "C" void project_krnl(
         m_axis_tx_meta,
         m_axis_tx_data,
         board_number,
-        operation_list,
-        amount_list,
         number_of_operations,
         number_of_nodes,
         debug_exe,
