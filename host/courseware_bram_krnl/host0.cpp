@@ -98,7 +98,7 @@ int main(int argc, char **argv) {
             OCL_CHECK(err,
                       network_kernel = cl::Kernel(program, "rocetest_krnl", &err));
             OCL_CHECK(err,
-                      user_kernel = cl::Kernel(program, "project_bram_krnl", &err));
+                      user_kernel = cl::Kernel(program, "courseware_bram_krnl", &err));
             valid_device++;
             break; // we break because we found a valid device
         }

@@ -238,17 +238,15 @@ int main(int argc, char **argv) {
 
     printf("QUERY = %d\n", expected_query);
     //expected_query = 4; 
+    
+    OCL_CHECK(err, err = user_kernel.setArg(3, buffer_network));
+    OCL_CHECK(err, err = user_kernel.setArg(4, boardNum));
+    OCL_CHECK(err, err = user_kernel.setArg(5, buffer_ops));
+    OCL_CHECK(err, err = user_kernel.setArg(6, buffer_amount));
+    OCL_CHECK(err, err = user_kernel.setArg(7, num_ops));
+    OCL_CHECK(err, err = user_kernel.setArg(8, NUM_NODES)); 
+    OCL_CHECK(err, err = user_kernel.setArg(9, exe)); 
 
-    OCL_CHECK(err, err = user_kernel.setArg(3, boardNum));
-    OCL_CHECK(err, err = user_kernel.setArg(4, buffer_ops));
-    OCL_CHECK(err, err = user_kernel.setArg(5, buffer_amount));
-    OCL_CHECK(err, err = user_kernel.setArg(6, num_ops));
-    OCL_CHECK(err, err = user_kernel.setArg(7, buffer_reply_bank));
-    OCL_CHECK(err, err = user_kernel.setArg(8, buffer_reply_bram));
-    OCL_CHECK(err, err = user_kernel.setArg(9, buffer_network));
-    OCL_CHECK(err, err = user_kernel.setArg(10, NUM_NODES)); 
-    OCL_CHECK(err, err = user_kernel.setArg(11, exe)); 
-    OCL_CHECK(err, err = user_kernel.setArg(12, num_ops)); 
     
     printf("Host->Device user kernel... \n");
     OCL_CHECK(err, err = q.enqueueMigrateMemObjects({buffer_ops}, 0 /* 0 means from host*/));

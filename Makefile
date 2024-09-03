@@ -62,6 +62,7 @@ endif
 
 KRNL_2 := ${USER_KRNL}
 KRNL_3 := cmac_krnl
+KRNL_4 := load_krnl
 
 $(info INFO: KERNEL LIST)
 $(info INFO: KRNL_1 is [${KRNL_1}])
@@ -151,7 +152,7 @@ EMCONFIG_DIR = $(TEMP_DIR)
 EMU_DIR = $(SDCARD)/data/emulation
 
 BINARY_CONTAINERS += $(BUILD_DIR)/${XCLBIN_NAME}.xclbin
-BINARY_CONTAINER_OBJS += $(TEMP_DIR)/${KRNL_1}.xo $(TEMP_DIR)/${KRNL_2}.xo $(TEMP_DIR)/${KRNL_3}.xo 
+BINARY_CONTAINER_OBJS += $(TEMP_DIR)/${KRNL_1}.xo $(TEMP_DIR)/${KRNL_2}.xo $(TEMP_DIR)/${KRNL_3}.xo $(TEMP_DIR)/${KRNL_4}.xo  
 
 CP = cp -rf
 

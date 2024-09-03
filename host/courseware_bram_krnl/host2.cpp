@@ -98,7 +98,7 @@ int main(int argc, char **argv) {
             OCL_CHECK(err,
                       network_kernel = cl::Kernel(program, "rocetest_krnl", &err));
             OCL_CHECK(err,
-                      user_kernel = cl::Kernel(program, "project_bram_krnl", &err));
+                      user_kernel = cl::Kernel(program, "courseware_bram_krnl", &err));
             valid_device++;
             break; // we break because we found a valid device
         }
@@ -161,12 +161,12 @@ int main(int argc, char **argv) {
     OCL_CHECK(err, err = q.enqueueTask(network_kernel));
     OCL_CHECK(err, err = q.finish());
 
-    // sleep(5);
     //wait_for_enter("\nPausing for network kernel setup...");
     /*===============================================================Init and Start User kernel===============================================================*/
 
     uint32_t boardNum = ID;
     int num_ops = NUM_OPS/NUM_NODES; 
+
     std::vector<int, aligned_allocator<int>> ops(num_ops * sizeof(int));
     OCL_CHECK(err,
               cl::Buffer buffer_ops(context,
@@ -201,16 +201,15 @@ int main(int argc, char **argv) {
             ops[calls] = line.at(0) - 48;
             u_int32_t s_id = std::stoi(line.substr(1, i));
             u_int32_t c_id = std::stoi(line.substr(i + 1, line.size()));
-            //std::cout << "sid: " << s_id << " cid: " << c_id << std::endl;  
-            amount[calls] = s_id; 
-            amount[calls] <<= 16; 
-            amount[calls] += c_id; 
-            //std::cout << "cat: " << amount[calls] << std::endl; 
+            amount[calls] = (s_id << 16) + c_id; 
 
         } else if (line.size() > 1) {
             //printf("%d %d \n", line.at(0) - 48, std::stoi(line.substr(1, line.size())));
             ops[calls] = line.at(0) - 48;
             amount[calls] = std::stoi(line.substr(1, line.size()));
+            // if (ops[calls] == 3) {
+            //     printf("op: %d val: %d \n", ops[calls], amount[calls]);
+            // }
         } else {
             //printf("%d \n", line.at(0) - 48);
             ops[calls] = line.at(0) - 48;
@@ -218,8 +217,8 @@ int main(int argc, char **argv) {
         }
         calls++;
     }
-
     printf("dataset size: %d\n", calls);
+
 
     OCL_CHECK(err, err = user_kernel.setArg(3, buffer_network));
     OCL_CHECK(err, err = user_kernel.setArg(4, boardNum));
@@ -242,7 +241,7 @@ int main(int argc, char **argv) {
     OCL_CHECK(err, err = q.finish());
     auto end = std::chrono::high_resolution_clock::now();
     durationUs = (std::chrono::duration_cast<std::chrono::nanoseconds>(end-start).count() / 1000.0);
-    sleep(15);
+    sleep(50);
 
     /*===============================================================OUTPUT===============================================================*/
 

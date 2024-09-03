@@ -6,17 +6,17 @@ source /tools/Xilinx/Vitis/2023.1/settings64.sh
 source /opt/xilinx/xrt/setup.sh
 NUM_Nodes=3 #number of nodes.
 #Node_List="""151 153 154 155 156 159"
-Node_List="160 161 162"
+Node_List="151 156 159"
 Arp_Delay_Base=400000000;
 # ACCOUNT 7500 10000 12500
 # PROJECT 11250 15000 18750
 # COURSEWARE 11250 15000 18750
 # RUBiS 50000 66666 83332
-EXE=75000
+EXE=100000
 
 Number_of_Operations=1000000;
 Write_Percentage=15;
-Usecase=account_bram
+Usecase=account_stream
 Operations_Each_Node=$((Number_of_Operations/NUM_Nodes));
 
 for i in $( seq 0 $((NUM_Nodes-=1)) ); do
@@ -33,12 +33,14 @@ h=0;
 t=1; 
 for j in $Node_List; do
     scp -r build_dir.hw.xilinx_u280_gen3x16_xdma_1_202211_1/network.xclbin pyuvaraj@pc${j}.cloudlab.umass.edu:/users/pyuvaraj
+    #scp -r bitstreams/courseware-latency.xclbin pyuvaraj@pc${j}.cloudlab.umass.edu:/users/pyuvaraj
     #scp -r bitstreams/${Usecase}.xclbin pyuvaraj@pc${j}.cloudlab.umass.edu:/users/pyuvaraj
     scp -r host/host${h} pyuvaraj@pc${j}.cloudlab.umass.edu:/users/pyuvaraj
-    #scp -r /home/pyuvaraj/benchmarks/${NUM_Nodes}-${Number_of_Operations}-${Write_Percentage}/${Usecase}/${t}.txt pyuvaraj@pc${j}.cloudlab.umass.edu:/users/pyuvaraj
-    scp -r /home/pyuvaraj/fpga-rdma-testbed/benchmarks/${NUM_Nodes}-${Number_of_Operations}-${Write_Percentage}/${Usecase}/${t}.txt pyuvaraj@pc${j}.cloudlab.umass.edu:/users/pyuvaraj
-    #scp -r /home/pyuvaraj/benchmarks/${NUM_Nodes}-${Number_of_Operations}-${Write_Percentage}/project/${t}.txt pyuvaraj@pc${j}.cloudlab.umass.edu:/users/pyuvaraj
-    scp xrt.ini pyuvaraj@pc${j}.cloudlab.umass.edu:/users/pyuvaraj
+    scp -r benchmarks/${NUM_Nodes}-${Number_of_Operations}-${Write_Percentage}/account/${t}.txt pyuvaraj@pc${j}.cloudlab.umass.edu:/users/pyuvaraj
+    #scp -r benchmarks/3-${Number_of_Operations}-${Write_Percentage}/${Usecase}/${t}.txt pyuvaraj@pc${j}.cloudlab.umass.edu:/users/pyuvaraj
+    #scp -r /home/pyuvaraj/fpga-rdma-testbed/benchmarks/${NUM_Nodes}-${Number_of_Operations}-${Write_Percentage}/${Usecase}/${t}.txt pyuvaraj@pc${j}.cloudlab.umass.edu:/users/pyuvaraj
+    #scp -r /home/pyuvaraj/benchmarks/${NUM_Nodes}-${Number_of_Operations}-${Write_Percentage}/rubis/${t}.txt pyuvaraj@pc${j}.cloudlab.umass.edu:/users/pyuvaraj
+    #scp xrt.ini pyuvaraj@pc${j}.cloudlab.umass.edu:/users/pyuvaraj
     ((t+=1))
     ((h+=1))
     echo $h

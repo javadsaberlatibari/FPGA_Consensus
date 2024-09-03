@@ -1,4 +1,4 @@
-#include "project_krnl.h"
+#include "courseware_bram_krnl.h"
 
 #define TH 0
 
@@ -387,6 +387,7 @@ void mem_manager(
     volatile int *network_ptr,
     int number_of_nodes,
     int board_number,
+    int exe,
     hls::stream<LogEntry>& minPropReadBram_req,
     hls::stream<ap_uint<32>>& minPropReadBram_rsp,
     hls::stream<LogEntry>& readSlotsReadBram_req,
@@ -395,7 +396,8 @@ void mem_manager(
     hls::stream<ap_uint<64>>& logReadBram_rsp,
     hls::stream<ap_uint<32>>& permissibility_req,
     hls::stream<ap_uint<32>>& permissibility_rsp,
-    hls::stream<ap_uint<64>>& update_rsp
+    hls::stream<ap_uint<64>>& update_rsp,
+    hls::stream<bool>& throughput_check
 ){
     #pragma HLS INTERFACE axis port = minPropReadBram_req
     #pragma HLS INTERFACE axis port = minPropReadBram_rsp
@@ -516,29 +518,38 @@ void mem_manager(
     if (internal_clock == 10000) {
 
         //AddEmployee
-        for (int i = 0; i < number_of_nodes; i++) {
-            hbm_tmp = network_ptr[BROADCAST_EMPLOYEE_PTR + BROADCAST_EMPLOYEE_LEN * i + queue_slots[i]];
-            if (hbm_tmp != 0) {
-                hbm_bit = hbm_tmp;
-                employee[hbm_bit.range(31, 0)] = 1;
-                queue_slots[i]++;
-            }
-        }
+        // for (int i = 0; i < number_of_nodes; i++) {
+        //     hbm_tmp = network_ptr[BROADCAST_EMPLOYEE_PTR + BROADCAST_EMPLOYEE_LEN * i + queue_slots[i]];
+        //     if (hbm_tmp != 0) {
+        //         hbm_bit = hbm_tmp;
+        //         employee[hbm_bit.range(31, 0)] = 1;
+        //         queue_slots[i]++;
+        //     }
+        // }
 
-        if (!update_rsp.full()) {
-            for (int i = 0; i < SYNC_GROUPS; i++) {
-                int index = LOG_BASE_PTR + LOG_PTR_LEN * i + FUO[i]; 
-                int log_proposal_number = network_ptr[LOG_BASE_PTR + LOG_PTR_LEN * i + LOG_MIN_PROP_PTR_LEN + FUO[i]];
-                int log_operation = network_ptr[LOG_BASE_PTR + LOG_PTR_LEN * i + LOG_MIN_PROP_PTR_LEN + FUO[i] + 1];
-                //std::cout << "Checking at HBM_PTR: " << LOG_BASE_PTR + LOG_PTR_LEN * i + LOG_MIN_PROP_PTR_LEN  + FUO[i] << " Prop: " << log_proposal_number << " Value: " << log_operation << std::endl; 
-                if (log_proposal_number != 0 && log_operation != 0) {
-                    std::cout << "Log change found! Prop: " << log_proposal_number << " Operation: " << log_operation << std::endl; 
-                    update = log_operation;
-                    update_rsp.write(update);
-                    FUO[i]+=2; 
-                }
+        // if (!update_rsp.full()) {
+        //     for (int i = 0; i < SYNC_GROUPS; i++) {
+        //         int index = LOG_BASE_PTR + LOG_PTR_LEN * i + FUO[i]; 
+        //         int log_proposal_number = network_ptr[LOG_BASE_PTR + LOG_PTR_LEN * i + LOG_MIN_PROP_PTR_LEN + FUO[i]];
+        //         int log_operation = network_ptr[LOG_BASE_PTR + LOG_PTR_LEN * i + LOG_MIN_PROP_PTR_LEN + FUO[i] + 1];
+        //         //std::cout << "Checking at HBM_PTR: " << LOG_BASE_PTR + LOG_PTR_LEN * i + LOG_MIN_PROP_PTR_LEN  + FUO[i] << " Prop: " << log_proposal_number << " Value: " << log_operation << std::endl; 
+        //         if (log_proposal_number != 0 && log_operation != 0) {
+        //             std::cout << "Log change found! Prop: " << log_proposal_number << " Operation: " << log_operation << std::endl; 
+        //             update = log_operation;
+        //             update_rsp.write(update);
+        //             FUO[i]+=2; 
+        //         }
+        //     }
+        // }
+
+#if TH
+        if (!throughput_check.full()) {
+            if (network_ptr[LOG_BASE_PTR] >= exe) {
+                throughput_check.write(true);
             }
         }
+#endif 
+
 
         internal_clock = 0; 
     }
@@ -563,47 +574,46 @@ void mem_manager(
 
 }
 
+const int BUFFER_SIZE = 1000;
+void load_buffer(
+    int* operation_list_ptr,
+    ap_uint<32>* amount_list_ptr,
+    int* operation_list,
+    ap_uint<32>* amount_list,
+    bool swap
+) {
 
-// const int BUFFER_SIZE = 10000;
+    static bool loaded = false; 
+    static int index = 0; 
+    static int operation_buffer[BUFFER_SIZE];
+    static ap_uint<32> amount_buffer[BUFFER_SIZE];
 
-// static int operation_list[BUFFER_SIZE];
-// static ap_uint<32>* amount_list[BUFFER_SIZE];
-
-// void load_buffer(
-//     int* operation_list_ptr,
-//     ap_uint<32>* amount_list_ptr,
-//     bool swap
-// ) {
-
-//     static bool loaded = false; 
-//     static int index = 0; 
-//     static int operation_buffer
-
-//     if (swap) {
-//         if (!loaded) {
-//             for (int i = 0; i < BUFFER_SIZE; i++) {
-//                 #pragma HLS UNROLL
-//                 operation_list[i] = operation_list_ptr[index + i];
-//                 amount_list[i] = amount_list_ptr[index + i];
-//             }
-//         } else {
-//             for (int i = 0; i < BUFFER_SIZE; i++) {
-//                 #pragma HLS UNROLL
-//                 operation_list[i] = operation_buffer[i];
-//                 amount_list[i] = amount_buffer[i];
-//             }
-//         }
-//         loaded = false; 
-//     } else if (!loaded) {
-//         for (int i = 0; i < BUFFER_SIZE; i++) {
-//             #pragma HLS UNROLL
-//             operation_buffer[i] = operation_list_ptr[index + i];
-//             amount_buffer[i] = amount_list_ptr[index + i];
-//         }
-
-//         loaded = true; 
-//     }
-// }
+    if (swap) {
+        if (!loaded) {
+            for (int i = 0; i < BUFFER_SIZE; i++) {
+                //#pragma HLS UNROLL
+                operation_list[i] = operation_list_ptr[index + i];
+                amount_list[i] = amount_list_ptr[index + i];
+            }
+            index += BUFFER_SIZE; 
+        } else {
+            for (int i = 0; i < BUFFER_SIZE; i++) {
+                //#pragma HLS UNROLL
+                operation_list[i] = operation_buffer[i];
+                amount_list[i] = amount_buffer[i];
+            }
+        }
+        loaded = false; 
+    } else if (!loaded) {
+        for (int i = 0; i < BUFFER_SIZE; i++) {
+            //pragma HLS UNROLL
+            operation_buffer[i] = operation_list_ptr[index + i];
+            amount_buffer[i] = amount_list_ptr[index + i];
+        }
+        index += BUFFER_SIZE; 
+        loaded = true; 
+    }
+}
 
 
 
@@ -647,6 +657,7 @@ void project(
     static hls::stream<ap_uint<256>> debug_tx_meta;
     static hls::stream<ap_uint<64>> debug_tx_data;
 
+    static hls::stream<bool> throughput_check;
     /*
         Interal streams between SMR and MEM Manager
     */
@@ -673,6 +684,7 @@ void project(
     static int counter = 0;
     static int debug_counter = 0;
     static bool done = true;
+    static bool throughput_finished = false; 
 
     static int employee_size = 1000;
     static int project_size = 1000;
@@ -685,6 +697,10 @@ void project(
         projects[i] = true;
     }
 
+
+    static bool swap = false; 
+    static int swap_at = 1; 
+
     static ap_uint<32> assign[250000];
     static int assign_counter = 0;
 
@@ -692,18 +708,35 @@ void project(
     static ap_uint<32> amount_list[BUFFER_SIZE];
 
     //std::cout << "Starting RUBiS accelerator..." << std::endl; 
-    //RUBIS_MAIN_LOOP: while (debug_counter < debug_exe && counter < number_of_operations) {
+    //RUBIS_MAIN_LOOP: while ((debug_counter < debug_exe && counter < number_of_operations) || (!throughput_finished && board_number != 0)) {
+    #if !TH 
     while (counter < number_of_operations) {
+    #else 
+    while (counter < number_of_operations || (!throughput_finished && board_number != 0)) {
+
+    #endif     
         debug_counter++;
+
+        swap = (counter % BUFFER_SIZE == 0 && swap_at != counter) ? true : false; 
+        if (swap) swap_at = counter; 
+
+        load_buffer(
+            operation_list_ptr,
+            amount_list_ptr,
+            operation_list,
+            amount_list,
+            swap
+        );
+
         if (done) {
             //std::cout << "Counter: " << counter <<  " Method: " << operation_list[counter] << std::endl; 
-            switch (operation_list[counter])
+            switch (operation_list[counter%BUFFER_SIZE])
             {
                 case 0: {
                     //AddProject
                     std::cout << "Add Project ID: " << temp_amount.range(31, 0) << std::endl;
                     if (!permissibility_req.full()) {
-                        temp_amount = amount_list[counter];
+                        temp_amount = amount_list[counter%BUFFER_SIZE];
                         proposed_value.range(31, 30) = 0; 
                         proposed_value.range(29, 0) = temp_amount.range(31, 0);
                         permissibility_req.write(proposed_value);
@@ -716,7 +749,7 @@ void project(
                     //DeleteProject
                     std::cout << "Delete Project ID: " << temp_amount.range(31, 0) << std::endl;
                     if (!permissibility_req.full()) {
-                        temp_amount = amount_list[counter];
+                        temp_amount = amount_list[counter%BUFFER_SIZE];
                         proposed_value.range(31, 30) = 1; 
                         proposed_value.range(29, 0) = temp_amount.range(31, 0);
                         permissibility_req.write(proposed_value);
@@ -728,7 +761,7 @@ void project(
                     //WorksOn
                     std::cout << "WorksOn Employee ID: " << temp_amount.range(31, 16) << " Project ID: " << temp_amount.range(15, 0) << std::endl;
                     if (!permissibility_req.full()) {
-                        temp_amount = amount_list[counter];
+                        temp_amount = amount_list[counter%BUFFER_SIZE];
                         proposed_value.range(31, 30) = 2; 
                         proposed_value.range(29, 0) = temp_amount.range(31, 0);
                         permissibility_req.write(proposed_value);
@@ -740,9 +773,9 @@ void project(
                 case 3: {
                     //AddEmployee
                     if (!add_req.full()) {
-                        temp_amount = amount_list[counter];
+                        temp_amount = amount_list[counter%BUFFER_SIZE];
                         std::cout << "Add Employee ID: " << temp_amount.range(31, 0) << std::endl; 
-                        add_req.write(amount_list[counter]);
+                        add_req.write(amount_list[counter%BUFFER_SIZE]);
                         employee[temp_amount.range(31, 0)] = 1;
                         counter++; 
                     }
@@ -751,7 +784,7 @@ void project(
                 case 4: {
                     //Query
                     if (!permissibility_req.full()) {
-                        temp_amount = amount_list[counter];
+                        temp_amount = amount_list[counter%BUFFER_SIZE];
                         proposed_value.range(31, 30) = 3; 
                         proposed_value.range(29, 0) = temp_amount.range(31, 16);
                         permissibility_req.write(proposed_value);
@@ -775,7 +808,7 @@ void project(
                     29 - 0 (15 bits): Project ID
                 */
                 case 0: {
-                    temp_amount = amount_list[counter];
+                    temp_amount = amount_list[counter%BUFFER_SIZE];
                     std::cout << "AddProject - Project ID: " << temp_amount.range(31, 0) << std::endl;
                     if (!projects[temp_amount.range(31, 0)]) {
                         proposed_value.range(31, 30) = 1;
@@ -794,7 +827,7 @@ void project(
                     29 - 0 (30 bits): Project ID
                 */
                 case 1: {
-                    temp_amount = amount_list[counter];
+                    temp_amount = amount_list[counter%BUFFER_SIZE];
                     std::cout << "DeleteProject - Project ID: " << temp_amount.range(31, 0) << std::endl;
                     if (projects[temp_amount.range(31, 0)]) {
                         proposed_value.range(31, 30) = 1;
@@ -814,7 +847,7 @@ void project(
                     15 - 0 (9 bits) : Project ID
                 */
                 case 2: {
-                    temp_amount = amount_list[counter];
+                    temp_amount = amount_list[counter%BUFFER_SIZE];
                     if (projects[temp_amount.range(31, 16)] && (employee[temp_amount.range(15, 0)] || permiss_rsp.range(29, 0))) {
                         std::cout << "WorksOn Employee ID: " << temp_amount.range(31, 16) << " Project ID: " << temp_amount.range(15, 0) << std::endl;
                         proposed_value.range(31, 30) = 2;
@@ -894,6 +927,7 @@ void project(
             HBM_PTR,
             number_of_nodes,
             board_number,
+            debug_exe,
             minPropReadBram_req,
             minPropReadBram_rsp,
             readSlotsReadBram_req,
@@ -902,7 +936,8 @@ void project(
             logReadBram_rsp,
             permissibility_req,
             permissibility_rsp,
-            update_rsp
+            update_rsp,
+            throughput_check
         );
 
 
@@ -937,40 +972,47 @@ void project(
         }
 
 
-        if (!update_rsp.empty()) {
-            ap_uint<64> remote_update; 
-            update_rsp.read(remote_update);
-            std::cout << "Updating from Log! Method: " << remote_update.range(31, 30) << " Operation: " << remote_update.range(29, 0) << std::endl; 
-            switch (remote_update.range(31, 30))
-            {
-            case 0:
-                std::cout << "AddProject - Project ID: " << remote_update.range(29, 0) << std::endl; 
-                projects[remote_update.range(29, 0)] = true;
-                project_size++;
-                break;
+        // if (!update_rsp.empty()) {
+        //     ap_uint<64> remote_update; 
+        //     update_rsp.read(remote_update);
+        //     std::cout << "Updating from Log! Method: " << remote_update.range(31, 30) << " Operation: " << remote_update.range(29, 0) << std::endl; 
+        //     switch (remote_update.range(31, 30))
+        //     {
+        //     case 0:
+        //         std::cout << "AddProject - Project ID: " << remote_update.range(29, 0) << std::endl; 
+        //         projects[remote_update.range(29, 0)] = true;
+        //         project_size++;
+        //         break;
             
-            case 1:
-                std::cout << "DeleteProject - Project ID: " << remote_update.range(29, 0) << std::endl; 
-                projects[remote_update.range(29, 0)] = false; 
-                project_size--;
-                break; 
+        //     case 1:
+        //         std::cout << "DeleteProject - Project ID: " << remote_update.range(29, 0) << std::endl; 
+        //         projects[remote_update.range(29, 0)] = false; 
+        //         project_size--;
+        //         break; 
 
-            case 2:
-                std::cout << "WorksOn  Employee ID: " << remote_update.range(29, 16) << " Project ID: " << remote_update.range(15, 0) << std::endl; 
-                assign[assign_counter] = remote_update.range(29, 0);
-                assign_counter++;
-                break;
+        //     case 2:
+        //         std::cout << "WorksOn  Employee ID: " << remote_update.range(29, 16) << " Project ID: " << remote_update.range(15, 0) << std::endl; 
+        //         assign[assign_counter] = remote_update.range(29, 0);
+        //         assign_counter++;
+        //         break;
 
-            default:
-                break;
+        //     default:
+        //         break;
+        //     }
+        // }
+
+    #if TH
+            if (!throughput_check.empty()) {
+                throughput_check.read(throughput_finished);
             }
-        }
+    #endif 
+
 
     }
 
 }
 
-extern "C" void project_krnl(
+extern "C" void courseware_bram_krnl(
     hls::stream<pkt256>& m_axis_tx_meta,
     hls::stream<pkt64>& m_axis_tx_data,
     hls::stream<pkt64>& s_axis_tx_status,

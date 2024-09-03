@@ -1,4 +1,4 @@
-#include "account_bram_krnl.h"
+#include "account_stream_krnl.h"
 
 #define TH 0
 
@@ -528,46 +528,46 @@ void mem_manager(
     //     }
     // }
 
-//     if (internal_clock == 10000) {
-//         //deposit
+    if (internal_clock == 10000) {
+        //deposit
 
-//         if (!update_noncon_rsp.full()) {
-//             hbm_tmp = 0;
-//             for (int i=0; i<number_of_nodes; i++){
-//                 if(i!=board_number){
-//                     hbm_tmp+=network_ptr[DEPOSIT_PTR + 2 * i];
-//                 }
-//             }
-//             update_noncon_rsp.write(hbm_tmp);
-//         }
+        if (!update_noncon_rsp.full()) {
+            hbm_tmp = 0;
+            for (int i=0; i<number_of_nodes; i++){
+                if(i!=board_number){
+                    hbm_tmp+=network_ptr[DEPOSIT_PTR + 2 * i];
+                }
+            }
+            update_noncon_rsp.write(hbm_tmp);
+        }
         
-//         if (!update_rsp.full()) {
-//             for (int i = 0; i < SYNC_GROUPS; i++) {
-//                 int index = LOG_BASE_PTR + LOG_PTR_LEN * i + FUO[i]; 
-//                 int log_proposal_number = network_ptr[LOG_BASE_PTR + LOG_PTR_LEN * i + LOG_MIN_PROP_PTR_LEN + FUO[i]];
-//                 int log_operation = network_ptr[LOG_BASE_PTR + LOG_PTR_LEN * i + LOG_MIN_PROP_PTR_LEN + FUO[i] + 1];
-//                 // int log_proposal_number = BRAM_LOG[i][FUO[i]];
-//                 // int log_operation = BRAM_LOG[i][FUO[i] + 1];
-//                 //std::cout << "Checking at HBM_PTR: " << LOG_BASE_PTR + LOG_PTR_LEN * i + LOG_MIN_PROP_PTR_LEN  + FUO[i] << " Prop: " << log_proposal_number << " Value: " << log_operation << std::endl; 
-//                 if (log_proposal_number != 0 && log_operation != 0) {
-//                     std::cout << "Log change found! Prop: " << log_proposal_number << " Operation: " << log_operation << std::endl; 
-//                     update = log_operation;
-//                     update_rsp.write(update);
-//                     FUO[i]+=2; 
-//                 }
-//             }
-//         }
+        if (!update_rsp.full()) {
+            for (int i = 0; i < SYNC_GROUPS; i++) {
+                int index = LOG_BASE_PTR + LOG_PTR_LEN * i + FUO[i]; 
+                int log_proposal_number = network_ptr[LOG_BASE_PTR + LOG_PTR_LEN * i + LOG_MIN_PROP_PTR_LEN + FUO[i]];
+                int log_operation = network_ptr[LOG_BASE_PTR + LOG_PTR_LEN * i + LOG_MIN_PROP_PTR_LEN + FUO[i] + 1];
+                // int log_proposal_number = BRAM_LOG[i][FUO[i]];
+                // int log_operation = BRAM_LOG[i][FUO[i] + 1];
+                //std::cout << "Checking at HBM_PTR: " << LOG_BASE_PTR + LOG_PTR_LEN * i + LOG_MIN_PROP_PTR_LEN  + FUO[i] << " Prop: " << log_proposal_number << " Value: " << log_operation << std::endl; 
+                if (log_proposal_number != 0 && log_operation != 0) {
+                    std::cout << "Log change found! Prop: " << log_proposal_number << " Operation: " << log_operation << std::endl; 
+                    update = log_operation;
+                    update_rsp.write(update);
+                    FUO[i]+=2; 
+                }
+            }
+        }
 
-// #if TH
-//         if (!throughput_check.full()) {
-//             if (network_ptr[LOG_BASE_PTR] >= exe) {
-//                 throughput_check.write(true);
-//             }
-//         }
-// #endif 
+#if TH
+        if (!throughput_check.full()) {
+            if (network_ptr[LOG_BASE_PTR] >= exe) {
+                throughput_check.write(true);
+            }
+        }
+#endif 
 
-//         internal_clock = 0; 
-//     }
+        internal_clock = 0; 
+    }
 
 
     // #if TH
@@ -589,54 +589,13 @@ void mem_manager(
 
 }
 
-const int BUFFER_SIZE = 100000;
-void load_buffer(
-    int* operation_list_ptr,
-    ap_uint<32>* amount_list_ptr,
-    int* operation_list,
-    ap_uint<32>* amount_list,
-    bool swap
-) {
-
-    static bool loaded = false; 
-    static int index = 0; 
-    static int operation_buffer[BUFFER_SIZE];
-    static ap_uint<32> amount_buffer[BUFFER_SIZE];
-
-    if (swap) {
-        if (!loaded) {
-            for (int i = 0; i < BUFFER_SIZE; i++) {
-                //#pragma HLS UNROLL
-                operation_list[i] = operation_list_ptr[index + i];
-                amount_list[i] = amount_list_ptr[index + i];
-            }
-            index += BUFFER_SIZE; 
-        } else {
-            for (int i = 0; i < BUFFER_SIZE; i++) {
-                //#pragma HLS UNROLL
-                operation_list[i] = operation_buffer[i];
-                amount_list[i] = amount_buffer[i];
-            }
-        }
-        loaded = false; 
-    } else if (!loaded) {
-        for (int i = 0; i < BUFFER_SIZE; i++) {
-            //pragma HLS UNROLL
-            operation_buffer[i] = operation_list_ptr[index + i];
-            amount_buffer[i] = amount_list_ptr[index + i];
-        }
-        index += BUFFER_SIZE; 
-        loaded = true; 
-    }
-}
-
 
 void bank(
     hls::stream<pkt256>& m_axis_tx_meta,
     hls::stream<pkt64>& m_axis_tx_data,
     int board_number,
-    int* operation_list_ptr,
-    ap_uint<32>* amount_list_ptr,
+    hls::stream<int>& operation_stream,
+    hls::stream<ap_uint<32>>& amount_stream,
     int number_of_operations,
     int number_of_nodes,
     int debug_exe,
@@ -682,10 +641,6 @@ void bank(
 
     static hls::stream<bool> throughput_check;
 
-
-    #pragma HLS cache port=operation_list_ptr lines=64 depth=64
-    #pragma HLS cache port=amount_list_ptr lines=64 depth=64
-
     /*
         Interal streams between SMR and MEM Manager
     */
@@ -721,116 +676,69 @@ void bank(
     static int remote_bank_accounts = 0;
     static int deposits = 0; 
 
-    static bool swap = false; 
+    static bool load = true; 
     static int swap_at = 1; 
 
-    static int operation_list[BUFFER_SIZE];
-    static ap_uint<32> amount_list[BUFFER_SIZE];
+    // static int operation_list[BUFFER_SIZE];
+    // static ap_uint<32> amount_list[BUFFER_SIZE];
 
+    static int operation; 
+    static ap_uint<32> amount; 
 
     //std::cout << "Starting RUBiS accelerator..." << std::endl; 
-    //BANK_MAIN_LOOP: while (debug_counter < debug_exe && counter < number_of_operations) {
-    while (counter < number_of_operations) {
-    //while (counter < number_of_operations || (!throughput_finished && board_number != 0)) {
+    BANK_MAIN_LOOP: while (counter < number_of_operations) {
+
         debug_counter++;
 
+        if (load && !operation_stream.empty() && !amount_stream.empty()) {
+            load = false; 
+            operation_stream.read(operation);
+            amount_stream.read(amount);
+        }
 
-        swap = (counter % BUFFER_SIZE == 0 && swap_at != counter) ? true : false; 
-        if (swap) swap_at = counter; 
-
-        load_buffer(
-            operation_list_ptr,
-            amount_list_ptr,
-            operation_list,
-            amount_list,
-            swap
-        );
-
-        if (counter < number_of_operations) {
-            std::cout << "Counter: " << counter <<  " Method: " << operation_list[counter%BUFFER_SIZE] << std::endl; 
-            switch (operation_list[counter%BUFFER_SIZE])
-            {
-
-                case 0: {
-                    //Withdraw
-                    // if (!permissibility_req.full()) {
-                    //     temp_amount = amount_list[counter%BUFFER_SIZE];
-                    //     proposed_value.range(31, 30) = 0; 
-                    //     proposed_value.range(29, 0) = 1;
-                    //     permissibility_req.write(proposed_value);
-                    //     done = false;
-                    // }
-                    if (!proposed.full() && done) {
-                        temp_amount = amount_list[counter%BUFFER_SIZE];
-                        if (bank_accounts + remote_bank_accounts - temp_amount >= 0) {
-                            std::cout << "Withdraw: " << temp_amount.range(31, 0) << " Quantity: " << bank_accounts + remote_bank_accounts << std::endl;
-                            proposed_value.range(31, 0) = temp_amount;
-                            proposed.write(ProposedValue(proposed_value, 0));
-                            done = false; 
-                        } else {
-                            done = true;
-                            counter++; 
-                        }
-                    }
-                    break;
-                }
-
-                case 1: {
-                    //Deposit
-                    if (!stock_req.full()) {
-                        temp_amount = amount_list[counter%BUFFER_SIZE];
-                        bank_accounts += temp_amount.range(31, 0);
-                        deposits += temp_amount.range(31, 0);
-                        stock_req.write(deposits);
+        std::cout << "Counter: " << counter <<  " Method: " << operation << std::endl; 
+        switch (operation)
+        {
+            case 0: {
+                //Withdraw
+                if (!proposed.full() && done) {
+                    temp_amount = amount;
+                    if (bank_accounts + remote_bank_accounts - temp_amount >= 0) {
+                        std::cout << "Withdraw: " << temp_amount.range(31, 0) << " Quantity: " << bank_accounts + remote_bank_accounts << std::endl;
+                        proposed_value.range(31, 0) = temp_amount;
+                        proposed.write(ProposedValue(proposed_value, 0));
+                        done = false; 
+                    } else {
+                        done = true;
                         counter++; 
                     }
-                    break;
+                    load = true; 
                 }
+                break;
+            }
 
-                case 2: {
-                    //Query
-                    std::cout << "Total: " << bank_accounts + remote_bank_accounts << std::endl;
+            case 1: {
+                //Deposit
+                if (!stock_req.full()) {
+                    temp_amount = amount;
+                    bank_accounts += temp_amount.range(31, 0);
+                    deposits += temp_amount.range(31, 0);
+                    stock_req.write(deposits);
                     counter++; 
-                    break;
+                    load = true; 
                 }
+                break;
+            }
 
+            case 2: {
+                //Query
+                std::cout << "Total: " << bank_accounts + remote_bank_accounts << std::endl;
+                load = true; 
+                counter++; 
+                break;
             }
 
         }
-
-        // if (!permissibility_rsp.empty() && !proposed.full()) {
-        //     permissibility_rsp.read(permiss_rsp);
-        //     std::cout << "Permissibility Check" << std::endl; 
-        //     switch(permiss_rsp.range(31, 30)) {
-                
-        //         /*    
-        //             Withrdaw
-        //             31 - 0 (2 bits) :Withdraw Amount
-        //         */
-        //         case 0: {
-        //             temp_amount = amount_list_ptr[counter];
-        //             if (bank_accounts + permiss_rsp.range(29, 0) - temp_amount >= 0) {
-        //                 std::cout << "Withdraw: " << temp_amount.range(31, 0) << " Quantity: " << bank_accounts + permiss_rsp.range(29, 0) << std::endl;
-        //                 proposed_value.range(31, 0) = temp_amount;
-        //                 proposed.write(ProposedValue(proposed_value, 0));
-        //             } else {
-        //                 done = true;
-        //                 counter++; 
-        //             }
-        //             break;
-        //         }
-
-        //         /*    
-        //             Query
-        //         */
-        //         case 1: {
-        //             std::cout << "Total: " << bank_accounts + permiss_rsp.range(29, 0) << std::endl;
-        //             break;
-        //         }
-
-        //     }
-
-        // }
 
         if(board_number == 0)
             smr(
@@ -869,12 +777,6 @@ void bank(
             m_axis_tx_data
         );
 
-        // remote_memory(
-        //     smr_tx_meta, 
-        //     smr_tx_data,
-        //     HBM_PTR
-        // ); 
-
         mem_manager(
             HBM_PTR,
             number_of_nodes,
@@ -902,42 +804,21 @@ void bank(
             std::cout << "Withdraw Amount: " << temp.range(29, 0) << std::endl; 
             bank_accounts -= temp.range(29, 0);
 
-            // switch (temp.range(31, 30))
-            // {
-            // case 0:
-            //     std::cout << "Withdraw Amount: " << temp.range(29, 0) << std::endl; 
-            //     bank_accounts -= temp.range(31, 0);
-            //     break;
-
-            // default:
-            //     break;
-            // }
-
         }
 
 
-        // if (!update_rsp.empty()) {
+        if (!update_rsp.empty()) {
 
-        //     update_rsp.read(update);
-        //     std::cout << "Updaing from Log! Method: " << update.range(31, 30) << " Operation: " << update.range(29, 0) << std::endl; 
-        //     std::cout << "Withdraw Amount: " << update.range(29, 0) << std::endl; 
-        //     bank_accounts -= update.range(29, 0);
-        //     // switch (update.range(31, 30))
-        //     // {
-        //     // case 0:
-        //     //     std::cout << "Withdraw Amount: " << update.range(29, 0) << std::endl; 
-        //     //     bank_accounts -= update.range(31, 0);
-        //     //     break;
+            update_rsp.read(update);
+            std::cout << "Updaing from Log! Method: " << update.range(31, 30) << " Operation: " << update.range(29, 0) << std::endl; 
+            std::cout << "Withdraw Amount: " << update.range(29, 0) << std::endl; 
+            bank_accounts -= update.range(29, 0);
+        }
 
-        //     // default:
-        //     //     break;
-        //     // }
-        // }
-
-        // if (!update_noncon_rsp.empty()) {
-        //     update_noncon_rsp.read(update_noncon);
-        //     remote_bank_accounts = update_noncon;
-        // }
+        if (!update_noncon_rsp.empty()) {
+            update_noncon_rsp.read(update_noncon);
+            remote_bank_accounts = update_noncon;
+        }
 
 #if TH
         if (!throughput_check.empty()) {
@@ -949,14 +830,14 @@ void bank(
 
 }
 
-extern "C" void account_bram_krnl(
+extern "C" void account_stream_krnl(
     hls::stream<pkt256>& m_axis_tx_meta,
     hls::stream<pkt64>& m_axis_tx_data,
     hls::stream<pkt64>& s_axis_tx_status,
+    hls::stream<int>& operation_stream,
+    hls::stream<ap_uint<32>>& amount_stream,
     volatile int* HBM_PTR,
     int board_number,
-    int* operation_list,
-    ap_uint<32>* amount_list,
     int number_of_operations,
     int number_of_nodes,
     int debug_exe
@@ -968,10 +849,8 @@ extern "C" void account_bram_krnl(
     #pragma HLS INTERFACE axis port = m_axis_tx_meta
     #pragma HLS INTERFACE axis port = m_axis_tx_data
     #pragma HLS INTERFACE axis port = s_axis_tx_status
-
-
-    #pragma HLS cache port=operation_list lines=64 depth=64
-    #pragma HLS cache port=amount_list lines=64 depth=64
+    #pragma HLS INTERFACE axis port = operation_stream
+    #pragma HLS INTERFACE axis port = amount_stream
 
     pkt64 status; 
 
@@ -984,8 +863,8 @@ extern "C" void account_bram_krnl(
         m_axis_tx_meta,
         m_axis_tx_data,
         board_number,
-        operation_list,
-        amount_list,
+        operation_stream,
+        amount_stream,
         number_of_operations,
         number_of_nodes,
         debug_exe,

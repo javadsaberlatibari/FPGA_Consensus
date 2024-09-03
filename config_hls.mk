@@ -10,3 +10,9 @@ $(TEMP_DIR)/${KRNL_2}.xo: kernel/user_krnl/${KRNL_2}/src/hls/*.cpp
 $(TEMP_DIR)/${KRNL_3}.xo: kernel/cmac_krnl/cmac_krnl.xml kernel/cmac_krnl/package_cmac_krnl.tcl scripts/gen_xo.tcl kernel/cmac_krnl/src/hdl/*.sv
 	mkdir -p $(TEMP_DIR)
 	$(VIVADO) -mode batch -source scripts/gen_xo.tcl -tclargs $(TEMP_DIR)/${KRNL_3}.xo ${KRNL_3} $(TARGET) $(DEVICE) $(XSA) kernel/cmac_krnl/cmac_krnl.xml kernel/cmac_krnl/package_cmac_krnl.tcl
+
+##LOAD KERNEL
+$(TEMP_DIR)/${KRNL_4}.xo: kernel/${KRNL_4}/src/hls/*.cpp
+	mkdir -p $(TEMP_DIR)
+	$(VPP) $(CLFLAGS) -c -k ${KRNL_4} -o $(TEMP_DIR)/${KRNL_4}.xo --input_files kernel/${KRNL_4}/src/hls/*.cpp
+

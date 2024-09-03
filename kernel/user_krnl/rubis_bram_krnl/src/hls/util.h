@@ -7,13 +7,11 @@
 #include <ap_int.h>
 #include <ap_fixed.h>
 #include "../../../../common/include/communication.hpp"
-//#include "remote_memory.h"
-//#include "hash_table.hpp"
 
 #pragma once
 
 const int NUM_NODES = 12; 
-const int SYNC_GROUPS = 1; 
+const int SYNC_GROUPS = 2; 
 
 // Need for QP info
 const ap_uint<32> BASE_IP_ADDR = 0xe0d4010b;
@@ -23,7 +21,7 @@ const uint32_t UDP = 0x000012b7;
 static bool FOLLOWER_LIST[NUM_NODES-1] = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
 
 //25% write log size (smaller % can use this as well)
-const int NUM_SLOTS = 187500 * 2; 
+const int NUM_SLOTS = 90000 * 2; 
 const int FIFO_LENGTH = 5;
 
 // Constants for HeartBeat Memory
@@ -46,16 +44,14 @@ const int LOG_REMOTE_LOG_QUEUE_ADDR_LEN = 4 * LOG_REMOTE_LOG_QUEUE_PTR_LEN;
 const int LOG_PTR_LEN = LOG_MIN_PROP_PTR_LEN + LOG_LOCAL_LOG_PTR_LEN + LOG_REMOTE_LOG_QUEUE_PTR_LEN; 
 const int LOG_ADDR_LEN = LOG_PTR_LEN * 4; 
 
-const int BROADCAST_EMPLOYEE_PTR = HB_PTR_LEN + SYNC_GROUPS * LOG_PTR_LEN;
-const int BROADCAST_EMPLOYEE_ADDR = HB_ADDR_LEN + SYNC_GROUPS * LOG_ADDR_LEN;
-const int BROADCAST_EMPLOYEE_LEN = 62500; 
+const int BROADCAST_STOCK_PTR = HB_PTR_LEN + SYNC_GROUPS * LOG_PTR_LEN;
+const int BROADCAST_STOCK_ADDR = HB_ADDR_LEN + SYNC_GROUPS * LOG_ADDR_LEN;
+const int BROADCAST_STOCK_LEN = 200; 
 
+const int BROADCAST_BID_PTR = BROADCAST_STOCK_PTR + BROADCAST_STOCK_LEN * NUM_NODES;
+const int BROADCAST_BID_ADDR = BROADCAST_STOCK_PTR * 4;
+const int BROADCAST_BID_LEN = 50000; 
 
-// const int NUMBER_OF_NODES = 3;
-// const int MAX_OPERATIONS = 187500;
-// ap_uint<64> OPERATION_LIST[NUMBER_OF_NODES][MAX_OPERATIONS] = {
-//     #include "/home/pyuvaraj/data_gen/benchmarks/3-1000000-15/project/bram_op_matrix.txt"
-// }
 
 struct LocalMemOp {
     bool read; 
@@ -104,45 +100,15 @@ struct LogEntry
         :propVal(p), value(v), valid(va) {}
 };
 
-
-void stream_2_to_1(
-    hls::stream<ap_uint<256>>& a_tx_meta,
-    hls::stream<ap_uint<256>>& b_tx_meta,
-    hls::stream<ap_uint<64>>& a_tx_data,
-    hls::stream<ap_uint<64>>& b_tx_data,
-    hls::stream<ap_uint<256>>& d_tx_meta,
-    hls::stream<ap_uint<64>>& d_tx_data
-) {
-
-    static ap_uint<256> temp_val_256; 
-    static ap_uint<64> temp_val_64; 
-
-    if (!a_tx_meta.empty()) {
-        a_tx_meta.read(temp_val_256);
-        d_tx_meta.write(temp_val_256);
-    } else if (!b_tx_meta.empty()) {
-        b_tx_meta.read(temp_val_256);
-        d_tx_meta.write(temp_val_256);
-    } 
-
-    if (!a_tx_data.empty()) {
-        a_tx_data.read(temp_val_64);
-        d_tx_data.write(temp_val_64);
-    } else if (!b_tx_data.empty()) {
-        b_tx_data.read(temp_val_64);
-        d_tx_data.write(temp_val_64);
-    } 
-
-}
-
-
 void meta_merger(
     hls::stream<ap_uint<256>>& a_tx_meta,
     hls::stream<ap_uint<256>>& b_tx_meta,
+    hls::stream<ap_uint<256>>& c_tx_meta,
+    //hls::stream<ap_uint<64>>& a_tx_data,
+    //hls::stream<ap_uint<64>>& b_tx_data,
     hls::stream<pkt256>& d_tx_meta
+    //hls::stream<pkt64>& c_tx_data
 ) {
-    #pragma HLS inline off
-    #pragma HLS pipeline II=1
 
     static ap_uint<256> temp_val_256; 
     static pkt256 temp_pkt_256; 
@@ -151,22 +117,27 @@ void meta_merger(
         a_tx_meta.read(temp_val_256);
         temp_pkt_256.data(255, 0) = temp_val_256.range(255, 0); 
         d_tx_meta.write(temp_pkt_256);
-    } else if (!b_tx_meta.empty() && !d_tx_meta.full()) {
+    } 
+    if (!b_tx_meta.empty() && !d_tx_meta.full()) {
         b_tx_meta.read(temp_val_256);
         temp_pkt_256.data(255, 0) = temp_val_256.range(255, 0); 
         d_tx_meta.write(temp_pkt_256);  
     } 
+    if (!c_tx_meta.empty() && !d_tx_meta.full()) {
+        c_tx_meta.read(temp_val_256);
+        temp_pkt_256.data(255, 0) = temp_val_256.range(255, 0); 
+        d_tx_meta.write(temp_pkt_256);  
+    }
 
 }
 
 void data_merger(
     hls::stream<ap_uint<64>>& a_tx_data,
     hls::stream<ap_uint<64>>& b_tx_data,
+    hls::stream<ap_uint<64>>& c_tx_data,
     hls::stream<pkt64>& d_tx_data
 ) {
 
-    #pragma HLS inline off
-    #pragma HLS pipeline II=1
     static ap_uint<64> temp_val_64; 
     static pkt64 temp_pkt_64; 
 
@@ -176,18 +147,25 @@ void data_merger(
         temp_pkt_64.keep(7, 0) = 0xff;
         temp_pkt_64.last = 1; 
         d_tx_data.write(temp_pkt_64);
-        
-    } else if (!b_tx_data.empty() && !d_tx_data.full()) {
+
+    } 
+    if (!b_tx_data.empty() && !d_tx_data.full()) {
         b_tx_data.read(temp_val_64);
         temp_pkt_64.data(63, 0) = temp_val_64.range(63, 0); 
         temp_pkt_64.keep(7, 0) = 0xff;
         temp_pkt_64.last = 1; 
         d_tx_data.write(temp_pkt_64);       
-
-    } 
+        
+    } else if (!c_tx_data.empty() && !d_tx_data.full()) {
+        c_tx_data.read(temp_val_64);
+        temp_pkt_64.data(63, 0) = temp_val_64.range(63, 0); 
+        temp_pkt_64.keep(7, 0) = 0xff;
+        temp_pkt_64.last = 1; 
+        d_tx_data.write(temp_pkt_64);   
+         
+    }
 
 }
-
 
 void rdma_read(
     int s_axi_lqpn,
