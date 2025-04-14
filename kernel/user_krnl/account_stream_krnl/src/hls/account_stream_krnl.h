@@ -142,12 +142,12 @@ void meta_merger(
     static ap_uint<256> temp_val_256; 
     static pkt256 temp_pkt_256; 
 
-    if (!a_tx_meta.empty() && !d_tx_meta.full()) {
+    while (!a_tx_meta.empty()) {
         a_tx_meta.read(temp_val_256);
         temp_pkt_256.data(255, 0) = temp_val_256.range(255, 0); 
         d_tx_meta.write(temp_pkt_256);
     } 
-    else if (!b_tx_meta.empty() && !d_tx_meta.full()) {
+    while (!b_tx_meta.empty()) {
         b_tx_meta.read(temp_val_256);
         temp_pkt_256.data(255, 0) = temp_val_256.range(255, 0); 
         d_tx_meta.write(temp_pkt_256);  
@@ -166,21 +166,19 @@ void data_merger(
     static ap_uint<64> temp_val_64; 
     static pkt64 temp_pkt_64; 
 
-    if (!a_tx_data.empty() && !d_tx_data.full()) {
+    while (!a_tx_data.empty()) {
         a_tx_data.read(temp_val_64);
         temp_pkt_64.data(63, 0) = temp_val_64.range(63, 0); 
         temp_pkt_64.keep(7, 0) = 0xff;
         temp_pkt_64.last = 1; 
         d_tx_data.write(temp_pkt_64);
-        
     } 
-    else if (!b_tx_data.empty() && !d_tx_data.full()) {
+    while (!b_tx_data.empty()) {
         b_tx_data.read(temp_val_64);
         temp_pkt_64.data(63, 0) = temp_val_64.range(63, 0); 
         temp_pkt_64.keep(7, 0) = 0xff;
         temp_pkt_64.last = 1; 
         d_tx_data.write(temp_pkt_64);       
-
     } 
 
 }
@@ -194,7 +192,7 @@ void rdma_read(
     hls::stream<ap_uint<256>>& m_axis_tx_meta
 ){
     //#pragma HLS dataflow
-    #pragma HLS inline off
+    //#pragma HLS inline off
     #pragma HLS pipeline II=1
     #pragma HLS INTERFACE axis port = m_axis_tx_meta
     
@@ -228,7 +226,7 @@ void rdma_write(
     hls::stream<ap_uint<64>>& m_axis_tx_data
 ){
     //#pragma HLS dataflow
-    #pragma HLS inline off
+    //#pragma HLS inline off
     #pragma HLS pipeline II=1
     #pragma HLS INTERFACE axis port = m_axis_tx_meta
     #pragma HLS INTERFACE axis port = m_axis_tx_data

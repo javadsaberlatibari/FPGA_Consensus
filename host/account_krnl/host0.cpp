@@ -36,6 +36,9 @@ EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <cstdlib> 
 #include <iostream> 
 #include <fstream>
+#include <libmemcached/memcached.h>
+#include <iostream>
+#include <string>
 
 #define DATA_SIZE 62500000
 
@@ -62,6 +65,7 @@ int main(int argc, char **argv) {
     double WRITE_PERCENTAGE = std::atoi(argv[4]);
     int ID = std::atoi(argv[5]);
     int exe = atoi(argv[6]);
+    const char* IP = argv[7];
     /*===============================================================Program FPGA with input bitstream===============================================================*/
 
     cl_int err;
@@ -69,6 +73,7 @@ int main(int argc, char **argv) {
     cl::Context context;
     cl::Kernel user_kernel;
     cl::Kernel network_kernel;
+    cl::Kernel load_kernel;
 
     //OPENCL HOST CODE AREA START
     //Create Program and Kernel
@@ -83,9 +88,8 @@ int main(int argc, char **argv) {
         auto device = devices[i];
         // Creating Context and Command Queue for selected Device
         OCL_CHECK(err, context = cl::Context({device}, NULL, NULL, NULL, &err));
-        OCL_CHECK(err,
-                  q = cl::CommandQueue(
-                      context, {device}, CL_QUEUE_PROFILING_ENABLE, &err));
+        OCL_CHECK(err, //q = cl::CommandQueue(context, {device}, CL_QUEUE_PROFILING_ENABLE, &err));
+                  q = cl::CommandQueue(context, {device}, 0, &err));
 
         std::cout << "Trying to program device[" << i
                   << "]: " << device.getInfo<CL_DEVICE_NAME>() << std::endl;
@@ -98,7 +102,7 @@ int main(int argc, char **argv) {
             OCL_CHECK(err,
                       network_kernel = cl::Kernel(program, "rocetest_krnl", &err));
             OCL_CHECK(err,
-                      user_kernel = cl::Kernel(program, "account_krnl", &err));
+                      user_kernel = cl::Kernel(program, "account_stream_krnl", &err));
             valid_device++;
             break; // we break because we found a valid device
         }
@@ -107,8 +111,6 @@ int main(int argc, char **argv) {
         std::cout << "Failed to program any device found, exit!\n";
         exit(EXIT_FAILURE);
     }
-    
-    wait_for_enter("\nPress ENTER to continue after setting up ILA trigger...");
 
     /*===============================================================Init and start Network Kernel===============================================================*/    
 
@@ -161,45 +163,19 @@ int main(int argc, char **argv) {
     printf("enqueue network kernel...\n");
     OCL_CHECK(err, err = q.enqueueTask(network_kernel));
     OCL_CHECK(err, err = q.finish());
-
-    //sleep(5);
-    wait_for_enter("\nPausing for network kernel setup...");
     /*===============================================================Init and Start User kernel===============================================================*/
 
     uint32_t boardNum = ID;
     int num_ops = NUM_OPS/NUM_NODES; 
     printf("NUMOPS = %d\n", num_ops);
-    std::vector<int, aligned_allocator<int>> reply_bank(64 * sizeof(int));
-    OCL_CHECK(err,
-              cl::Buffer buffer_reply_bank(context,
-                                   CL_MEM_USE_HOST_PTR | CL_MEM_READ_WRITE,
-                                   sizeof(int) * 100,
-                                   reply_bank.data(),
-                                   &err));
 
-    std::vector<int, aligned_allocator<int>> reply_bram(64 * sizeof(int));
-    OCL_CHECK(err,
-              cl::Buffer buffer_reply_bram(context,
-                                   CL_MEM_USE_HOST_PTR | CL_MEM_READ_WRITE,
-                                   sizeof(int) * 100,
-                                   reply_bram.data(),
-                                   &err));
-
-    std::vector<int, aligned_allocator<int>> ops(num_ops * sizeof(int));
+    std::vector<uint64_t, aligned_allocator<uint64_t>> ops(num_ops);
     OCL_CHECK(err,
               cl::Buffer buffer_ops(context,
                                    CL_MEM_USE_HOST_PTR | CL_MEM_READ_WRITE,
-                                   sizeof(int) * num_ops,
+                                   sizeof(uint64_t) * num_ops,
                                    ops.data(),
                                    &err));
-
-    std::vector<int, aligned_allocator<int>> amount(num_ops * sizeof(int));
-    OCL_CHECK(err,
-              cl::Buffer buffer_amount(context,
-                                   CL_MEM_USE_HOST_PTR | CL_MEM_READ_WRITE,
-                                   sizeof(int) * num_ops,
-                                   amount.data(),
-                                   &err));    
 
     int expected_calls; 
     int expected_query = 0; 
@@ -209,24 +185,30 @@ int main(int argc, char **argv) {
     int calls = 0; 
 
     //printf("TEST\n");
+    uint64_t full_op, op, amount; 
     while(getline(myfile, line)) {
         if (line.at(0) == '#') {
             expected_calls = std::stoi(line.substr(1, line.size()));
             continue;
         }
         
-        ops[calls] = line.at(0) - 48;
+        op = line.at(0) - 48;
 
         if (line.size() > 1) {
             //printf("%d %d \n", line.at(0) - 48, std::stoi(line.substr(1, line.size())));
             //ops[calls] = line.at(0) - 48;
-            amount[calls] = std::stoi(line.substr(1, line.size()));
+            amount = std::stoi(line.substr(1, line.size()));
         } else {
             //printf("%d \n", line.at(0) - 48);
             //ops[calls] = line.at(0) - 48;
-            amount[calls] = 0;
+            amount = 0;
         }
-        //printf("%d %x \n", ops[calls], amount[calls]);
+
+        full_op = amount;
+        // printf("%x \n", amount);
+        full_op = (full_op << 32) + op; 
+        ops[calls] = full_op; 
+        //printf("%x \n", ops[calls]);
         calls++;
     }
     printf("dataset size: %d\n", calls);
@@ -246,31 +228,112 @@ int main(int argc, char **argv) {
     printf("QUERY = %d\n", expected_query);
     //expected_query = 4; 
 
-    OCL_CHECK(err, err = user_kernel.setArg(3, buffer_network));
-    OCL_CHECK(err, err = user_kernel.setArg(4, boardNum));
-    OCL_CHECK(err, err = user_kernel.setArg(5, buffer_ops));
-    OCL_CHECK(err, err = user_kernel.setArg(6, buffer_amount));
-    OCL_CHECK(err, err = user_kernel.setArg(7, num_ops));
-    OCL_CHECK(err, err = user_kernel.setArg(8, NUM_NODES)); 
-    OCL_CHECK(err, err = user_kernel.setArg(9, exe)); 
-    
-    printf("Host->Device user kernel... \n");
+    if (calls != num_ops) {
+        std::cout << "Expected : " << num_ops << std::endl;
+        std::cout << "Actual : " << calls << std::endl; 
+        exit(1);
+    }
+
+    // OCL_CHECK(err, err = load_kernel.setArg(0, buffer_ops));
+    // 
+    // OCL_CHECK(err, err = load_kernel.setArg(2, num_ops));
+
+    OCL_CHECK(err, err = user_kernel.setArg(3, buffer_ops));
+    OCL_CHECK(err, err = user_kernel.setArg(4, buffer_network));
+    OCL_CHECK(err, err = user_kernel.setArg(5, boardNum));
+    OCL_CHECK(err, err = user_kernel.setArg(6, num_ops));
+    OCL_CHECK(err, err = user_kernel.setArg(7, NUM_NODES)); 
+    OCL_CHECK(err, err = user_kernel.setArg(8, exe)); 
+
+    printf("Host->Device load kernel... \n");
     OCL_CHECK(err, err = q.enqueueMigrateMemObjects({buffer_ops}, 0 /* 0 means from host*/));
-    OCL_CHECK(err, err = q.enqueueMigrateMemObjects({buffer_amount}, 0 /* 0 means from host*/));
+    //OCL_CHECK(err, err = q.enqueueMigrateMemObjects({buffer_amount}, 0 /* 0 means from host*/));
     OCL_CHECK(err, err = q.finish());
+    printf("Starting loading... \n");
+    //for (int i = 0; i < num_ops; i++)
+    // OCL_CHECK(err, err = q.enqueueTask(load_kernel));
+    // sleep(1);
+
+
+    /*=================MEMCACHE SYNC START===============================*/
+    memcached_st *memc;
+    memcached_server_st *servers;
+    memcached_return_t rc;
+    size_t return_value_length;
+    uint32_t flags;
+    char *retrieved_value;
+    bool sync = false; 
+    bool set[NUM_NODES * 2];
+    set[ID] = true;
+    // set[NUM_NODES + ID] = true; 
+
+    int ready = 1, ready2 = 1; 
+
+    memc = memcached_create(NULL);
+    servers = memcached_server_list_append(NULL, IP, 11211, &rc);
+    rc = memcached_server_push(memc, servers);
+    memcached_server_list_free(servers);
+
+    if (rc != MEMCACHED_SUCCESS) {
+        std::cerr << "Could not connect to Memcached: " << memcached_strerror(NULL, rc) << std::endl;
+        return 1;
+    }
+    // Set a value
+    //const char *key = "0";
+    std::string key = std::to_string(ID);
+    //const char *value = "0";
+    std::string value = std::to_string(ID);
+
+    rc = memcached_set(memc, key.c_str(), key.length(), value.c_str(), value.length(), (time_t)0, 0);
+
+    if (rc != MEMCACHED_SUCCESS) {
+        std::cerr << "Could not set value: " << memcached_strerror(memc, rc) << std::endl;
+    }
+
+    // Get the value
+    int counter = 0; 
+    while (!sync) {
+        //sleep(1);
+        for (int i = 0; i < NUM_NODES; i++) {
+            if (!set[i]) {
+                key = std::to_string(i);
+                retrieved_value = memcached_get(memc, key.c_str(), key.length(), &return_value_length, &flags, &rc);
+                if (rc == MEMCACHED_SUCCESS) {
+                    std::cout << "Retrieved value: " << std::string(retrieved_value, return_value_length) << std::endl;
+                    if (std::string(retrieved_value, return_value_length) == std::to_string(i)) {
+                        set[i] = true; 
+                        ready++;
+                    }
+                } else {
+                    std::cerr << "Could not get value: " << memcached_strerror(memc, rc) << std::endl;
+                }
+            }
+        }
+        counter++;
+        if (ready == NUM_NODES) {
+            sync = true; 
+        }
+
+        if (counter == 15000) {
+            std::cout << "SYNC FAILED" << std::endl;
+            return 1; 
+        }
+
+    }
+    /*=================MEMCACHE SYNC END===============================*/
 
     double durationUs = 0.0;
-    
     printf("enqueue user kernel... \n");
     auto start = std::chrono::high_resolution_clock::now();
     OCL_CHECK(err, err = q.enqueueTask(user_kernel));
     OCL_CHECK(err, err = q.finish());
     auto end = std::chrono::high_resolution_clock::now();
     durationUs = (std::chrono::duration_cast<std::chrono::nanoseconds>(end-start).count() / 1000.0);
-    sleep(10);
+    
 
     /*===============================================================OUTPUT===============================================================*/
-
+    sleep(10);
+    //Reponse time wait for values
     // printf("Device->Host user kernel...\n");
     OCL_CHECK(err, err = q.enqueueMigrateMemObjects({buffer_network}, CL_MIGRATE_MEM_OBJECT_HOST));
     OCL_CHECK(err, err = q.finish());
@@ -280,46 +343,46 @@ int main(int argc, char **argv) {
     printf("throughput:%f OPs/us\n", NUM_OPS/durationUs);
 
 
-    const int LOG_SIZE = 2 + 55 + 2 * 90000 + 110; 
-    const int HB_START = 0; 
-    const int HB_END = 12; 
-    const int SYNC_GROUPS = 1; 
+    // const int LOG_SIZE = 2 + 55 + 2 * 125000 + 110; 
+    // const int HB_START = 0; 
+    // const int HB_END = 12; 
+    // const int SYNC_GROUPS = 1; 
 
-    const int PROP_START = HB_END;
-    const int PROP_END = PROP_START + 2 + 55; 
+    // const int PROP_START = HB_END;
+    // const int PROP_END = PROP_START + 2 + 55; 
 
-    const int LOCAL_LOG_START = PROP_END; 
-    const int LOCAL_LOG_END = LOCAL_LOG_START + 2 * 90000; 
+    // const int LOCAL_LOG_START = PROP_END; 
+    // const int LOCAL_LOG_END = LOCAL_LOG_START + 2 * 125000; 
 
-    const int LOG_FIFO_START = LOCAL_LOG_END; 
-    const int LOG_FIFO_END = LOG_FIFO_START + 110; 
+    // const int LOG_FIFO_START = LOCAL_LOG_END; 
+    // const int LOG_FIFO_END = LOG_FIFO_START + 110; 
 
-    const int CRDT_START = HB_END + LOG_SIZE * SYNC_GROUPS;
-    const int CRDT_END = CRDT_START + 24; 
+    // const int CRDT_START = HB_END + LOG_SIZE * SYNC_GROUPS;
+    // const int CRDT_END = CRDT_START + 24; 
 
-    // printf("HB: ");
-    // for (int i = HB_START; i < HB_END; i++) {
+    // // printf("HB: ");
+    // // for (int i = HB_START; i < HB_END; i++) {
+    // //     printf("%d ", network_ptr0[i]);
+    // // }
+    // // printf("\n");
+
+    // printf("PROP: ");
+    // for (int i = PROP_START; i < PROP_END; i++) {
     //     printf("%d ", network_ptr0[i]);
     // }
     // printf("\n");
-
-    printf("PROP: ");
-    for (int i = PROP_START; i < PROP_END; i++) {
-        printf("%d ", network_ptr0[i]);
-    }
-    printf("\n");
     
-    printf("LOCAL LOG: ");
-    for (int i = LOCAL_LOG_START; i < LOCAL_LOG_START + 100; i++) {
-        printf("%x ", network_ptr0[i]);
-    }
-    printf("\n");
+    // printf("LOCAL LOG: ");
+    // for (int i = LOCAL_LOG_START; i < LOCAL_LOG_START + 100; i++) {
+    //     printf("%x ", network_ptr0[i]);
+    // }
+    // printf("\n");
 
-    printf("LOG FIFOs: ");
-    for (int i = LOG_FIFO_START; i < LOG_FIFO_END; i++) {
-        printf("%d ", network_ptr0[i]);
-    }
-    printf("\n");
+    // printf("LOG FIFOs: ");
+    // for (int i = LOG_FIFO_START; i < LOG_FIFO_END; i++) {
+    //     printf("%d ", network_ptr0[i]);
+    // }
+    // printf("\n");
 
     /*****************/
 
@@ -362,10 +425,18 @@ int main(int argc, char **argv) {
     // printf("\n");
 
     // /**********/
-    printf("Stock increments: ");
-    for (int i = CRDT_START; i < CRDT_END; i++) {
-        printf("%d ", network_ptr0[i]);
-    }
+    // printf("Stock increments: ");
+    // for (int i = CRDT_START; i < CRDT_END; i++) {
+    //     printf("%d ", network_ptr0[i]);
+    // }
 
-    std::cout << "EXIT recorded" << std::endl;
+    // std::cout << "EXIT recorded" << std::endl;
+
+
+
+    // Clean up
+    free(retrieved_value);
+    memcached_free(memc);
+
+    return 0; 
 }

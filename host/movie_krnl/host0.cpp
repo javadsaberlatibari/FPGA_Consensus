@@ -36,6 +36,7 @@ EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <cstdlib> 
 #include <iostream> 
 #include <fstream>
+#include <libmemcached/memcached.h>
 
 #define DATA_SIZE 62500000
 
@@ -252,6 +253,77 @@ int main(int argc, char **argv) {
     OCL_CHECK(err, err = q.enqueueMigrateMemObjects({buffer_ops}, 0 /* 0 means from host*/));
     OCL_CHECK(err, err = q.enqueueMigrateMemObjects({buffer_amount}, 0 /* 0 means from host*/));
     OCL_CHECK(err, err = q.finish());
+
+
+/*=================MEMCACHE SYNC START===============================*/
+    memcached_st *memc;
+    memcached_server_st *servers;
+    memcached_return_t rc;
+    size_t return_value_length;
+    uint32_t flags;
+    char *retrieved_value;
+    bool sync = false; 
+    bool set[NUM_NODES * 2];
+    set[ID] = true;
+    // set[NUM_NODES + ID] = true; 
+
+    int ready = 1, ready2 = 1; 
+
+    memc = memcached_create(NULL);
+    servers = memcached_server_list_append(NULL, "198.22.255.162", 11211, &rc);
+    rc = memcached_server_push(memc, servers);
+    memcached_server_list_free(servers);
+
+    if (rc != MEMCACHED_SUCCESS) {
+        std::cerr << "Could not connect to Memcached: " << memcached_strerror(NULL, rc) << std::endl;
+        return 1;
+    }
+    // Set a value
+    //const char *key = "0";
+    std::string key = std::to_string(ID);
+    //const char *value = "0";
+    std::string value = std::to_string(ID);
+
+    rc = memcached_set(memc, key.c_str(), key.length(), value.c_str(), value.length(), (time_t)0, 0);
+
+    if (rc != MEMCACHED_SUCCESS) {
+        std::cerr << "Could not set value: " << memcached_strerror(memc, rc) << std::endl;
+    }
+
+    // Get the value
+    int counter = 0; 
+    while (!sync) {
+        //sleep(1);
+        for (int i = 0; i < NUM_NODES; i++) {
+            if (!set[i]) {
+                key = std::to_string(i);
+                retrieved_value = memcached_get(memc, key.c_str(), key.length(), &return_value_length, &flags, &rc);
+                if (rc == MEMCACHED_SUCCESS) {
+                    std::cout << "Retrieved value: " << std::string(retrieved_value, return_value_length) << std::endl;
+                    if (std::string(retrieved_value, return_value_length) == std::to_string(i)) {
+                        set[i] = true; 
+                        ready++;
+                    }
+                } else {
+                    std::cerr << "Could not get value: " << memcached_strerror(memc, rc) << std::endl;
+                }
+            }
+        }
+        counter++;
+        if (ready == NUM_NODES) {
+            sync = true; 
+        }
+
+        if (counter == 15000) {
+            std::cout << "SYNC FAILED" << std::endl;
+            return 1; 
+        }
+
+    }
+    /*=================MEMCACHE SYNC END===============================*/
+
+
+
 
     double durationUs = 0.0;
     
