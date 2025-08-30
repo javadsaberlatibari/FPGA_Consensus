@@ -62,7 +62,7 @@ module stack_top #(
     axi_stream.slave              s_axis_roce_role_tx_data   ,
     axi_stream.master             m_axis_roce_role_tx_status ,
 
-    //axis_meta.slave               s_axis_qp_interface,           
+    //axis_meta.slave               s_axis_user_qp_interface,           
 
     // Control Signals
     input  wire                                  ap_start         ,
@@ -82,8 +82,8 @@ module stack_top #(
     input  wire [64-1:0]                         rAddr            ,
     input  wire [64-1:0]                         lAddr            ,
     input  wire [32-1:0]                         len              ,
-    input  wire [32-1:0]                         debug            ,
-    input  wire [32-1:0]                         arpDelay                
+    input  wire [32-1:0]                         debug            
+    
  );
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -133,6 +133,7 @@ axis_meta #(.WIDTH(160))    axis_host_tx_metadata();
 
 axis_meta #(.WIDTH(144))  axis_qp_interface();
 axis_meta #(.WIDTH(184))  axis_qp_conn_interface();
+axis_meta #(.WIDTH(144))  axis_roce_qp_interface();
 
 wire        axis_host_arp_lookup_request_TVALID;
 wire        axis_host_arp_lookup_request_TREADY;
@@ -168,7 +169,6 @@ reg [31:0] remote_ip_address;
 
 wire set_board_number_valid;
 wire[3:0] set_board_number_data;
-wire[31:0] ARP_IDLE_TIMER;
 reg[3:0] board_number;
 
 // statistics
@@ -365,8 +365,7 @@ reg [31:0] arp_node_num;
 reg [31:0] arp_wait_counter; 
 // reg [0:0] arp_pulse; 
 reg[0:0] arp_write_done;
-//localparam ARP_IDLE_TIMER = 500000000;
-assign ARP_IDLE_TIMER = arpDelay;
+localparam ARP_IDLE_TIMER = 400000000;
 reg[7:0] arpState;
 localparam ARP_IDLE = 0;
 localparam ARP_RQ = 1;
@@ -976,199 +975,200 @@ axis_interconnect_merger_160 tx_metadata_merger (
 
     Connected to User Kernel
 
-axis_interconnect_merger_160 tx_metadata_merger (
-  .ACLK(net_clk),                                  // input wire ACLK
-  .ARESETN(net_aresetn),                            // input wire ARESETN
-  .S00_AXIS_ACLK(net_clk),                // input wire S00_AXIS_ACLK
-  .S00_AXIS_ARESETN(net_aresetn),          // input wire S00_AXIS_ARESETN
-  .S00_AXIS_TVALID(axis_host_tx_metadata.valid),            // input wire S00_AXIS_TVALID
-  .S00_AXIS_TREADY(axis_host_tx_metadata.ready),            // output wire S00_AXIS_TREADY
-  .S00_AXIS_TDATA(axis_host_tx_metadata.data),              // input wire [159 : 0] S00_AXIS_TDATA
-  .S01_AXIS_ACLK(net_clk),                // input wire S01_AXIS_ACLK
-  .S01_AXIS_ARESETN(net_aresetn),          // input wire S01_AXIS_ARESETN
-  .S01_AXIS_TVALID(s_axis_roce_role_tx_meta.valid),            // input wire S01_AXIS_TVALID
-  .S01_AXIS_TREADY(s_axis_roce_role_tx_meta.ready),            // output wire S01_AXIS_TREADY
-  .S01_AXIS_TDATA(s_axis_roce_role_tx_meta.data),              // input wire [159 : 0] S01_AXIS_TDATA
-  .M00_AXIS_ACLK(net_clk),                // input wire M00_AXIS_ACLK
-  .M00_AXIS_ARESETN(net_aresetn),          // input wire M00_AXIS_ARESETN
-  .M00_AXIS_TVALID(axis_tx_metadata.valid),            // output wire M00_AXIS_TVALID
-  .M00_AXIS_TREADY(axis_tx_metadata.ready),            // input wire M00_AXIS_TREADY
-  .M00_AXIS_TDATA(axis_tx_metadata.data),              // output wire [159 : 0] M00_AXIS_TDATA
-  .S00_ARB_REQ_SUPPRESS(1'b0),  // input wire S00_ARB_REQ_SUPPRESS
-  .S01_ARB_REQ_SUPPRESS(1'b0)  // input wire S01_ARB_REQ_SUPPRESS
-);
 */
+
+// axis_interconnect_merger_256 tx_metadata_merger (
+//   .ACLK(net_clk),                                  // input wire ACLK
+//   .ARESETN(net_aresetn),                            // input wire ARESETN
+//   .S00_AXIS_ACLK(net_clk),                // input wire S00_AXIS_ACLK
+//   .S00_AXIS_ARESETN(net_aresetn),          // input wire S00_AXIS_ARESETN
+//   .S00_AXIS_TVALID(axis_qp_interface.valid),            // input wire S00_AXIS_TVALID
+//   .S00_AXIS_TREADY(axis_qp_interface.ready),            // output wire S00_AXIS_TREADY
+//   .S00_AXIS_TDATA(axis_qp_interface.data),              // input wire [159 : 0] S00_AXIS_TDATA
+//   .S01_AXIS_ACLK(net_clk),                // input wire S01_AXIS_ACLK
+//   .S01_AXIS_ARESETN(net_aresetn),          // input wire S01_AXIS_ARESETN
+//   .S01_AXIS_TVALID(s_axis_user_qp_interface.valid),            // input wire S01_AXIS_TVALID
+//   .S01_AXIS_TREADY(s_axis_user_qp_interface.ready),            // output wire S01_AXIS_TREADY
+//   .S01_AXIS_TDATA(s_axis_user_qp_interface.data),              // input wire [159 : 0] S01_AXIS_TDATA
+//   .M00_AXIS_ACLK(net_clk),                // input wire M00_AXIS_ACLK
+//   .M00_AXIS_ARESETN(net_aresetn),          // input wire M00_AXIS_ARESETN
+//   .M00_AXIS_TVALID(axis_roce_qp_interface.valid),            // output wire M00_AXIS_TVALID
+//   .M00_AXIS_TREADY(axis_roce_qp_interface.ready),            // input wire M00_AXIS_TREADY
+//   .M00_AXIS_TDATA(axis_roce_qp_interface.data),              // output wire [159 : 0] M00_AXIS_TDATA
+//   .S00_ARB_REQ_SUPPRESS(1'b0),  // input wire S00_ARB_REQ_SUPPRESS
+//   .S01_ARB_REQ_SUPPRESS(1'b0)  // input wire S01_ARB_REQ_SUPPRESS
+// );
 
 
 /*
  * ILA
  */
-ila_stack_top inst_ila_stack_top (
-    .clk(net_clk),
-    .probe0(m_axis_net.valid),
-    .probe1(m_axis_net.ready),
-    .probe2(m_axis_net.data),
-    .probe3(s_axis_net.valid),
-    .probe4(s_axis_net.ready),
-    .probe5(s_axis_net.data),
-    .probe6(s_axis_roce_role_tx_meta.valid),
-    .probe7(s_axis_roce_role_tx_meta.ready),
-    .probe8(s_axis_roce_role_tx_meta.data),//160
-    .probe9(arp_counter),//32
-    .probe10(arpState),//8
-    .probe11(m_axis_roce_read_cmd.valid),
-    .probe12(m_axis_roce_read_cmd.ready),
-    .probe13(m_axis_roce_read_cmd.data),//96
-    .probe14(m_axis_roce_write_cmd.valid),
-    .probe15(m_axis_roce_write_cmd.ready),
-    .probe16(m_axis_roce_write_cmd.data),//96
-    .probe17(net_aresetn),
-    .probe18(rx_pkg_counter),//32
-    .probe19(tx_pkg_counter),//32
-    .probe20(s_axis_roce_read_data.valid),
-    .probe21(s_axis_roce_read_data.ready),
-    .probe22(s_axis_roce_read_data.data),//512
-    .probe23(m_axis_roce_write_data.valid),
-    .probe24(m_axis_roce_write_data.ready),
-    .probe25(m_axis_roce_write_data.data)//512
-);
+// ila_stack_top inst_ila_stack_top (
+//     .clk(net_clk),
+//     .probe0(m_axis_net.valid),
+//     .probe1(m_axis_net.ready),
+//     .probe2(m_axis_net.data),
+//     .probe3(s_axis_net.valid),
+//     .probe4(s_axis_net.ready),
+//     .probe5(s_axis_net.data),
+//     .probe6(s_axis_roce_role_tx_meta.valid),
+//     .probe7(s_axis_roce_role_tx_meta.ready),
+//     .probe8(s_axis_roce_role_tx_meta.data),//160
+//     .probe9(arp_counter),//32
+//     .probe10(arpState),//8
+//     .probe11(m_axis_roce_read_cmd.valid),
+//     .probe12(m_axis_roce_read_cmd.ready),
+//     .probe13(m_axis_roce_read_cmd.data),//96
+//     .probe14(m_axis_roce_write_cmd.valid),
+//     .probe15(m_axis_roce_write_cmd.ready),
+//     .probe16(m_axis_roce_write_cmd.data),//96
+//     .probe17(net_aresetn),
+//     .probe18(rx_pkg_counter),//32
+//     .probe19(tx_pkg_counter),//32
+//     .probe20(s_axis_roce_read_data.valid),
+//     .probe21(s_axis_roce_read_data.ready),
+//     .probe22(s_axis_roce_read_data.data),//512
+//     .probe23(m_axis_roce_write_data.valid),
+//     .probe24(m_axis_roce_write_data.ready),
+//     .probe25(m_axis_roce_write_data.data)//512
+// );
 
-ila_stack_top_inter inst_ila_stack_top_inter (
-    .clk(net_clk),
-    .probe0(axis_qp_interface.valid),
-    .probe1(axis_qp_interface.ready),
-    .probe2(axis_qp_interface.data),
-    .probe3(axis_qp_conn_interface.valid),
-    .probe4(axis_qp_conn_interface.ready),
-    .probe5(axis_qp_conn_interface.data),
-    .probe6(axis_roce_slice_to_mie.valid),
-    .probe7(axis_roce_slice_to_mie.ready),
-    .probe8(axis_roce_slice_to_mie.data),
-    .probe9(qp_node_num),//32
-    .probe10(writeState),//8
-    .probe11(axis_mie_to_intercon.valid),
-    .probe12(axis_mie_to_intercon.ready),
-    .probe13(axis_mie_to_intercon.data),
-    .probe14(axis_iph_to_roce_slice.valid),
-    .probe15(axis_iph_to_roce_slice.ready),    
-    .probe16(axis_iph_to_roce_slice.data),
-    .probe17(axis_slice_to_ibh.valid),
-    .probe18(axis_slice_to_ibh.ready),    
-    .probe19(axis_slice_to_ibh.data),
-    .probe20(roce_rx_pkg_counter),//32
-    .probe21(roce_tx_pkg_counter),//32
-    .probe22(regCrcDropPkgCount),//32
-    .probe23(regCrcDropPkgCount_valid),
-    .probe24(regInvalidPsnDropCount),//32
-    .probe25(regInvalidPsnDropCount_valid),
-    .probe26(cyc_counter),//32
-    .probe27(sec_counter),//32
-    .probe28(m_axis_roce_read_cmd.valid),
-    .probe29(m_axis_roce_read_cmd.ready),
-    .probe30(m_axis_roce_read_cmd.data),//96
-    .probe31(m_axis_roce_write_cmd.valid),
-    .probe32(m_axis_roce_write_cmd.ready),
-    .probe33(m_axis_roce_write_cmd.data),//96
-    .probe34(s_axis_roce_read_data.valid),
-    .probe35(s_axis_roce_read_data.ready),
-    .probe36(s_axis_roce_read_data.data),//512
-    .probe37(m_axis_roce_write_data.valid),
-    .probe38(m_axis_roce_write_data.ready),
-    .probe39(m_axis_roce_write_data.data)//512
-);
+// ila_stack_top_inter inst_ila_stack_top_inter (
+//     .clk(net_clk),
+//     .probe0(axis_roce_slice_to_roce.valid),
+//     .probe1(axis_roce_slice_to_roce.ready),
+//     .probe2(axis_roce_slice_to_roce.data),
+//     .probe3(axis_roce_to_roce_slice.valid),
+//     .probe4(axis_roce_to_roce_slice.ready),
+//     .probe5(axis_roce_to_roce_slice.data),
+//     .probe6(axis_roce_slice_to_mie.valid),
+//     .probe7(axis_roce_slice_to_mie.ready),
+//     .probe8(axis_roce_slice_to_mie.data),
+//     .probe9(qp_node_num),//32
+//     .probe10(writeState),//8
+//     .probe11(axis_mie_to_intercon.valid),
+//     .probe12(axis_mie_to_intercon.ready),
+//     .probe13(axis_mie_to_intercon.data),
+//     .probe14(axis_iph_to_roce_slice.valid),
+//     .probe15(axis_iph_to_roce_slice.ready),    
+//     .probe16(axis_iph_to_roce_slice.data),
+//     .probe17(axis_slice_to_ibh.valid),
+//     .probe18(axis_slice_to_ibh.ready),    
+//     .probe19(axis_slice_to_ibh.data),
+//     .probe20(roce_rx_pkg_counter),//32
+//     .probe21(roce_tx_pkg_counter),//32
+//     .probe22(regCrcDropPkgCount),//32
+//     .probe23(regCrcDropPkgCount_valid),
+//     .probe24(regInvalidPsnDropCount),//32
+//     .probe25(regInvalidPsnDropCount_valid),
+//     .probe26(cyc_counter),//32
+//     .probe27(sec_counter),//32
+//     .probe28(m_axis_roce_read_cmd.valid),
+//     .probe29(m_axis_roce_read_cmd.ready),
+//     .probe30(m_axis_roce_read_cmd.data),//96
+//     .probe31(m_axis_roce_write_cmd.valid),
+//     .probe32(m_axis_roce_write_cmd.ready),
+//     .probe33(m_axis_roce_write_cmd.data),//96
+//     .probe34(s_axis_roce_read_data.valid),
+//     .probe35(s_axis_roce_read_data.ready),
+//     .probe36(s_axis_roce_read_data.data),//512
+//     .probe37(m_axis_roce_write_data.valid),
+//     .probe38(m_axis_roce_write_data.ready),
+//     .probe39(m_axis_roce_write_data.data)//512
+// );
 
-/*
- * Statistics
- */
+// /*
+//  * Statistics
+//  */
 
-always @(posedge net_clk) begin
-    if (~net_aresetn) begin
-        rx_word_counter <= '0;
-        rx_pkg_counter <= '0;
-        tx_word_counter <= '0;
-        tx_pkg_counter <= '0;
+// always @(posedge net_clk) begin
+//     if (~net_aresetn) begin
+//         rx_word_counter <= '0;
+//         rx_pkg_counter <= '0;
+//         tx_word_counter <= '0;
+//         tx_pkg_counter <= '0;
 
-        roce_data_rx_word_counter <= '0;
-        roce_data_rx_pkg_counter <= '0;
-        roce_data_tx_role_word_counter <= '0;
-        roce_data_tx_role_pkg_counter <= '0;
-        roce_data_tx_host_word_counter <= '0;
-        roce_data_tx_host_pkg_counter <= '0;
+//         roce_data_rx_word_counter <= '0;
+//         roce_data_rx_pkg_counter <= '0;
+//         roce_data_tx_role_word_counter <= '0;
+//         roce_data_tx_role_pkg_counter <= '0;
+//         roce_data_tx_host_word_counter <= '0;
+//         roce_data_tx_host_pkg_counter <= '0;
         
-        arp_rx_pkg_counter <= '0;
-        arp_tx_pkg_counter <= '0;
+//         arp_rx_pkg_counter <= '0;
+//         arp_tx_pkg_counter <= '0;
         
-        roce_rx_pkg_counter <= '0;
-        roce_tx_pkg_counter <= '0;
+//         roce_rx_pkg_counter <= '0;
+//         roce_tx_pkg_counter <= '0;
 
-        axis_stream_down_counter <= '0;
-        axis_stream_down <= 1'b0;
-    end
-    else begin
-        if (s_axis_net.ready) begin
-            axis_stream_down_counter <= '0;
-        end
-        if (s_axis_net.valid && ~s_axis_net.ready) begin
-            axis_stream_down_counter <= axis_stream_down_counter + 1;
-        end
-        if (axis_stream_down_counter > 2) begin
-            axis_stream_down <= 1'b1;
-        end
-        if (s_axis_net.valid && s_axis_net.ready) begin
-            rx_word_counter <= rx_word_counter + 1;
-            if (s_axis_net.last) begin
-                rx_pkg_counter <= rx_pkg_counter + 1;
-            end
-        end
-        if (m_axis_net.valid && m_axis_net.ready) begin
-            tx_word_counter <= tx_word_counter + 1;
-            if (m_axis_net.last) begin
-                tx_pkg_counter <= tx_pkg_counter + 1;
-            end
-        end
-        //arp
-        if (axis_arp_slice_to_arp.valid && axis_arp_slice_to_arp.ready) begin
-            if (axis_arp_slice_to_arp.last) begin
-                arp_rx_pkg_counter <= arp_rx_pkg_counter + 1;
-            end
-        end
-        if (axis_arp_to_arp_slice.valid && axis_arp_to_arp_slice.ready) begin
-            if (axis_arp_to_arp_slice.last) begin
-                arp_tx_pkg_counter <= arp_tx_pkg_counter + 1;
-            end
-        end
-        //roce
-        if (axis_roce_slice_to_roce.valid && axis_roce_slice_to_roce.ready) begin
-            if (axis_roce_slice_to_roce.last) begin
-                roce_rx_pkg_counter <= roce_rx_pkg_counter + 1;
-            end
-        end
-        if (axis_roce_to_roce_slice.valid && axis_roce_to_roce_slice.ready) begin
-            if (axis_roce_to_roce_slice.last) begin
-                roce_tx_pkg_counter <= roce_tx_pkg_counter + 1;
-            end
-        end
-        //roce data
-        if (m_axis_roce_write_data.valid && m_axis_roce_write_data.ready) begin
-            roce_data_rx_word_counter <= roce_data_rx_word_counter + 1;
-            if (m_axis_roce_write_data.last) begin
-                roce_data_rx_pkg_counter <= roce_data_rx_pkg_counter + 1;
-            end
-        end
-        if (s_axis_roce_read_data.valid && s_axis_roce_read_data.ready) begin
-            roce_data_tx_host_word_counter <= roce_data_tx_host_word_counter + 1;
-            if (s_axis_roce_read_data.last) begin
-                roce_data_tx_host_pkg_counter <= roce_data_tx_host_pkg_counter + 1;
-            end
-        end
-        if (s_axis_roce_role_tx_data.valid && s_axis_roce_role_tx_data.ready) begin
-            roce_data_tx_role_word_counter <= roce_data_tx_role_word_counter + 1;
-            if (s_axis_roce_role_tx_data.last) begin
-                roce_data_tx_role_pkg_counter <= roce_data_tx_role_pkg_counter + 1;
-            end
-        end
-    end
-end
+//         axis_stream_down_counter <= '0;
+//         axis_stream_down <= 1'b0;
+//     end
+//     else begin
+//         if (s_axis_net.ready) begin
+//             axis_stream_down_counter <= '0;
+//         end
+//         if (s_axis_net.valid && ~s_axis_net.ready) begin
+//             axis_stream_down_counter <= axis_stream_down_counter + 1;
+//         end
+//         if (axis_stream_down_counter > 2) begin
+//             axis_stream_down <= 1'b1;
+//         end
+//         if (s_axis_net.valid && s_axis_net.ready) begin
+//             rx_word_counter <= rx_word_counter + 1;
+//             if (s_axis_net.last) begin
+//                 rx_pkg_counter <= rx_pkg_counter + 1;
+//             end
+//         end
+//         if (m_axis_net.valid && m_axis_net.ready) begin
+//             tx_word_counter <= tx_word_counter + 1;
+//             if (m_axis_net.last) begin
+//                 tx_pkg_counter <= tx_pkg_counter + 1;
+//             end
+//         end
+//         //arp
+//         if (axis_arp_slice_to_arp.valid && axis_arp_slice_to_arp.ready) begin
+//             if (axis_arp_slice_to_arp.last) begin
+//                 arp_rx_pkg_counter <= arp_rx_pkg_counter + 1;
+//             end
+//         end
+//         if (axis_arp_to_arp_slice.valid && axis_arp_to_arp_slice.ready) begin
+//             if (axis_arp_to_arp_slice.last) begin
+//                 arp_tx_pkg_counter <= arp_tx_pkg_counter + 1;
+//             end
+//         end
+//         //roce
+//         if (axis_roce_slice_to_roce.valid && axis_roce_slice_to_roce.ready) begin
+//             if (axis_roce_slice_to_roce.last) begin
+//                 roce_rx_pkg_counter <= roce_rx_pkg_counter + 1;
+//             end
+//         end
+//         if (axis_roce_to_roce_slice.valid && axis_roce_to_roce_slice.ready) begin
+//             if (axis_roce_to_roce_slice.last) begin
+//                 roce_tx_pkg_counter <= roce_tx_pkg_counter + 1;
+//             end
+//         end
+//         //roce data
+//         if (m_axis_roce_write_data.valid && m_axis_roce_write_data.ready) begin
+//             roce_data_rx_word_counter <= roce_data_rx_word_counter + 1;
+//             if (m_axis_roce_write_data.last) begin
+//                 roce_data_rx_pkg_counter <= roce_data_rx_pkg_counter + 1;
+//             end
+//         end
+//         if (s_axis_roce_read_data.valid && s_axis_roce_read_data.ready) begin
+//             roce_data_tx_host_word_counter <= roce_data_tx_host_word_counter + 1;
+//             if (s_axis_roce_read_data.last) begin
+//                 roce_data_tx_host_pkg_counter <= roce_data_tx_host_pkg_counter + 1;
+//             end
+//         end
+//         if (s_axis_roce_role_tx_data.valid && s_axis_roce_role_tx_data.ready) begin
+//             roce_data_tx_role_word_counter <= roce_data_tx_role_word_counter + 1;
+//             if (s_axis_roce_role_tx_data.last) begin
+//                 roce_data_tx_role_pkg_counter <= roce_data_tx_role_pkg_counter + 1;
+//             end
+//         end
+//     end
+// end
 
 endmodule
 

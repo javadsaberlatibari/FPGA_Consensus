@@ -153,7 +153,6 @@ wire [64-1:0]                       rAddr                         ;
 wire [64-1:0]                       lAddr                         ;
 wire [32-1:0]                       len                           ;
 wire [32-1:0]                       debug                         ;
-wire [32-1:0]                       arpDelay                      ;
 wire [64-1:0]                       mem_ptr                       ;
 
 // cmac interface
@@ -164,7 +163,7 @@ axis_meta #(.WIDTH(160))    s_axis_roce_role_tx_meta();
 axi_stream      s_axis_roce_role_tx_data();
 axi_stream      m_axis_roce_role_tx_status();
 
-// axis_meta       s_axis_qp_interface(); 
+axis_meta       s_axis_qp_interface(); 
 
 // ROCE memory interface
 axis_meta       m_axis_roce_read_cmd();
@@ -235,7 +234,6 @@ inst_control_s_axi (
   .lAddr     ( lAddr                 ),
   .len       ( len                   ),
   .debug     ( debug                 ),
-  .arpDelay  ( arpDelay              ),
   .mem_ptr   ( mem_ptr               )
 );
 
@@ -258,7 +256,7 @@ stack_top #(
     .s_axis_roce_role_tx_meta   ( s_axis_roce_role_tx_meta   ),
     .s_axis_roce_role_tx_data   ( s_axis_roce_role_tx_data   ),
     .m_axis_roce_role_tx_status ( m_axis_roce_role_tx_status ),
-    //.s_axis_qp_interface ( s_axis_qp_interface ),
+    //.s_axis_user_qp_interface ( s_axis_qp_interface ),
     // DMA
     // let route=0 : ROUTE_DMA (not ROUTE_CUSTOM)
     .m_axis_roce_read_cmd   ( m_axis_roce_read_cmd   ),
@@ -283,8 +281,7 @@ stack_top #(
     .rAddr                  ( rAddr                  ),
     .lAddr                  ( lAddr                  ),
     .len                    ( len                    ),
-    .debug                  ( debug                  ),
-    .arpDelay               ( arpDelay               )
+    .debug                  ( debug                  )
 );
 
 // TODO: mem interface
