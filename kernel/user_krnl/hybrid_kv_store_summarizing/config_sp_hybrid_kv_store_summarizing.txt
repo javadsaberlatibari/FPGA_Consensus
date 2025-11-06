@@ -1,0 +1,26 @@
+[connectivity]
+#nk=cmac_krnl:1:cmac_krnl_1
+#nk=rocetest_krnl:1:rocetest_krnl_1
+#nk=hybrid_kv_store_summarizing:1:hybrid_kv_store_summarizing_1
+
+slr=cmac_krnl_1:SLR2
+
+sp=rocetest_krnl_1.m00_axi:HBM[0]
+
+
+sc=cmac_krnl_1.axis_net_rx:rocetest_krnl_1.s_axis_net_rx
+sc=rocetest_krnl_1.m_axis_net_tx:cmac_krnl_1.axis_net_tx
+
+sc=hybrid_kv_store_summarizing_1.m_axis_tx_meta:rocetest_krnl_1.s_axis_role_tx_meta:16
+sc=hybrid_kv_store_summarizing_1.m_axis_tx_data:rocetest_krnl_1.s_axis_role_tx_data:16
+sc=rocetest_krnl_1.m_axis_role_tx_status:hybrid_kv_store_summarizing_1.s_axis_tx_status
+
+sc=hybrid_kv_summary_krnl_1.m_axis_kv_summary:hybrid_kv_store_summarizing_1.s_axis_kv_summary:16
+
+#sp=hybrid_kv_store_summarizing_1.m_axi_status:HBM[1]
+sp=hybrid_kv_store_summarizing_1.m_axi_shared_data:HOST[0] #axi to shared mem between host and FPGA
+
+
+[debug]
+chipscope=hybrid_kv_store_summarizing_1:m_axis_tx_meta
+chipscope=hybrid_kv_store_summarizing_1:m_axis_tx_data

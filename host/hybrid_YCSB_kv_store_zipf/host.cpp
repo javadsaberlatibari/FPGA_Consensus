@@ -12,14 +12,35 @@
 #include <string>
 #include <algorithm>
 #include <cstring>
+#include <cmath>    // for std::pow
+
 
 
 #define DATA_SIZE 62500000
 #define IP_ADDR 0x0A01D498
 #define BOARD_NUMBER 0
 #define ARP 0x0A01D498
-const int expected_value=100001;
+//const int expected_value_fpga=99999;
+const int expected_value=99999;
+const int shared_mem_size= 10000000; //10M
 const int hbm_update_period =10;
+double zipf_s;
+
+
+// Allocate shared_data in host memory (CL_MEM_ALLOC_HOST_PTR allows host RAM usage)
+static uint64_t* shared_mem_ptr = nullptr;
+std::vector<uint64_t, aligned_allocator<uint64_t>> shared_data(shared_mem_size, 0);
+
+struct summarized_key_value {
+    uint64_t value;
+    int count;
+}; 
+summarized_key_value summarized_kv_array[shared_mem_size] = {}; 
+
+
+uint64_t cpu_operations [1000000]={0};
+const int summariztion_period=0;
+
 //const std::string ycsb_mode = "Update_Heavy";
 void wait_for_enter(const std::string &msg) {
     std::cout << msg << std::endl;
@@ -111,107 +132,315 @@ int sync(int ID, int NUM_NODES, const char* IP) {
 
     return 0;
 }
+class zipf_distribution {
+public:
+    zipf_distribution(size_t N, double s)
+        : N_(N), s_(s), norms_(N) {
+        double sum = 0.0;
+        for (size_t i = 1; i <= N_; ++i) {
+            sum += 1.0 / std::pow((double)i, s_);
+            norms_[i-1] = sum;
+        }
+        for (auto &v : norms_) v /= sum;  // Normalize CDF to [0,1]
+    }
+    template <typename URNG>
+    size_t operator()(URNG &engine) const {
+        double p = std::uniform_real_distribution<>(0.0, 1.0)(engine);
+        auto it = std::lower_bound(norms_.begin(), norms_.end(), p);
+        return (size_t)std::distance(norms_.begin(), it);
+    }
+private:
+    size_t N_;
+    double s_;
+    std::vector<double> norms_;
+};
+
+// Fill a preallocated operations[] with PUT/GETs using Zipf or Uniform keys.
+// NOTE: Encodes exactly how your host expects (value in upper 32, key in lower 32).
+static inline void init_operations_zipf_or_uniform(
+    int total_ops, int write_pct, uint64_t *operations,
+    int max_keys, bool use_zipf, double skew_s)
+{
+    std::random_device rd;
+    std::mt19937 gen(rd());
+
+    zipf_distribution zipf_key(max_keys, skew_s);
+    std::uniform_int_distribution<uint32_t> uni_key(0, max_keys - 1);
+    std::uniform_int_distribution<uint32_t> value_dist(1, 65535);
+
+    const int num_writes = (total_ops * write_pct) / 100;
+
+    // First PUTs
+    for (int i = 0; i < num_writes; ++i) {
+        uint32_t key   = use_zipf ? (uint32_t)zipf_key(gen) : uni_key(gen);
+        uint32_t value = value_dist(gen);
+        operations[i] = ( (uint64_t)value << 32 ) | key;  // PUT
+    }
+    // Then GETs
+    for (int i = num_writes; i < total_ops; ++i) {
+        uint32_t key = use_zipf ? (uint32_t)zipf_key(gen) : uni_key(gen);
+        operations[i] = ( (uint64_t)0 << 32 ) | key;      // GET
+    }
+    // Shuffle so reads/writes are interleaved randomly
+    std::shuffle(operations, operations + total_ops, gen);
+}
+
 std::vector<int, aligned_allocator<int>> reply(1);
 // Function to run the user kernel
-void prepare_operations_and_transfer(bool initilize, cl::Context context, cl::CommandQueue q,
+void prepare_operations_and_transfer(bool initilize, bool local, cl::Context context, cl::CommandQueue q,
                                     int nOP, uint32_t wP,
                                     cl::Kernel &user_kernel,
                                     cl::Buffer &buffer_r1,
-                                    uint32_t node_id, uint32_t node_num) {
+                                    uint32_t node_id, uint32_t node_num, int assigtofpgaP, int key_num_bits) {
     cl_int err;
 
-    // Random generators for keys and values
+    std::cout << "kernel args seen by runtime = "
+        << user_kernel.getInfo<CL_KERNEL_NUM_ARGS>() << "\n";
+    // ---- HOST[0] buffer for shared_data (zero-copy) ----
+    // Allocate a BO pinned in HOST[0]; CPU gets a mapped pointer.
+    cl_mem_ext_ptr_t ext_shared{};
+    ext_shared.flags = XCL_MEM_EXT_HOST_ONLY;  // HOST[0]
+    ext_shared.obj   = nullptr;
+    ext_shared.param = 0;
+
+    printf("Define buffer_shared_data \n");
+    cl::Buffer buffer_shared_data(
+        context,
+        CL_MEM_READ_WRITE | CL_MEM_EXT_PTR_XILINX,   // ← remove CL_MEM_ALLOC_HOST_PTR
+        shared_mem_size * sizeof(uint64_t),
+        &ext_shared,
+        &err
+    );
+
+
+
+
+    printf("Generate Random FPGA Operations- Begin \n");
     std::random_device rd;
     std::mt19937 gen(rd());
-    std::uniform_int_distribution<> key_dist(0, 99999);
+    std::uniform_int_distribution<> key_dist(0, 99998);
     std::uniform_int_distribution<> value_dist(1, 65535);
 
-    // Fill operations with zeros by default
-    std::vector<uint64_t, aligned_allocator<uint64_t>> operations(nOP, 0);  // ✅ this line alone is sufficient
+    int FPGAnOP;
+    int CPUnOP;
+    int allnop;
 
+    if(initilize){
+        FPGAnOP = nOP;
+        CPUnOP=shared_mem_size;
+    }
+    else
+        FPGAnOP = (nOP *assigtofpgaP)/100;
+    // Fill fpgaoperations with zeros by default
+    std::vector<uint64_t, aligned_allocator<uint64_t>> fpgaoperations(FPGAnOP, 0);  // ✅ this line alone is sufficient
 
-    printf("Generate Random Operations- Begin \n");
-    // Calculate how many operations are writes (excluding first and last)
+    if (err != CL_SUCCESS) printf("fpgaoperations map failed: %d\n", err);
+
     uint32_t num_writes = 0;
-    if (((nOP * wP) / 100) > 2) {
-        num_writes = ((nOP * wP) / 100);
+    if (((FPGAnOP * wP) / 100) > 2) {
+        num_writes = ((FPGAnOP * wP) / 100);
     }
 
     std::vector<int> all_indices;
-    for (int i = 0; i < nOP; ++i) {
+    for (int i = 0; i < FPGAnOP; ++i) {
         all_indices.push_back(i);
     }
     std::shuffle(all_indices.begin(), all_indices.end(), gen);
 
-    printf("Generate Random Operations- Shuffle \n");
-    // Generate and assign key-value pairs for write operations
+    printf("Generate put operations \n");
+
     int initilize_keys = 0;
     for (int i = 0; i < num_writes; ++i) {
         int idx = all_indices[i];
         uint32_t key = initilize ? initilize_keys++ : key_dist(gen);
         uint32_t value = value_dist(gen);
-        operations[idx] = (uint64_t(value) << 32) | key;
+        fpgaoperations[idx] = (uint64_t(value) << 32) | key;
     }
-
-    // Generate and assign keys for get operations (value=0)
-    for (int i = num_writes; i < all_indices.size(); ++i) {
+    
+    
+    printf("Generate get operations \n");
+    for (int i = num_writes; i < (int)all_indices.size(); ++i) {
         int idx = all_indices[i];
         uint32_t key = key_dist(gen);
-        operations[idx] = (uint64_t(0) << 32) | key;
+        fpgaoperations[idx] = (uint64_t(0) << 32) | key;
     }
 
-    printf("Generate Random Operations- End \n");
-    // Create and transfer buffer_op to FPGA
-    cl::Buffer buffer_op(context, CL_MEM_USE_HOST_PTR | CL_MEM_READ_ONLY,
-                     nOP * sizeof(uint64_t), operations.data(), &err);
+    printf("Generate Random FPGA Operations- End \n");
 
+    // CPU side ops
+    if(!initilize){
+        // ===== NEW CPU OP GENERATION WITH OPTIONAL ZIPF =====
+        printf("Generate CPU Operations (Zipf/uniform) - Begin \n");
 
-    // Set kernel arguments
-    int wOP = ((nOP * wP) / 100);
+        CPUnOP = (nOP * (100 - assigtofpgaP)) / 100;
+
+    // Safety: don't overflow the fixed cpu_operations[] buffer
+    if (CPUnOP > (int)(sizeof(cpu_operations) / sizeof(cpu_operations[0]))) {
+        CPUnOP = (int)(sizeof(cpu_operations) / sizeof(cpu_operations[0]));
+        printf("CPUnOP truncated to %d to fit cpu_operations[]\n", CPUnOP);
+    }
+
+    // Choose distribution here:
+    bool use_zipf = true;         // <-- set to false to revert to uniform
+    //double zipf_s = 1.0;          // <-- increase for more skew: 0.0 (uniform) → 1.2+ (hotter)
+
+    // Keys range: match your shared_mem_ptr range.
+    int max_keys = shared_mem_size;   // if you want to avoid early region, set a min offset below
+
+    init_operations_zipf_or_uniform(
+        CPUnOP, (int)wP, cpu_operations,
+        max_keys, use_zipf, zipf_s
+    );
+
+    printf("Generate CPU Operations (Zipf/uniform) - End \n");
+
+    }
+    cl::Buffer buffer_fpgaoperations =
+        (FPGAnOP > 0)
+      ? cl::Buffer(context, CL_MEM_USE_HOST_PTR | CL_MEM_READ_ONLY,
+                   FPGAnOP * sizeof(uint64_t), fpgaoperations.data(), &err)
+      : cl::Buffer(context, CL_MEM_READ_ONLY,
+                   sizeof(uint64_t), nullptr, &err);
+
+    int wOP;
+    if(initilize || (node_num==1)){
+        allnop = FPGAnOP;
+        wOP =((FPGAnOP * wP) / 100);
+        }
+    else{
+        allnop = FPGAnOP + ((CPUnOP * wP) / 100);
+        wOP = ((CPUnOP * wP) / 100) + ((FPGAnOP * wP) / 100);
+    }
+
+    printf("FPGAnOP %d\n", FPGAnOP);
+    printf("CPUnOP %d\n", CPUnOP);
+    printf("allnop %d\n", allnop);
+
     uint32_t ulQPN = (node_id == 1) ? 0x00000000 : 0x00000001;
     uint64_t ulAddr = 0x0000000000000000;
     uint64_t urAddr = 0x0000000000000000;
     uint32_t ulen = 0x00000008;
-    //uint32_t node_num = N_node;
     uint32_t board_num = node_id;
+    
     int expected_recieve = wOP*(node_num-1);
+    
+    //int check_value_cpu = expected_value;
+
+    printf("key_num_bits %d\n", key_num_bits);
+    printf("expected_recieve %d\n", expected_recieve);
 
     OCL_CHECK(err, cl::Buffer buffer_r2(context, CL_MEM_USE_HOST_PTR | CL_MEM_READ_WRITE, 
                                         sizeof(int), reply.data(), &err));
 
-    OCL_CHECK(err, err = user_kernel.setArg(3, ulQPN));
-    OCL_CHECK(err, err = user_kernel.setArg(4, ulAddr));
-    OCL_CHECK(err, err = user_kernel.setArg(5, urAddr));
-    OCL_CHECK(err, err = user_kernel.setArg(6, ulen));
-    OCL_CHECK(err, err = user_kernel.setArg(7, node_num));
-    OCL_CHECK(err, err = user_kernel.setArg(8, board_num));
-    OCL_CHECK(err, err = user_kernel.setArg(9, nOP));
-    OCL_CHECK(err, err = user_kernel.setArg(10, wOP));
-    OCL_CHECK(err, err = user_kernel.setArg(11, expected_recieve));
-    OCL_CHECK(err, err = user_kernel.setArg(12, initilize));
-    OCL_CHECK(err, err = user_kernel.setArg(13, hbm_update_period));
-    OCL_CHECK(err, err = user_kernel.setArg(14, buffer_op));
-    OCL_CHECK(err, err = user_kernel.setArg(15, buffer_r1));
+    OCL_CHECK(err, err = user_kernel.setArg(4, ulQPN));
+    OCL_CHECK(err, err = user_kernel.setArg(5, ulAddr));
+    OCL_CHECK(err, err = user_kernel.setArg(6, urAddr));
+    OCL_CHECK(err, err = user_kernel.setArg(7, ulen));
+    OCL_CHECK(err, err = user_kernel.setArg(8, node_num));
+    OCL_CHECK(err, err = user_kernel.setArg(9, board_num));
+    OCL_CHECK(err, err = user_kernel.setArg(10, allnop));
+    OCL_CHECK(err, err = user_kernel.setArg(11, FPGAnOP));
+    OCL_CHECK(err, err = user_kernel.setArg(12, wOP));
+    OCL_CHECK(err, err = user_kernel.setArg(13, key_num_bits));
+    OCL_CHECK(err, err = user_kernel.setArg(14, expected_recieve));
+    //OCL_CHECK(err, err = user_kernel.setArg(13, check_value_cpu));
+    OCL_CHECK(err, err = user_kernel.setArg(15, local));
+    OCL_CHECK(err, err = user_kernel.setArg(16, hbm_update_period));
+    OCL_CHECK(err, err = user_kernel.setArg(17, buffer_fpgaoperations)); // ✅ host-pinned
+    OCL_CHECK(err, err = user_kernel.setArg(18, buffer_r1));
+    OCL_CHECK(err, err = user_kernel.setArg(19, buffer_shared_data));
 
-    OCL_CHECK(err, err = q.enqueueMigrateMemObjects({buffer_op}, 0));
+    OCL_CHECK(err, err = q.enqueueMigrateMemObjects({buffer_fpgaoperations}, 0));
     OCL_CHECK(err, err = q.finish());
 
-    // No return needed as buffer_op is passed by reference
+    printf("Define shared_mem_ptr \n");
+    shared_mem_ptr = (uint64_t*) q.enqueueMapBuffer(
+        buffer_shared_data, CL_TRUE, CL_MAP_READ | CL_MAP_WRITE,
+        0, shared_mem_size * sizeof(uint64_t), nullptr, nullptr, &err
+    );
+
+    if (err != CL_SUCCESS || !shared_mem_ptr) { printf("buffer_shared_data map failed: %d\n", err); exit(1); }
+
+    // Initialize the shared region (in host RAM)
+    if (initilize) {
+        for (int i = 0; i < shared_mem_size; ++i) {
+            uint32_t top_32 = rand();
+            shared_mem_ptr[i] = (uint64_t(top_32) << 32);
+        }
+    }
 }
+
 
 // This function enqueues and runs the user kernel on the FPGA,
 // then migrates the result back to the host memory.
-void run_user_kernel(bool initilize, cl::Context context, cl::CommandQueue q, cl::Kernel user_kernel,
-                     int nOP, cl::Buffer buffer_r1, uint32_t node_num) {
+void run_user_kernel(bool initilize, cl::Context context, cl::CommandQueue q, cl::Kernel user_kernel, cl::Kernel hybrid_kernel,
+                     int nOP, cl::Buffer buffer_r1, uint32_t node_num, int assigtofpgaP, int key_bit_start) {
     cl_int err;
 
     //printf("enqueue user kernel...\n");
     //printf("check_value...%d\n", check_value);
-    
+    int debug_count=0;
+    int CPUnOP = (nOP *(100- assigtofpgaP))/100;
+    printf("CPUnOP %d\n", CPUnOP);
+    int summarization_count=0; 
     // Execute kernel and measure time
     double durationUs = 0.0;
     auto start = std::chrono::high_resolution_clock::now();
-    OCL_CHECK(err, err = q.enqueueTask(user_kernel));
+
+    if(initilize){
+        summarization_count=0;
+        OCL_CHECK(err, err = q.enqueueTask(user_kernel));// start running OPs on FPGA
+    }
+    else{
+        OCL_CHECK(err, err = q.enqueueTask(user_kernel));// start running OPs on FPGA
+        for(int i=0; i<CPUnOP; i++) {  //start running OPs on CPU
+            //printf("debug i index:%d\n", i);
+            // Lower 32 bits
+            uint32_t key = static_cast<uint32_t>(cpu_operations [i] & 0xFFFFFFFF);
+
+            // Upper 32 bits
+            uint32_t value = static_cast<uint32_t>(cpu_operations [i] >> 32);
+
+            if(value==0){
+                int query_val = (int)shared_mem_ptr[key];
+            }
+            else {
+                if(summarization_count< summariztion_period){
+                    summarization_count++;
+                
+                    summarized_kv_array[key].value= value;
+
+                }
+                else{   //1) periodically snapshot to FPGA
+                    summarization_count=0;
+                    summarized_kv_array[key].value =value;
+                    if(1<node_num){
+                        uint32_t shared_data_time_stamp = (uint32_t)(shared_mem_ptr[key] & 0xFFFFFFFF);
+                        OCL_CHECK(err, hybrid_kernel.setArg(0,
+                        ((uint64_t)(summarized_kv_array[key].value & 0xFFFFFFFFu) << 32) |
+                        (((uint64_t)(key                  & 0xFFFFFFu))           << 8 ) |
+                        ((uint64_t)(shared_data_time_stamp & 0xFFu))
+                        ));
+
+
+                        OCL_CHECK(err, q.enqueueTask(hybrid_kernel));
+
+                        
+                    }
+                    else{
+                        uint32_t shared_data_time_stamp = (uint32_t)(shared_mem_ptr[key] & 0xFFFFFFFF);
+                        shared_data_time_stamp++;
+                        shared_mem_ptr[key]= (uint64_t(value) << 32) | shared_data_time_stamp;
+
+
+                    }
+                    debug_count++;
+                }
+            }
+
+        }
+    }
+
     OCL_CHECK(err, err = q.finish());
     auto end = std::chrono::high_resolution_clock::now();
     durationUs = (std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count() / 1000.0);
@@ -221,6 +450,7 @@ void run_user_kernel(bool initilize, cl::Context context, cl::CommandQueue q, cl
         printf("replication_latency:%f\n", durationUs / nOP);
 
     sleep(5);
+    printf("debug_count %d\n", debug_count);
     printf("Device->Host user kernel...\n");
     OCL_CHECK(err, err = q.enqueueMigrateMemObjects({buffer_r1}, CL_MIGRATE_MEM_OBJECT_HOST));
     OCL_CHECK(err, err = q.finish());
@@ -232,7 +462,7 @@ void run_user_kernel(bool initilize, cl::Context context, cl::CommandQueue q, cl
 }
 
 int main(int argc, char **argv) {
-    if (argc < 7) {
+    if (argc < 8) {
         std::cout << "Usage: " << argv[0] << " <XCLBIN File> <N_node> <node_id> <nOP> <wP>" << std::endl;
         return EXIT_FAILURE;
     }
@@ -243,21 +473,17 @@ int main(int argc, char **argv) {
     int nOP = std::stoi(argv[4]);
     uint32_t wP = std::stoi(argv[5]);
 
-    std::string ycsb_mode;
-    if(std::stoi(argv[5])==50)
-        ycsb_mode = "Update_Heavy";
-    else if (std::stoi(argv[5])==5)
-        ycsb_mode = "Read_Mostly";
-    else
-        ycsb_mode = "Read_Only";
+    int assigtofpgaP= std::stoi(argv[7]);
+    const char* MEM_IP = argv[8];
+    zipf_s= std::stod(argv[9]);
 
-    const char* MEM_IP = argv[7];
 
     cl_int err;
     cl::CommandQueue q;
     cl::Context context;
     cl::Kernel user_kernel;
     cl::Kernel network_kernel;
+    cl::Kernel hybrid_kernel;
 
     auto size = DATA_SIZE;
     auto vector_size_bytes = sizeof(int) * size;
@@ -281,7 +507,9 @@ int main(int argc, char **argv) {
         } else {
             std::cout << "Device[" << i << "]: program successful!\n";
             OCL_CHECK(err, network_kernel = cl::Kernel(program, "rocetest_krnl", &err));
-            OCL_CHECK(err, user_kernel = cl::Kernel(program, "bram_kv_store_bram_bench", &err));
+            OCL_CHECK(err, user_kernel = cl::Kernel(program, "hybrid_kv_store_bram_bench", &err));
+            OCL_CHECK(err, hybrid_kernel = cl::Kernel(program, "hybrid_kv_summary_krnl", &err));
+            
             valid_device++;
             break;
         }
@@ -317,6 +545,8 @@ int main(int argc, char **argv) {
     printf("ٔTotal Number of OPs: = %d\n\n", nOP);
     printf("ٔWrite P = %d\n\n", wP);
     printf("ٔnode id = %d\n\n", node_id);
+    printf("ٔAssign to FPGA = %d\n\n", assigtofpgaP);
+    printf("ٔZipf Skew = %f\n\n", zipf_s);
 
     uint32_t debug1 = 0xd0000000;
     if (argc >= 8) {
@@ -350,6 +580,7 @@ int main(int argc, char **argv) {
     double durationUs = 0.0;
     auto start = std::chrono::high_resolution_clock::now();
     printf("enqueue network kernel...\n");
+
     if(N_node>1){
         if (sync(node_id, N_node, MEM_IP) != 0) {
             return 1; 
@@ -369,29 +600,24 @@ int main(int argc, char **argv) {
     printf("durationUs:%f\n", durationUs);
 
     printf("initializing phase begin\n");
-    prepare_operations_and_transfer(true, context, q, 100000, 100, user_kernel, buffer_r1, node_id, N_node);
-    run_user_kernel(true, context, q, user_kernel, nOP, buffer_r1, N_node);
+    int key_num_bits= 24;  //if  you want to increase size of keys need to adjust this.
+    prepare_operations_and_transfer(true, true, context, q, 100000, 100, user_kernel, buffer_r1, node_id, N_node, assigtofpgaP, key_num_bits);
+    run_user_kernel(true, context, q, user_kernel, hybrid_kernel, nOP, buffer_r1, N_node, assigtofpgaP, key_num_bits);
 
     printf("initializing phase end\n");
 
     printf("Prepare operations for final run\n");
-    if(ycsb_mode=="Update_Heavy"){
+    if(wP==0){
+        bool local=true;
+        prepare_operations_and_transfer(false, local, context, q, nOP, wP, user_kernel, buffer_r1, node_id, N_node, assigtofpgaP, key_num_bits);
+    }
+    else {
         bool local=true; //To measure response time this one should be true, so don't wait for remote latencies.
         if(std::strcmp(argv[6], "th") == 0){
             local=false;
             printf("checkkkkkkkkkkk\n");
         }
-        prepare_operations_and_transfer(local, context, q, nOP, 50, user_kernel, buffer_r1, node_id, N_node);
-    }
-    else if(ycsb_mode=="Read_Mostly"){
-        bool local=true; //To measure response time this one should be true, so don't wait for remote latencies.
-        if(std::strcmp(argv[6], "th") == 0)
-            local=false;
-        prepare_operations_and_transfer(local, context, q, nOP, 5, user_kernel, buffer_r1, node_id, N_node);
-    }
-    else if(ycsb_mode=="Read_Only"){
-        bool local=true;
-        prepare_operations_and_transfer(local, context, q, nOP, 0, user_kernel, buffer_r1, node_id, N_node);
+        prepare_operations_and_transfer(false, local, context, q, nOP, wP, user_kernel, buffer_r1, node_id, N_node, assigtofpgaP, key_num_bits);
     }
     // Call the user kernel function
     //initilize the hashmap.
@@ -400,6 +626,7 @@ int main(int argc, char **argv) {
     //initilize the hashmap.
     /*=================MEMCACHE SYNC START===============================*/
     printf("MEMCACHE SYNC Begin\n");
+
     if(N_node>1){
         if (sync(node_id, N_node, MEM_IP) != 0) {
             return 1; 
@@ -409,7 +636,7 @@ int main(int argc, char **argv) {
 
     printf("MEMCACHE SYNC END\n");
     //sleep(15);
-    run_user_kernel(false, context, q, user_kernel, nOP, buffer_r1, N_node);
+    run_user_kernel(false, context, q, user_kernel, hybrid_kernel, nOP, buffer_r1, N_node, assigtofpgaP, key_num_bits);
 
     std::cout << "EXIT recorded" << std::endl;
     return 0;

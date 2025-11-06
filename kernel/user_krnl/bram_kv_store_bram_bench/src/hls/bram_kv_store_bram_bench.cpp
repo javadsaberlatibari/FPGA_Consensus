@@ -98,10 +98,10 @@ static KVEntry kv_store_array[NUM_KEYS];
 void process_kv(
     int op_num,
     int write_num,
-    int check_value,
     bool init,
+    hls::stream<ap_uint<64>>& finish_signal_process_kv,
+    hls::stream<ap_uint<64>>& update_requests_bram_mem_remote,
     hls::stream<ap_uint<64>>& axis_last_op_response,
-    int *network_ptr,
     int node_num,
     int board_num,
     int s_axi_lqpn,
@@ -128,8 +128,8 @@ void process_kv(
     int read_address=0;
 
     int log_size= write_num+10;
-
-
+    int received_packet_count=0;
+    ap_uint<64> tmp;
 
     // Dummy loop to force BRAM allocation for kv_store_array
     /*ap_uint<16> checksum = 0;
@@ -146,7 +146,7 @@ void process_kv(
     enum fsmStateType { FETCH_OP, PROCESS_OP, REPLICATE_OP };
     fsmStateType state = FETCH_OP;
 
-    while (op_cnt < op_num || (check_value_met!=(node_num-1)&& !init)) {
+    while (op_cnt < op_num || (finish_signal_process_kv.empty())) {
         switch(state) {
             case FETCH_OP:
                 if (!axis_last_op_response.empty()) {
@@ -207,29 +207,42 @@ void process_kv(
                 }
                 break;
         }
+        if(!update_requests_bram_mem_remote.empty()){
+            ap_uint<64> update_data;
+            update_requests_bram_mem_remote.read(update_data);
+            ap_uint<16> timestamp = update_data.range(14, 0);
+            ap_uint<32> key = update_data.range(31, 15);
+            ap_uint<32> value = update_data.range(63, 32);
+            if(timestamp > kv_store_array[key].timestamp){
+                                
+                kv_store_array[key].timestamp = timestamp;
+                kv_store_array[key].value = value;
+            }
+        }
+    }
+    finish_signal_process_kv.read(tmp);
+}
+void hbm_remote_handler(int write_num, int init, int update_period, int expected_packets, int node_num, int board_num, int *network_ptr, hls::stream<ap_uint<64>>& update_requests_bram_mem, hls::stream<ap_uint<64>>& finish_signal_process_kv){
+    #pragma HLS PIPELINE II=1
+    int internal_clock = 0;
+    int received_packet_count=0;
+    int log_size= write_num +10;
+    int log_index[8] = {0};
 
-
-
+    while(((received_packet_count!=expected_packets)&& !init)){
         // Periodic updates from network_ptr
         if (internal_clock == update_period) {
             internal_clock = 0;
             for (int i = 0; i < node_num; i++) {
                 if (i != board_num) {
                     ap_uint<64> update_data;
-                    read_address= ((i * log_size) + log_index[i])*2;
-                    update_data.range(31, 0) = network_ptr[read_address];
-                    update_data.range(63, 32) = network_ptr[read_address +1];
+                    int read_add= ((i * log_size) + log_index[i])*2;
+                    update_data.range(31, 0) = network_ptr[read_add];
+                    update_data.range(63, 32) = network_ptr[read_add +1];
                     if(update_data!=0){
+                        received_packet_count++;
                         log_index[i]++;
-                        ap_uint<16> timestamp = update_data.range(14, 0);
-                        ap_uint<32> key = update_data.range(31, 15);
-                        ap_uint<32> value = update_data.range(63, 32);
-                        if(key==check_value)
-                            check_value_met++;
-                        if (key < NUM_KEYS && timestamp > kv_store_array[key].timestamp) {
-                            kv_store_array[key].timestamp = timestamp;
-                            kv_store_array[key].value = value;
-                        }
+                        update_requests_bram_mem.write(update_data);
                     }
                 }
             }
@@ -237,6 +250,7 @@ void process_kv(
         }
         internal_clock++;
     }
+    finish_signal_process_kv.write(1111);
 }
 
 extern "C" {
@@ -252,8 +266,9 @@ extern "C" {
         int board_num,
         int op_num,
         int write_num,
-        int check_value,
+        int expected_packets,
         bool init,
+        int hbm_update_period,
         ap_uint<64>* ops,
         int *network_ptr
     ) {
@@ -265,8 +280,11 @@ extern "C" {
         #pragma HLS INTERFACE m_axi port=network_ptr bundle=gmem1
 
         hls::stream<ap_uint<64>> axis_last_op_response;
+        hls::stream<ap_uint<64>> update_requests_bram_mem_remote; 
+        hls::stream<ap_uint<64>> finish_signal_process_kv;
         hls::stream<ap_uint<32>> now_time_stamp;
         #pragma HLS STREAM depth=8 variable=axis_last_op_response
+        #pragma HLS STREAM depth=8 variable=update_requests_bram_mem_remote
         //#pragma HLS STREAM depth=8 variable=now_time_stamp
 
         if (!s_axis_tx_status.empty()) {
@@ -282,10 +300,10 @@ extern "C" {
         process_kv(
             op_num,
             write_num,
-            check_value,
             init,
+            finish_signal_process_kv,
+            update_requests_bram_mem_remote,
             axis_last_op_response,
-            network_ptr,
             node_num,
             board_num,
             s_axi_lqpn,
@@ -295,5 +313,14 @@ extern "C" {
             m_axis_tx_meta,
             m_axis_tx_data
         );
+        hbm_remote_handler(write_num, 
+            init, 
+            hbm_update_period, 
+            expected_packets, 
+            node_num, 
+            board_num, 
+            network_ptr, 
+            update_requests_bram_mem_remote, 
+            finish_signal_process_kv);
     }
 }

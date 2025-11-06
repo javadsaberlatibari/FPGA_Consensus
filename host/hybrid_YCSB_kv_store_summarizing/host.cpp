@@ -12,6 +12,8 @@
 #include <string>
 #include <algorithm>
 #include <cstring>
+#include <unordered_map>
+#include <limits>
 
 
 #define DATA_SIZE 62500000
@@ -22,20 +24,36 @@
 const int expected_value=99999;
 const int shared_mem_size= 10000000; //10M
 const int hbm_update_period =10;
+const int baching_size=5;
+int baching_count=0;;
 
+struct key_value {
+    int value = 0;
+    int timestamp = 0;
+};
+
+unordered_map <int, key_value> local_key_keyvalue; 
+
+// --- config for CPU range only ---
+static constexpr uint32_t CPU_FIRST_KEY = 100000;
+static constexpr uint32_t CPU_LAST_KEY  = shared_mem_size - 1; // 10M-1
+static constexpr uint32_t BUCKET_SIZE   = 4096;
+static constexpr uint32_t NUM_BUCKETS   =
+    (CPU_LAST_KEY - CPU_FIRST_KEY + BUCKET_SIZE) / BUCKET_SIZE;
+
+static std::atomic<uint32_t> local_bucket_max[NUM_BUCKETS]; // init to 0
+static std::vector<std::atomic<uint32_t>> peer_bucket_max;  // sized = NUM_BUCKETS * node_num
+inline uint32_t bucket_of(uint32_t key){
+    if (key < CPU_FIRST_KEY) return UINT32_MAX; // ignore FPGA keys in this pass
+    return (key - CPU_FIRST_KEY) / BUCKET_SIZE;
+}
 
 // Allocate shared_data in host memory (CL_MEM_ALLOC_HOST_PTR allows host RAM usage)
 static uint64_t* shared_mem_ptr = nullptr;
 std::vector<uint64_t, aligned_allocator<uint64_t>> shared_data(shared_mem_size, 0);
 
-struct summarized_key_value {
-    uint64_t value;
-    int count;
-}; 
-summarized_key_value summarized_kv_array[shared_mem_size] = {}; 
 
-
-uint64_t cpu_operations [1000000]={0};
+std::vector<uint64_t> cpu_operations(CPUnOP);
 const int summariztion_period=0;
 
 //const std::string ycsb_mode = "Update_Heavy";
@@ -257,11 +275,11 @@ void prepare_operations_and_transfer(bool initilize, bool local, cl::Context con
     int wOP;
     if(initilize || (node_num==1)){
         allnop = FPGAnOP;
-        wOP =((FPGAnOP * wP) / 100);
+        wOP =(((FPGAnOP * wP) / 100))/baching_size;
         }
     else{
-        allnop = FPGAnOP + ((CPUnOP * wP) / 100);
-        wOP = ((CPUnOP * wP) / 100) + ((FPGAnOP * wP) / 100);
+        allnop = FPGAnOP + (((CPUnOP * wP) / 100)/baching_size);
+        wOP = (((CPUnOP * wP) / 100) + ((FPGAnOP * wP) / 100))/baching_size;
     }
 
     printf("FPGAnOP %d\n", FPGAnOP);
@@ -295,12 +313,12 @@ void prepare_operations_and_transfer(bool initilize, bool local, cl::Context con
     OCL_CHECK(err, err = user_kernel.setArg(12, wOP));
     OCL_CHECK(err, err = user_kernel.setArg(13, key_num_bits));
     OCL_CHECK(err, err = user_kernel.setArg(14, expected_recieve));
-    //OCL_CHECK(err, err = user_kernel.setArg(13, check_value_cpu));
-    OCL_CHECK(err, err = user_kernel.setArg(15, local));
-    OCL_CHECK(err, err = user_kernel.setArg(16, hbm_update_period));
-    OCL_CHECK(err, err = user_kernel.setArg(17, buffer_fpgaoperations)); // ✅ host-pinned
-    OCL_CHECK(err, err = user_kernel.setArg(18, buffer_r1));
-    OCL_CHECK(err, err = user_kernel.setArg(19, buffer_shared_data));
+    OCL_CHECK(err, err = user_kernel.setArg(15, baching_size));
+    OCL_CHECK(err, err = user_kernel.setArg(16, local));
+    OCL_CHECK(err, err = user_kernel.setArg(17, hbm_update_period));
+    OCL_CHECK(err, err = user_kernel.setArg(18, buffer_fpgaoperations)); // ✅ host-pinned
+    OCL_CHECK(err, err = user_kernel.setArg(19, buffer_r1));
+    OCL_CHECK(err, err = user_kernel.setArg(20, buffer_shared_data));
 
     OCL_CHECK(err, err = q.enqueueMigrateMemObjects({buffer_fpgaoperations}, 0));
     OCL_CHECK(err, err = q.finish());
@@ -334,13 +352,13 @@ void run_user_kernel(bool initilize, cl::Context context, cl::CommandQueue q, cl
     int debug_count=0;
     int CPUnOP = (nOP *(100- assigtofpgaP))/100;
     printf("CPUnOP %d\n", CPUnOP);
-    int summarization_count=0; 
+    //int summarization_count=0; 
     // Execute kernel and measure time
     double durationUs = 0.0;
     auto start = std::chrono::high_resolution_clock::now();
 
     if(initilize){
-        summarization_count=0;
+        //summarization_count=0;
         OCL_CHECK(err, err = q.enqueueTask(user_kernel));// start running OPs on FPGA
     }
     else{
@@ -357,19 +375,35 @@ void run_user_kernel(bool initilize, cl::Context context, cl::CommandQueue q, cl
                 int query_val = (int)shared_mem_ptr[key];
             }
             else {
-                if(summarization_count< summariztion_period){
-                    summarization_count++;
-                
-                    summarized_kv_array[key].value= value;
+                if(baching_count+1< baching_size){
+                    baching_count++;
+                    uint32_t shared_data_time_stamp = (uint32_t)(shared_mem_ptr[key] & 0xFFFFFFFF);
+                    local_key_keyvalue[key].timestamp= max(local_key_keyvalue[key].timestamp,shared_data_time_stamp)+1;
+                    local_key_keyvalue[key].value=value;
+                    uint32_t b = bucket_of(key);
+                    if (b != UINT32_MAX) {
+                        uint32_t cur = local_bucket_max[b].load(std::memory_order_relaxed);
+                        if (new_ts > cur) local_bucket_max[b].store(new_ts, std::memory_order_relaxed);
+                    }
 
                 }
                 else{   //1) periodically snapshot to FPGA
-                    summarization_count=0;
-                    summarized_kv_array[key].value =value;
+                    baching_count=0;
+                    local_key_keyvalue[key].value=value;
                     if(1<node_num){
-                        uint32_t shared_data_time_stamp = (uint32_t)(shared_mem_ptr[key] & 0xFFFFFFFF);
+                        uint32_t shared_data_time_stamp = std::max(
+                        local_key_keyvalue[key].timestamp,
+                        (uint32_t)(shared_mem_ptr[key] & 0xFFFFFFFF)
+                        );
+                        shared_data_time_stamp++;
+                        local_key_keyvalue[key].timestamp= shared_data_time_stamp;
+                        uint32_t b = bucket_of(key);
+                        if (b != UINT32_MAX) {
+                            uint32_t cur = local_bucket_max[b].load(std::memory_order_relaxed);
+                            if (new_ts > cur) local_bucket_max[b].store(new_ts, std::memory_order_relaxed);
+                        }
                         OCL_CHECK(err, hybrid_kernel.setArg(0,
-                        ((uint64_t)(summarized_kv_array[key].value & 0xFFFFFFFFu) << 32) |
+                        ((uint64_t)(local_key_keyvalue[key].value & 0xFFFFFFFFu) << 32) |
                         (((uint64_t)(key                  & 0xFFFFFFu))           << 8 ) |
                         ((uint64_t)(shared_data_time_stamp & 0xFFu))
                         ));
@@ -382,6 +416,7 @@ void run_user_kernel(bool initilize, cl::Context context, cl::CommandQueue q, cl
                     else{
                         uint32_t shared_data_time_stamp = (uint32_t)(shared_mem_ptr[key] & 0xFFFFFFFF);
                         shared_data_time_stamp++;
+                        local_key_keyvalue[key].timestamp= shared_data_time_stamp;
                         shared_mem_ptr[key]= (uint64_t(value) << 32) | shared_data_time_stamp;
 
 
@@ -458,7 +493,7 @@ int main(int argc, char **argv) {
         } else {
             std::cout << "Device[" << i << "]: program successful!\n";
             OCL_CHECK(err, network_kernel = cl::Kernel(program, "rocetest_krnl", &err));
-            OCL_CHECK(err, user_kernel = cl::Kernel(program, "hybrid_kv_store_bram_bench", &err));
+            OCL_CHECK(err, user_kernel = cl::Kernel(program, "hybrid_kv_store_summarizing", &err));
             OCL_CHECK(err, hybrid_kernel = cl::Kernel(program, "hybrid_kv_summary_krnl", &err));
             
             valid_device++;

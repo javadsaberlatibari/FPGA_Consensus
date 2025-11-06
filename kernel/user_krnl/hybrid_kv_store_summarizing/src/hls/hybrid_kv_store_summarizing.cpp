@@ -108,6 +108,7 @@ void process_kv(
     hls::stream<ap_uint<64>>& finish_signal_shared_mem,
     int node_num,
     int board_num,
+    int batching_size,
     int s_axi_lqpn,
     ap_uint<64> s_axi_laddr,
     ap_uint<64> s_axi_raddr,
@@ -132,6 +133,7 @@ void process_kv(
     
     ap_uint<64> tmp;
     int log_size= write_num +10;
+    int batch_count=0;
 
     // Dummy loop to force BRAM allocation for kv_store_array
     /*ap_uint<16> checksum = 0;
@@ -179,10 +181,17 @@ void process_kv(
                         state = PROCESS_SUMMARY;
                     }
                     else{
-                        j = 0; 
-                        qpn_tmp = board_num * (node_num - 1);
-                        state = REPLICATE_OP;
+                        batch_count++;
+                        if(batch_count== batching_size){
+                            batch_count=0;
+                            j = 0; 
+                            qpn_tmp = board_num * (node_num - 1);
+                            state = REPLICATE_OP;
                         }
+                        else{
+                            state = PROCESS_SUMMARY;
+                        }
+                    }
                 }
                 break;
 
@@ -220,7 +229,6 @@ void process_kv(
                     //op_cnt++;
                     s_axis_kv_summary.read(last_summary);
                     ap_uint<16> timestamp = last_summary.range(key_bit_start-1, 0);
-                    timestamp++;
                     last_summary.range(key_bit_start-1, 0)=timestamp;
                     write_value=last_summary;
                     update_requests_shared_mem_local.write(write_value);
@@ -372,7 +380,7 @@ void update_shared_memory(int key_num_bits, hls::stream<ap_uint<64>>& update_req
 }
 
 extern "C" {
-    void hybrid_kv_store_bram_bench(
+    void hybrid_kv_store_summarizing(
         hls::stream<pkt256>& m_axis_tx_meta,
         hls::stream<pkt64>& m_axis_tx_data,
         hls::stream<pkt64>& s_axis_tx_status,
@@ -388,6 +396,7 @@ extern "C" {
         int write_num,
         int key_num_bits,
         int expected_packets,
+        int batching_size,
         //int check_value_cpu_ops,
         bool init,
         int hbm_update_period,
@@ -440,6 +449,7 @@ extern "C" {
             finish_signal_shared_mem,
             node_num,
             board_num,
+            batching_size,
             s_axi_lqpn,
             s_axi_laddr,
             s_axi_raddr,
