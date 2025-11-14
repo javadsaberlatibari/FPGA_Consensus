@@ -99,14 +99,14 @@ CXXFLAGS +=  -DVITIS_PLATFORM=$(VITIS_PLATFORM)
 LDFLAGS += $(opencl_LDFLAGS)
 
 ifeq ($(NET_KRNL), roce)
-  HOST_SRCS += host/${USER_KRNL}/host$(EXE_NUM).cpp
+  HOST_SRCS += host$(EXE_NUM).cpp
 else
-  HOST_SRCS += host/${USER_KRNL}/host.cpp
+  HOST_SRCS += host.cpp
 endif
 
 # Host compiler global settings
 CXXFLAGS += -fmessage-length=0
-LDFLAGS += -lrt -lstdc++
+LDFLAGS += -lrt -lstdc++ -lmemcached
 
 ifneq ($(HOST_ARCH), x86)
   LDFLAGS += --sysroot=$(SYSROOT)
@@ -141,9 +141,9 @@ CLFLAGS += --config ./kernel/user_krnl/${USER_KRNL}/config_sp_${USER_KRNL}.txt
 # LDCLFLAGS += --profile_kernel stall:${USER_KRNL}:all:all
 
 ifeq ($(NET_KRNL), roce)
-  EXECUTABLE = ./host/host$(EXE_NUM)
+  EXECUTABLE = host$(EXE_NUM)
 else
-  EXECUTABLE = ./host/host
+  EXECUTABLE = host
 endif
 
 CMD_ARGS = $(BUILD_DIR)/${XCLBIN_NAME}.xclbin
