@@ -1003,172 +1003,172 @@ axis_interconnect_merger_160 tx_metadata_merger (
 /*
  * ILA
  */
-// ila_stack_top inst_ila_stack_top (
-//     .clk(net_clk),
-//     .probe0(m_axis_net.valid),
-//     .probe1(m_axis_net.ready),
-//     .probe2(m_axis_net.data),
-//     .probe3(s_axis_net.valid),
-//     .probe4(s_axis_net.ready),
-//     .probe5(s_axis_net.data),
-//     .probe6(s_axis_roce_role_tx_meta.valid),
-//     .probe7(s_axis_roce_role_tx_meta.ready),
-//     .probe8(s_axis_roce_role_tx_meta.data),//160
-//     .probe9(arp_counter),//32
-//     .probe10(arpState),//8
-//     .probe11(m_axis_roce_read_cmd.valid),
-//     .probe12(m_axis_roce_read_cmd.ready),
-//     .probe13(m_axis_roce_read_cmd.data),//96
-//     .probe14(m_axis_roce_write_cmd.valid),
-//     .probe15(m_axis_roce_write_cmd.ready),
-//     .probe16(m_axis_roce_write_cmd.data),//96
-//     .probe17(net_aresetn),
-//     .probe18(rx_pkg_counter),//32
-//     .probe19(tx_pkg_counter),//32
-//     .probe20(s_axis_roce_read_data.valid),
-//     .probe21(s_axis_roce_read_data.ready),
-//     .probe22(s_axis_roce_read_data.data),//512
-//     .probe23(m_axis_roce_write_data.valid),
-//     .probe24(m_axis_roce_write_data.ready),
-//     .probe25(m_axis_roce_write_data.data)//512
-// );
+ila_stack_top inst_ila_stack_top (
+    .clk(net_clk),
+    .probe0(m_axis_net.valid),
+    .probe1(m_axis_net.ready),
+    .probe2(m_axis_net.data),
+    .probe3(s_axis_net.valid),
+    .probe4(s_axis_net.ready),
+    .probe5(s_axis_net.data),
+    .probe6(s_axis_roce_role_tx_meta.valid),
+    .probe7(s_axis_roce_role_tx_meta.ready),
+    .probe8(s_axis_roce_role_tx_meta.data),//160
+    .probe9(arp_counter),//32
+    .probe10(arpState),//8
+    .probe11(m_axis_roce_read_cmd.valid),
+    .probe12(m_axis_roce_read_cmd.ready),
+    .probe13(m_axis_roce_read_cmd.data),//96
+    .probe14(m_axis_roce_write_cmd.valid),
+    .probe15(m_axis_roce_write_cmd.ready),
+    .probe16(m_axis_roce_write_cmd.data),//96
+    .probe17(net_aresetn),
+    .probe18(rx_pkg_counter),//32
+    .probe19(tx_pkg_counter),//32
+    .probe20(s_axis_roce_read_data.valid),
+    .probe21(s_axis_roce_read_data.ready),
+    .probe22(s_axis_roce_read_data.data),//512
+    .probe23(m_axis_roce_write_data.valid),
+    .probe24(m_axis_roce_write_data.ready),
+    .probe25(m_axis_roce_write_data.data)//512
+);
 
-// ila_stack_top_inter inst_ila_stack_top_inter (
-//     .clk(net_clk),
-//     .probe0(axis_roce_slice_to_roce.valid),
-//     .probe1(axis_roce_slice_to_roce.ready),
-//     .probe2(axis_roce_slice_to_roce.data),
-//     .probe3(axis_roce_to_roce_slice.valid),
-//     .probe4(axis_roce_to_roce_slice.ready),
-//     .probe5(axis_roce_to_roce_slice.data),
-//     .probe6(axis_roce_slice_to_mie.valid),
-//     .probe7(axis_roce_slice_to_mie.ready),
-//     .probe8(axis_roce_slice_to_mie.data),
-//     .probe9(qp_node_num),//32
-//     .probe10(writeState),//8
-//     .probe11(axis_mie_to_intercon.valid),
-//     .probe12(axis_mie_to_intercon.ready),
-//     .probe13(axis_mie_to_intercon.data),
-//     .probe14(axis_iph_to_roce_slice.valid),
-//     .probe15(axis_iph_to_roce_slice.ready),    
-//     .probe16(axis_iph_to_roce_slice.data),
-//     .probe17(axis_slice_to_ibh.valid),
-//     .probe18(axis_slice_to_ibh.ready),    
-//     .probe19(axis_slice_to_ibh.data),
-//     .probe20(roce_rx_pkg_counter),//32
-//     .probe21(roce_tx_pkg_counter),//32
-//     .probe22(regCrcDropPkgCount),//32
-//     .probe23(regCrcDropPkgCount_valid),
-//     .probe24(regInvalidPsnDropCount),//32
-//     .probe25(regInvalidPsnDropCount_valid),
-//     .probe26(cyc_counter),//32
-//     .probe27(sec_counter),//32
-//     .probe28(m_axis_roce_read_cmd.valid),
-//     .probe29(m_axis_roce_read_cmd.ready),
-//     .probe30(m_axis_roce_read_cmd.data),//96
-//     .probe31(m_axis_roce_write_cmd.valid),
-//     .probe32(m_axis_roce_write_cmd.ready),
-//     .probe33(m_axis_roce_write_cmd.data),//96
-//     .probe34(s_axis_roce_read_data.valid),
-//     .probe35(s_axis_roce_read_data.ready),
-//     .probe36(s_axis_roce_read_data.data),//512
-//     .probe37(m_axis_roce_write_data.valid),
-//     .probe38(m_axis_roce_write_data.ready),
-//     .probe39(m_axis_roce_write_data.data)//512
-// );
+ila_stack_top_inter inst_ila_stack_top_inter (
+    .clk(net_clk),
+    .probe0(axis_roce_slice_to_roce.valid),
+    .probe1(axis_roce_slice_to_roce.ready),
+    .probe2(axis_roce_slice_to_roce.data),
+    .probe3(axis_roce_to_roce_slice.valid),
+    .probe4(axis_roce_to_roce_slice.ready),
+    .probe5(axis_roce_to_roce_slice.data),
+    .probe6(axis_roce_slice_to_mie.valid),
+    .probe7(axis_roce_slice_to_mie.ready),
+    .probe8(axis_roce_slice_to_mie.data),
+    .probe9(qp_node_num),//32
+    .probe10(writeState),//8
+    .probe11(axis_mie_to_intercon.valid),
+    .probe12(axis_mie_to_intercon.ready),
+    .probe13(axis_mie_to_intercon.data),
+    .probe14(axis_iph_to_roce_slice.valid),
+    .probe15(axis_iph_to_roce_slice.ready),    
+    .probe16(axis_iph_to_roce_slice.data),
+    .probe17(axis_slice_to_ibh.valid),
+    .probe18(axis_slice_to_ibh.ready),    
+    .probe19(axis_slice_to_ibh.data),
+    .probe20(roce_rx_pkg_counter),//32
+    .probe21(roce_tx_pkg_counter),//32
+    .probe22(regCrcDropPkgCount),//32
+    .probe23(regCrcDropPkgCount_valid),
+    .probe24(regInvalidPsnDropCount),//32
+    .probe25(regInvalidPsnDropCount_valid),
+    .probe26(cyc_counter),//32
+    .probe27(sec_counter),//32
+    .probe28(m_axis_roce_read_cmd.valid),
+    .probe29(m_axis_roce_read_cmd.ready),
+    .probe30(m_axis_roce_read_cmd.data),//96
+    .probe31(m_axis_roce_write_cmd.valid),
+    .probe32(m_axis_roce_write_cmd.ready),
+    .probe33(m_axis_roce_write_cmd.data),//96
+    .probe34(s_axis_roce_read_data.valid),
+    .probe35(s_axis_roce_read_data.ready),
+    .probe36(s_axis_roce_read_data.data),//512
+    .probe37(m_axis_roce_write_data.valid),
+    .probe38(m_axis_roce_write_data.ready),
+    .probe39(m_axis_roce_write_data.data)//512
+);
 
-// /*
-//  * Statistics
-//  */
+/*
+ * Statistics
+ */
 
-// always @(posedge net_clk) begin
-//     if (~net_aresetn) begin
-//         rx_word_counter <= '0;
-//         rx_pkg_counter <= '0;
-//         tx_word_counter <= '0;
-//         tx_pkg_counter <= '0;
+always @(posedge net_clk) begin
+    if (~net_aresetn) begin
+        rx_word_counter <= '0;
+        rx_pkg_counter <= '0;
+        tx_word_counter <= '0;
+        tx_pkg_counter <= '0;
 
-//         roce_data_rx_word_counter <= '0;
-//         roce_data_rx_pkg_counter <= '0;
-//         roce_data_tx_role_word_counter <= '0;
-//         roce_data_tx_role_pkg_counter <= '0;
-//         roce_data_tx_host_word_counter <= '0;
-//         roce_data_tx_host_pkg_counter <= '0;
+        roce_data_rx_word_counter <= '0;
+        roce_data_rx_pkg_counter <= '0;
+        roce_data_tx_role_word_counter <= '0;
+        roce_data_tx_role_pkg_counter <= '0;
+        roce_data_tx_host_word_counter <= '0;
+        roce_data_tx_host_pkg_counter <= '0;
         
-//         arp_rx_pkg_counter <= '0;
-//         arp_tx_pkg_counter <= '0;
+        arp_rx_pkg_counter <= '0;
+        arp_tx_pkg_counter <= '0;
         
-//         roce_rx_pkg_counter <= '0;
-//         roce_tx_pkg_counter <= '0;
+        roce_rx_pkg_counter <= '0;
+        roce_tx_pkg_counter <= '0;
 
-//         axis_stream_down_counter <= '0;
-//         axis_stream_down <= 1'b0;
-//     end
-//     else begin
-//         if (s_axis_net.ready) begin
-//             axis_stream_down_counter <= '0;
-//         end
-//         if (s_axis_net.valid && ~s_axis_net.ready) begin
-//             axis_stream_down_counter <= axis_stream_down_counter + 1;
-//         end
-//         if (axis_stream_down_counter > 2) begin
-//             axis_stream_down <= 1'b1;
-//         end
-//         if (s_axis_net.valid && s_axis_net.ready) begin
-//             rx_word_counter <= rx_word_counter + 1;
-//             if (s_axis_net.last) begin
-//                 rx_pkg_counter <= rx_pkg_counter + 1;
-//             end
-//         end
-//         if (m_axis_net.valid && m_axis_net.ready) begin
-//             tx_word_counter <= tx_word_counter + 1;
-//             if (m_axis_net.last) begin
-//                 tx_pkg_counter <= tx_pkg_counter + 1;
-//             end
-//         end
-//         //arp
-//         if (axis_arp_slice_to_arp.valid && axis_arp_slice_to_arp.ready) begin
-//             if (axis_arp_slice_to_arp.last) begin
-//                 arp_rx_pkg_counter <= arp_rx_pkg_counter + 1;
-//             end
-//         end
-//         if (axis_arp_to_arp_slice.valid && axis_arp_to_arp_slice.ready) begin
-//             if (axis_arp_to_arp_slice.last) begin
-//                 arp_tx_pkg_counter <= arp_tx_pkg_counter + 1;
-//             end
-//         end
-//         //roce
-//         if (axis_roce_slice_to_roce.valid && axis_roce_slice_to_roce.ready) begin
-//             if (axis_roce_slice_to_roce.last) begin
-//                 roce_rx_pkg_counter <= roce_rx_pkg_counter + 1;
-//             end
-//         end
-//         if (axis_roce_to_roce_slice.valid && axis_roce_to_roce_slice.ready) begin
-//             if (axis_roce_to_roce_slice.last) begin
-//                 roce_tx_pkg_counter <= roce_tx_pkg_counter + 1;
-//             end
-//         end
-//         //roce data
-//         if (m_axis_roce_write_data.valid && m_axis_roce_write_data.ready) begin
-//             roce_data_rx_word_counter <= roce_data_rx_word_counter + 1;
-//             if (m_axis_roce_write_data.last) begin
-//                 roce_data_rx_pkg_counter <= roce_data_rx_pkg_counter + 1;
-//             end
-//         end
-//         if (s_axis_roce_read_data.valid && s_axis_roce_read_data.ready) begin
-//             roce_data_tx_host_word_counter <= roce_data_tx_host_word_counter + 1;
-//             if (s_axis_roce_read_data.last) begin
-//                 roce_data_tx_host_pkg_counter <= roce_data_tx_host_pkg_counter + 1;
-//             end
-//         end
-//         if (s_axis_roce_role_tx_data.valid && s_axis_roce_role_tx_data.ready) begin
-//             roce_data_tx_role_word_counter <= roce_data_tx_role_word_counter + 1;
-//             if (s_axis_roce_role_tx_data.last) begin
-//                 roce_data_tx_role_pkg_counter <= roce_data_tx_role_pkg_counter + 1;
-//             end
-//         end
-//     end
-// end
+        axis_stream_down_counter <= '0;
+        axis_stream_down <= 1'b0;
+    end
+    else begin
+        if (s_axis_net.ready) begin
+            axis_stream_down_counter <= '0;
+        end
+        if (s_axis_net.valid && ~s_axis_net.ready) begin
+            axis_stream_down_counter <= axis_stream_down_counter + 1;
+        end
+        if (axis_stream_down_counter > 2) begin
+            axis_stream_down <= 1'b1;
+        end
+        if (s_axis_net.valid && s_axis_net.ready) begin
+            rx_word_counter <= rx_word_counter + 1;
+            if (s_axis_net.last) begin
+                rx_pkg_counter <= rx_pkg_counter + 1;
+            end
+        end
+        if (m_axis_net.valid && m_axis_net.ready) begin
+            tx_word_counter <= tx_word_counter + 1;
+            if (m_axis_net.last) begin
+                tx_pkg_counter <= tx_pkg_counter + 1;
+            end
+        end
+        //arp
+        if (axis_arp_slice_to_arp.valid && axis_arp_slice_to_arp.ready) begin
+            if (axis_arp_slice_to_arp.last) begin
+                arp_rx_pkg_counter <= arp_rx_pkg_counter + 1;
+            end
+        end
+        if (axis_arp_to_arp_slice.valid && axis_arp_to_arp_slice.ready) begin
+            if (axis_arp_to_arp_slice.last) begin
+                arp_tx_pkg_counter <= arp_tx_pkg_counter + 1;
+            end
+        end
+        //roce
+        if (axis_roce_slice_to_roce.valid && axis_roce_slice_to_roce.ready) begin
+            if (axis_roce_slice_to_roce.last) begin
+                roce_rx_pkg_counter <= roce_rx_pkg_counter + 1;
+            end
+        end
+        if (axis_roce_to_roce_slice.valid && axis_roce_to_roce_slice.ready) begin
+            if (axis_roce_to_roce_slice.last) begin
+                roce_tx_pkg_counter <= roce_tx_pkg_counter + 1;
+            end
+        end
+        //roce data
+        if (m_axis_roce_write_data.valid && m_axis_roce_write_data.ready) begin
+            roce_data_rx_word_counter <= roce_data_rx_word_counter + 1;
+            if (m_axis_roce_write_data.last) begin
+                roce_data_rx_pkg_counter <= roce_data_rx_pkg_counter + 1;
+            end
+        end
+        if (s_axis_roce_read_data.valid && s_axis_roce_read_data.ready) begin
+            roce_data_tx_host_word_counter <= roce_data_tx_host_word_counter + 1;
+            if (s_axis_roce_read_data.last) begin
+                roce_data_tx_host_pkg_counter <= roce_data_tx_host_pkg_counter + 1;
+            end
+        end
+        if (s_axis_roce_role_tx_data.valid && s_axis_roce_role_tx_data.ready) begin
+            roce_data_tx_role_word_counter <= roce_data_tx_role_word_counter + 1;
+            if (s_axis_roce_role_tx_data.last) begin
+                roce_data_tx_role_pkg_counter <= roce_data_tx_role_pkg_counter + 1;
+            end
+        end
+    end
+end
 
 endmodule
 

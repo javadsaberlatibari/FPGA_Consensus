@@ -112,18 +112,20 @@ extern "C" {
                     m_axis_tx_meta, 
                     m_axis_tx_data
                 );
+                counter++; 
             }
-            if(!m_axis_tx_meta.full()){
-                rdma_read(
-                    0,
-                    counter * 4,
-                    0,
-                    0x4,
-                    m_axis_tx_meta
-                );
-            }
+            // if(!m_axis_tx_meta.full()){
+            //     rdma_read(
+            //         0,
+            //         counter * 4,
+            //         0,
+            //         0x4,
+            //         m_axis_tx_meta
+            //     );
+            //     counter++; 
+            // }
 
-            counter++; 
+
 
             // if (!write && !read) {
             //     write = true;
