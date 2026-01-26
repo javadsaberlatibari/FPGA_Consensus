@@ -35,6 +35,10 @@ EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <unistd.h> 
 #include <cstdlib> 
 #include <iostream> 
+#include <limits>
+#include <cstring>
+#include <string>
+#include <random>
 #include <libmemcached/memcached.h>
 
 #define DATA_SIZE 62500000
@@ -43,7 +47,7 @@ EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define IP_ADDR 0x0A01D498
 #define BOARD_NUMBER 0
 #define ARP 0x0A01D498
-
+const int hbm_update_period =10;
 void wait_for_enter(const std::string &msg) {
     std::cout << msg << std::endl;
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
@@ -139,14 +143,15 @@ int main(int argc, char **argv) {
         std::cout << "Usage: " << argv[0] << " <XCLBIN File> [<#Tx Pkt> <IP address in format: 10.1.212.121> <Port>]" << std::endl;
         return EXIT_FAILURE;
     }
-
+    bool throughput = false;
     std::string binaryFile = argv[1];
     uint32_t N_node = std::stoi(argv[2]);
     uint32_t node_id = std::stoi(argv[3]);
     uint32_t nOP = std::stoi(argv[4]);
     uint32_t wP = std::stoi(argv[5]);
     const char* MEM_IP = argv[6];
-
+    if(std::strcmp(argv[7], "th") == 0)
+        throughput = true;
     cl_int err;
     cl::CommandQueue q;
     cl::Context context;
@@ -192,7 +197,7 @@ int main(int argc, char **argv) {
             OCL_CHECK(err,
                       network_kernel = cl::Kernel(program, "rocetest_krnl", &err));
             OCL_CHECK(err,
-                      user_kernel = cl::Kernel(program, "bram_crdt_counter_bram_bench", &err));
+                      user_kernel = cl::Kernel(program, "bram_counter_bram_bench", &err));
             //OCL_CHECK(err,
                       //load_kernel = cl::Kernel(program, "load_krnl", &err));//////////////////////////////////////////////////
             valid_device++;
@@ -239,7 +244,7 @@ int main(int argc, char **argv) {
     //uint32_t 
     
     uint32_t debug1 = 0xd0000000;
-    if (argc >= 7) {
+    if (argc >= 8) {
         debug1 = (debug1 & 0x00FFFFFF) | ((uint32_t)strtoul(argv[2], NULL, 0) << 24);
     }
     uint32_t meta = 1 << (debug1 >> 29);
@@ -315,9 +320,7 @@ int main(int argc, char **argv) {
     uint64_t urAddr= 0x0000000000000000;
 
     uint32_t ulen  = 0x00000008;
-    uint32_t node_num  = N_node;
-    uint32_t board_num = node_id;
-
+    int check_value = (nOP * wP) / 100 * (N_node - 1);
     //OCL_CHECK(err, cl::Buffer buffer_op(context, CL_MEM_READ_ONLY, size_in_bytes, NULL, &err));
     
 
@@ -340,9 +343,12 @@ int main(int argc, char **argv) {
     OCL_CHECK(err, err = user_kernel.setArg(8, board_num));
     OCL_CHECK(err, err = user_kernel.setArg(9, nOP));
     OCL_CHECK(err, err = user_kernel.setArg(10, qOP)); //added for Bram
-    OCL_CHECK(err, err = user_kernel.setArg(11, buffer_op));
+    OCL_CHECK(err, err = user_kernel.setArg(11, check_value)); //added for Throughput
+    OCL_CHECK(err, err = user_kernel.setArg(12, throughput)); //added for Throughput
+    OCL_CHECK(err, err = user_kernel.setArg(13, hbm_update_period));
+    OCL_CHECK(err, err = user_kernel.setArg(14, buffer_op));
     //OCL_CHECK(err, err = user_kernel.setArg(12, buffer_r2));
-    OCL_CHECK(err, err = user_kernel.setArg(12, buffer_r1));
+    OCL_CHECK(err, err = user_kernel.setArg(15, buffer_r1));
 
 
     OCL_CHECK(err,
@@ -353,7 +359,7 @@ int main(int argc, char **argv) {
     }
     // operations[nOP-1]=0;
     int j=0;
-    vector <int> write_indexs (nOP*wP,0);
+    vector<int> write_indexs((nOP * wP) / 100, 0);
     int k=0;
     bool find=false;
     int rand_value=0;
@@ -374,7 +380,11 @@ int main(int argc, char **argv) {
             k++;
             j++;
             //printf("testttttt %d------\n", rand_value);
-            operations[rand_value] = node_id;
+            if(throughput){
+                operations[rand_value] = 1; //for throughput test
+            }
+            else
+                operations[rand_value] = rand()+1;
         }
     }
     //OCL_CHECK(err, err = q.enqueueMigrateMemObjects({buffer_op}, 0 /* 0 means from host*/));
