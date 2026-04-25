@@ -1,135 +1,262 @@
-# Vitis with 100 Gbps RoCE v2 Network Stack
+# VLDB Code Supplement for Safar
 
-This repository provides RoCE v2 network support at 100 Gbps in Vitis.
-Simple benchmark examples are provided to demonstrate the usage.
+## Overview
 
-We use the [Vitis_with_100Gbps_TCP-IP](https://github.com/fpgasystems/Vitis_with_100Gbps_TCP-IP) as our starting point. This project should fully compatable with the TCP/IP stack. The folder fpga-network-stack/ is replaced by submodule [fpga-netwrok-stack](https://github.com/hcxxstl/fpga-network-stack), which is forked from the [original one](https://github.com/fpgasystems/fpga-network-stack) by ETHz systems group.
+Safar is a complex FPGA system requiring specific tools and hardware to run properly. Luckily, the hardware and tools are available at the **Open Cloud Testbed (OCT)**, accessed via **CloudLab**.
 
-## Architecture Overview
+There are a total of:
 
-The same architecture as the TCP/IP project is used with three Vitis kernels: `CMAC` kernel, `RoCE` kernel and `User` kernel. Several `User` kernels are provided
+- **5 CRDTs**
+- **5 WRDTs**
+- **6 RDTs with custom verbs**
+- **2 large real-world applications** that can run in hybrid mode
 
-The top level structure can be seen [here](img/top.pdf).
+### CRDTs
 
-### CMAC kernel
-The `CMAC` kernel remains the same as in [Vitis_with_100Gbps_TCP-IP](https://github.com/fpgasystems/Vitis_with_100Gbps_TCP-IP).
+- Counter
+- Register
+- GSet
+- TwoPSet
+- PNSet
 
-### RoCE Kernel
-Since we applied the RoCE as the networking stack, the `network` kenrel is repalced by our `RoCE` kernel. It includes serveral HLS IPs from [fpga-netwrok-stack](https://github.com/hcxxstl/fpga-network-stack). This kernel works in the sequential mode and at 250 MHz.
-The [interface](img/roce_inf.pdf) can be found in the img/ directory.
+### WRDTs
 
-More detials are comming in the future...
+- Account
+- Courseware
+- Project
+- Movie
+- Auction
 
-### User Kernel
-The User kernel is the kernel where user-defined applications are. It is the upper stream kernel that issues RDMA commands to the RoCE kernel. It can be designed for any application that needs RDMA networking. The required interface of the User kernel is shown [here](fig/user_inf.pdf). This kernel also works in sequential execution mode as it should be triggered by the host program. It is clocked at 250 MHz in order to coordinate with the RoCE kernel.
+### Custom Verbs (RDTs)
 
-<!-- ## User-Network Kernel Interface -->
+- Account
+- Courseware
+- Project
+- Movie
+- Auction
+- LWW
 
+### Hybrid Applications
 
+- YCSB
+- SmallBank
 
-## Performance Benchmark
-We did simple RDMA READ operation benchmarks to evaluate this RoCE stack. The [throughput](img/read_th.eps) and [latency](img/read_la.eps) results can be seen in the [img/](img/) folder.
+The code for all of these is hosted in **three public GitHub repositories** created for the review process. Specific branches and build instructions are required and are described below.
 
-## Clone the Repository
+- **CRDTs / WRDTs / YCSB**  
+  https://github.com/javadsaberlatibari/FPGA_Consensus
 
-Git Clone 
+- **Custom Verbs**  
+  https://github.com/pyuvaraj37/safar_custom_verbs
 
-	git clone	
-	git submodule update --init --recursive
+- **SmallBank**  
+  https://github.com/pyuvaraj37/SmallBank
 
-## Package HLS IPs for the Stack
+---
 
-Setup the network stack HLS IPs:
+## Open Cloud Testbed and Tools
 
-    mkdir build
-    cd build
-    cmake .. -DFDEV_NAME=u280
-    make installip
+Safar is built using **Vitis/Vivado 2023.2**, specifically targeting the **AMD Xilinx Alveo U280**.
 
+While these tools can be installed locally, they are large and are already available through **OCT**. To sign up for OCT, follow the instructions here:
 
-## Create Design
+https://github.com/OCT-FPGA/OCT-Tutorials
 
-The following example command will synthesis and implement the design with selected `User` kernel. The generated XCLBIN resides in folder `build_dir.hw.xilinx_*`. The generated host executable resides in folder `host`.
+Once you gain access to OCT through **CloudLab**, reserve an `oct-build` node. The exact node specifications do not matter much, but a **minimum of 32 GB of RAM** is required.
 
-    cd ../
-    make all DEVICE=/opt/xilinx/platforms/xilinx_u280_xdma_201920_3/xilinx_u280_xdma_201920_3.xpfm USER_KRNL=roce_read_krnl EXE_NUM=0
+By default, the node is reserved for **16 hours**. You will need to extend the reservation, since each individual use case takes approximately **3 hours to build**, for a total estimated build time of **~62 hours**.
 
-Explaination for the arguments are as follows. Default values can be found in [Makefile](Makefile).
+We strongly recommend using **tmux** to run long builds so you do not need to maintain a persistent SSH connection.
 
-* `DEVICE` Alveo development target platform
-* `TARGET` Build targets defined by Vitis
-* `USER_KRNL` Name of the user kernel
-* `NET_KRNL` Either roce or tcp
-* `USER_KRNL_MODE` If the user kernel is a rtl kernel, rtl mode should be specified. If the user kernel is a C/C++ kernel, then hls mode should be specified.
-* `EXE_NUM` Either 0 or 1. Parameters required to establish an RDMA connection for two endpoints are set in 2 different host codes.
-* `IPREPOPATH` The location of your packaged IPs
+### Xilinx License Setup
 
-onnection established with that port. Usage: ./host XCLBIN_FILE  [#RxByte] [Port]                     |
+For all builds, a Xilinx license is required to generate the kernel. You can use OCT's floating license server.
 
-## Repository structure
+Before starting any build, run:
 
-~~~
-├── fpga-network-stack
-├── scripts
-├── kernel
-│   └── cmac_krnl
-│   └── network_krnl
-│   └── rocetest_krnl
-│   └── user_krnl
-|		└── iperf_krnl
-|		└── scatter_krnl
-|		└── hls_send_krnl
-|		└── hls_recv_krnl
-|		└── roce_read_krnl
-|		└── roce_write_krnl
-|		└── hls_dummy_krnl
-├── host
-|	└── iperf_krnl
-|	└── scatter_krnl
-|	└── hls_send_krnl
-|	└── hls_recv_krnl
-|	└── roce_read_krnl
-|	└── roce_write_krnl
-|	└── hls_dummy_krnl
-├── common
-├── img
-~~~
+```bash
+export XILINXD_LICENSE_FILE=2100@xilinxlm
+```
 
-* fpga-network-stack: this folder contains the HLS code for 100 Gbps TCP/IP stack
-* scripts: this folder contains scripts to pack each kernel and to connect cmac kernel with GT pins
-* kernel: this folder contains the rtl/hls code of cmac kernel, network kernel and user kernel. User kernel can be configured to one of the example kernels 
-* host: this folder contains the host code of each user kernel
-* img: this folder contains images 
-* common: this folder contains neccessary libraries for running the vitis kernel
+If this variable is not set, the build will fail after several hours.
 
+---
 
-## Support
+## Use Cases
 
-### Tools
-To package HLS IPs, use 2020.1.
+### CRDTs + YCSB
 
-| Vitis  | XRT       |
-|--------|-----------|
-| 2020.2 | 2.9.317   |
+The CRDT use cases are available on the `vldb_crdts_plus_kv` branch of:
 
-### Alveo Cards
+https://github.com/javadsaberlatibari/FPGA_Consensus
 
-| Alveo | Development Target Platform(s) | 
-|-------|----------|
-| U280  | xilinx_u280_xdma_201920_3 | 
-| U250  | xilinx_u250_gen3x16_xdma_202020_1 | 
+This branch contains all CRDTs as well as YCSB.
 
-We use the HBM on U280 and host memory on U250 as the memory block for RDMA. To switch to another FPGA, the configurations should be modified manully. For example, change the `HBM[0]` to `HOST[0]` [here](kernel/user_krnl/roce_read_krnl/config_sp_roce_read_krnl.txt) for the read kernel.
+#### Build Instructions
 
-### Requirements
+1. Untar the IP repository:
 
-In order to generate this design you will need a valid [UltraScale+ Integrated 100G Ethernet Subsystem](https://www.xilinx.com/products/intellectual-property/cmac_usplus.html) license set up in Vivado.
+```bash
+tar -xvf iprepo.tar.gz
+```
 
-## Acknowledgement
-I would like to thank
-* David Sidler for developing the InfiniBand RC transport service and RoCE v2 IPs in HLS
-* Zhenhao He for the TCP/IP stack design and his help
-* Mario Daniel Ruiz Noguera for sharing his knowledge on Xilinx FPGAs and Vitis tool
-* Xilinx for providing the Xilinx Adaptive Compute Cluster
-* Zaid Al-Ars for offering me this challenging project and guiding me through the journey
+2. Start the build:
 
+```bash
+make build TARGET=HW DEVICE=<platform file> NET_KRNL=roce USER_KERNEL=<use-case> USER_KRNL_MODE=hls EXE_NUM=0
+```
+
+#### User Kernel Names
+
+- bram_counter_bram_bench
+- bram_gset_bram_bench
+- bram_pnset_bram_bench
+- bram_twopset_bram_bench
+- bram_register_bram_bench
+- bram_kv_store_bram_bench
+- hybrid_kv_store_bram_bench
+
+#### Running the Experiments
+
+After the builds are complete:
+
+1. Reserve execution nodes on OCT.
+2. Modify `run-usercases2.sh` with your **node numbers** and **username**.
+3. Run the script to execute the experiments.
+
+---
+
+### WRDTs
+
+The WRDT use cases are available on the `wrdt-bank-no-failure` branch of:
+
+https://github.com/javadsaberlatibari/FPGA_Consensus
+
+#### Build Instructions
+
+1. Untar the IP repository:
+
+```bash
+tar -xvf iprepo.tar.gz
+```
+
+2. Start the build:
+
+```bash
+make build TARGET=HW DEVICE=<platform file> NET_KRNL=roce USER_KERNEL=<use-case> USER_KRNL_MODE=hls EXE_NUM=0
+```
+
+#### User Kernel Names
+
+- account_stream_krnl
+- courseware_stream_krnl
+- project_stream_krnl
+- movie_stream_krnl
+- auction_stream_krnl
+
+#### Running the Experiments
+
+After the builds are complete:
+
+1. Reserve execution nodes on OCT.
+2. Modify `run-usercases2.sh` with your **node numbers** and **username**.
+3. Run the script to execute the experiments.
+
+---
+
+## Custom Verbs
+
+Custom Verb experiments are located in a separate repository:
+
+https://github.com/pyuvaraj37/safar_custom_verbs
+
+All experiments are on the `main` branch.
+
+#### Build Instructions
+
+1. Clone the repository.
+2. Untar the IP repository:
+
+```bash
+tar -xvf iprepo.tar.gz
+```
+
+3. Build each user kernel:
+
+```bash
+make build TARGET=HW DEVICE=<platform file> NET_KRNL=roce USER_KERNEL=<use-case> USER_KRNL_MODE=hls EXE_NUM=0
+```
+
+#### User Kernel Names
+
+- account_custom_krnl
+- courseware_custom_krnl
+- project_custom_krnl
+- movie_custom_krnl
+- auction_custom_krnl
+- counter_custom_krnl
+- lww_custom_krnl
+
+#### Running the Experiments
+
+After the builds are complete:
+
+1. Reserve OCT nodes.
+2. Fill in the configuration information at the top of `run-usercase-all.sh`.
+3. Run the script to execute all experiments.
+
+---
+
+## SmallBank
+
+The SmallBank use case is hosted in its own repository:
+
+https://github.com/pyuvaraj37/SmallBank
+
+All code is on the `main` branch.
+
+### Build Instructions
+
+1. Clone the repository.
+2. Untar the IP repository:
+
+```bash
+tar -xvf iprepo-original.tar.gz
+```
+
+3. Build the application kernel using CMake:
+
+```bash
+mkdir build
+cd build
+cmake ..
+make installip
+```
+
+4. From the repository root, build the FPGA binary:
+
+```bash
+make build TARGET=HW PLATFORM=<platform file>
+```
+
+The platform file is located at:
+
+```text
+/opt/platforms/<device>/<device>.xpfm
+```
+
+### Running SmallBank
+
+1. Reserve `oct-u280` nodes on CloudLab.
+2. Use scripts in the `deploy/` directory to copy the build files to the nodes.
+3. Use scripts in `deploy/local/bash/` to install the environment.
+4. Run:
+
+```bash
+source env.sh
+./enable.sh
+```
+
+5. Run each `run-experiment.sh` script (modify node numbers as needed).
+
+All logs and result aggregation scripts are located in the `log/` directory, including scripts to aggregate results and generate Excel summaries.
